@@ -1,0 +1,1 @@
+{"version":3,"sources":["/Users/darekfrynas/work/tech-radar/src/main.css"],"names":[],"mappings":"AAAA,iBACE,gBAAiB,AACjB,6BAA8B,AAC9B,kBAAoB,CACrB,AAED,GACE,kBAAoB,CACrB","file":"main.a4027083.chunk.css","sourcesContent":[".radar-container {\n  overflow-x: auto;\n  border-bottom: 1px solid #ccc;\n  margin-bottom: 2rem;\n}\n\ndd {\n  margin-bottom: 1rem;\n}\n"]}
