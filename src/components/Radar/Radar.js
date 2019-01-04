@@ -25,6 +25,20 @@ class Radar extends PureComponent {
 
   getEntryQuadrant = (entry) => {
     const position = _get(entry, 'fields.quadrant.fields.position', '');
+    return this.getQuadrantPosition(position);
+  };
+
+  getRadarRings = () => {
+    const radarRings = [];
+    _forEach(this.props.rings, item => radarRings.push({
+      name:_get(item, 'fields.label', ''),
+      color:_get(item, 'fields.color', '#000000'),
+      position:_get(item, 'fields.position', 1),
+    }));
+    return _sortBy(radarRings, ['position']);
+  };
+
+  getQuadrantPosition = (position) => {
     if (position) {
       switch (position) {
         case 'bottom-right':
@@ -42,22 +56,13 @@ class Radar extends PureComponent {
     return 0;
   };
 
-  getRadarRings = () => {
-    const radarRings = [];
-    _forEach(this.props.rings, item => radarRings.push({
-      name:_get(item, 'fields.label', ''),
-      color:_get(item, 'fields.color', '#000000'),
-      position:_get(item, 'fields.position', 1),
-    }));
-    return _sortBy(radarRings, ['position']);
-  };
-
   getRadarQuadrants = () => {
     const radarQuadrants = [];
     _forEach(this.props.quadrants, item => radarQuadrants.push({
-      name:_get(item, 'fields.label', ''),
+      name: _get(item, 'fields.label', ''),
+      position: this.getQuadrantPosition(_get(item, 'fields.position', 0)),
     }));
-    return radarQuadrants;
+    return _sortBy(radarQuadrants, ['position']);
   };
 
   renderRadar() {
