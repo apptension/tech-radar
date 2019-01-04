@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import _forEach from 'lodash/forEach';
 import _get from 'lodash/get';
+import _sortBy from 'lodash/sortBy';
 
 import techRadar from "../../lib/zalando-tech-radar";
 import './Radar.css';
@@ -46,8 +47,9 @@ class Radar extends PureComponent {
     _forEach(this.props.rings, item => radarRings.push({
       name:_get(item, 'fields.label', ''),
       color:_get(item, 'fields.color', '#000000'),
+      position:_get(item, 'fields.position', 1),
     }));
-    return radarRings;
+    return _sortBy(radarRings, ['position']);
   };
 
   getRadarQuadrants = () => {
