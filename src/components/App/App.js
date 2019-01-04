@@ -71,7 +71,7 @@ class App extends PureComponent {
         <div className="container text-justify">
           <h3>What is the Tech Radar?</h3>
           <p>Tech Radar is a list of technologies, complemented by an assessment result, called ring assignment. We use four rings with the following semantics:</p>
-          <dl>
+          <dl className="mb-5">
             {this.renderRingsDescription()}
           </dl>
         </div>

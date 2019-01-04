@@ -4,3 +4,7 @@
     margin-bottom: 2rem;
     text-align: center;
 }
+
+#radar * {
+    font-family: 'Roboto', 'Lato', sans-serif !important;
+}
