@@ -46,7 +46,11 @@ class App extends PureComponent {
           <img className="logo" src="https://apptension.com/07e0b4851db757109a23b11dba931a4d.svg" />
           <span>Apptension Tech Radar</span>
         </h3>
-        <Radar entries={this.getEntries('entry')} />
+        <Radar
+          entries={this.getEntries('entry')}
+          quadrants={this.getEntries('quadrant')}
+          rings={this.getEntries('ring')}
+        />
         <div className="container text-justify">
           <h3>What is the Tech Radar?</h3>
           <p>Tech Radar is a list of technologies, complemented by an assessment result, called ring assignment. We use four rings with the following semantics:</p>
