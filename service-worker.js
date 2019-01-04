@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/tech-radar/precache-manifest.4e08075c2510deaa416cad72dc5c204b.js"
+  "/tech-radar/precache-manifest.023c0cb14212734d628886dffbc4ddbf.js"
 );
 
 workbox.clientsClaim();
