@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "http://apptension.github.io/tech-radar",
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^12.1.2",
+    "@contentful/rich-text-types": "^12.1.2",
     "contentful": "^7.0.5",
     "d3": "4.13.0",
     "lodash": "^4.17.11",
