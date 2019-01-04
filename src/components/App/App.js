@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import * as contentful from "contentful";
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import _get from "lodash/get";
 import _pickBy from "lodash/pickBy";
+import _forEach from "lodash/forEach";
+import _sortBy from "lodash/sortBy";
 
 import Radar from '../Radar/Radar'
 import * as constants from '../const';
@@ -38,8 +41,22 @@ class App extends PureComponent {
     return {};
   }
 
+  renderRingsDescription() {
+    const contents = [];
+    const entriesSorted = _sortBy(
+      this.getEntries('ring'), ring => _get(ring, 'fields.position', 0)
+    );
+
+    _forEach(entriesSorted, ring => {
+      contents.push(<dt>{ring.fields.label}</dt>);
+      const html = documentToHtmlString(_get(ring, 'fields.description', {}));
+      contents.push(<dd dangerouslySetInnerHTML={{__html: html }} />);
+    });
+
+    return contents;
+  }
+
   render() {
-    console.log(this.getEntries('ring'));
     return (
       <div className="App mt-4">
         <h3 className="container text-center">
@@ -54,6 +71,9 @@ class App extends PureComponent {
         <div className="container text-justify">
           <h3>What is the Tech Radar?</h3>
           <p>Tech Radar is a list of technologies, complemented by an assessment result, called ring assignment. We use four rings with the following semantics:</p>
+          <dl>
+            {this.renderRingsDescription()}
+          </dl>
         </div>
       </div>
     );
