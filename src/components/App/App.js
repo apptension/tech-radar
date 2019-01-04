@@ -43,7 +43,7 @@ class App extends PureComponent {
     return (
       <div className="App mt-4">
         <h3 className="container text-center">
-          <img className="logo" src="https://apptension.com/07e0b4851db757109a23b11dba931a4d.svg" />
+          <img className="logo" src="https://apptension.com/07e0b4851db757109a23b11dba931a4d.svg" alt="" />
           <span>Apptension Tech Radar</span>
         </h3>
         <Radar
