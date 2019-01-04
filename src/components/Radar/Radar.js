@@ -41,6 +41,23 @@ class Radar extends PureComponent {
     return 0;
   };
 
+  getRadarRings = () => {
+    const radarRings = [];
+    _forEach(this.props.rings, item => radarRings.push({
+      name:_get(item, 'fields.label', ''),
+      color:_get(item, 'fields.color', '#000000'),
+    }));
+    return radarRings;
+  };
+
+  getRadarQuadrants = () => {
+    const radarQuadrants = [];
+    _forEach(this.props.quadrants, item => radarQuadrants.push({
+      name:_get(item, 'fields.label', ''),
+    }));
+    return radarQuadrants;
+  };
+
   renderRadar() {
     return techRadar({
       svg_id: "radar",
@@ -51,18 +68,8 @@ class Radar extends PureComponent {
         grid: "#bbb",
         inactive: "#ddd"
       },
-      quadrants: [
-        { name: "Languages" },
-        { name: "Infrastructure" },
-        { name: "Frameworks" },
-        { name: "Data Management" }
-      ],
-      rings: [
-        { name: "ADOPT", color: "#93c47d" },
-        { name: "TRIAL", color: "#93d2c2" },
-        { name: "ASSESS", color: "#fbdb84" },
-        { name: "HOLD", color: "#efafa9" }
-      ],
+      quadrants: this.getRadarQuadrants(),
+      rings: this.getRadarRings(),
       print_layout: true,
       // zoomed_quadrant: 0,
       //ENTRIES
