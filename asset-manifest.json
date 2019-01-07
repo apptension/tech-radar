@@ -1,13 +1,13 @@
 {
-  "main.css": "/tech-radar/static/css/main.d12af3b2.chunk.css",
-  "main.js": "/tech-radar/static/js/main.662d7a20.chunk.js",
-  "main.js.map": "/tech-radar/static/js/main.662d7a20.chunk.js.map",
-  "static/js/1.b8cd47d1.chunk.js": "/tech-radar/static/js/1.b8cd47d1.chunk.js",
-  "static/js/1.b8cd47d1.chunk.js.map": "/tech-radar/static/js/1.b8cd47d1.chunk.js.map",
+  "main.css": "/tech-radar/static/css/main.b76518dd.chunk.css",
+  "main.js": "/tech-radar/static/js/main.dfd56d89.chunk.js",
+  "main.js.map": "/tech-radar/static/js/main.dfd56d89.chunk.js.map",
+  "static/js/1.d387877d.chunk.js": "/tech-radar/static/js/1.d387877d.chunk.js",
+  "static/js/1.d387877d.chunk.js.map": "/tech-radar/static/js/1.d387877d.chunk.js.map",
   "runtime~main.js": "/tech-radar/static/js/runtime~main.336854f2.js",
   "runtime~main.js.map": "/tech-radar/static/js/runtime~main.336854f2.js.map",
-  "static/css/main.d12af3b2.chunk.css.map": "/tech-radar/static/css/main.d12af3b2.chunk.css.map",
+  "static/css/main.b76518dd.chunk.css.map": "/tech-radar/static/css/main.b76518dd.chunk.css.map",
   "index.html": "/tech-radar/index.html",
-  "precache-manifest.b116818261d20808a25be56bf2bfd52d.js": "/tech-radar/precache-manifest.b116818261d20808a25be56bf2bfd52d.js",
+  "precache-manifest.888717a666c788d5b6aa1476efc30ba1.js": "/tech-radar/precache-manifest.888717a666c788d5b6aa1476efc30ba1.js",
   "service-worker.js": "/tech-radar/service-worker.js"
 }
