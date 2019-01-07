@@ -9,7 +9,6 @@
     "@sentry/browser": "^4.4.2",
     "contentful": "^7.0.5",
     "d3": "4.13.0",
-    "lodash": "^4.17.11",
     "ramda": "^0.26.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
