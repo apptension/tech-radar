@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
+import * as R from 'ramda';
 import _forEach from 'lodash/forEach';
-import _get from 'lodash/get';
 import _sortBy from 'lodash/sortBy';
 
 import techRadar from "../../lib/zalando-tech-radar";
@@ -15,25 +15,25 @@ class Radar extends PureComponent {
   getRadarEntries = () => {
     const radarEntries = [];
     _forEach(this.props.entries, item => radarEntries.push({
-      label:_get(item, 'fields.label', ''),
+      label: R.pathOr('', ['fields', 'label'], item),
       quadrant: this.getEntryQuadrant(item),
-      ring: _get(item, 'fields.ring.fields.position', 1) - 1,
-      moved: _get(item, 'fields.moved', 0),
+      ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+      moved: R.pathOr(0, ['fields', 'moved'], item),
     }));
     return radarEntries;
   };
 
   getEntryQuadrant = (entry) => {
-    const position = _get(entry, 'fields.quadrant.fields.position', '');
+    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
     return this.getQuadrantPosition(position);
   };
 
   getRadarRings = () => {
     const radarRings = [];
     _forEach(this.props.rings, item => radarRings.push({
-      name:_get(item, 'fields.label', ''),
-      color:_get(item, 'fields.color', '#000000'),
-      position:_get(item, 'fields.position', 1),
+      name:R.pathOr('', ['fields', 'label'], item),
+      color:R.pathOr('#000000', ['fields', 'color'], item),
+      position:R.pathOr(1, ['fields', 'position'], item),
     }));
     return _sortBy(radarRings, ['position']);
   };
@@ -59,8 +59,8 @@ class Radar extends PureComponent {
   getRadarQuadrants = () => {
     const radarQuadrants = [];
     _forEach(this.props.quadrants, item => radarQuadrants.push({
-      name: _get(item, 'fields.label', ''),
-      position: this.getQuadrantPosition(_get(item, 'fields.position', 0)),
+      name: R.pathOr('', ['fields', 'label'], item),
+      position: this.getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
     }));
     return _sortBy(radarQuadrants, ['position']);
   };

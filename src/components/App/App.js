@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import * as contentful from "contentful";
+import * as R from 'ramda';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import _get from "lodash/get";
 import _pickBy from "lodash/pickBy";
 import _forEach from "lodash/forEach";
 import _sortBy from "lodash/sortBy";
@@ -36,7 +36,10 @@ class App extends PureComponent {
 
   getEntries(type = '') {
     if (type) {
-      return _pickBy(this.state.content, item => _get(item, 'sys.contentType.sys.id', '') === type);
+      return _pickBy(
+        this.state.content,
+        item => R.pathOr('', ['sys', 'contentType', 'sys', 'id'], item) === type
+      );
     }
     return {};
   }
@@ -44,12 +47,12 @@ class App extends PureComponent {
   renderRingsDescription() {
     const contents = [];
     const entriesSorted = _sortBy(
-      this.getEntries('ring'), ring => _get(ring, 'fields.position', 0)
+      this.getEntries('ring'), ring => R.pathOr(0, ['fields', 'position'], ring)
     );
 
     _forEach(entriesSorted, ring => {
       contents.push(<dt>{ring.fields.label}</dt>);
-      const html = documentToHtmlString(_get(ring, 'fields.description', {}));
+      const html = documentToHtmlString(R.pathOr({}, ['fields', 'description'], ring));
       contents.push(<dd dangerouslySetInnerHTML={{__html: html }} />);
     });
 
