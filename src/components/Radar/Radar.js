@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import * as R from 'ramda';
-import _sortBy from 'lodash/sortBy';
 
 import techRadar from "../../lib/zalando-tech-radar";
 import './Radar.css';
@@ -40,7 +39,11 @@ class Radar extends PureComponent {
       }),
       this.props.rings
     );
-    return _sortBy(radarRings, ['position']);
+
+    return R.sortBy(
+      R.prop('position'),
+      radarRings,
+    );
   };
 
   getQuadrantPosition = (position) => {
@@ -70,7 +73,10 @@ class Radar extends PureComponent {
       }),
       this.props.quadrants,
     );
-    return _sortBy(radarQuadrants, ['position']);
+    return R.sortBy(
+      R.prop('position'),
+      radarQuadrants,
+    );
   };
 
   renderRadar() {
