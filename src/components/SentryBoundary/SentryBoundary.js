@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
 
-export class SentryBoundary extends Component {
+export default class SentryBoundary extends Component {
   static propTypes = {
     children: PropTypes.any.isRequired,
   };
