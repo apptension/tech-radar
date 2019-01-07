@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import * as R from 'ramda';
-import _forEach from 'lodash/forEach';
 import _sortBy from 'lodash/sortBy';
 
 import techRadar from "../../lib/zalando-tech-radar";
@@ -14,12 +13,15 @@ class Radar extends PureComponent {
 
   getRadarEntries = () => {
     const radarEntries = [];
-    _forEach(this.props.entries, item => radarEntries.push({
-      label: R.pathOr('', ['fields', 'label'], item),
-      quadrant: this.getEntryQuadrant(item),
-      ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-      moved: R.pathOr(0, ['fields', 'moved'], item),
-    }));
+    R.forEachObjIndexed(
+      item => radarEntries.push({
+        label: R.pathOr('', ['fields', 'label'], item),
+        quadrant: this.getEntryQuadrant(item),
+        ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+        moved: R.pathOr(0, ['fields', 'moved'], item),
+      }),
+      this.props.entries,
+    );
     return radarEntries;
   };
 
@@ -30,11 +32,14 @@ class Radar extends PureComponent {
 
   getRadarRings = () => {
     const radarRings = [];
-    _forEach(this.props.rings, item => radarRings.push({
-      name:R.pathOr('', ['fields', 'label'], item),
-      color:R.pathOr('#000000', ['fields', 'color'], item),
-      position:R.pathOr(1, ['fields', 'position'], item),
-    }));
+    R.forEachObjIndexed(
+      item => radarRings.push({
+        name:R.pathOr('', ['fields', 'label'], item),
+        color:R.pathOr('#000000', ['fields', 'color'], item),
+        position:R.pathOr(1, ['fields', 'position'], item),
+      }),
+      this.props.rings
+    );
     return _sortBy(radarRings, ['position']);
   };
 
@@ -58,10 +63,13 @@ class Radar extends PureComponent {
 
   getRadarQuadrants = () => {
     const radarQuadrants = [];
-    _forEach(this.props.quadrants, item => radarQuadrants.push({
-      name: R.pathOr('', ['fields', 'label'], item),
-      position: this.getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
-    }));
+    R.forEachObjIndexed(
+      item => radarQuadrants.push({
+        name: R.pathOr('', ['fields', 'label'], item),
+        position: this.getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
+      }),
+      this.props.quadrants,
+    );
     return _sortBy(radarQuadrants, ['position']);
   };
 
