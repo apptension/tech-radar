@@ -24,7 +24,7 @@ class App extends PureComponent {
       accessToken: constants.ACCESS_TOKEN
     });
 
-    client.getEntries()
+    client.getEntries( { limit: 1000 })
       .then((response) => {
         this.setState({content: response.items});
       })
