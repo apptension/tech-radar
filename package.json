@@ -6,6 +6,7 @@
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^12.1.2",
     "@contentful/rich-text-types": "^12.1.2",
+    "@sentry/browser": "^4.4.2",
     "contentful": "^7.0.5",
     "d3": "4.13.0",
     "lodash": "^4.17.11",
@@ -14,8 +15,8 @@
     "react-scripts": "2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_SENTRY_ENVIRONMENT=local react-scripts start",
+    "build": "REACT_APP_SENTRY_ENVIRONMENT=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
