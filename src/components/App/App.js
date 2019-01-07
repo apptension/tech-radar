@@ -3,7 +3,6 @@ import * as contentful from "contentful";
 import * as R from 'ramda';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import _pickBy from "lodash/pickBy";
-import _forEach from "lodash/forEach";
 import _sortBy from "lodash/sortBy";
 
 import Radar from '../Radar/Radar'
@@ -50,11 +49,14 @@ class App extends PureComponent {
       this.getEntries('ring'), ring => R.pathOr(0, ['fields', 'position'], ring)
     );
 
-    _forEach(entriesSorted, ring => {
-      contents.push(<dt>{ring.fields.label}</dt>);
-      const html = documentToHtmlString(R.pathOr({}, ['fields', 'description'], ring));
-      contents.push(<dd dangerouslySetInnerHTML={{__html: html }} />);
-    });
+    R.forEach(
+      ring => {
+        contents.push(<dt>{ring.fields.label}</dt>);
+        const html = documentToHtmlString(R.pathOr({}, ['fields', 'description'], ring));
+        contents.push(<dd dangerouslySetInnerHTML={{__html: html }} />);
+      },
+      entriesSorted
+    );
 
     return contents;
   }
