@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import * as contentful from "contentful";
 import * as R from 'ramda';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import _pickBy from "lodash/pickBy";
 
 import Radar from '../Radar/Radar'
 import * as constants from '../const';
@@ -34,9 +33,9 @@ class App extends PureComponent {
 
   getEntries(type = '') {
     if (type) {
-      return _pickBy(
+      return R.pickBy(
+        item => R.pathOr('', ['sys', 'contentType', 'sys', 'id'], item) === type,
         this.state.content,
-        item => R.pathOr('', ['sys', 'contentType', 'sys', 'id'], item) === type
       );
     }
     return {};
