@@ -287,12 +287,10 @@ export default function radar_visualization(config) {
     .enter()
     .append('g')
     .attr('class', 'blip')
-    .on('mouseover', function (d) {
+    .on('mouseover', function (event, d) {
       showBubble(d);
     })
-    .on('mouseout', function () {
-      hideBubble();
-    });
+    .on('mouseout', hideBubble);
 
   // configure each blip
   blips.each(function (d) {
