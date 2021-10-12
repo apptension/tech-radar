@@ -1,3 +1,3 @@
 import * as colors from './color';
 
-export const regular = `1px solid ${colors.border}`;
+export const regularWhite = `1px solid ${colors.white}`;

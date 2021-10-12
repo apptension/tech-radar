@@ -1,26 +1,21 @@
 import styled, { css, ThemeProps } from 'styled-components';
 import theme from 'styled-theming';
 
-import { border, color, size } from '../../../theme';
-import { ButtonVariant, ButtonTheme } from './button.types';
+import { border, color } from '../../../theme';
+import { ButtonTheme } from './button.types';
 
 const disabledButtonStyle = css`
-  background: ${color.disabled};
-
-  color: ${theme('variant', {
-    [ButtonVariant.PRIMARY]: color.black,
-    [ButtonVariant.SECONDARY]: color.secondary,
-  })};
+  opacity: 0.5;
 `;
 
 export const Container = styled.button<ThemeProps<ButtonTheme>>`
-  padding: ${size.contentVerticalPadding}px ${size.contentHorizontalPadding}px;
-  border: ${border.regular};
-
-  color: ${theme('variant', {
-    [ButtonVariant.PRIMARY]: color.primary,
-    [ButtonVariant.SECONDARY]: color.secondary,
-  })};
+  padding: 8px 20px;
+  border: ${border.regularWhite};
+  background: none;
+  color: ${color.white};
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 24px;
 
   ${theme('isDisabled', {
     true: disabledButtonStyle,
