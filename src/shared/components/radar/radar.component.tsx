@@ -2,8 +2,7 @@
 import React, { FC } from 'react';
 import * as R from 'ramda';
 
-import techRadar from '../../../lib/zalando-tech-radar';
-import './radar.css';
+import { RadarContent } from './radarContent';
 
 export const Radar: FC = ({ entries, rings, quadrants }) => {
   const getEntryQuadrant = (entry) => {
@@ -72,26 +71,12 @@ export const Radar: FC = ({ entries, rings, quadrants }) => {
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
-  techRadar({
-    svg_id: 'radar',
-    width: 1450,
-    height: 1000,
-    colors: {
-      background: '#fff',
-      grid: '#bbb',
-      inactive: '#ddd',
-    },
-    quadrants: getRadarQuadrants(),
-    rings: getRadarRings(),
-    print_layout: true,
-    // zoomed_quadrant: 0,
-    //ENTRIES
-    entries: getRadarEntries(),
-  });
-
   return (
-    <div>
-      <svg id="radar" />
-    </div>
+    <RadarContent
+      entries={getRadarEntries()}
+      quadrants={getRadarQuadrants()}
+      rings={getRadarRings()}
+      // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
+    />
   );
 };
