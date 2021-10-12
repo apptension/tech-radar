@@ -1,36 +1,32 @@
 // @ts-nocheck
-import React, { PureComponent } from 'react';
+import React, { FC } from 'react';
 import * as R from 'ramda';
 
 import techRadar from '../../../lib/zalando-tech-radar';
 import './radar.css';
 
-export class Radar extends PureComponent {
-  componentDidUpdate(prevProps) {
-    this.renderRadar();
-  }
+export const Radar: FC = ({ entries, rings, quadrants }) => {
+  const getEntryQuadrant = (entry) => {
+    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
+    return getQuadrantPosition(position);
+  };
 
-  getRadarEntries = () => {
+  const getRadarEntries = () => {
     const radarEntries = [];
     R.forEachObjIndexed(
       (item) =>
         radarEntries.push({
           label: R.pathOr('', ['fields', 'label'], item),
-          quadrant: this.getEntryQuadrant(item),
+          quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
           moved: R.pathOr(0, ['fields', 'moved'], item),
         }),
-      this.props.entries
+      entries
     );
     return radarEntries;
   };
 
-  getEntryQuadrant = (entry) => {
-    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
-    return this.getQuadrantPosition(position);
-  };
-
-  getRadarRings = () => {
+  const getRadarRings = () => {
     const radarRings = [];
     R.forEachObjIndexed(
       (item) =>
@@ -39,13 +35,13 @@ export class Radar extends PureComponent {
           color: R.pathOr('#000000', ['fields', 'color'], item),
           position: R.pathOr(1, ['fields', 'position'], item),
         }),
-      this.props.rings
+      rings
     );
 
     return R.sortBy(R.prop('position'), radarRings);
   };
 
-  getQuadrantPosition = (position) => {
+  const getQuadrantPosition = (position) => {
     if (position) {
       switch (position) {
         case 'bottom-right':
@@ -63,43 +59,39 @@ export class Radar extends PureComponent {
     return 0;
   };
 
-  getRadarQuadrants = () => {
+  const getRadarQuadrants = () => {
     const radarQuadrants = [];
     R.forEachObjIndexed(
       (item) =>
         radarQuadrants.push({
           name: R.pathOr('', ['fields', 'label'], item),
-          position: this.getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
+          position: getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
         }),
-      this.props.quadrants
+      quadrants
     );
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
-  renderRadar() {
-    return techRadar({
-      svg_id: 'radar',
-      width: 1450,
-      height: 1000,
-      colors: {
-        background: '#fff',
-        grid: '#bbb',
-        inactive: '#ddd',
-      },
-      quadrants: this.getRadarQuadrants(),
-      rings: this.getRadarRings(),
-      print_layout: true,
-      // zoomed_quadrant: 0,
-      //ENTRIES
-      entries: this.getRadarEntries(),
-    });
-  }
+  techRadar({
+    svg_id: 'radar',
+    width: 1450,
+    height: 1000,
+    colors: {
+      background: '#fff',
+      grid: '#bbb',
+      inactive: '#ddd',
+    },
+    quadrants: getRadarQuadrants(),
+    rings: getRadarRings(),
+    print_layout: true,
+    // zoomed_quadrant: 0,
+    //ENTRIES
+    entries: getRadarEntries(),
+  });
 
-  render() {
-    return (
-      <div className="radar-container text-center">
-        <svg id="radar" />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <svg id="radar" />
+    </div>
+  );
+};

@@ -232,7 +232,7 @@ export default function radar_visualization(config) {
     if (config.print_layout) {
       grid
         .append('text')
-        .text(config.rings[i].name)
+        .text(config.rings[i]?.name)
         .attr('y', -rings[i].radius + 62)
         .attr('text-anchor', 'middle')
         .style('fill', '#e5e5e5')
