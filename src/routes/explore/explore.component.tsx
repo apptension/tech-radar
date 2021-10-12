@@ -1,21 +1,15 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-import * as contentful from 'contentful';
 import * as R from 'ramda';
 
 import { Radar } from '../../shared/components/radar';
-import * as constants from './const';
+import { client } from '../../shared/services/api/contentful';
 import { Container } from './explore.styles';
 
 export const Explore = () => {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
-    const client = contentful.createClient({
-      space: constants.SPACE_ID,
-      accessToken: constants.ACCESS_TOKEN,
-    });
-
     client
       .getEntries({ limit: 1000 })
       .then((response) => {
