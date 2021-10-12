@@ -50,7 +50,7 @@ export default function radar_visualization(config) {
     { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
   ];
 
-  const rings = [{ radius: 130 }, { radius: 220 }, { radius: 310 }, { radius: 400 }];
+  const rings = [{ radius: 180 }, { radius: 270 }, { radius: 360 }, { radius: 450 }];
 
   function polar(cartesian) {
     const x = cartesian.x;
@@ -171,10 +171,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 400) - 420,
-      Math.max(0, quadrants[quadrant].factor_y * 400) - 420,
-      440,
-      440,
+      Math.max(0, quadrants[quadrant].factor_x * 450) - 470,
+      Math.max(0, quadrants[quadrant].factor_y * 450) - 470,
+      490,
+      490,
     ].join(' ');
   }
 
@@ -198,16 +198,16 @@ export default function radar_visualization(config) {
   grid
     .append('line')
     .attr('x1', 0)
-    .attr('y1', -400)
+    .attr('y1', -450)
     .attr('x2', 0)
-    .attr('y2', 400)
+    .attr('y2', 450)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);
   grid
     .append('line')
-    .attr('x1', -400)
+    .attr('x1', -450)
     .attr('y1', 0)
-    .attr('x2', 400)
+    .attr('x2', 450)
     .attr('y2', 0)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);

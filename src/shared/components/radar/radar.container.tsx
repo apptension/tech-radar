@@ -3,6 +3,8 @@ import React from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
+import { Container } from './radar.styles';
+import { ZOOMED_QUADRANT } from './radar.constants';
 
 export const Radar = ({ entries, rings, quadrants }) => {
   const getEntryQuadrant = (entry) => {
@@ -72,11 +74,13 @@ export const Radar = ({ entries, rings, quadrants }) => {
   };
 
   return (
-    <RadarComponent
-      entries={getRadarEntries()}
-      quadrants={getRadarQuadrants()}
-      rings={getRadarRings()}
-      // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
-    />
+    <Container>
+      <RadarComponent
+        entries={getRadarEntries()}
+        quadrants={getRadarQuadrants()}
+        rings={getRadarRings()}
+        // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
+      />
+    </Container>
   );
 };
