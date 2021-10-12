@@ -32,7 +32,7 @@ export class Explore extends PureComponent {
       .catch(console.error);
   }
 
-getEntries(type = '') {
+  getEntries(type = '') {
     if (type) {
       return R.pickBy((item) => R.pathOr('', ['sys', 'contentType', 'sys', 'id'], item) === type, this.state.content);
     }
@@ -60,7 +60,6 @@ getEntries(type = '') {
     return (
       <Container>
         <h3 className="container text-center">
-          <img className="logo" src="https://apptension.com/07e0b4851db757109a23b11dba931a4d.svg" alt="" />
           <span>Apptension Tech Radar</span>
         </h3>
         <Radar
@@ -68,14 +67,6 @@ getEntries(type = '') {
           quadrants={this.getEntries('quadrant')}
           rings={this.getEntries('ring')}
         />
-        <div className="container text-justify">
-          <h3>What is the Tech Radar?</h3>
-          <p>
-            Tech Radar is a list of technologies, complemented by an assessment result, called ring assignment. We use
-            four rings with the following semantics:
-          </p>
-          <dl className="mb-5">{this.renderRingsDescription()}</dl>
-        </div>
       </Container>
     );
   }
