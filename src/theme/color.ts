@@ -6,3 +6,6 @@ export const disabled = '#DDDDE0';
 export const primary = '#42f272';
 export const secondary = '#2249f9';
 export const error = '#fa7265';
+
+export const codGray = '#111111';
+export const boulder = '#767676';
