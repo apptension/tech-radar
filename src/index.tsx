@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // Needed for redux-saga es6 generator support
 import 'core-js/stable';
@@ -37,6 +38,7 @@ openSansObserver.load().then(
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 const initialState = {};
 const store = configureStore(initialState);
+const queryClient = new QueryClient();
 
 const render = (): void => {
   const NextApp = require('./routes').default;
@@ -44,7 +46,9 @@ const render = (): void => {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={browserHistory}>
-        <NextApp />
+        <QueryClientProvider client={queryClient}>
+          <NextApp />
+        </QueryClientProvider>
       </Router>
     </Provider>,
     document.getElementById('app')

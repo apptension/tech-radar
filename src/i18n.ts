@@ -1,5 +1,4 @@
 import enTranslationMessages from './translations/en.json';
-import plTranslationMessages from './translations/pl.json';
 
 export const LOCALES = {
   ENGLISH: 'en',
