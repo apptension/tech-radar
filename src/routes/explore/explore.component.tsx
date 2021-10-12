@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { FC, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as contentful from 'contentful';
 import * as R from 'ramda';
 
@@ -7,7 +7,7 @@ import { Radar } from '../../shared/components/radar';
 import * as constants from './const';
 import { Container } from './explore.styles';
 
-export const Explore: FC = () => {
+export const Explore = () => {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
