@@ -4,7 +4,6 @@ import { ReactComponent as SearchIconSVG } from '../../../images/icons/search.sv
 import * as colors from '../../../theme/color';
 
 export const Container = styled.div`
-  background-color: ${colors.codGray};
   padding: 70px 35px;
   color: ${colors.white};
   height: 100vh;
