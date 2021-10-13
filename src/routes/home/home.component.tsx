@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Header } from '../../shared/components/header';
-import { Logo } from '../../shared/components/logo/logo.component';
+import { Logo } from '../../shared/components/logo';
 
 import RadarImg from '../../images/radar.png';
 import { Button } from '../../shared/components/button';

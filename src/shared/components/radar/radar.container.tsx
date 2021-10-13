@@ -3,6 +3,8 @@ import React from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
+import { Container } from './radar.styles';
+import { ZOOMED_QUADRANT } from './radar.constants';
 
 export const Radar = ({ entries, rings, quadrants }) => {
   const getEntryQuadrant = (entry) => {
@@ -18,7 +20,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
           label: R.pathOr('', ['fields', 'label'], item),
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          moved: R.pathOr(0, ['fields', 'moved'], item),
+          active: item.fields.label === 'Java', //TODO change to be toggleable
         }),
       entries
     );
@@ -71,12 +73,22 @@ export const Radar = ({ entries, rings, quadrants }) => {
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
+  const availableRadarWidth = window.innerWidth - 411;
+  const basicRadarWidth = 1450;
+  const basicRadarHeight = 1000;
+  const widthScale = availableRadarWidth / basicRadarWidth;
+  const heightScale = window.innerHeight / basicRadarHeight;
+  const radarScale = R.clamp(0, 1, Math.max(widthScale, heightScale));
+
   return (
-    <RadarComponent
-      entries={getRadarEntries()}
-      quadrants={getRadarQuadrants()}
-      rings={getRadarRings()}
-      // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
-    />
+    <Container>
+      <RadarComponent
+        entries={getRadarEntries()}
+        quadrants={getRadarQuadrants()}
+        rings={getRadarRings()}
+        scale={radarScale}
+        // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
+      />
+    </Container>
   );
 };

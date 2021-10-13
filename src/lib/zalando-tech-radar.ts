@@ -50,7 +50,12 @@ export default function radar_visualization(config) {
     { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
   ];
 
-  const rings = [{ radius: 130 }, { radius: 220 }, { radius: 310 }, { radius: 400 }];
+  const rings = [
+    { radius: 180 * config.scale },
+    { radius: 270 * config.scale },
+    { radius: 360 * config.scale },
+    { radius: 450 * config.scale },
+  ];
 
   function polar(cartesian) {
     const x = cartesian.x;
@@ -135,7 +140,7 @@ export default function radar_visualization(config) {
     const point = entry.segment.random();
     entry.x = point.x;
     entry.y = point.y;
-    entry.color = entry.active || config.print_layout ? config.rings[entry.ring].color : config.colors.inactive;
+    entry.color = entry.active ? config.colors.active : config.colors.default; //TODO use inactive color when looking at one quadrant
   }
 
   // partition entries according to segments
@@ -171,10 +176,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 400) - 420,
-      Math.max(0, quadrants[quadrant].factor_y * 400) - 420,
-      440,
-      440,
+      Math.max(0, quadrants[quadrant].factor_x * 450) - 470,
+      Math.max(0, quadrants[quadrant].factor_y * 450) - 470,
+      490,
+      490,
     ].join(' ');
   }
 
@@ -189,7 +194,10 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr('transform', translate(config.width / 2, config.height / 2));
+    radar.attr(
+      'transform',
+      translate(config.scale === 1 ? config.width / 2 : config.width / 2 - 200, config.height / 2)
+    );
   }
 
   const grid = radar.append('g');
@@ -198,16 +206,16 @@ export default function radar_visualization(config) {
   grid
     .append('line')
     .attr('x1', 0)
-    .attr('y1', -400)
+    .attr('y1', -450 * config.scale)
     .attr('x2', 0)
-    .attr('y2', 400)
+    .attr('y2', 450 * config.scale)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);
   grid
     .append('line')
-    .attr('x1', -400)
+    .attr('x1', -450 * config.scale)
     .attr('y1', 0)
-    .attr('x2', 400)
+    .attr('x2', 450 * config.scale)
     .attr('y2', 0)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);
@@ -233,11 +241,12 @@ export default function radar_visualization(config) {
       grid
         .append('text')
         .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 62)
-        .attr('text-anchor', 'middle')
+        .attr('y', -rings[i].radius + 20)
+        .attr('x', 7)
+        .attr('text-anchor', 'left')
         .style('fill', '#e5e5e5')
-        .style('font-family', 'Arial, Helvetica')
-        .style('font-size', 42)
+        .style('font-family', 'Arial, Helvetica') //TODO change font family
+        .style('font-size', config.zoomed_quadrant ? 8 : 14) //TODO bring to top
         .style('font-weight', 'bold')
         .style('pointer-events', 'none')
         .style('user-select', 'none');
@@ -257,7 +266,11 @@ export default function radar_visualization(config) {
     .style('pointer-events', 'none')
     .style('user-select', 'none');
   bubble.append('rect').attr('rx', 4).attr('ry', 4).style('fill', '#333');
-  bubble.append('text').style('font-family', 'sans-serif').style('font-size', '10px').style('fill', '#fff');
+  bubble
+    .append('text')
+    .style('font-family', 'sans-serif')
+    .style('font-size', config.zoomed_quadrant ? '6px' : '10px')
+    .style('fill', '#fff');
   bubble.append('path').attr('d', 'M 0,0 10,0 5,8 z').style('fill', '#333');
 
   function showBubble(d) {
@@ -302,35 +315,31 @@ export default function radar_visualization(config) {
     }
 
     // blip shape
-    if (d.moved > 0) {
+    if (d.ring === 0) {
+      blip.append('circle').attr('r', 6).attr('fill', d.color);
+    } else if (d.ring === 1) {
+      blip
+        .append('rect') // square
+        .attr('x', -5.4)
+        .attr('y', -5.4)
+        .attr('width', 10.8)
+        .attr('height', 10.8)
+        .style('fill', d.color);
+    } else if (d.ring === 2) {
+      blip
+        .append('rect') // diamond
+        .attr('x', -5.4)
+        .attr('y', -5.4)
+        .attr('width', 10.8)
+        .attr('height', 10.8)
+        .attr('transform', 'rotate(45)')
+        .style('fill', d.color);
+    } else {
       blip
         .append('path')
         .attr('d', 'M -11,5 11,5 0,-13 z') // triangle pointing up
+        .style('transform', 'scale(0.65)')
         .style('fill', d.color);
-    } else if (d.moved < 0) {
-      blip
-        .append('path')
-        .attr('d', 'M -11,-5 11,-5 0,13 z') // triangle pointing down
-        .style('fill', d.color);
-    } else {
-      blip.append('circle').attr('r', 9).attr('fill', d.color);
-    }
-
-    // blip text
-    if (d.active || config.print_layout) {
-      const blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
-      blip
-        .append('text')
-        .text(blip_text)
-        .attr('y', 3)
-        .attr('text-anchor', 'middle')
-        .style('fill', '#fff')
-        .style('font-family', 'Arial, Helvetica')
-        .style('font-size', function () {
-          return blip_text.length > 2 ? '8' : '9';
-        })
-        .style('pointer-events', 'none')
-        .style('user-select', 'none');
     }
   });
 
