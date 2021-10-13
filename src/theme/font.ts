@@ -1,5 +1,5 @@
 export const fontFamily = {
-  primary: 'Arial',
+  primary: 'Hellix',
 };
 
 export const fontWeight = {
