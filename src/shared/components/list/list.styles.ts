@@ -7,7 +7,8 @@ export const Container = styled.div`
   padding: 70px 35px;
   color: ${colors.white};
   height: 100vh;
-  width: 411px;
+  max-width: 20vw;
+  min-width: 411px;
 `;
 
 export const SearchWrapper = styled.div``;
@@ -44,7 +45,8 @@ export const ListWrapper = styled.div`
   margin-bottom: 25px;
   display: flex;
   flex-direction: column;
-  max-height: 850px;
+  height: 850px;
+  max-height: 100%;
   overflow: scroll;
 `;
 

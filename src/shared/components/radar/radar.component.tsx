@@ -4,11 +4,12 @@ import React from 'react';
 import * as colors from '../../../theme/color';
 import techRadar from '../../../lib/zalando-tech-radar';
 
-export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant }) => {
+export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, scale = 1 }) => {
   const config = {
     svg_id: 'radar',
-    width: 1450,
-    height: 1000,
+    width: 1450 * scale,
+    height: 1000 * scale,
+    scale,
     colors: {
       background: colors.codGray,
       grid: colors.mineShaft,

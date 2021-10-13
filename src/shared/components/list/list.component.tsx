@@ -28,7 +28,7 @@ export const List = () => {
       </SearchWrapper>
 
       <ListWrapper>
-        {'MOCKFACTORYMOCKFACTORYMOCKFACTOR'.split('').map((letter, i) => (
+        {'123456789012345678901234'.split('').map((number, i) => (
           <ListItem active={i === 5} key={i}>
             List item
           </ListItem>

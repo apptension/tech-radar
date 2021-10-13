@@ -50,7 +50,12 @@ export default function radar_visualization(config) {
     { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
   ];
 
-  const rings = [{ radius: 180 }, { radius: 270 }, { radius: 360 }, { radius: 450 }];
+  const rings = [
+    { radius: 180 * config.scale },
+    { radius: 270 * config.scale },
+    { radius: 360 * config.scale },
+    { radius: 450 * config.scale },
+  ];
 
   function polar(cartesian) {
     const x = cartesian.x;
@@ -189,7 +194,10 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr('transform', translate(config.width / 2, config.height / 2));
+    radar.attr(
+      'transform',
+      translate(config.scale === 1 ? config.width / 2 : config.width / 2 - 200, config.height / 2)
+    );
   }
 
   const grid = radar.append('g');
@@ -198,16 +206,16 @@ export default function radar_visualization(config) {
   grid
     .append('line')
     .attr('x1', 0)
-    .attr('y1', -450)
+    .attr('y1', -450 * config.scale)
     .attr('x2', 0)
-    .attr('y2', 450)
+    .attr('y2', 450 * config.scale)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);
   grid
     .append('line')
-    .attr('x1', -450)
+    .attr('x1', -450 * config.scale)
     .attr('y1', 0)
-    .attr('x2', 450)
+    .attr('x2', 450 * config.scale)
     .attr('y2', 0)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 1);

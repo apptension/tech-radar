@@ -73,12 +73,20 @@ export const Radar = ({ entries, rings, quadrants }) => {
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
+  const availableRadarWidth = window.innerWidth - 411;
+  const basicRadarWidth = 1450;
+  const basicRadarHeight = 1000;
+  const widthScale = availableRadarWidth / basicRadarWidth;
+  const heightScale = window.innerHeight / basicRadarHeight;
+  const radarScale = R.clamp(0, 1, Math.max(widthScale, heightScale));
+
   return (
     <Container>
       <RadarComponent
         entries={getRadarEntries()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
+        scale={radarScale}
         // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
       />
     </Container>
