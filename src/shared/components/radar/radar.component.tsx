@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 
+import * as colors from '../../../theme/color';
 import techRadar from '../../../lib/zalando-tech-radar';
 
 export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant }) => {
@@ -9,9 +10,11 @@ export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant }) =>
     width: 1450,
     height: 1000,
     colors: {
-      background: '#fff',
-      grid: '#bbb',
-      inactive: '#ddd',
+      background: colors.codGray,
+      grid: colors.mineShaft,
+      inactive: colors.silver,
+      default: colors.mineShaft,
+      active: colors.screaminGreen, //TODO gradient and outer shape
     },
     print_layout: true,
     quadrants,

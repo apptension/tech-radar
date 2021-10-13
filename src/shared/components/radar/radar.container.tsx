@@ -20,7 +20,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
           label: R.pathOr('', ['fields', 'label'], item),
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          moved: R.pathOr(0, ['fields', 'moved'], item),
+          active: Math.random() > 0.5,
         }),
       entries
     );

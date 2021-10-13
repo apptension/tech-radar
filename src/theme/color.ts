@@ -9,3 +9,7 @@ export const error = '#fa7265';
 
 export const codGray = '#111111';
 export const boulder = '#767676';
+export const mineShaft = '#333333';
+export const silver = '#C4C4C4';
+export const screaminGreen = '#42F272';
+export const schoolBusYellow = '#FFDE00';
