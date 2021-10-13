@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'radar.title',
-    defaultMessage: 'Tech Radar',
-  },
   innerCircle: {
     id: 'radar.innerCircle',
     defaultMessage: 'Adopt',

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { ReactComponent as FullLogoSVF } from '../../../images/icons/logo-full.svg';
+import { ReactComponent as FullLogoSVG } from '../../../images/icons/logo-full.svg';
 import { ReactComponent as IconLogoSVG } from '../../../images/icons/logo-icon.svg';
 
-export const FullLogo = styled(FullLogoSVF)`
+export const FullLogo = styled(FullLogoSVG)`
   height: 100%;
 `;
 
