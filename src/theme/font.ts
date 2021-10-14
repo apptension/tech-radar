@@ -3,5 +3,6 @@ export const fontFamily = {
 };
 
 export const fontWeight = {
+  normal: 'normal',
   bold: 'bold',
 };

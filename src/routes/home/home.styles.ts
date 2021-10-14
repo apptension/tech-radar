@@ -49,3 +49,5 @@ export const Title = styled(H1)``;
 export const Description = styled(Paragraph)`
   margin: 48px 0;
 `;
+
+export const TitleWithVersion = styled.div``;

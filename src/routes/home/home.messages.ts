@@ -2,10 +2,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'home.title',
-    defaultMessage: 'Tech Radar',
-  },
   description: {
     id: 'home.description',
     defaultMessage:

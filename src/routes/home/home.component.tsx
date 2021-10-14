@@ -9,8 +9,9 @@ import { Background } from '../../shared/components/background';
 import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
+import { TitleTag } from '../../shared/components/titleTag';
 import messages from './home.messages';
-import { Container, Content, Description, Image, LogoWrapper, RadarContent, TextContent, Title } from './home.styles';
+import { Container, Content, Description, Image, LogoWrapper, RadarContent, TextContent } from './home.styles';
 
 export const Home = () => {
   return (
@@ -26,9 +27,7 @@ export const Home = () => {
       </Header>
       <Content>
         <TextContent>
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
+          <TitleTag />
           <Description>
             <FormattedMessage {...messages.description} />
           </Description>
