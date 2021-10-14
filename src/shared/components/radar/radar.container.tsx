@@ -20,7 +20,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
           label: R.pathOr('', ['fields', 'label'], item),
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          active: item.fields.label === 'Java', //TODO change to be toggleable
+          active: item.fields.label === 'Vue.js', //TODO change to be toggleable
         }),
       entries
     );

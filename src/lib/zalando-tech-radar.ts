@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as d3 from 'd3';
+import { color } from '../theme';
 
 /* eslint-disable */
 
@@ -249,8 +250,12 @@ export default function radar_visualization(config) {
     .attr('class', 'blip')
     .on('mouseover', function (event, d) {
       showBubble(d);
+      // add gradients
     })
-    .on('mouseout', hideBubble);
+    .on('mouseout', function (event, d) {
+      hideBubble();
+      //remove gradients
+    });
 
   // configure each blip
   blips.each(function (d) {
@@ -261,9 +266,32 @@ export default function radar_visualization(config) {
       blip = blip.append('a').attr('xlink:href', d.link);
     }
 
+    // blip gradients
+    const blipDefs = blip.append('defs');
+
+    const mainGradient = blipDefs.append('linearGradient').attr('id', 'mainGradient');
+    mainGradient.append('stop').attr('offset', '0%').attr('stop-color', color.schoolBusYellow).attr('stop-opacity', 1);
+    mainGradient.append('stop').attr('offset', '100%').attr('stop-color', color.screaminGreen).attr('stop-opacity', 1);
+
+    const diamondMainGradient = blipDefs.append('linearGradient').attr('id', 'diamondMainGradient');
+    diamondMainGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
+    diamondMainGradient
+      .append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', color.schoolBusYellow)
+      .attr('stop-opacity', 1);
+    diamondMainGradient
+      .append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', color.screaminGreen)
+      .attr('stop-opacity', 1);
+
     // blip shape
     if (d.ring === 0) {
-      blip.append('circle').attr('r', 6).attr('fill', d.color);
+      blip
+        .append('circle')
+        .attr('r', 6)
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     } else if (d.ring === 1) {
       blip
         .append('rect') // square
@@ -271,7 +299,7 @@ export default function radar_visualization(config) {
         .attr('y', -5.4)
         .attr('width', 10.8)
         .attr('height', 10.8)
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     } else if (d.ring === 2) {
       blip
         .append('rect') // diamond
@@ -280,13 +308,13 @@ export default function radar_visualization(config) {
         .attr('width', 10.8)
         .attr('height', 10.8)
         .attr('transform', 'rotate(45)')
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#diamondMainGradient)' : d.color);
     } else {
       blip
         .append('path')
         .attr('d', 'M -11,5 11,5 0,-13 z') // triangle pointing up
         .style('transform', 'scale(0.65)')
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     }
   });
 
@@ -340,9 +368,8 @@ export default function radar_visualization(config) {
         .attr('x', 7)
         .attr('text-anchor', 'left')
         .style('fill', '#e5e5e5')
-        .style('font-family', 'Arial, Helvetica') //TODO change font family
-        .style('font-size', config.zoomed_quadrant ? 8 : 14) //TODO bring to top
-        .style('font-weight', 'bold')
+        .style('font-family', 'Hellix')
+        .style('font-size', config.zoomed_quadrant ? 8 : 14)
         .style('pointer-events', 'none')
         .style('user-select', 'none');
     }
