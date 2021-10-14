@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+type ContainerProps = {
+  fullRadar: boolean;
+};
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
-  align-items: center;
+  align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
+  justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
+  width: ${(props) => (props.fullRadar ? '100%' : undefined)};
 `;

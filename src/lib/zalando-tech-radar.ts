@@ -176,10 +176,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 450) - 470,
-      Math.max(0, quadrants[quadrant].factor_y * 450) - 470,
-      490,
-      490,
+      Math.max(0, quadrants[quadrant].factor_x * 560) - 370 * config.scale,
+      Math.max(0, quadrants[quadrant].factor_y * 560) - 485 * config.scale,
+      530 * config.scale,
+      530 * config.scale,
     ].join(' ');
   }
 
@@ -194,67 +194,14 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr(
-      'transform',
-      translate(config.scale === 1 ? config.width / 2 : config.width / 2 - 200, config.height / 2)
-    );
-  }
-
-  const grid = radar.append('g');
-
-  // draw grid lines
-  grid
-    .append('line')
-    .attr('x1', 0)
-    .attr('y1', -450 * config.scale)
-    .attr('x2', 0)
-    .attr('y2', 450 * config.scale)
-    .style('stroke', config.colors.grid)
-    .style('stroke-width', 1);
-  grid
-    .append('line')
-    .attr('x1', -450 * config.scale)
-    .attr('y1', 0)
-    .attr('x2', 450 * config.scale)
-    .attr('y2', 0)
-    .style('stroke', config.colors.grid)
-    .style('stroke-width', 1);
-
-  // background color. Usage `.attr("filter", "url(#solid)")`
-  // SOURCE: https://stackoverflow.com/a/31013492/2609980
-  const defs = grid.append('defs');
-  const filter = defs.append('filter').attr('x', 0).attr('y', 0).attr('width', 1).attr('height', 1).attr('id', 'solid');
-  filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
-  filter.append('feComposite').attr('in', 'SourceGraphic');
-
-  // draw rings
-  for (let i = 0; i < rings.length; i++) {
-    grid
-      .append('circle')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', rings[i].radius)
-      .style('fill', 'none')
-      .style('stroke', config.colors.grid)
-      .style('stroke-width', 1);
-    if (config.print_layout) {
-      grid
-        .append('text')
-        .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 20)
-        .attr('x', 7)
-        .attr('text-anchor', 'left')
-        .style('fill', '#e5e5e5')
-        .style('font-family', 'Arial, Helvetica') //TODO change font family
-        .style('font-size', config.zoomed_quadrant ? 8 : 14) //TODO bring to top
-        .style('font-weight', 'bold')
-        .style('pointer-events', 'none')
-        .style('user-select', 'none');
-    }
+    radar.attr('transform', translate(config.width / 2, config.height / 2));
   }
 
   // layer for entries
   const rink = radar.append('g').attr('id', 'rink');
+
+  // layer for grid (on top of blips, under bubbles)
+  const grid = radar.append('g');
 
   // rollover bubble (on top of everything else)
   const bubble = radar
@@ -348,6 +295,57 @@ export default function radar_visualization(config) {
     blips.attr('transform', function (d) {
       return translate(d.segment.clipx(d), d.segment.clipy(d));
     });
+  }
+
+  // draw grid lines
+  grid
+    .append('line')
+    .attr('x1', 0)
+    .attr('y1', -450 * config.scale)
+    .attr('x2', 0)
+    .attr('y2', 450 * config.scale)
+    .style('stroke', config.colors.grid)
+    .style('stroke-width', 1);
+  grid
+    .append('line')
+    .attr('x1', -450 * config.scale)
+    .attr('y1', 0)
+    .attr('x2', 450 * config.scale)
+    .attr('y2', 0)
+    .style('stroke', config.colors.grid)
+    .style('stroke-width', 1);
+
+  // background color. Usage `.attr("filter", "url(#solid)")`
+  // SOURCE: https://stackoverflow.com/a/31013492/2609980
+  const defs = grid.append('defs');
+  const filter = defs.append('filter').attr('x', 0).attr('y', 0).attr('width', 1).attr('height', 1).attr('id', 'solid');
+  filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
+  filter.append('feComposite').attr('in', 'SourceGraphic');
+
+  // draw rings
+  for (let i = 0; i < rings.length; i++) {
+    grid
+      .append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', rings[i].radius)
+      .style('fill', 'none')
+      .style('stroke', config.colors.grid)
+      .style('stroke-width', 1);
+    if (config.print_layout) {
+      grid
+        .append('text')
+        .text(config.rings[i]?.name)
+        .attr('y', -rings[i].radius + 20)
+        .attr('x', 7)
+        .attr('text-anchor', 'left')
+        .style('fill', '#e5e5e5')
+        .style('font-family', 'Arial, Helvetica') //TODO change font family
+        .style('font-size', config.zoomed_quadrant ? 8 : 14) //TODO bring to top
+        .style('font-weight', 'bold')
+        .style('pointer-events', 'none')
+        .style('user-select', 'none');
+    }
   }
 
   // distribute blips, while avoiding collisions

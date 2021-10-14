@@ -7,8 +7,8 @@ import techRadar from '../../../lib/zalando-tech-radar';
 export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, scale = 1 }) => {
   const config = {
     svg_id: 'radar',
-    width: 1450 * scale,
-    height: 1000 * scale,
+    width: zoomedQuadrant ? window.innerWidth - 360 : window.innerHeight,
+    height: window.innerHeight - 40,
     scale,
     colors: {
       background: colors.codGray,
@@ -27,9 +27,5 @@ export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, scal
 
   techRadar(config);
 
-  return (
-    <div>
-      <svg id="radar" />
-    </div>
-  );
+  return <svg id="radar" />;
 };

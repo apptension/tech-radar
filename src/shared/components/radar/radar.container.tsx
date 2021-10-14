@@ -78,16 +78,20 @@ export const Radar = ({ entries, rings, quadrants }) => {
   const basicRadarHeight = 1000;
   const widthScale = availableRadarWidth / basicRadarWidth;
   const heightScale = window.innerHeight / basicRadarHeight;
-  const radarScale = R.clamp(0, 1, Math.max(widthScale, heightScale));
+  const radarScale = R.clamp(0, 1, Math.min(widthScale, heightScale));
+
+  const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
+  // const zoomedQuadrant = null;
+  const isZoomed = !!zoomedQuadrant;
 
   return (
-    <Container>
+    <Container fullRadar={!isZoomed}>
       <RadarComponent
         entries={getRadarEntries()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
         scale={radarScale}
-        // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
+        zoomedQuadrant={zoomedQuadrant}
       />
     </Container>
   );
