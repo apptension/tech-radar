@@ -20,7 +20,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
           label: R.pathOr('', ['fields', 'label'], item),
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          active: item.fields.label === 'Vue.js', //TODO change to be toggleable
+          active: item.fields.label === 'Java', //TODO change to be toggleable
         }),
       entries
     );
@@ -80,8 +80,8 @@ export const Radar = ({ entries, rings, quadrants }) => {
   const heightScale = window.innerHeight / basicRadarHeight;
   const radarScale = R.clamp(0, 1, Math.min(widthScale, heightScale));
 
-  const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
-  // const zoomedQuadrant = null;
+  // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
+  const zoomedQuadrant = null;
   const isZoomed = !!zoomedQuadrant;
 
   return (
