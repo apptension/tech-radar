@@ -25,6 +25,11 @@ export const sizesOrdered = [
   Breakpoint.DESKTOP_FULL,
 ] as const;
 
+export const maxWidthStyles = css`
+  max-width: ${sizes.desktopFull}px;
+  margin: 0 auto;
+`;
+
 const getWindowWidth = () => window.innerWidth;
 
 export const getBreakpointMediaQuery = (breakpoint: Breakpoint) => `(min-width: ${sizes[breakpoint]}px)`;
@@ -39,7 +44,7 @@ export const media = (breakpoint: Breakpoint, opts: { landscape?: boolean; retin
 
     let query = '';
     if (retinaQueries) {
-      query = retinaQueries.map(retinaQuery => joinQuery(sizeQuery, landscapeQuery, retinaQuery)).join(', ');
+      query = retinaQueries.map((retinaQuery) => joinQuery(sizeQuery, landscapeQuery, retinaQuery)).join(', ');
     } else {
       query = joinQuery(sizeQuery, landscapeQuery);
     }
@@ -77,7 +82,7 @@ export const getActiveBreakpoint = () => {
     [Breakpoint.MOBILE]: Breakpoint.MOBILE,
   };
 
-  sizesOrdered.forEach(size => {
+  sizesOrdered.forEach((size) => {
     if (config[size] && window.matchMedia(getBreakpointMediaQuery(size)).matches) {
       breakpoint = config[size];
     }
@@ -86,8 +91,11 @@ export const getActiveBreakpoint = () => {
   return breakpoint;
 };
 
-export const responsiveValue = <Value>(defaultValue: Value, config: Partial<Record<Breakpoint, Value>> = {}) => ({ theme }: { theme: DefaultTheme }) => {
-  const matchesCurrentBreakpoint = (breakpoint: Breakpoint) => sizesOrdered.indexOf(breakpoint) <= sizesOrdered.indexOf(theme.activeBreakpoint ?? Breakpoint.MOBILE);
-  const matchingBreakpoint = reverse(sizesOrdered).find(size => config[size] && matchesCurrentBreakpoint(size));
-  return matchingBreakpoint ? config[matchingBreakpoint] : defaultValue;
-};
+export const responsiveValue =
+  <Value>(defaultValue: Value, config: Partial<Record<Breakpoint, Value>> = {}) =>
+  ({ theme }: { theme: DefaultTheme }) => {
+    const matchesCurrentBreakpoint = (breakpoint: Breakpoint) =>
+      sizesOrdered.indexOf(breakpoint) <= sizesOrdered.indexOf(theme.activeBreakpoint ?? Breakpoint.MOBILE);
+    const matchingBreakpoint = reverse(sizesOrdered).find((size) => config[size] && matchesCurrentBreakpoint(size));
+    return matchingBreakpoint ? config[matchingBreakpoint] : defaultValue;
+  };

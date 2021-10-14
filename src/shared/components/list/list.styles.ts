@@ -6,9 +6,8 @@ import * as colors from '../../../theme/color';
 export const Container = styled.div`
   padding: 70px 35px;
   color: ${colors.white};
-  height: 100vh;
-  max-width: 20vw;
-  min-width: 411px;
+  height: 100%;
+  width: 100%;
 `;
 
 export const SearchWrapper = styled.div``;
