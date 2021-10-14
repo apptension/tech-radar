@@ -256,6 +256,41 @@ export default function radar_visualization(config) {
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
 
+  // draw quadrant labels
+  for (let i = 0; i < config.quadrants.length; i++) {
+    const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
+    const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
+    const everyQuadrantX = quadrants[i].factor_x * 360 - 100 * config.scale;
+
+    const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
+    quadrantLabel
+      .append('rect')
+      .attr('rx', 20)
+      .attr('ry', 20)
+      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
+      .attr('x', everyQuadrantX)
+      .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
+    quadrantLabel
+      .append('text')
+      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
+      .attr('x', everyQuadrantX)
+      .attr('text-anchor', 'left')
+      .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
+      .style('font-family', 'Hellix')
+      .style('font-size', '14px')
+      .style('letter-spacing', '0.2em');
+
+    const label = d3.select(`#quadrant-label-${i} text`);
+    label.text(config.quadrants[i].name.toUpperCase());
+    const bbox = label.node().getBBox();
+
+    d3.select(`#quadrant-label-${i} rect`)
+      .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
+      .attr('x', everyQuadrantX - 20)
+      .attr('width', bbox.width + 40)
+      .attr('height', bbox.height + 18);
+  }
+
   // layer for entries
   const rink = radar.append('g').attr('id', 'rink');
 
@@ -268,27 +303,22 @@ export default function radar_visualization(config) {
     .style('opacity', 0)
     .style('pointer-events', 'none')
     .style('user-select', 'none');
-  bubble.append('rect').attr('rx', 4).attr('ry', 4).style('fill', '#333');
-  bubble
-    .append('text')
-    .style('font-family', 'sans-serif')
-    .style('font-size', config.zoomed_quadrant ? '6px' : '10px')
-    .style('fill', '#fff');
-  bubble.append('path').attr('d', 'M 0,0 10,0 5,8 z').style('fill', '#333');
+  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
+  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 
   function showBubble(d) {
     if (d.active || config.print_layout) {
       const tooltip = d3.select('#bubble text').text(d.label);
       const bbox = tooltip.node().getBBox();
       d3.select('#bubble')
-        .attr('transform', translate(d.x - bbox.width / 2, d.y - 16))
-        .style('opacity', 0.8);
+        .attr('transform', translate(d.x - 8, d.ring === 3 ? d.y - 18 : d.y - 14))
+        .style('opacity', 1);
       d3.select('#bubble rect')
-        .attr('x', -5)
-        .attr('y', -bbox.height)
-        .attr('width', bbox.width + 10)
-        .attr('height', bbox.height + 4);
-      d3.select('#bubble path').attr('transform', translate(bbox.width / 2 - 5, 3));
+        .attr('x', -bbox.width - 36)
+        .attr('y', 0)
+        .attr('width', bbox.width + 20)
+        .attr('height', bbox.height + 14);
+      tooltip.attr('x', -bbox.width - 26).attr('y', 16);
     }
   }
 

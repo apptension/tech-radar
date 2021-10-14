@@ -95,6 +95,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
         rings={getRadarRings()}
         scale={radarScale}
         zoomedQuadrant={zoomedQuadrant}
+        activeQuadrant={activeQuadrant}
       />
     </Container>
   );
