@@ -2,6 +2,15 @@
 
 `>= 15.0.1`
 
+`.nvmrc` file is added
+
+## Tag version in Title
+
+Tag version in title is taken from `package.json` file.
+
+example:  
+ `version": "2.0"` => `Tech Radar 2.0`
+
 This project was bootstrapped with [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
 
 ## Available Scripts
