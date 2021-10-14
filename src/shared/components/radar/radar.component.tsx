@@ -13,8 +13,8 @@ export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, scal
     colors: {
       background: colors.codGray,
       grid: colors.mineShaft,
-      inactive: colors.silver,
-      default: colors.mineShaft,
+      inactive: colors.mineShaft,
+      default: colors.silver,
     },
     print_layout: true,
     quadrants,

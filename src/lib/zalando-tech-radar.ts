@@ -141,7 +141,7 @@ export default function radar_visualization(config) {
     const point = entry.segment.random();
     entry.x = point.x;
     entry.y = point.y;
-    entry.color = entry.active ? config.colors.active : config.colors.default; //TODO use inactive color when looking at one quadrant
+    entry.color = entry.inactive ? config.colors.inactive : config.colors.default;
   }
 
   // partition entries according to segments
