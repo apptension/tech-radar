@@ -237,6 +237,7 @@ export default function radar_visualization(config) {
   ringGradient.append('stop').attr('offset', '85%').attr('stop-color', 'transparent').attr('stop-opacity', 0.8);
   ringGradient.append('stop').attr('offset', '100%').attr('stop-color', color.tundora).attr('stop-opacity', 0.2);
 
+  // draw rings
   for (let i = 0; i < rings.length; i++) {
     grid
       .append('circle')
@@ -246,19 +247,6 @@ export default function radar_visualization(config) {
       .style('fill', 'url(#ringGradient)')
       .style('stroke', config.colors.grid)
       .style('stroke-width', 2);
-    if (config.print_layout) {
-      grid
-        .append('text')
-        .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 20)
-        .attr('x', 7)
-        .attr('text-anchor', 'left')
-        .style('fill', '#e5e5e5')
-        .style('font-family', 'Hellix')
-        .style('font-size', config.zoomed_quadrant ? 8 : 14) // TODO bring to top
-        .style('pointer-events', 'none')
-        .style('user-select', 'none');
-    }
   }
 
   // draw grid lines
@@ -316,6 +304,24 @@ export default function radar_visualization(config) {
 
   // layer for entries
   const rink = radar.append('g').attr('id', 'rink');
+
+  // layer for ring labels
+  const ringLabels = radar.append('g').attr('id', 'ring-labels');
+  if (config.print_layout) {
+    for (let i = 0; i < rings.length; i++) {
+      ringLabels
+        .append('text')
+        .text(config.rings[i]?.name)
+        .attr('y', -rings[i].radius + 20)
+        .attr('x', 7)
+        .attr('text-anchor', 'left')
+        .style('fill', '#e5e5e5')
+        .style('font-family', 'Hellix')
+        .style('font-size', config.zoomed_quadrant ? 8 : 14)
+        .style('pointer-events', 'none')
+        .style('user-select', 'none');
+    }
+  }
 
   // rollover bubble (on top of everything else)
   const bubble = radar
