@@ -1,5 +1,6 @@
-// @ts-nocheck
 import * as d3 from 'd3';
+import * as R from 'ramda';
+import { color } from '../../theme';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -9,15 +10,15 @@ export const random = () => {
   return x - Math.floor(x);
 };
 
-export const random_between = (min, max) => {
+export const random_between = (min: number, max: number) => {
   return min + random() * (max - min);
 };
 
-export const normal_between = (min, max) => {
+export const normal_between = (min: number, max: number) => {
   return min + (random() + random()) * 0.5 * (max - min);
 };
 
-export const polar = (cartesian) => {
+export const polar = (cartesian: { x: number; y: number }) => {
   const x = cartesian.x;
   const y = cartesian.y;
   return {
@@ -26,42 +27,59 @@ export const polar = (cartesian) => {
   };
 };
 
-export const cartesian = (polar) => {
+export const cartesian = (polar: { r: number; t: number }) => {
   return {
     x: polar.r * Math.cos(polar.t),
     y: polar.r * Math.sin(polar.t),
   };
 };
 
-export const bounded_interval = (value, min, max) => {
+export const bounded_interval = (value: number, min: number, max: number) => {
   const low = Math.min(min, max);
   const high = Math.max(min, max);
   return Math.min(Math.max(value, low), high);
 };
 
-export const bounded_ring = (polar, r_min, r_max) => {
+export const bounded_ring = (polar: { t: number; r: number }, r_min: number, r_max: number) => {
   return {
     t: polar.t,
     r: bounded_interval(polar.r, r_min, r_max),
   };
 };
 
-export const bounded_box = (point, min, max) => {
+export const bounded_box = (
+  point: { x: number; y: number },
+  min: { x: number; y: number },
+  max: { x: number; y: number }
+) => {
   return {
     x: bounded_interval(point.x, min.x, max.x),
     y: bounded_interval(point.y, min.y, max.y),
   };
 };
 
-export const translate = (x, y) => {
+export const translate = (x: number, y: number) => {
   return 'translate(' + x + ',' + y + ')';
 };
 
-export const showBubble = (d) => {
-  const tooltip = d3.select('#bubble text').text(d.label);
-  const bbox = tooltip.node().getBBox();
+export const getRadarScale = (): number => {
+  const availableRadarWidth = window.innerWidth - 411;
+  const basicRadarWidth = 1450;
+
+  const basicRadarHeight = 1000;
+
+  const widthScale = availableRadarWidth / basicRadarWidth;
+  const heightScale = window.innerHeight / basicRadarHeight;
+
+  return R.clamp(0, 1, Math.min(widthScale, heightScale));
+};
+
+export const showBubble = ({ label, x, y, ring }: { label: string; x: number; y: number; ring: number }) => {
+  const tooltip = d3.select('#bubble text').text(label);
+  //@ts-ignore
+  const bbox = tooltip.node()?.getBBox();
   d3.select('#bubble')
-    .attr('transform', translate(d.x - 8, d.ring === 3 ? d.y - 18 : d.y - 14))
+    .attr('transform', translate(x - 8, ring === 3 ? y - 18 : y - 14))
     .style('opacity', 1);
   d3.select('#bubble rect')
     .attr('x', -bbox.width - 36)
@@ -76,33 +94,50 @@ export const hideBubble = () => {
   d3.select('#bubble').attr('transform', translate(0, 0)).style('opacity', 0);
 };
 
-export const changeHighlight = ({ d, shape, opacity, fill = 'url(#mainGradient)' }) => {
-  const outerBlip = d3.select(`#blip-${d.id} ${shape}`);
+export const changeHighlight = ({
+  id,
+  shape,
+  opacity,
+  fill = 'url(#mainGradient)',
+}: {
+  id: string;
+  shape: string;
+  opacity: number;
+  fill?: string;
+}) => {
+  const outerBlip = d3.select(`#blip-${id} ${shape}`);
   outerBlip.style('opacity', opacity);
-  const fullBlip = d3.selectAll(`#blip-${d.id} ${shape}`);
+  const fullBlip = d3.selectAll(`#blip-${id} ${shape}`);
   fullBlip.style('fill', fill);
 };
 
-export const highlightBlip = (d) => {
-  if (d.ring === 0) {
-    changeHighlight({ d, shape: 'circle', opacity: 0.3 });
-  } else if (d.ring === 1) {
-    changeHighlight({ d, shape: 'rect', opacity: 0.3 });
-  } else if (d.ring === 2) {
-    changeHighlight({ d, shape: 'rect', opacity: 0.3, fill: 'url(#diamondMainGradient)' });
+export const highlightBlip = ({ id, ring }: { id: string; ring: number }) => {
+  if (ring === 0) {
+    changeHighlight({ id, shape: 'circle', opacity: 0.3 });
+  } else if (ring === 1) {
+    changeHighlight({ id, shape: 'rect', opacity: 0.3 });
+  } else if (ring === 2) {
+    changeHighlight({ id, shape: 'rect', opacity: 0.3, fill: 'url(#diamondMainGradient)' });
   } else {
-    changeHighlight({ d, shape: 'path', opacity: 0.3 });
+    changeHighlight({ id, shape: 'path', opacity: 0.3 });
   }
 };
 
-export const unhighlightBlip = (d) => {
-  if (d.ring === 0) {
-    changeHighlight({ d, shape: 'circle', opacity: 0, fill: d.color });
-  } else if (d.ring === 1) {
-    changeHighlight({ d, shape: 'rect', opacity: 0, fill: d.color });
-  } else if (d.ring === 2) {
-    changeHighlight({ d, shape: 'rect', opacity: 0, fill: d.color });
+export const unhighlightBlip = ({ id, ring, color }: { id: string; ring: number; color: string }) => {
+  if (ring === 0) {
+    changeHighlight({ id, shape: 'circle', opacity: 0, fill: color });
+  } else if (ring === 1) {
+    changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
+  } else if (ring === 2) {
+    changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
   } else {
-    changeHighlight({ d, shape: 'path', opacity: 0, fill: d.color });
+    changeHighlight({ id, shape: 'path', opacity: 0, fill: color });
+  }
+};
+
+export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
+  const listItem = document.querySelector(`#list-item-${id}`) as HTMLDivElement;
+  if (listItem) {
+    listItem.style.color = mode === 'on' ? color.white : color.boulder;
   }
 };

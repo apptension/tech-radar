@@ -1,8 +1,16 @@
-// @ts-nocheck
 import React from 'react';
 
 import * as colors from '../../../theme/color';
 import techRadar from '../../../lib/zalando-tech-radar';
+import { RadarConfig, RadarEntry, RadarQuadrant, RadarRing } from './radar.types';
+
+interface RadarComponentProps {
+  entries: RadarEntry[];
+  rings: RadarRing[];
+  quadrants: RadarQuadrant[];
+  zoomedQuadrant: null | number;
+  activeQuadrant: null | number;
+}
 
 export const RadarComponent = ({
   entries,
@@ -10,14 +18,11 @@ export const RadarComponent = ({
   quadrants,
   zoomedQuadrant,
   activeQuadrant = 2,
-  scale = 1,
-  highlightLegend,
-}) => {
-  const config = {
+}: RadarComponentProps) => {
+  const config: RadarConfig = {
     svg_id: 'radar',
     width: zoomedQuadrant ? window.innerWidth - 360 : window.innerHeight + 210,
     height: window.innerHeight - 40,
-    scale,
     colors: {
       background: colors.codGray,
       grid: colors.mineShaft,
@@ -28,7 +33,6 @@ export const RadarComponent = ({
     quadrants,
     rings,
     entries,
-    highlightLegend,
   };
 
   if (zoomedQuadrant) config.zoomed_quadrant = zoomedQuadrant;

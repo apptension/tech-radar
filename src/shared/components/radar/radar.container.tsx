@@ -1,25 +1,32 @@
-// @ts-nocheck
 import React from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
 import { Container } from './radar.styles';
 import { ZOOMED_QUADRANT } from './radar.constants';
+import { RadarEntry, RadarQuadrant, RadarRing } from './radar.types';
 
-export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
+// TODO: interfaces for entries (we may change it to technologies), rings, quadrants
+export interface RadarProps {
+  entries: any;
+  rings: any;
+  quadrants: any;
+}
+
+export const Radar = ({ entries, rings, quadrants }: RadarProps) => {
   const activeQuadrant = ZOOMED_QUADRANT.topLeft;
   // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
   const zoomedQuadrant = null;
 
   //TODO when zooming, always set zoomedQuadrant to activeQuadrant
 
-  const getEntryQuadrant = (entry) => {
+  const getEntryQuadrant = (entry: any) => {
     const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
     return getQuadrantPosition(position);
   };
 
   const getRadarEntries = () => {
-    const radarEntries = [];
+    const radarEntries: RadarEntry[] = [];
     R.forEachObjIndexed(
       (item) =>
         radarEntries.push({
@@ -34,12 +41,11 @@ export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
   };
 
   const getRadarRings = () => {
-    const radarRings = [];
+    const radarRings: RadarRing[] = [];
     R.forEachObjIndexed(
       (item) =>
         radarRings.push({
           name: R.pathOr('', ['fields', 'label'], item),
-          color: R.pathOr('#000000', ['fields', 'color'], item),
           position: R.pathOr(1, ['fields', 'position'], item),
         }),
       rings
@@ -48,7 +54,7 @@ export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
     return R.sortBy(R.prop('position'), radarRings);
   };
 
-  const getQuadrantPosition = (position) => {
+  const getQuadrantPosition = (position: string | number) => {
     if (position) {
       switch (position) {
         case 'bottom-right':
@@ -67,7 +73,7 @@ export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
   };
 
   const getRadarQuadrants = () => {
-    const radarQuadrants = [];
+    const radarQuadrants: RadarQuadrant[] = [];
     R.forEachObjIndexed(
       (item) =>
         radarQuadrants.push({
@@ -79,23 +85,14 @@ export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
-  const availableRadarWidth = window.innerWidth - 411;
-  const basicRadarWidth = 1450;
-  const basicRadarHeight = 1000;
-  const widthScale = availableRadarWidth / basicRadarWidth;
-  const heightScale = window.innerHeight / basicRadarHeight;
-  const radarScale = R.clamp(0, 1, Math.min(widthScale, heightScale));
-
   return (
     <Container fullRadar={!zoomedQuadrant}>
       <RadarComponent
         entries={getRadarEntries()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
-        scale={radarScale}
         zoomedQuadrant={zoomedQuadrant}
         activeQuadrant={activeQuadrant}
-        highlightLegend={highlightLegend}
       />
     </Container>
   );

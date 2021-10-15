@@ -7,12 +7,14 @@ import {
   hideBubble,
   highlightBlip,
   unhighlightBlip,
+  highlightLegend,
   random_between,
   normal_between,
   polar,
   cartesian,
   bounded_box,
   bounded_ring,
+  getRadarScale,
 } from '../shared/utils/radarUtils';
 
 /* eslint-disable */
@@ -40,6 +42,8 @@ import {
 // THE SOFTWARE.
 
 export default function radar_visualization(config) {
+  const scale = getRadarScale();
+
   // radial_min / radial_max are multiples of PI
   const quadrants = [
     { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
@@ -48,12 +52,7 @@ export default function radar_visualization(config) {
     { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
   ];
 
-  const rings = [
-    { radius: 140 * config.scale },
-    { radius: 245 * config.scale },
-    { radius: 350 * config.scale },
-    { radius: 450 * config.scale },
-  ];
+  const rings = [{ radius: 140 * scale }, { radius: 245 * scale }, { radius: 350 * scale }, { radius: 450 * scale }];
 
   function segment(quadrant, ring) {
     const polar_min = {
@@ -134,10 +133,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 560) - 370 * config.scale,
-      Math.max(0, quadrants[quadrant].factor_y * 560) - 485 * config.scale,
-      530 * config.scale,
-      530 * config.scale,
+      Math.max(0, quadrants[quadrant].factor_x * 560) - 370 * scale,
+      Math.max(0, quadrants[quadrant].factor_y * 560) - 485 * scale,
+      530 * scale,
+      530 * scale,
     ].join(' ');
   }
 
@@ -210,25 +209,25 @@ export default function radar_visualization(config) {
   grid
     .append('line')
     .attr('x1', 0)
-    .attr('y1', -450 * config.scale)
+    .attr('y1', -450 * scale)
     .attr('x2', 0)
-    .attr('y2', 450 * config.scale)
+    .attr('y2', 450 * scale)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
   grid
     .append('line')
-    .attr('x1', -450 * config.scale)
+    .attr('x1', -450 * scale)
     .attr('y1', 0)
-    .attr('x2', 450 * config.scale)
+    .attr('x2', 450 * scale)
     .attr('y2', 0)
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
 
   // draw quadrant labels
   for (let i = 0; i < config.quadrants.length; i++) {
-    const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
-    const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
-    const everyQuadrantX = quadrants[i].factor_x * 360 - 100 * config.scale;
+    const oddQuadrantY = quadrants[i].factor_y * 320 * scale;
+    const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * scale;
+    const everyQuadrantX = quadrants[i].factor_x * 360 - 100 * scale;
 
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
     quadrantLabel
@@ -392,12 +391,12 @@ export default function radar_visualization(config) {
     .on('mouseover', function (event, d) {
       showBubble(d);
       highlightBlip(d);
-      config.highlightLegend({ d });
+      highlightLegend({ id: d.id });
     })
     .on('mouseout', function (event, d) {
       hideBubble();
       unhighlightBlip(d);
-      config.highlightLegend({ d, mode: 'off' });
+      highlightLegend({ id: d.id, mode: 'off' });
     });
 
   // make sure that blips stay inside their segment
