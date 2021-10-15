@@ -208,12 +208,36 @@ export default function radar_visualization(config) {
   filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
   filter.append('feComposite').attr('in', 'SourceGraphic');
 
+  // grid conic gradient
+  const semiCircle = defs.append('clipPath').attr('id', 'semi-circle');
+  semiCircle
+    .append('rect')
+    .attr('x', -rings[3].radius)
+    .attr('y', 0)
+    .attr('width', rings[3].radius * 2)
+    .attr('height', rings[3].radius);
+
+  const conicGradient = defs.append('linearGradient').attr('id', 'conic-gradient');
+  conicGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
+  conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.tundora).attr('stop-opacity', 0.7);
+  conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
+
+  grid
+    .append('circle')
+    .attr('cx', 0)
+    .attr('cy', 0)
+    .attr('r', rings[3].radius)
+    .attr('clip-path', 'url(#semi-circle)')
+    .attr('fill', 'url(#conic-gradient)')
+    .attr('transform', 'rotate(90)');
+
   // grid radial gradient
   const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
   ringGradient.append('stop').attr('offset', '60%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
   ringGradient.append('stop').attr('offset', '85%').attr('stop-color', 'transparent').attr('stop-opacity', 0.8);
   ringGradient.append('stop').attr('offset', '100%').attr('stop-color', color.tundora).attr('stop-opacity', 0.2);
 
+  // draw rings
   for (let i = 0; i < rings.length; i++) {
     grid
       .append('circle')
@@ -223,19 +247,6 @@ export default function radar_visualization(config) {
       .style('fill', 'url(#ringGradient)')
       .style('stroke', config.colors.grid)
       .style('stroke-width', 2);
-    if (config.print_layout) {
-      grid
-        .append('text')
-        .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 20)
-        .attr('x', 7)
-        .attr('text-anchor', 'left')
-        .style('fill', '#e5e5e5')
-        .style('font-family', 'Hellix')
-        .style('font-size', config.zoomed_quadrant ? 8 : 14) // TODO bring to top
-        .style('pointer-events', 'none')
-        .style('user-select', 'none');
-    }
   }
 
   // draw grid lines
@@ -265,8 +276,8 @@ export default function radar_visualization(config) {
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
     quadrantLabel
       .append('rect')
-      .attr('rx', 20)
-      .attr('ry', 20)
+      .attr('rx', config.zoomed_quadrant ? 12 : 20)
+      .attr('ry', config.zoomed_quadrant ? 12 : 20)
       .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
       .attr('x', everyQuadrantX)
       .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
@@ -277,22 +288,42 @@ export default function radar_visualization(config) {
       .attr('text-anchor', 'left')
       .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
-      .style('font-size', '14px')
+      .style('font-size', `${config.zoomed_quadrant ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');
 
     const label = d3.select(`#quadrant-label-${i} text`);
     label.text(config.quadrants[i].name.toUpperCase());
+    if (config.zoomed_quadrant) label.attr('x', everyQuadrantX + 115).attr('y', evenQuadrantY - 1);
+
     const bbox = label.node().getBBox();
 
     d3.select(`#quadrant-label-${i} rect`)
       .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
-      .attr('x', everyQuadrantX - 20)
-      .attr('width', bbox.width + 40)
-      .attr('height', bbox.height + 18);
+      .attr('x', config.zoomed_quadrant ? everyQuadrantX + 100 : everyQuadrantX - 20)
+      .attr('width', config.zoomed_quadrant ? bbox.width + 30 : bbox.width + 40)
+      .attr('height', config.zoomed_quadrant ? bbox.height + 12 : bbox.height + 18);
   }
 
   // layer for entries
   const rink = radar.append('g').attr('id', 'rink');
+
+  // layer for ring labels
+  const ringLabels = radar.append('g').attr('id', 'ring-labels');
+  if (config.print_layout) {
+    for (let i = 0; i < rings.length; i++) {
+      ringLabels
+        .append('text')
+        .text(config.rings[i]?.name)
+        .attr('y', -rings[i].radius + 21)
+        .attr('x', 7)
+        .attr('text-anchor', 'left')
+        .style('fill', color.white)
+        .style('font-family', 'Hellix')
+        .style('font-size', config.zoomed_quadrant ? 8 : 14)
+        .style('pointer-events', 'none')
+        .style('user-select', 'none');
+    }
+  }
 
   // rollover bubble (on top of everything else)
   const bubble = radar
@@ -317,7 +348,8 @@ export default function radar_visualization(config) {
         .attr('x', -bbox.width - 36)
         .attr('y', 0)
         .attr('width', bbox.width + 20)
-        .attr('height', bbox.height + 14);
+        .attr('height', bbox.height + 14)
+        .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
       tooltip.attr('x', -bbox.width - 26).attr('y', 16);
     }
   }
