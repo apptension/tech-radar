@@ -27,7 +27,6 @@ export const Radar = ({ entries, rings, quadrants }) => {
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
           inactive: getEntryQuadrant(item) !== activeQuadrant,
-          active: item.fields.label === 'Java', //TODO change to be toggleable
         }),
       entries
     );

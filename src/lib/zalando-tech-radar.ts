@@ -1,6 +1,19 @@
 // @ts-nocheck
 import * as d3 from 'd3';
 import { color } from '../theme';
+import {
+  translate,
+  showBubble,
+  hideBubble,
+  highlightBlip,
+  unhighlightBlip,
+  random_between,
+  normal_between,
+  polar,
+  cartesian,
+  bounded_box,
+  bounded_ring,
+} from '../shared/utils/radarUtils';
 
 /* eslint-disable */
 
@@ -27,22 +40,6 @@ import { color } from '../theme';
 // THE SOFTWARE.
 
 export default function radar_visualization(config) {
-  // custom random number generator, to make random sequence reproducible
-  // source: https://stackoverflow.com/questions/521295
-  let seed = 42;
-  function random() {
-    const x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-  }
-
-  function random_between(min, max) {
-    return min + random() * (max - min);
-  }
-
-  function normal_between(min, max) {
-    return min + (random() + random()) * 0.5 * (max - min);
-  }
-
   // radial_min / radial_max are multiples of PI
   const quadrants = [
     { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
@@ -57,42 +54,6 @@ export default function radar_visualization(config) {
     { radius: 350 * config.scale },
     { radius: 450 * config.scale },
   ];
-
-  function polar(cartesian) {
-    const x = cartesian.x;
-    const y = cartesian.y;
-    return {
-      t: Math.atan2(y, x),
-      r: Math.sqrt(x * x + y * y),
-    };
-  }
-
-  function cartesian(polar) {
-    return {
-      x: polar.r * Math.cos(polar.t),
-      y: polar.r * Math.sin(polar.t),
-    };
-  }
-
-  function bounded_interval(value, min, max) {
-    const low = Math.min(min, max);
-    const high = Math.max(min, max);
-    return Math.min(Math.max(value, low), high);
-  }
-
-  function bounded_ring(polar, r_min, r_max) {
-    return {
-      t: polar.t,
-      r: bounded_interval(polar.r, r_min, r_max),
-    };
-  }
-
-  function bounded_box(point, min, max) {
-    return {
-      x: bounded_interval(point.x, min.x, max.x),
-      y: bounded_interval(point.y, min.y, max.y),
-    };
-  }
 
   function segment(quadrant, ring) {
     const polar_min = {
@@ -169,10 +130,6 @@ export default function radar_visualization(config) {
         entries[i].id = '' + id++;
       }
     }
-  }
-
-  function translate(x, y) {
-    return 'translate(' + x + ',' + y + ')';
   }
 
   function viewbox(quadrant) {
@@ -337,46 +294,13 @@ export default function radar_visualization(config) {
   bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
   bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 
-  function showBubble(d) {
-    if (d.active || config.print_layout) {
-      const tooltip = d3.select('#bubble text').text(d.label);
-      const bbox = tooltip.node().getBBox();
-      d3.select('#bubble')
-        .attr('transform', translate(d.x - 8, d.ring === 3 ? d.y - 18 : d.y - 14))
-        .style('opacity', 1);
-      d3.select('#bubble rect')
-        .attr('x', -bbox.width - 36)
-        .attr('y', 0)
-        .attr('width', bbox.width + 20)
-        .attr('height', bbox.height + 14)
-        .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
-      tooltip.attr('x', -bbox.width - 26).attr('y', 16);
-    }
-  }
-
-  function hideBubble() {
-    d3.select('#bubble').attr('transform', translate(0, 0)).style('opacity', 0);
-  }
-
   // draw blips on radar
-  const blips = rink
-    .selectAll('.blip')
-    .data(config.entries)
-    .enter()
-    .append('g')
-    .attr('class', 'blip')
-    .on('mouseover', function (event, d) {
-      showBubble(d);
-      // add gradients
-    })
-    .on('mouseout', function (event, d) {
-      hideBubble();
-      //remove gradients
-    });
+  const blips = rink.selectAll('.blip').data(config.entries).enter().append('g').attr('class', 'blip');
 
   // configure each blip
   blips.each(function (d) {
     let blip = d3.select(this);
+    blip.attr('id', `blip-${d.id}`);
 
     // blip link
     if (!config.print_layout && d.active && d.hasOwnProperty('link')) {
@@ -405,29 +329,22 @@ export default function radar_visualization(config) {
 
     // blip shape with outer layer
     if (d.ring === 0) {
-      if (d.active) {
-        blip
-          .append('circle') // outer circle
-          .attr('r', 10)
-          .attr('fill', 'url(#mainGradient)')
-          .style('opacity', 0.3);
-      }
-
       blip
-        .append('circle')
-        .attr('r', 6)
-        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
+        .append('circle') // outer circle
+        .attr('r', 10)
+        .attr('fill', 'url(#mainGradient)')
+        .style('opacity', 0);
+
+      blip.append('circle').attr('r', 6).attr('fill', d.color);
     } else if (d.ring === 1) {
-      if (d.active) {
-        blip
-          .append('rect') // outer square
-          .attr('x', -8.4)
-          .attr('y', -8.4)
-          .attr('width', 16.8)
-          .attr('height', 16.8)
-          .attr('fill', d.active ? 'url(#mainGradient)' : d.color)
-          .style('opacity', 0.3);
-      }
+      blip
+        .append('rect') // outer square
+        .attr('x', -8.4)
+        .attr('y', -8.4)
+        .attr('width', 16.8)
+        .attr('height', 16.8)
+        .attr('fill', 'url(#mainGradient)')
+        .style('opacity', 0);
 
       blip
         .append('rect') // square
@@ -435,19 +352,17 @@ export default function radar_visualization(config) {
         .attr('y', -5.4)
         .attr('width', 10.8)
         .attr('height', 10.8)
-        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
+        .attr('fill', d.color);
     } else if (d.ring === 2) {
-      if (d.active) {
-        blip
-          .append('rect') // outer diamond
-          .attr('x', -8.4)
-          .attr('y', -8.4)
-          .attr('width', 16.8)
-          .attr('height', 16.8)
-          .attr('transform', 'rotate(45)')
-          .attr('fill', d.active ? 'url(#diamondMainGradient)' : d.color)
-          .style('opacity', 0.3);
-      }
+      blip
+        .append('rect') // outer diamond
+        .attr('x', -8.4)
+        .attr('y', -8.4)
+        .attr('width', 16.8)
+        .attr('height', 16.8)
+        .attr('transform', 'rotate(45)')
+        .attr('fill', 'url(#diamondMainGradient)')
+        .style('opacity', 0);
 
       blip
         .append('rect') // diamond
@@ -456,24 +371,32 @@ export default function radar_visualization(config) {
         .attr('width', 10.8)
         .attr('height', 10.8)
         .attr('transform', 'rotate(45)')
-        .attr('fill', d.active ? 'url(#diamondMainGradient)' : d.color);
+        .attr('fill', d.color);
     } else {
-      if (d.active) {
-        blip
-          .append('path')
-          .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z') // outer triangle pointing up
-          .style('transform', 'scale(1.3)')
-          .attr('fill', d.active ? 'url(#mainGradient)' : d.color)
-          .style('opacity', 0.3);
-      }
+      blip
+        .append('path')
+        .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z') // outer triangle pointing up
+        .style('transform', 'scale(1.3)')
+        .attr('fill', 'url(#mainGradient)')
+        .style('opacity', 0);
 
       blip
         .append('path')
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
         .style('transform', 'scale(0.65)')
-        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
+        .attr('fill', d.color);
     }
   });
+
+  blips
+    .on('mouseover', function (event, d) {
+      showBubble(d);
+      highlightBlip(d);
+    })
+    .on('mouseout', function (event, d) {
+      hideBubble();
+      unhighlightBlip(d);
+    });
 
   // make sure that blips stay inside their segment
   function ticked() {
