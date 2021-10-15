@@ -208,6 +208,29 @@ export default function radar_visualization(config) {
   filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
   filter.append('feComposite').attr('in', 'SourceGraphic');
 
+  // grid conic gradient
+  const semiCircle = defs.append('clipPath').attr('id', 'semi-circle');
+  semiCircle
+    .append('rect')
+    .attr('x', -rings[3].radius)
+    .attr('y', 0)
+    .attr('width', rings[3].radius * 2)
+    .attr('height', rings[3].radius);
+
+  const conicGradient = defs.append('linearGradient').attr('id', 'conic-gradient');
+  conicGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
+  conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.tundora).attr('stop-opacity', 0.7);
+  conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
+
+  grid
+    .append('circle')
+    .attr('cx', 0)
+    .attr('cy', 0)
+    .attr('r', rings[3].radius)
+    .attr('clip-path', 'url(#semi-circle)')
+    .attr('fill', 'url(#conic-gradient)')
+    .attr('transform', 'rotate(90)');
+
   // grid radial gradient
   const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
   ringGradient.append('stop').attr('offset', '60%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
@@ -256,7 +279,7 @@ export default function radar_visualization(config) {
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
 
-  // draw quadrant labels
+  // draw quadrant labels //TODO resize when zoomed
   for (let i = 0; i < config.quadrants.length; i++) {
     const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
     const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
