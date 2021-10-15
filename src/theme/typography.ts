@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import * as colors from './color';
 import { fontFamily, fontWeight } from './font';
@@ -12,20 +12,48 @@ export const H1 = styled.h1`
   margin: 0;
 `;
 
-export const H2 = styled.h2`
-  font-family: ${fontFamily.primary};
-  font-weight: bold;
-  color: ${colors.black};
+export const H1small = css`
+  ${H1};
+  font-size: 20px;
+  line-height: 28px;
 `;
 
 export const Paragraph = styled.p`
   font-family: ${fontFamily.primary};
-  font-weight: 500;
+  font-weight: ${fontWeight.normal};
   font-size: 20px;
   line-height: 140%;
   color: ${colors.boulder};
 `;
 
-export const Link = styled.a`
-  text-decoration: underline;
+export const ButtonRegularTypography = css`
+  font-weight: ${fontWeight.normal};
+  font-size: 16px;
+  line-height: 28px;
+  text-decoration: none;
+`;
+
+export const ButtonLargeTypography = css`
+  font-weight: ${fontWeight.normal};
+  font-size: 20px;
+  line-height: 28px;
+  text-decoration: none;
+`;
+
+export const TagSmall = css`
+  font-weight: ${fontWeight.bold};
+  font-size: 12px;
+  line-height: 12px;
+`;
+
+export const TagMedium = css`
+  font-weight: ${fontWeight.bold};
+  font-size: 14px;
+  line-height: 14px;
+`;
+
+export const TagLarge = css`
+  font-weight: ${fontWeight.bold};
+  font-size: 20px;
+  line-height: 20px;
 `;
