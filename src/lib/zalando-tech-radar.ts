@@ -392,10 +392,12 @@ export default function radar_visualization(config) {
     .on('mouseover', function (event, d) {
       showBubble(d);
       highlightBlip(d);
+      config.highlightLegend({ d });
     })
     .on('mouseout', function (event, d) {
       hideBubble();
       unhighlightBlip(d);
+      config.highlightLegend({ d, mode: 'off' });
     });
 
   // make sure that blips stay inside their segment

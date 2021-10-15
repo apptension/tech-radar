@@ -4,7 +4,15 @@ import React from 'react';
 import * as colors from '../../../theme/color';
 import techRadar from '../../../lib/zalando-tech-radar';
 
-export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, activeQuadrant = 2, scale = 1 }) => {
+export const RadarComponent = ({
+  entries,
+  rings,
+  quadrants,
+  zoomedQuadrant,
+  activeQuadrant = 2,
+  scale = 1,
+  highlightLegend,
+}) => {
   const config = {
     svg_id: 'radar',
     width: zoomedQuadrant ? window.innerWidth - 360 : window.innerHeight + 210,
@@ -20,6 +28,7 @@ export const RadarComponent = ({ entries, rings, quadrants, zoomedQuadrant, acti
     quadrants,
     rings,
     entries,
+    highlightLegend,
   };
 
   if (zoomedQuadrant) config.zoomed_quadrant = zoomedQuadrant;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import LineImg from '../../../images/line.png';
@@ -29,7 +29,7 @@ export const List = () => {
 
       <ListWrapper>
         {'123456789012345678901234'.split('').map((number, i) => (
-          <ListItem active={i === 5} key={i}>
+          <ListItem active={i === 5} key={i} id={`list-item-${i}`}>
             List item
           </ListItem>
         ))}

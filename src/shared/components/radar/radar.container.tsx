@@ -6,7 +6,7 @@ import { RadarComponent } from './radar.component';
 import { Container } from './radar.styles';
 import { ZOOMED_QUADRANT } from './radar.constants';
 
-export const Radar = ({ entries, rings, quadrants }) => {
+export const Radar = ({ entries, rings, quadrants, highlightLegend }) => {
   const activeQuadrant = ZOOMED_QUADRANT.topLeft;
   // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
   const zoomedQuadrant = null;
@@ -95,6 +95,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
         scale={radarScale}
         zoomedQuadrant={zoomedQuadrant}
         activeQuadrant={activeQuadrant}
+        highlightLegend={highlightLegend}
       />
     </Container>
   );
