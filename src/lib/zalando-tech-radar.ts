@@ -267,7 +267,7 @@ export default function radar_visualization(config) {
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
 
-  // draw quadrant labels //TODO resize when zoomed
+  // draw quadrant labels
   for (let i = 0; i < config.quadrants.length; i++) {
     const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
     const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
@@ -276,8 +276,8 @@ export default function radar_visualization(config) {
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
     quadrantLabel
       .append('rect')
-      .attr('rx', 20)
-      .attr('ry', 20)
+      .attr('rx', config.zoomed_quadrant ? 12 : 20)
+      .attr('ry', config.zoomed_quadrant ? 12 : 20)
       .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
       .attr('x', everyQuadrantX)
       .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
@@ -288,18 +288,20 @@ export default function radar_visualization(config) {
       .attr('text-anchor', 'left')
       .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
-      .style('font-size', '14px')
+      .style('font-size', `${config.zoomed_quadrant ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');
 
     const label = d3.select(`#quadrant-label-${i} text`);
     label.text(config.quadrants[i].name.toUpperCase());
+    if (config.zoomed_quadrant) label.attr('x', everyQuadrantX + 115).attr('y', evenQuadrantY - 1);
+
     const bbox = label.node().getBBox();
 
     d3.select(`#quadrant-label-${i} rect`)
       .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
-      .attr('x', everyQuadrantX - 20)
-      .attr('width', bbox.width + 40)
-      .attr('height', bbox.height + 18);
+      .attr('x', config.zoomed_quadrant ? everyQuadrantX + 100 : everyQuadrantX - 20)
+      .attr('width', config.zoomed_quadrant ? bbox.width + 30 : bbox.width + 40)
+      .attr('height', config.zoomed_quadrant ? bbox.height + 12 : bbox.height + 18);
   }
 
   // layer for entries
@@ -312,10 +314,10 @@ export default function radar_visualization(config) {
       ringLabels
         .append('text')
         .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 20)
+        .attr('y', -rings[i].radius + 21)
         .attr('x', 7)
         .attr('text-anchor', 'left')
-        .style('fill', '#e5e5e5')
+        .style('fill', color.white)
         .style('font-family', 'Hellix')
         .style('font-size', config.zoomed_quadrant ? 8 : 14)
         .style('pointer-events', 'none')
