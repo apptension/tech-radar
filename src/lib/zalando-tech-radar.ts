@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as d3 from 'd3';
+import { color } from '../theme';
 
 /* eslint-disable */
 
@@ -51,9 +52,9 @@ export default function radar_visualization(config) {
   ];
 
   const rings = [
-    { radius: 180 * config.scale },
-    { radius: 270 * config.scale },
-    { radius: 360 * config.scale },
+    { radius: 140 * config.scale },
+    { radius: 245 * config.scale },
+    { radius: 350 * config.scale },
     { radius: 450 * config.scale },
   ];
 
@@ -140,7 +141,7 @@ export default function radar_visualization(config) {
     const point = entry.segment.random();
     entry.x = point.x;
     entry.y = point.y;
-    entry.color = entry.active ? config.colors.active : config.colors.default; //TODO use inactive color when looking at one quadrant
+    entry.color = entry.inactive ? config.colors.inactive : config.colors.default;
   }
 
   // partition entries according to segments
@@ -176,10 +177,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 450) - 470,
-      Math.max(0, quadrants[quadrant].factor_y * 450) - 470,
-      490,
-      490,
+      Math.max(0, quadrants[quadrant].factor_x * 560) - 370 * config.scale,
+      Math.max(0, quadrants[quadrant].factor_y * 560) - 485 * config.scale,
+      530 * config.scale,
+      530 * config.scale,
     ].join(' ');
   }
 
@@ -194,13 +195,48 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr(
-      'transform',
-      translate(config.scale === 1 ? config.width / 2 : config.width / 2 - 200, config.height / 2)
-    );
+    radar.attr('transform', translate(config.width / 2, config.height / 2));
   }
 
+  // layer for grid
   const grid = radar.append('g');
+
+  // background color. Usage `.attr("filter", "url(#solid)")`
+  // SOURCE: https://stackoverflow.com/a/31013492/2609980
+  const defs = grid.append('defs');
+  const filter = defs.append('filter').attr('x', 0).attr('y', 0).attr('width', 1).attr('height', 1).attr('id', 'solid');
+  filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
+  filter.append('feComposite').attr('in', 'SourceGraphic');
+
+  // grid radial gradient
+  const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
+  ringGradient.append('stop').attr('offset', '60%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
+  ringGradient.append('stop').attr('offset', '85%').attr('stop-color', 'transparent').attr('stop-opacity', 0.8);
+  ringGradient.append('stop').attr('offset', '100%').attr('stop-color', color.tundora).attr('stop-opacity', 0.2);
+
+  for (let i = 0; i < rings.length; i++) {
+    grid
+      .append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', rings[i].radius)
+      .style('fill', 'url(#ringGradient)')
+      .style('stroke', config.colors.grid)
+      .style('stroke-width', 2);
+    if (config.print_layout) {
+      grid
+        .append('text')
+        .text(config.rings[i]?.name)
+        .attr('y', -rings[i].radius + 20)
+        .attr('x', 7)
+        .attr('text-anchor', 'left')
+        .style('fill', '#e5e5e5')
+        .style('font-family', 'Hellix')
+        .style('font-size', config.zoomed_quadrant ? 8 : 14) // TODO bring to top
+        .style('pointer-events', 'none')
+        .style('user-select', 'none');
+    }
+  }
 
   // draw grid lines
   grid
@@ -210,7 +246,7 @@ export default function radar_visualization(config) {
     .attr('x2', 0)
     .attr('y2', 450 * config.scale)
     .style('stroke', config.colors.grid)
-    .style('stroke-width', 1);
+    .style('stroke-width', 2);
   grid
     .append('line')
     .attr('x1', -450 * config.scale)
@@ -218,39 +254,41 @@ export default function radar_visualization(config) {
     .attr('x2', 450 * config.scale)
     .attr('y2', 0)
     .style('stroke', config.colors.grid)
-    .style('stroke-width', 1);
+    .style('stroke-width', 2);
 
-  // background color. Usage `.attr("filter", "url(#solid)")`
-  // SOURCE: https://stackoverflow.com/a/31013492/2609980
-  const defs = grid.append('defs');
-  const filter = defs.append('filter').attr('x', 0).attr('y', 0).attr('width', 1).attr('height', 1).attr('id', 'solid');
-  filter.append('feFlood').attr('flood-color', 'rgb(0, 0, 0, 0.8)');
-  filter.append('feComposite').attr('in', 'SourceGraphic');
+  // draw quadrant labels
+  for (let i = 0; i < config.quadrants.length; i++) {
+    const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
+    const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
+    const everyQuadrantX = quadrants[i].factor_x * 360 - 100 * config.scale;
 
-  // draw rings
-  for (let i = 0; i < rings.length; i++) {
-    grid
-      .append('circle')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', rings[i].radius)
-      .style('fill', 'none')
-      .style('stroke', config.colors.grid)
-      .style('stroke-width', 1);
-    if (config.print_layout) {
-      grid
-        .append('text')
-        .text(config.rings[i]?.name)
-        .attr('y', -rings[i].radius + 20)
-        .attr('x', 7)
-        .attr('text-anchor', 'left')
-        .style('fill', '#e5e5e5')
-        .style('font-family', 'Arial, Helvetica') //TODO change font family
-        .style('font-size', config.zoomed_quadrant ? 8 : 14) //TODO bring to top
-        .style('font-weight', 'bold')
-        .style('pointer-events', 'none')
-        .style('user-select', 'none');
-    }
+    const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
+    quadrantLabel
+      .append('rect')
+      .attr('rx', 20)
+      .attr('ry', 20)
+      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
+      .attr('x', everyQuadrantX)
+      .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
+    quadrantLabel
+      .append('text')
+      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
+      .attr('x', everyQuadrantX)
+      .attr('text-anchor', 'left')
+      .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
+      .style('font-family', 'Hellix')
+      .style('font-size', '14px')
+      .style('letter-spacing', '0.2em');
+
+    const label = d3.select(`#quadrant-label-${i} text`);
+    label.text(config.quadrants[i].name.toUpperCase());
+    const bbox = label.node().getBBox();
+
+    d3.select(`#quadrant-label-${i} rect`)
+      .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
+      .attr('x', everyQuadrantX - 20)
+      .attr('width', bbox.width + 40)
+      .attr('height', bbox.height + 18);
   }
 
   // layer for entries
@@ -265,27 +303,22 @@ export default function radar_visualization(config) {
     .style('opacity', 0)
     .style('pointer-events', 'none')
     .style('user-select', 'none');
-  bubble.append('rect').attr('rx', 4).attr('ry', 4).style('fill', '#333');
-  bubble
-    .append('text')
-    .style('font-family', 'sans-serif')
-    .style('font-size', config.zoomed_quadrant ? '6px' : '10px')
-    .style('fill', '#fff');
-  bubble.append('path').attr('d', 'M 0,0 10,0 5,8 z').style('fill', '#333');
+  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
+  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 
   function showBubble(d) {
     if (d.active || config.print_layout) {
       const tooltip = d3.select('#bubble text').text(d.label);
       const bbox = tooltip.node().getBBox();
       d3.select('#bubble')
-        .attr('transform', translate(d.x - bbox.width / 2, d.y - 16))
-        .style('opacity', 0.8);
+        .attr('transform', translate(d.x - 8, d.ring === 3 ? d.y - 18 : d.y - 14))
+        .style('opacity', 1);
       d3.select('#bubble rect')
-        .attr('x', -5)
-        .attr('y', -bbox.height)
-        .attr('width', bbox.width + 10)
-        .attr('height', bbox.height + 4);
-      d3.select('#bubble path').attr('transform', translate(bbox.width / 2 - 5, 3));
+        .attr('x', -bbox.width - 36)
+        .attr('y', 0)
+        .attr('width', bbox.width + 20)
+        .attr('height', bbox.height + 14);
+      tooltip.attr('x', -bbox.width - 26).attr('y', 16);
     }
   }
 
@@ -302,8 +335,12 @@ export default function radar_visualization(config) {
     .attr('class', 'blip')
     .on('mouseover', function (event, d) {
       showBubble(d);
+      // add gradients
     })
-    .on('mouseout', hideBubble);
+    .on('mouseout', function (event, d) {
+      hideBubble();
+      //remove gradients
+    });
 
   // configure each blip
   blips.each(function (d) {
@@ -314,18 +351,72 @@ export default function radar_visualization(config) {
       blip = blip.append('a').attr('xlink:href', d.link);
     }
 
-    // blip shape
+    // blip gradients
+    const blipDefs = blip.append('defs');
+
+    const mainGradient = blipDefs.append('linearGradient').attr('id', 'mainGradient');
+    mainGradient.append('stop').attr('offset', '0%').attr('stop-color', color.schoolBusYellow).attr('stop-opacity', 1);
+    mainGradient.append('stop').attr('offset', '100%').attr('stop-color', color.screaminGreen).attr('stop-opacity', 1);
+
+    const diamondMainGradient = blipDefs.append('linearGradient').attr('id', 'diamondMainGradient');
+    diamondMainGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
+    diamondMainGradient
+      .append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', color.schoolBusYellow)
+      .attr('stop-opacity', 1);
+    diamondMainGradient
+      .append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', color.screaminGreen)
+      .attr('stop-opacity', 1);
+
+    // blip shape with outer layer
     if (d.ring === 0) {
-      blip.append('circle').attr('r', 6).attr('fill', d.color);
+      if (d.active) {
+        blip
+          .append('circle') // outer circle
+          .attr('r', 10)
+          .attr('fill', 'url(#mainGradient)')
+          .style('opacity', 0.3);
+      }
+
+      blip
+        .append('circle')
+        .attr('r', 6)
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     } else if (d.ring === 1) {
+      if (d.active) {
+        blip
+          .append('rect') // outer square
+          .attr('x', -8.4)
+          .attr('y', -8.4)
+          .attr('width', 16.8)
+          .attr('height', 16.8)
+          .attr('fill', d.active ? 'url(#mainGradient)' : d.color)
+          .style('opacity', 0.3);
+      }
+
       blip
         .append('rect') // square
         .attr('x', -5.4)
         .attr('y', -5.4)
         .attr('width', 10.8)
         .attr('height', 10.8)
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     } else if (d.ring === 2) {
+      if (d.active) {
+        blip
+          .append('rect') // outer diamond
+          .attr('x', -8.4)
+          .attr('y', -8.4)
+          .attr('width', 16.8)
+          .attr('height', 16.8)
+          .attr('transform', 'rotate(45)')
+          .attr('fill', d.active ? 'url(#diamondMainGradient)' : d.color)
+          .style('opacity', 0.3);
+      }
+
       blip
         .append('rect') // diamond
         .attr('x', -5.4)
@@ -333,13 +424,22 @@ export default function radar_visualization(config) {
         .attr('width', 10.8)
         .attr('height', 10.8)
         .attr('transform', 'rotate(45)')
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#diamondMainGradient)' : d.color);
     } else {
+      if (d.active) {
+        blip
+          .append('path')
+          .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z') // outer triangle pointing up
+          .style('transform', 'scale(1.3)')
+          .attr('fill', d.active ? 'url(#mainGradient)' : d.color)
+          .style('opacity', 0.3);
+      }
+
       blip
         .append('path')
-        .attr('d', 'M -11,5 11,5 0,-13 z') // triangle pointing up
+        .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
         .style('transform', 'scale(0.65)')
-        .style('fill', d.color);
+        .attr('fill', d.active ? 'url(#mainGradient)' : d.color);
     }
   });
 

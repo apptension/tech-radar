@@ -7,6 +7,12 @@ import { Container } from './radar.styles';
 import { ZOOMED_QUADRANT } from './radar.constants';
 
 export const Radar = ({ entries, rings, quadrants }) => {
+  const activeQuadrant = ZOOMED_QUADRANT.topLeft;
+  // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
+  const zoomedQuadrant = null;
+
+  //TODO when zooming, always set zoomedQuadrant to activeQuadrant
+
   const getEntryQuadrant = (entry) => {
     const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
     return getQuadrantPosition(position);
@@ -20,6 +26,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
           label: R.pathOr('', ['fields', 'label'], item),
           quadrant: getEntryQuadrant(item),
           ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+          inactive: getEntryQuadrant(item) !== activeQuadrant,
           active: item.fields.label === 'Java', //TODO change to be toggleable
         }),
       entries
@@ -78,16 +85,17 @@ export const Radar = ({ entries, rings, quadrants }) => {
   const basicRadarHeight = 1000;
   const widthScale = availableRadarWidth / basicRadarWidth;
   const heightScale = window.innerHeight / basicRadarHeight;
-  const radarScale = R.clamp(0, 1, Math.max(widthScale, heightScale));
+  const radarScale = R.clamp(0, 1, Math.min(widthScale, heightScale));
 
   return (
-    <Container>
+    <Container fullRadar={!zoomedQuadrant}>
       <RadarComponent
         entries={getRadarEntries()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
         scale={radarScale}
-        // zoomedQuadrant={ZOOMED_QUADRANT.topLeft}
+        zoomedQuadrant={zoomedQuadrant}
+        activeQuadrant={activeQuadrant}
       />
     </Container>
   );
