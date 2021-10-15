@@ -346,7 +346,8 @@ export default function radar_visualization(config) {
         .attr('x', -bbox.width - 36)
         .attr('y', 0)
         .attr('width', bbox.width + 20)
-        .attr('height', bbox.height + 14);
+        .attr('height', bbox.height + 14)
+        .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
       tooltip.attr('x', -bbox.width - 26).attr('y', 16);
     }
   }
