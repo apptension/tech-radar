@@ -267,7 +267,7 @@ export default function radar_visualization(config) {
     .style('stroke', config.colors.grid)
     .style('stroke-width', 2);
 
-  // draw quadrant labels
+  // draw quadrant labels //TODO resize when zoomed
   for (let i = 0; i < config.quadrants.length; i++) {
     const oddQuadrantY = quadrants[i].factor_y * 320 * config.scale;
     const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * config.scale;
