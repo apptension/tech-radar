@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
@@ -20,9 +20,14 @@ export interface RadarProps {
 }
 
 export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
-  const activeQuadrant = ZOOMED_QUADRANT.topLeft;
-  // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
-  const zoomedQuadrant = null;
+  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(ZOOMED_QUADRANT.bottomLeft);
+  const [activeQuadrant, setActiveQuadrant] = useState(ZOOMED_QUADRANT.topLeft);
+  const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
+
+  const updateActiveQuadrant = (newQuadrant: number) => {
+    setPreviouslyActiveQuadrant(activeQuadrant);
+    setActiveQuadrant(newQuadrant);
+  };
 
   //TODO when zooming, always set zoomedQuadrant to activeQuadrant
 
@@ -99,7 +104,12 @@ export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
         rings={getRadarRings()}
         zoomedQuadrant={zoomedQuadrant}
         activeQuadrant={activeQuadrant}
+        previouslyActiveQuadrant={previouslyActiveQuadrant}
       />
+      {
+        //TODO remove after adding this functionality in toolbar
+      }
+      <button onClick={() => updateActiveQuadrant((activeQuadrant + 1) % 4)}>Change quadrant</button>
     </Container>
   );
 };

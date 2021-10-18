@@ -239,6 +239,8 @@ export default function radar_visualization(config) {
       .attr('ry', config.zoomed_quadrant ? 12 : 20)
       .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
       .attr('x', everyQuadrantX)
+      .style('fill', color.mineShaft)
+      .transition()
       .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
     quadrantLabel
       .append('text')
