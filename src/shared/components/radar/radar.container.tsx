@@ -4,39 +4,45 @@ import * as R from 'ramda';
 import { RadarComponent } from './radar.component';
 import { Container } from './radar.styles';
 import { ZOOMED_QUADRANT } from './radar.constants';
-import { RadarEntry, RadarQuadrant, RadarRing } from './radar.types';
+import {
+  ContentfulQuadrant,
+  ContentfulRing,
+  ContentfulTechnology,
+  RadarTechnology,
+  RadarQuadrant,
+  RadarRing,
+} from './radar.types';
 
-// TODO: interfaces for entries (we may change it to technologies), rings, quadrants
 export interface RadarProps {
-  entries: any;
-  rings: any;
-  quadrants: any;
+  technologies: ContentfulTechnology[];
+  rings: ContentfulRing[];
+  quadrants: ContentfulQuadrant[];
 }
 
-export const Radar = ({ entries, rings, quadrants }: RadarProps) => {
+export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
   const activeQuadrant = ZOOMED_QUADRANT.topLeft;
   // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
   const zoomedQuadrant = null;
 
   //TODO when zooming, always set zoomedQuadrant to activeQuadrant
 
-  const getEntryQuadrant = (entry: any) => {
-    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
+  const getTechnologyQuadrant = (technology: ContentfulTechnology): number => {
+    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
     return getQuadrantPosition(position);
   };
 
-  const getRadarEntries = () => {
-    const radarEntries: RadarEntry[] = [];
-    R.forEachObjIndexed(
-      (item) =>
-        radarEntries.push({
-          label: R.pathOr('', ['fields', 'label'], item),
-          quadrant: getEntryQuadrant(item),
-          ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          inactive: getEntryQuadrant(item) !== activeQuadrant,
-        }),
-      entries
-    );
+  const getRadarTechnologies = () => {
+    const radarEntries: RadarTechnology[] = [];
+
+    R.forEachObjIndexed<ContentfulTechnology[]>((item) => {
+      const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
+      return radarEntries.push({
+        label: R.pathOr('', ['fields', 'label'], item),
+        quadrant,
+        ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+        inactive: quadrant !== activeQuadrant,
+      });
+    }, technologies);
     return radarEntries;
   };
 
@@ -54,7 +60,7 @@ export const Radar = ({ entries, rings, quadrants }: RadarProps) => {
     return R.sortBy(R.prop('position'), radarRings);
   };
 
-  const getQuadrantPosition = (position: string | number) => {
+  const getQuadrantPosition = (position: string) => {
     if (position) {
       switch (position) {
         case 'bottom-right':
@@ -78,7 +84,7 @@ export const Radar = ({ entries, rings, quadrants }: RadarProps) => {
       (item) =>
         radarQuadrants.push({
           name: R.pathOr('', ['fields', 'label'], item),
-          position: getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
+          position: getQuadrantPosition(R.pathOr('top-left', ['fields', 'position'], item)),
         }),
       quadrants
     );
@@ -88,7 +94,7 @@ export const Radar = ({ entries, rings, quadrants }: RadarProps) => {
   return (
     <Container fullRadar={!zoomedQuadrant}>
       <RadarComponent
-        entries={getRadarEntries()}
+        technologies={getRadarTechnologies()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
         zoomedQuadrant={zoomedQuadrant}

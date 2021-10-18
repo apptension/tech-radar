@@ -15,7 +15,7 @@ export const Explore = () => {
       <TitleTag size={TitleTagSize.SMALL} withLogo />
 
       <List />
-      <Radar entries={technologies} quadrants={quadrants} rings={rings} />
+      <Radar technologies={technologies} quadrants={quadrants} rings={rings} />
       <Toolbar />
     </Container>
   );

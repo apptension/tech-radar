@@ -94,17 +94,17 @@ export default function radar_visualization(config) {
     };
   }
 
-  // position each entry randomly in its segment
-  for (let i = 0; i < config.entries.length; i++) {
-    const entry = config.entries[i];
-    entry.segment = segment(entry.quadrant, entry.ring);
-    const point = entry.segment.random();
-    entry.x = point.x;
-    entry.y = point.y;
-    entry.color = entry.inactive ? config.colors.inactive : config.colors.default;
+  // position each technology randomly in its segment
+  for (let i = 0; i < config.technologies.length; i++) {
+    const technology = config.technologies[i];
+    technology.segment = segment(technology.quadrant, technology.ring);
+    const point = technology.segment.random();
+    technology.x = point.x;
+    technology.y = point.y;
+    technology.color = technology.inactive ? config.colors.inactive : config.colors.default;
   }
 
-  // partition entries according to segments
+  // partition technologies according to segments
   const segmented = new Array(4);
   for (let quadrant = 0; quadrant < 4; quadrant++) {
     segmented[quadrant] = new Array(4);
@@ -112,21 +112,21 @@ export default function radar_visualization(config) {
       segmented[quadrant][ring] = [];
     }
   }
-  for (let i = 0; i < config.entries.length; i++) {
-    let entry = config.entries[i];
-    segmented[entry.quadrant][entry.ring].push(entry);
+  for (let i = 0; i < config.technologies.length; i++) {
+    let technology = config.technologies[i];
+    segmented[technology.quadrant][technology.ring].push(technology);
   }
 
-  // assign unique sequential id to each entry
+  // assign unique sequential id to each technology
   let id = 1;
   for (let quadrant of [2, 3, 1, 0]) {
     for (let ring = 0; ring < 4; ring++) {
-      const entries = segmented[quadrant][ring];
-      entries.sort(function (a, b) {
+      const technologies = segmented[quadrant][ring];
+      technologies.sort(function (a, b) {
         return a.label.localeCompare(b.label);
       });
-      for (let i = 0; i < entries.length; i++) {
-        entries[i].id = '' + id++;
+      for (let i = 0; i < technologies.length; i++) {
+        technologies[i].id = '' + id++;
       }
     }
   }
@@ -151,7 +151,7 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr('transform', translate(config.width / 2, config.height / 2));
+    radar.attr('transform', translate({ x: config.width / 2, y: config.height / 2 }));
   }
 
   // layer for grid
@@ -251,16 +251,19 @@ export default function radar_visualization(config) {
     label.text(config.quadrants[i].name.toUpperCase());
     if (config.zoomed_quadrant) label.attr('x', everyQuadrantX + 115).attr('y', evenQuadrantY - 1);
 
-    const bbox = label.node().getBBox();
+    const labelNode = label.node();
+    if (labelNode) {
+      const bbox = labelNode.getBBox();
 
-    d3.select(`#quadrant-label-${i} rect`)
-      .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
-      .attr('x', config.zoomed_quadrant ? everyQuadrantX + 100 : everyQuadrantX - 20)
-      .attr('width', config.zoomed_quadrant ? bbox.width + 30 : bbox.width + 40)
-      .attr('height', config.zoomed_quadrant ? bbox.height + 12 : bbox.height + 18);
+      d3.select(`#quadrant-label-${i} rect`)
+        .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
+        .attr('x', config.zoomed_quadrant ? everyQuadrantX + 100 : everyQuadrantX - 20)
+        .attr('width', config.zoomed_quadrant ? bbox.width + 30 : bbox.width + 40)
+        .attr('height', config.zoomed_quadrant ? bbox.height + 12 : bbox.height + 18);
+    }
   }
 
-  // layer for entries
+  // layer for technologies
   const rink = radar.append('g').attr('id', 'rink');
 
   // layer for ring labels
@@ -294,7 +297,7 @@ export default function radar_visualization(config) {
   bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 
   // draw blips on radar
-  const blips = rink.selectAll('.blip').data(config.entries).enter().append('g').attr('class', 'blip');
+  const blips = rink.selectAll('.blip').data(config.technologies).enter().append('g').attr('class', 'blip');
 
   // configure each blip
   blips.each(function (d) {
@@ -402,13 +405,13 @@ export default function radar_visualization(config) {
   // make sure that blips stay inside their segment
   function ticked() {
     blips.attr('transform', function (d) {
-      return translate(d.segment.clipx(d), d.segment.clipy(d));
+      return translate({ x: d.segment.clipx(d), y: d.segment.clipy(d) });
     });
   }
 
   // distribute blips, while avoiding collisions
   d3.forceSimulation()
-    .nodes(config.entries)
+    .nodes(config.technologies)
     .velocityDecay(0.19) // magic number (found by experimentation)
     .force('collision', d3.forceCollide().radius(12).strength(0.85))
     .on('tick', ticked);

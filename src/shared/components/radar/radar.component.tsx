@@ -2,10 +2,10 @@ import React from 'react';
 
 import * as colors from '../../../theme/color';
 import techRadar from '../../../lib/zalando-tech-radar';
-import { RadarConfig, RadarEntry, RadarQuadrant, RadarRing } from './radar.types';
+import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 
 interface RadarComponentProps {
-  entries: RadarEntry[];
+  technologies: RadarTechnology[];
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
@@ -13,7 +13,7 @@ interface RadarComponentProps {
 }
 
 export const RadarComponent = ({
-  entries,
+  technologies,
   rings,
   quadrants,
   zoomedQuadrant,
@@ -32,7 +32,7 @@ export const RadarComponent = ({
     print_layout: true,
     quadrants,
     rings,
-    entries,
+    technologies,
   };
 
   if (zoomedQuadrant) config.zoomed_quadrant = zoomedQuadrant;
