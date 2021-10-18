@@ -4,6 +4,7 @@ import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag'
 import { Radar as RadarComponent } from '../../shared/components/radar';
 import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { zIndex } from '../../theme';
+import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
 
 export const Container = styled.div`
   width: 100%;
@@ -46,4 +47,10 @@ export const Toolbar = styled(ToolbarComponent)`
   transform: translateX(-50%);
   bottom: 24px;
   z-index: ${zIndex.overlay};
+`;
+
+export const ZoomControls = styled(ZoomControlsComponent)`
+  position: absolute;
+  bottom: 24px;
+  right: 35px;
 `;

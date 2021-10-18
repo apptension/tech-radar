@@ -4,7 +4,7 @@ import { List } from '../../shared/components/list';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
-import { Container, TitleTag, Viewer, Sidebar, Toolbar } from './explore.styles';
+import { Container, TitleTag, Viewer, Sidebar, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
   const { technologies, quadrants, rings } = useContentfulData();
@@ -19,6 +19,14 @@ export const Explore = () => {
       <Viewer>
         <Radar technologies={technologies} quadrants={quadrants} rings={rings} />
         <Toolbar />
+        <ZoomControls
+          onZoomIn={() => {
+            console.log('zoom in');
+          }}
+          onZoomOut={() => {
+            console.log('zoom out');
+          }}
+        />
       </Viewer>
     </Container>
   );
