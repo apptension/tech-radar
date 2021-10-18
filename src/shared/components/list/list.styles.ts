@@ -50,12 +50,8 @@ export const ListWrapper = styled.div`
   overflow: scroll;
 `;
 
-type ListItemProps = {
-  active: boolean;
-};
-
-export const ListItem = styled.div<ListItemProps>`
-  color: ${(props) => (props.active ? colors.white : colors.boulder)};
+export const ListItem = styled.div`
+  color: ${colors.boulder};
   font-size: 18px;
   margin: 10px 0;
 `;

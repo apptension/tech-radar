@@ -1,46 +1,57 @@
-// @ts-nocheck
 import React from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
 import { Container } from './radar.styles';
 import { ZOOMED_QUADRANT } from './radar.constants';
+import {
+  ContentfulQuadrant,
+  ContentfulRing,
+  ContentfulTechnology,
+  RadarTechnology,
+  RadarQuadrant,
+  RadarRing,
+} from './radar.types';
 
-export const Radar = ({ entries, rings, quadrants }) => {
+export interface RadarProps {
+  technologies: ContentfulTechnology[];
+  rings: ContentfulRing[];
+  quadrants: ContentfulQuadrant[];
+}
+
+export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
   const activeQuadrant = ZOOMED_QUADRANT.topLeft;
   // const zoomedQuadrant = ZOOMED_QUADRANT.topLeft;
   const zoomedQuadrant = null;
 
   //TODO when zooming, always set zoomedQuadrant to activeQuadrant
 
-  const getEntryQuadrant = (entry) => {
-    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], entry);
+  const getTechnologyQuadrant = (technology: ContentfulTechnology): number => {
+    const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
     return getQuadrantPosition(position);
   };
 
-  const getRadarEntries = () => {
-    const radarEntries = [];
-    R.forEachObjIndexed(
-      (item) =>
-        radarEntries.push({
-          label: R.pathOr('', ['fields', 'label'], item),
-          quadrant: getEntryQuadrant(item),
-          ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-          inactive: getEntryQuadrant(item) !== activeQuadrant,
-          active: item.fields.label === 'Java', //TODO change to be toggleable
-        }),
-      entries
-    );
+  const getRadarTechnologies = () => {
+    const radarEntries: RadarTechnology[] = [];
+
+    R.forEachObjIndexed<ContentfulTechnology[]>((item) => {
+      const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
+      return radarEntries.push({
+        label: R.pathOr('', ['fields', 'label'], item),
+        quadrant,
+        ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+        inactive: quadrant !== activeQuadrant,
+      });
+    }, technologies);
     return radarEntries;
   };
 
   const getRadarRings = () => {
-    const radarRings = [];
+    const radarRings: RadarRing[] = [];
     R.forEachObjIndexed(
       (item) =>
         radarRings.push({
           name: R.pathOr('', ['fields', 'label'], item),
-          color: R.pathOr('#000000', ['fields', 'color'], item),
           position: R.pathOr(1, ['fields', 'position'], item),
         }),
       rings
@@ -49,7 +60,7 @@ export const Radar = ({ entries, rings, quadrants }) => {
     return R.sortBy(R.prop('position'), radarRings);
   };
 
-  const getQuadrantPosition = (position) => {
+  const getQuadrantPosition = (position: string) => {
     if (position) {
       switch (position) {
         case 'bottom-right':
@@ -68,32 +79,24 @@ export const Radar = ({ entries, rings, quadrants }) => {
   };
 
   const getRadarQuadrants = () => {
-    const radarQuadrants = [];
+    const radarQuadrants: RadarQuadrant[] = [];
     R.forEachObjIndexed(
       (item) =>
         radarQuadrants.push({
           name: R.pathOr('', ['fields', 'label'], item),
-          position: getQuadrantPosition(R.pathOr(0, ['fields', 'position'], item)),
+          position: getQuadrantPosition(R.pathOr('top-left', ['fields', 'position'], item)),
         }),
       quadrants
     );
     return R.sortBy(R.prop('position'), radarQuadrants);
   };
 
-  const availableRadarWidth = window.innerWidth - 411;
-  const basicRadarWidth = 1450;
-  const basicRadarHeight = 1000;
-  const widthScale = availableRadarWidth / basicRadarWidth;
-  const heightScale = window.innerHeight / basicRadarHeight;
-  const radarScale = R.clamp(0, 1, Math.min(widthScale, heightScale));
-
   return (
     <Container fullRadar={!zoomedQuadrant}>
       <RadarComponent
-        entries={getRadarEntries()}
+        technologies={getRadarTechnologies()}
         quadrants={getRadarQuadrants()}
         rings={getRadarRings()}
-        scale={radarScale}
         zoomedQuadrant={zoomedQuadrant}
         activeQuadrant={activeQuadrant}
       />
