@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 import { fontFamily } from './font';
+import { maxWidthStyles } from './media';
 import { color } from './index';
 
 export const GlobalStyle = createGlobalStyle`
@@ -19,5 +20,9 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     background-color: ${color.codGray};
     overflow: hidden;
+    
+    & > div:first-of-type {
+      ${maxWidthStyles};
+    }
   }
 `;

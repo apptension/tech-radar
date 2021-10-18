@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { zIndex } from '../../../theme';
+import { maxWidthStyles } from '../../../theme/media';
 
 export const Container = styled.header`
+  ${maxWidthStyles};
   position: fixed;
   top: 0;
   left: 0;

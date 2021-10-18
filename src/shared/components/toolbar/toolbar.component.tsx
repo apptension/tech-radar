@@ -4,9 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { Container, AreaDropdown, LevelDropdown, TeamDropdown } from './toolbar.styles';
 import messages from './toolbar.messages';
 
-export const Toolbar = () => {
+export interface ToolbarProps {
+  className?: string;
+}
+
+export const Toolbar = ({ className }: ToolbarProps) => {
   return (
-    <Container>
+    <Container className={className}>
       <FormattedMessage {...messages.areaLabel}>
         {(areaLabel) => <AreaDropdown title={areaLabel.toString()} />}
       </FormattedMessage>
