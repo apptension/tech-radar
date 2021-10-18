@@ -1,7 +1,9 @@
 import React from 'react';
+import * as R from 'ramda';
 
 import * as colors from '../../../theme/color';
-import techRadar from '../../../lib/zalando-tech-radar';
+import drawTechRadar from '../../../lib/zalando-tech-radar';
+import { destroyRadar } from '../../utils/radarUtils';
 import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 
 interface RadarComponentProps {
@@ -9,7 +11,8 @@ interface RadarComponentProps {
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
-  activeQuadrant: null | number;
+  activeQuadrant: number;
+  previouslyActiveQuadrant: number;
 }
 
 export const RadarComponent = ({
@@ -17,7 +20,8 @@ export const RadarComponent = ({
   rings,
   quadrants,
   zoomedQuadrant,
-  activeQuadrant = 2,
+  activeQuadrant,
+  previouslyActiveQuadrant,
 }: RadarComponentProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
@@ -35,10 +39,12 @@ export const RadarComponent = ({
     technologies,
   };
 
-  if (zoomedQuadrant) config.zoomed_quadrant = zoomedQuadrant;
-  if (activeQuadrant) config.active_quadrant = activeQuadrant;
+  if (!R.isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
+  if (!R.isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
+  if (!R.isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
 
-  techRadar(config);
+  destroyRadar();
+  drawTechRadar(config);
 
   return <svg id="radar" />;
 };
