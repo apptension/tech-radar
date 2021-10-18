@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import { pathOr, pickBy } from 'ramda';
-import { client } from '../../services/api/contentful';
+import axios from 'axios';
+import { client, cmaURL, contentfulConfig } from '../../services/api/contentful';
 import { reportError } from '../../utils/reportError';
 import {
   ContentfulQuadrant,
@@ -18,6 +19,36 @@ export const getEntries =
 
     return {};
   };
+
+export const useLastContentfulUpdate = () => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${contentfulConfig.contentManagementToken}`,
+    },
+  };
+
+  const dateQuery = useQuery(
+    ['lastUpdate'],
+    async () => {
+      try {
+        const {
+          data: {
+            sys: { updatedAt },
+          },
+        } = await axios.get(cmaURL, config);
+
+        return updatedAt;
+      } catch (error) {
+        reportError(error);
+      }
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return dateQuery.data;
+};
 
 export const useContentfulData = () => {
   const contentfulQuery = useQuery(
