@@ -10,10 +10,22 @@ import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
 import { TitleTag } from '../../shared/components/titleTag';
+import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import messages from './home.messages';
-import { Container, Content, Description, Image, LogoWrapper, RadarContent, TextContent } from './home.styles';
+import {
+  Container,
+  Content,
+  Description,
+  Image,
+  LogoWrapper,
+  RadarContent,
+  TextContent,
+  LastUpdateInfo,
+} from './home.styles';
 
 export const Home = () => {
+  const lastContentfulUpdate = useLastContentfulUpdate();
+
   return (
     <Container>
       <Background />
@@ -39,6 +51,7 @@ export const Home = () => {
           <Image src={RadarImg}></Image>
         </RadarContent>
       </Content>
+      {!!lastContentfulUpdate && <LastUpdateInfo date={lastContentfulUpdate} />}
     </Container>
   );
 };

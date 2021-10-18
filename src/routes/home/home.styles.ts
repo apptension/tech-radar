@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+
 import { H1, Paragraph } from '../../theme/typography';
+import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
 
 export const Container = styled.div`
   height: 100%;
@@ -50,4 +52,8 @@ export const Description = styled(Paragraph)`
   margin: 48px 0;
 `;
 
-export const TitleWithVersion = styled.div``;
+export const LastUpdateInfo = styled(LastUpdateInfoComponent)`
+  position: absolute;
+  bottom: 24px;
+  right: 35px;
+`;

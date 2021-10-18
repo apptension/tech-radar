@@ -38,6 +38,7 @@
     "contentful": "^9.0.3",
     "core-js": "^3.6.2",
     "d3": "^7.1.1",
+    "dayjs": "^1.10.7",
     "es5-shim": "^4.5.12",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-formatjs": "^2.8.0",

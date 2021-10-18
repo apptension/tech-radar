@@ -24,6 +24,18 @@ export const Paragraph = styled.p`
   font-size: 20px;
   line-height: 140%;
   color: ${colors.boulder};
+  margin: 0;
+  padding: 0;
+`;
+
+export const Paragraph2 = styled.p`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 10px;
+  line-height: 12px;
+  color: ${colors.boulder};
+  margin: 0;
+  padding: 0;
 `;
 
 export const ButtonRegularTypography = css`
