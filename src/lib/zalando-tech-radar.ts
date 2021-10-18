@@ -15,6 +15,7 @@ import {
   bounded_box,
   bounded_ring,
   getRadarScale,
+  getRotationForQuadrant,
 } from '../shared/utils/radarUtils';
 
 /* eslint-disable */
@@ -146,7 +147,7 @@ export default function radar_visualization(config) {
     .attr('width', config.width)
     .attr('height', config.height);
 
-  const radar = svg.append('g');
+  const radar = svg.append('g').attr('class', 'radar');
 
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
@@ -185,7 +186,9 @@ export default function radar_visualization(config) {
     .attr('r', rings[3].radius)
     .attr('clip-path', 'url(#semi-circle)')
     .attr('fill', 'url(#conic-gradient)')
-    .attr('transform', 'rotate(90)');
+    .attr('transform', `rotate(${getRotationForQuadrant(config.previously_active_quadrant)})`)
+    .transition()
+    .attr('transform', `rotate(${getRotationForQuadrant(config.active_quadrant)})`);
 
   // grid radial gradient
   const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
@@ -302,7 +305,7 @@ export default function radar_visualization(config) {
   // configure each blip
   blips.each(function (d) {
     let blip = d3.select(this);
-    blip.attr('id', `blip-${d.id}`);
+    blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
 
     // blip link
     if (!config.print_layout && d.active && d.hasOwnProperty('link')) {

@@ -154,3 +154,20 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
     listItem.style.color = mode === 'on' ? color.white : color.boulder;
   }
 };
+
+export const getRotationForQuadrant = (quadrant: number) => {
+  switch (quadrant) {
+    case 0:
+      return -90;
+    case 1:
+      return 0;
+    case 2:
+      return 90;
+    default:
+      return 180;
+  }
+};
+
+export const destroyRadar = () => {
+  d3.select('.radar').remove();
+};
