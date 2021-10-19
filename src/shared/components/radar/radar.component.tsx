@@ -1,5 +1,5 @@
 import React from 'react';
-import * as R from 'ramda';
+import { isNil, min } from 'ramda';
 
 import * as colors from '../../../theme/color';
 import drawTechRadar from '../../../lib/zalando-tech-radar';
@@ -26,7 +26,7 @@ export const Radar = ({
 }: RadarProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
-    width: zoomedQuadrant ? R.min(window.innerWidth - 360, BASIC_RADAR_WIDTH) : window.innerHeight + 210,
+    width: zoomedQuadrant ? min(window.innerWidth - 360, BASIC_RADAR_WIDTH) : window.innerHeight + 210,
     height: window.innerHeight - 40,
     colors: {
       background: colors.codGray,
@@ -40,9 +40,9 @@ export const Radar = ({
     technologies,
   };
 
-  if (!R.isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
-  if (!R.isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
-  if (!R.isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
+  if (!isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
+  if (!isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
+  if (!isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
 
   destroyRadar();
   drawTechRadar(config);

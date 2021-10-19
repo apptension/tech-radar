@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as R from 'ramda';
+import { sortBy, prop } from 'ramda';
 
 import { List } from '../../shared/components/list';
 import { Radar } from '../../shared/components/radar';
@@ -39,7 +39,7 @@ export const Explore = () => {
       ...quadrant,
       position: (quadrant.position + moveQuadrantsBy) % 4,
     }));
-    const sortedMovedQuadrants = R.sortBy(R.prop('position'), movedQuadrants);
+    const sortedMovedQuadrants = sortBy(prop('position'), movedQuadrants);
 
     setZoomedTechnologies(movedTechnologies);
     setZoomedQuadrants(sortedMovedQuadrants);

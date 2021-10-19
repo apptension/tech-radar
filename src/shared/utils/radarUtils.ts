@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as R from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -83,7 +83,7 @@ export const getRadarScale = (): number => {
   const widthScale = availableRadarWidth / BASIC_RADAR_WIDTH;
   const heightScale = window.innerHeight / BASIC_RADAR_HEIGHT;
 
-  return R.clamp(0, 1, Math.min(widthScale, heightScale));
+  return clamp(0, 1, Math.min(widthScale, heightScale));
 };
 
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
@@ -202,19 +202,19 @@ export const getQuadrantPosition = (position: string) => {
 };
 
 export const getTechnologyQuadrant = (technology: ContentfulTechnology): number => {
-  const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
+  const position = pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
   return getQuadrantPosition(position);
 };
 
 export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number) => {
   const radarTechnologies: RadarTechnology[] = [];
 
-  R.forEachObjIndexed<ContentfulTechnology[]>((item) => {
+  forEachObjIndexed<ContentfulTechnology[]>((item) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
-      label: R.pathOr('', ['fields', 'label'], item),
+      label: pathOr('', ['fields', 'label'], item),
       quadrant,
-      ring: R.pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+      ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       inactive: quadrant !== activeQuadrant,
     });
   }, technologies);
@@ -223,27 +223,27 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[], activ
 
 export const getRadarRings = (rings: ContentfulRing[]) => {
   const radarRings: RadarRing[] = [];
-  R.forEachObjIndexed(
+  forEachObjIndexed(
     (item) =>
       radarRings.push({
-        name: R.pathOr('', ['fields', 'label'], item),
-        position: R.pathOr(1, ['fields', 'position'], item),
+        name: pathOr('', ['fields', 'label'], item),
+        position: pathOr(1, ['fields', 'position'], item),
       }),
     rings
   );
 
-  return R.sortBy(R.prop('position'), radarRings);
+  return sortBy(prop('position'), radarRings);
 };
 
 export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
   const radarQuadrants: RadarQuadrant[] = [];
-  R.forEachObjIndexed(
+  forEachObjIndexed(
     (item) =>
       radarQuadrants.push({
-        name: R.pathOr('', ['fields', 'label'], item),
-        position: getQuadrantPosition(R.pathOr('top-left', ['fields', 'position'], item)),
+        name: pathOr('', ['fields', 'label'], item),
+        position: getQuadrantPosition(pathOr('top-left', ['fields', 'position'], item)),
       }),
     quadrants
   );
-  return R.sortBy(R.prop('position'), radarQuadrants);
+  return sortBy(prop('position'), radarQuadrants);
 };
