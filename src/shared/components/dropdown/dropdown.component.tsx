@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ThemeProvider } from 'styled-components';
+import { FilterType } from '../../../modules/filters/filters.types';
 import { renderWhenTrue } from '../../utils/rendering';
 import { TagSize } from '../tag/tag.types';
 import {
@@ -27,10 +28,10 @@ interface DropdownProps {
   options: string[];
   className?: string;
   value: null | string;
-  setValue: (option: string | null) => void;
+  onSelect: (option: FilterType) => void;
 }
 
-export const Dropdown = ({ label, options, value, setValue, className }: DropdownProps) => {
+export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const optionsAmounts = options.length;
   const optionsHeight =
@@ -43,10 +44,10 @@ export const Dropdown = ({ label, options, value, setValue, className }: Dropdow
 
   const handleToggleButtonClick = () => toggleOpen();
 
-  const removeValue = () => setValue(null);
+  const removeValue = () => onSelect(null);
 
   const handleOptionClick = (option: string) => {
-    value === option ? removeValue() : setValue(option);
+    value === option ? removeValue() : onSelect(option);
     closeDropdoown();
   };
 
