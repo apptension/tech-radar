@@ -24,15 +24,14 @@ import { DropdownTheme } from './dropdown.types';
 
 interface DropdownProps {
   label: string;
-  options?: string[];
+  options: string[];
   className?: string;
+  value: null | string;
+  setValue: (option: string | null) => void;
 }
 
-const OPTIONS = ['Languages & Frameworks', 'Infrastructure', 'Products & Tools', 'Packages & Libraries'];
-
-export const Dropdown = ({ label, options = OPTIONS, className }: DropdownProps) => {
+export const Dropdown = ({ label, options, value, setValue, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(null);
   const optionsAmounts = options.length;
   const optionsHeight =
     optionsAmounts * LABEL_HEIGHT + (optionsAmounts - 1) * LABEL_BOTTOM_MARGIN + LIST_TOP_PADDING + LIST_BOTTOM_PADDING;
@@ -63,7 +62,7 @@ export const Dropdown = ({ label, options = OPTIONS, className }: DropdownProps)
         <OptionsContent>
           {options.map((option: string) => (
             <Option key={option} active={value === option} onClick={() => handleOptionClick(option)}>
-              <span>{option}</span>
+              <span title={option}>{option}</span>
               {renderRemoveIcon(value === option)}
             </Option>
           ))}

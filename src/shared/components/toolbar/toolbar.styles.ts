@@ -1,24 +1,29 @@
 import styled from 'styled-components';
 
-import { color, border } from '../../../theme';
+import { border, color } from '../../../theme';
 import { Dropdown } from '../dropdown';
 
 export const Container = styled.div`
   background-color: ${color.codGray};
-  border-radius: 2px;
   height: 60px;
-  width: 697px;
   position: fixed;
   bottom: 24px;
-  right: 340px;
   display: flex;
+  border-right: ${border.boldWhite};
+
+  > div {
+    border-right: none;
+  }
 `;
 
 export const AreaDropdown = styled(Dropdown)`
-  flex: 1;
-  width: 260px;
+  min-width: 300px;
 `;
 
-export const LevelDropdown = styled(Dropdown)``;
+export const LevelDropdown = styled(Dropdown)`
+  min-width: 200px;
+`;
 
-export const TeamDropdown = styled(Dropdown)``;
+export const TeamDropdown = styled(Dropdown)`
+  min-width: 200px;
+`;

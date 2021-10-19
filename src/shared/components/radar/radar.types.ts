@@ -1,6 +1,7 @@
 export type RadarTechnology = { label: string; quadrant: number; ring: number; inactive: boolean };
 export type RadarRing = { name: string; position: number };
 export type RadarQuadrant = { name: string; position: number };
+export type RadarTeam = { name: string };
 
 export type RadarConfig = {
   svg_id: string;
@@ -31,6 +32,8 @@ export enum RingPositions {
 }
 
 export type ContentfulRing = { fields: { label: string; position: RingPositions } };
+
+export type ContentfulTeam = { fields: { label: string } };
 
 export type ContentfulQuadrant = { fields: { label: string; position: QuadrantPositions } };
 

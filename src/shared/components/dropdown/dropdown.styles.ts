@@ -57,6 +57,7 @@ export const ToggleButton = styled.button.attrs({ type: 'button' })`
   border: none;
   background: none;
   cursor: pointer;
+  margin-left: 16px;
 
   &:focus {
     outline: none;

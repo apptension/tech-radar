@@ -17,14 +17,14 @@ export const Tag = ({ children, className, onRemove, size = TagSize.MEDIUM }: Ta
   const theme: TagTheme = { size };
 
   const renderRemoveIcon = renderWhenTrue(() => (
-    <Icon>
+    <Icon onClick={onRemove}>
       <RemoveIcon />
     </Icon>
   ));
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={className} onClick={onRemove}>
+      <Container className={className}>
         {children}
         {renderRemoveIcon(!isNil(onRemove))}
       </Container>

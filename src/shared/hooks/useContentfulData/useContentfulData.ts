@@ -8,6 +8,7 @@ import {
   ContentfulRing,
   ContentfulTechnology,
   ContentfulData,
+  ContentfulTeam,
 } from '../../components/radar/radar.types';
 
 export const getEntries =
@@ -71,11 +72,13 @@ export const useContentfulData = () => {
   const technologies = selectData('entry') as ContentfulTechnology[];
   const quadrants = selectData('quadrant') as ContentfulQuadrant[];
   const rings = selectData('ring') as ContentfulRing[];
+  const teams = selectData('team') as ContentfulTeam[];
 
   return {
     contentfulQuery,
     technologies,
     quadrants,
     rings,
+    teams,
   };
 };

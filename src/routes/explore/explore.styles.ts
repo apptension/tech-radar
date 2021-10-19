@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
-import { Radar as RadarComponent } from '../../shared/components/radar';
 import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { zIndex } from '../../theme';
 import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
@@ -39,6 +38,7 @@ export const Viewer = styled.div<ViewerProps>`
   align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   width: ${(props) => (props.fullRadar ? '100%' : undefined)};
+  position: relative;
 `;
 
 export const Toolbar = styled(ToolbarComponent)`
