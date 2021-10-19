@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as R from 'ramda';
 
 import { RadarComponent } from './radar.component';
 import { Container } from './radar.styles';
-import { ZOOMED_QUADRANT } from './radar.constants';
 import {
   ContentfulQuadrant,
   ContentfulRing,
@@ -17,20 +16,19 @@ export interface RadarProps {
   technologies: ContentfulTechnology[];
   rings: ContentfulRing[];
   quadrants: ContentfulQuadrant[];
+  activeQuadrant: number;
+  zoomedQuadrant: number | null;
+  previouslyActiveQuadrant: number;
 }
 
-export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
-  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(ZOOMED_QUADRANT.bottomLeft);
-  const [activeQuadrant, setActiveQuadrant] = useState(ZOOMED_QUADRANT.topLeft);
-  const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
-
-  const updateActiveQuadrant = (newQuadrant: number) => {
-    setPreviouslyActiveQuadrant(activeQuadrant);
-    setActiveQuadrant(newQuadrant);
-  };
-
-  //TODO when zooming, always set zoomedQuadrant to activeQuadrant
-
+export const Radar = ({
+  technologies,
+  rings,
+  quadrants,
+  activeQuadrant,
+  zoomedQuadrant,
+  previouslyActiveQuadrant,
+}: RadarProps) => {
   const getTechnologyQuadrant = (technology: ContentfulTechnology): number => {
     const position = R.pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
     return getQuadrantPosition(position);
@@ -106,10 +104,6 @@ export const Radar = ({ technologies, rings, quadrants }: RadarProps) => {
         activeQuadrant={activeQuadrant}
         previouslyActiveQuadrant={previouslyActiveQuadrant}
       />
-      {
-        //TODO remove after adding this functionality in toolbar
-      }
-      <button onClick={() => updateActiveQuadrant((activeQuadrant + 1) % 4)}>Change quadrant</button>
     </Container>
   );
 };

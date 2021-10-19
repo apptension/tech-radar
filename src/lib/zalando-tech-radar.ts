@@ -134,10 +134,10 @@ export default function radar_visualization(config) {
 
   function viewbox(quadrant) {
     return [
-      Math.max(0, quadrants[quadrant].factor_x * 560) - 370 * scale,
+      Math.max(0, quadrants[quadrant].factor_x * 560) - 400 * scale,
       Math.max(0, quadrants[quadrant].factor_y * 560) - 485 * scale,
-      530 * scale,
-      530 * scale,
+      500 * scale,
+      550 * scale,
     ].join(' ');
   }
 
@@ -152,6 +152,7 @@ export default function radar_visualization(config) {
   if ('zoomed_quadrant' in config) {
     svg.attr('viewBox', viewbox(config.zoomed_quadrant));
   } else {
+    svg.attr('viewBox', `0 0 ${config.width} ${config.height}`);
     radar.attr('transform', translate({ x: config.width / 2, y: config.height / 2 }));
   }
 
