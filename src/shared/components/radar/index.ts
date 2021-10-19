@@ -1,1 +1,1 @@
-export { Radar } from './radar.container';
+export { Radar } from './radar.component';
