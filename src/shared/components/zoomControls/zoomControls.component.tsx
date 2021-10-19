@@ -1,26 +1,28 @@
 import React from 'react';
 
-import { useIntl } from 'react-intl';
-import { Container, PlusIcon, MinusIcon, ZoomButton } from './zoomControls.styles';
-import messages from './zoomControls.messages';
+import { ZoomButton } from '../zoomButton';
+import { ZoomButtonType } from '../zoomButton/zoomButton.types';
+import { Container } from './zoomControls.styles';
 
-export interface HeaderProps {
+export interface ZoomControlsProps {
   className?: string;
   onZoomIn: () => void;
   onZoomOut: () => void;
+  zoomInDisabled?: boolean;
+  zoomOutDisabled?: boolean;
 }
 
-export const ZoomControls = ({ className, onZoomIn, onZoomOut }: HeaderProps) => {
-  const intl = useIntl();
-
+export const ZoomControls = ({
+  className,
+  onZoomIn,
+  onZoomOut,
+  zoomInDisabled,
+  zoomOutDisabled,
+}: ZoomControlsProps) => {
   return (
     <Container className={className}>
-      <ZoomButton title={intl.formatMessage(messages.zoomInButtonTitle)} onClick={onZoomIn}>
-        <PlusIcon />
-      </ZoomButton>
-      <ZoomButton title={intl.formatMessage(messages.zoomOutButtonTitle)} onClick={onZoomOut}>
-        <MinusIcon />
-      </ZoomButton>
+      <ZoomButton onClick={onZoomIn} disabled={zoomInDisabled} />
+      <ZoomButton type={ZoomButtonType.OUT} onClick={onZoomOut} disabled={zoomOutDisabled} />
     </Container>
   );
 };
