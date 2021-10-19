@@ -5,7 +5,6 @@ import { Dropdown } from '../dropdown';
 
 export const Container = styled.div`
   background-color: ${color.codGray};
-  border: ${border.regularWhite};
   border-radius: 2px;
   height: 60px;
   width: 697px;
@@ -18,11 +17,8 @@ export const Container = styled.div`
 export const AreaDropdown = styled(Dropdown)`
   flex: 1;
   width: 260px;
-  border-right: ${border.regularWhite};
 `;
 
-export const LevelDropdown = styled(Dropdown)`
-  border-right: ${border.regularWhite};
-`;
+export const LevelDropdown = styled(Dropdown)``;
 
 export const TeamDropdown = styled(Dropdown)``;
