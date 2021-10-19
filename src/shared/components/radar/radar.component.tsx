@@ -6,7 +6,7 @@ import drawTechRadar from '../../../lib/zalando-tech-radar';
 import { destroyRadar } from '../../utils/radarUtils';
 import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 
-interface RadarComponentProps {
+interface RadarProps {
   technologies: RadarTechnology[];
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
@@ -15,14 +15,14 @@ interface RadarComponentProps {
   previouslyActiveQuadrant: number;
 }
 
-export const RadarComponent = ({
+export const Radar = ({
   technologies,
   rings,
   quadrants,
   zoomedQuadrant,
   activeQuadrant,
   previouslyActiveQuadrant,
-}: RadarComponentProps) => {
+}: RadarProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
     width: zoomedQuadrant ? window.innerWidth - 360 : window.innerHeight + 210,

@@ -27,18 +27,18 @@ export const Sidebar = styled.div`
   width: 411px;
 `;
 
-export const Viewer = styled.div`
+type ViewerProps = {
+  fullRadar: boolean;
+};
+
+export const Viewer = styled.div<ViewerProps>`
   height: 100%;
   flex: 1;
   position: relative;
-`;
-
-export const Radar = styled(RadarComponent)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  display: flex;
+  align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
+  justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
+  width: ${(props) => (props.fullRadar ? '100%' : undefined)};
 `;
 
 export const Toolbar = styled(ToolbarComponent)`

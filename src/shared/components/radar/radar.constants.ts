@@ -1,4 +1,4 @@
-export const ZOOMED_QUADRANT = {
+export const QUADRANT = {
   bottomRight: 0,
   bottomLeft: 1,
   topLeft: 2,
