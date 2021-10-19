@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as R from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -8,7 +8,18 @@ import {
   RADAR_SEED_MULTIPLIER,
   SIDEBAR_WIDTH,
 } from '../components/radar/radar.constants';
-import { BlipInterface, BubbleInterface, MinMaxFunction, Point } from '../components/radar/radar.types';
+import {
+  BlipInterface,
+  BubbleInterface,
+  ContentfulQuadrant,
+  ContentfulRing,
+  ContentfulTechnology,
+  MinMaxFunction,
+  Point,
+  RadarQuadrant,
+  RadarRing,
+  RadarTechnology,
+} from '../components/radar/radar.types';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -72,7 +83,7 @@ export const getRadarScale = (): number => {
   const widthScale = availableRadarWidth / BASIC_RADAR_WIDTH;
   const heightScale = window.innerHeight / BASIC_RADAR_HEIGHT;
 
-  return R.clamp(0, 1, Math.min(widthScale, heightScale));
+  return clamp(0, 1, Math.min(widthScale, heightScale));
 };
 
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
@@ -170,4 +181,69 @@ export const getRotationForQuadrant = (quadrant: number) => {
 
 export const destroyRadar = () => {
   d3.select('.radar').remove();
+};
+
+export const getQuadrantPosition = (position: string) => {
+  if (position) {
+    switch (position) {
+      case 'bottom-right':
+        return 0;
+      case 'bottom-left':
+        return 1;
+      case 'top-left':
+        return 2;
+      case 'top-right':
+        return 3;
+      default:
+        return 0;
+    }
+  }
+  return 0;
+};
+
+export const getTechnologyQuadrant = (technology: ContentfulTechnology): number => {
+  const position = pathOr('', ['fields', 'quadrant', 'fields', 'position'], technology);
+  return getQuadrantPosition(position);
+};
+
+export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number) => {
+  const radarTechnologies: RadarTechnology[] = [];
+
+  forEachObjIndexed<ContentfulTechnology[]>((item) => {
+    const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
+    return radarTechnologies.push({
+      label: pathOr('', ['fields', 'label'], item),
+      quadrant,
+      ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+      inactive: quadrant !== activeQuadrant,
+    });
+  }, technologies);
+  return radarTechnologies;
+};
+
+export const getRadarRings = (rings: ContentfulRing[]) => {
+  const radarRings: RadarRing[] = [];
+  forEachObjIndexed(
+    (item) =>
+      radarRings.push({
+        name: pathOr('', ['fields', 'label'], item),
+        position: pathOr(1, ['fields', 'position'], item),
+      }),
+    rings
+  );
+
+  return sortBy(prop('position'), radarRings);
+};
+
+export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
+  const radarQuadrants: RadarQuadrant[] = [];
+  forEachObjIndexed(
+    (item) =>
+      radarQuadrants.push({
+        name: pathOr('', ['fields', 'label'], item),
+        position: getQuadrantPosition(pathOr('top-left', ['fields', 'position'], item)),
+      }),
+    quadrants
+  );
+  return sortBy(prop('position'), radarQuadrants);
 };
