@@ -25,6 +25,7 @@ export const TitleTag = styled(TitleTagComponent)`
 export const Sidebar = styled.div`
   height: 100%;
   width: 411px;
+  min-width: 411px;
 `;
 
 type ViewerProps = {
@@ -34,7 +35,6 @@ type ViewerProps = {
 export const Viewer = styled.div<ViewerProps>`
   height: 100%;
   flex: 1;
-  position: relative;
   display: flex;
   align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};

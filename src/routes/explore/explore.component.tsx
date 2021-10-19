@@ -74,7 +74,12 @@ export const Explore = () => {
           previouslyActiveQuadrant={previouslyActiveQuadrant}
         />
         <Toolbar />
-        <ZoomControls onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
+        <ZoomControls
+          onZoomIn={onZoomIn}
+          onZoomOut={onZoomOut}
+          zoomInDisabled={!!zoomedQuadrant}
+          zoomOutDisabled={!zoomedQuadrant}
+        />
       </Viewer>
     </Container>
   );
