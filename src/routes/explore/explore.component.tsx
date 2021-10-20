@@ -16,12 +16,14 @@ import {
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
-import { selectArea, selectSearch } from '../../modules/filters/filters.selectors';
+import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
   const searchText = useSelector(selectSearch);
   const areaValue = useSelector(selectArea);
+  const levelValue = useSelector(selectLevel);
+  const teamValue = useSelector(selectTeam);
   const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
 
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number | null>(QUADRANT.bottomLeft);
@@ -53,20 +55,28 @@ export const Explore = () => {
   }, [areaValue, radarQuadrants]);
 
   const filterTechnologies = () => {
-    //TODO add all filters
-    if (!searchText) {
-      setFilteredTechnologies(currentTechnologies);
-    } else {
-      const filtered = currentTechnologies.filter((technology) =>
+    let filtered = currentTechnologies;
+
+    if (searchText) {
+      filtered = currentTechnologies.filter((technology) =>
         technology.label.toLowerCase().includes(searchText.toLowerCase())
       );
-      setFilteredTechnologies(filtered);
     }
+
+    if (teamValue) {
+      filtered = filtered.filter((technology) => technology.team === teamValue);
+    }
+
+    if (levelValue) {
+      filtered = filtered.filter((technology) => radarRings[technology.ring].name === levelValue);
+    }
+
+    setFilteredTechnologies(filtered);
   };
 
   useEffect(() => {
     if (!isEmpty(technologies)) filterTechnologies();
-  }, [searchText, zoomedQuadrant]);
+  }, [searchText, zoomedQuadrant, levelValue, teamValue]);
 
   const updateActiveQuadrant = (newQuadrant: number | null) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
