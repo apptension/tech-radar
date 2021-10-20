@@ -4,7 +4,7 @@ import { FiltersState, FilterType } from './filters.types';
 import * as actions from './filters.actions';
 
 export const INITIAL_STATE: FiltersState = {
-  area: null,
+  area: 'Languages & Frameworks',
   level: null,
   team: null,
   search: null,

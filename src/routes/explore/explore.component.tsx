@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { sortBy, prop, isEmpty } from 'ramda';
+import { sortBy, prop, isEmpty, isNil, mathMod } from 'ramda';
 
 import { useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
@@ -16,15 +16,16 @@ import {
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
-import { selectSearch } from '../../modules/filters/filters.selectors';
+import { selectArea, selectSearch } from '../../modules/filters/filters.selectors';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
   const searchText = useSelector(selectSearch);
+  const areaValue = useSelector(selectArea);
   const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
 
-  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
-  const [activeQuadrant, setActiveQuadrant] = useState(QUADRANT.bottomLeft);
+  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number | null>(QUADRANT.bottomLeft);
+  const [activeQuadrant, setActiveQuadrant] = useState<number | null>(QUADRANT.topLeft);
 
   const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
   const [zoomedTechnologies, setZoomedTechnologies] = useState<RadarTechnology[]>([]);
@@ -44,7 +45,12 @@ export const Explore = () => {
 
   const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
 
-  //TODO set activeQuadrant based on filter
+  useEffect(() => {
+    if (!isEmpty(radarQuadrants)) {
+      const quadrantForArea = radarQuadrants.find((quadrant) => quadrant.name === areaValue);
+      setActiveQuadrant(quadrantForArea ? quadrantForArea.position : null);
+    }
+  }, [areaValue, radarQuadrants]);
 
   const filterTechnologies = () => {
     //TODO add all filters
@@ -62,22 +68,25 @@ export const Explore = () => {
     if (!isEmpty(technologies)) filterTechnologies();
   }, [searchText, zoomedQuadrant]);
 
-  const updateActiveQuadrant = (newQuadrant: number) => {
+  const updateActiveQuadrant = (newQuadrant: number | null) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
     setActiveQuadrant(newQuadrant);
   };
 
   const rotateData = (newQuadrant: number) => {
-    const moveQuadrantsBy = newQuadrant - activeQuadrant;
+    const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : newQuadrant;
 
-    const movedTechnologies = radarTechnologies.map((technology) => ({
-      ...technology,
-      quadrant: (technology.quadrant + moveQuadrantsBy) % 4,
-    }));
+    const movedTechnologies = radarTechnologies.map((technology) => {
+      return {
+        ...technology,
+        quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
+      };
+    });
     const movedQuadrants = radarQuadrants.map((quadrant) => ({
       ...quadrant,
-      position: (quadrant.position + moveQuadrantsBy) % 4,
+      position: mathMod(quadrant.position + moveQuadrantsBy, 4),
     }));
+
     const sortedMovedQuadrants = sortBy(prop('position'), movedQuadrants);
 
     setZoomedTechnologies(movedTechnologies);

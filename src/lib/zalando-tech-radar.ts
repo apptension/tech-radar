@@ -175,7 +175,12 @@ export default function radar_visualization(config) {
     .attr('fill', 'url(#conic-gradient)')
     .attr('transform', `rotate(${getRotationForQuadrant(config.previously_active_quadrant)})`)
     .transition()
-    .attr('transform', `rotate(${getRotationForQuadrant(config.active_quadrant)})`);
+    .attr(
+      'transform',
+      config.zoomed_quadrant
+        ? `rotate(${getRotationForQuadrant(config.zoomed_quadrant)})`
+        : `rotate(${getRotationForQuadrant(config.active_quadrant)})`
+    );
 
   // grid radial gradient
   const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
@@ -228,13 +233,13 @@ export default function radar_visualization(config) {
       .attr('x', everyQuadrantX)
       .style('fill', color.mineShaft)
       .transition()
-      .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.silver : color.mineShaft);
     quadrantLabel
       .append('text')
       .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
       .attr('x', everyQuadrantX)
       .attr('text-anchor', 'left')
-      .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
       .style('font-size', `${config.zoomed_quadrant ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');

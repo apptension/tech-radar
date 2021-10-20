@@ -12,8 +12,8 @@ interface RadarProps {
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
-  activeQuadrant: number;
-  previouslyActiveQuadrant: number;
+  activeQuadrant: number | null;
+  previouslyActiveQuadrant: number | null;
 }
 
 export const Radar = ({

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck } from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -213,7 +213,7 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
-export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number) => {
+export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number | null) => {
   const radarTechnologies: RadarTechnology[] = [];
 
   forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
@@ -223,7 +223,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[], activ
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
-      inactive: quadrant !== activeQuadrant,
+      inactive: !isNil(activeQuadrant) ? quadrant !== activeQuadrant : true,
       id: i.toString(),
     });
   }, technologies);
