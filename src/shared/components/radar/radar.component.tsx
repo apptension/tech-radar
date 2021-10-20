@@ -26,7 +26,7 @@ export const Radar = ({
 }: RadarProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
-    width: zoomedQuadrant ? min(window.innerWidth - 360, BASIC_RADAR_WIDTH) : window.innerHeight + 210,
+    width: zoomedQuadrant ? min(window.innerWidth - 420, BASIC_RADAR_WIDTH) : window.innerHeight + 210,
     height: window.innerHeight - 40,
     colors: {
       background: colors.codGray,

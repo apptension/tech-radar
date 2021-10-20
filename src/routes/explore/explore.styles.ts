@@ -21,7 +21,7 @@ export const TitleTag = styled(TitleTagComponent)`
   z-index: ${zIndex.overlay};
 `;
 
-export const Sidebar = styled.div`
+export const SidebarWrapper = styled.div`
   height: 100%;
   width: 411px;
   min-width: 411px;
@@ -38,7 +38,6 @@ export const Viewer = styled.div<ViewerProps>`
   align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   width: ${(props) => (props.fullRadar ? '100%' : undefined)};
-  position: relative;
 `;
 
 export const Toolbar = styled(ToolbarComponent)`

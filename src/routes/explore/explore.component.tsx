@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { sortBy, prop } from 'ramda';
 
-import { List } from '../../shared/components/list';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
@@ -14,7 +13,8 @@ import {
   pluckNameFromList,
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
-import { Container, TitleTag, Viewer, Sidebar, Toolbar, ZoomControls } from './explore.styles';
+import { Sidebar } from '../../shared/components/sidebar';
+import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
@@ -73,9 +73,9 @@ export const Explore = () => {
   return (
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
-      <Sidebar>
-        <List />
-      </Sidebar>
+      <SidebarWrapper>
+        <Sidebar />
+      </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>
         <Radar
           technologies={zoomedQuadrant ? zoomedTechnologies : radarTechnologies}
