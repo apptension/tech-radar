@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck } from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -22,6 +22,7 @@ import {
   RadarTeam,
   RadarTechnology,
 } from '../components/radar/radar.types';
+import { FilterType } from '../../modules/filters/filters.types';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -161,6 +162,11 @@ export const unhighlightBlip = ({ id, ring, color }: BlipInterface) => {
   }
 };
 
+export const getBlipDataById = (id: string) => {
+  const blip = document.querySelector(`#blip-${id}`) as SVGGraphicsElement;
+  return JSON.parse(blip.dataset.translate || '');
+};
+
 export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
   const listItem = document.querySelector(`#list-item-${id}`) as HTMLDivElement;
   if (listItem) {
@@ -208,16 +214,18 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
-export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number) => {
+export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number | null) => {
   const radarTechnologies: RadarTechnology[] = [];
 
-  forEachObjIndexed<ContentfulTechnology[]>((item) => {
+  forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
       label: pathOr('', ['fields', 'label'], item),
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
-      inactive: quadrant !== activeQuadrant,
+      team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
+      inactive: !isNil(activeQuadrant) ? quadrant !== activeQuadrant : true,
+      id: i.toString(),
     });
   }, technologies);
   return radarTechnologies;
@@ -264,3 +272,35 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
 };
 
 export const pluckNameFromList = (list: RadarRing[] | RadarQuadrant[] | RadarTeam[]) => pluck('name', list);
+
+export const getFilteredTechnologies = ({
+  searchText,
+  teamValue,
+  levelValue,
+  rings,
+  currentTechnologies,
+}: {
+  searchText: FilterType;
+  teamValue: FilterType;
+  levelValue: FilterType;
+  rings: RadarRing[];
+  currentTechnologies: RadarTechnology[];
+}) => {
+  let filtered = currentTechnologies;
+
+  if (searchText) {
+    filtered = currentTechnologies.filter((technology) =>
+      technology.label.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+
+  if (teamValue) {
+    filtered = filtered.filter((technology) => technology.team === teamValue);
+  }
+
+  if (levelValue) {
+    filtered = filtered.filter((technology) => rings[technology.ring].name === levelValue);
+  }
+
+  return filtered;
+};

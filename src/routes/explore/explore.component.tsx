@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { sortBy, prop } from 'ramda';
+import React, { useState, useEffect } from 'react';
+import { sortBy, prop, isEmpty, isNil, mathMod } from 'ramda';
 
-import { List } from '../../shared/components/list';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDebounce } from 'use-debounce';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { QUADRANT } from '../../shared/components/radar/radar.constants';
 import {
+  getFilteredTechnologies,
   getRadarQuadrants,
   getRadarRings,
   getRadarTeams,
@@ -14,11 +16,23 @@ import {
   pluckNameFromList,
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
-import { Container, TitleTag, Viewer, Sidebar, Toolbar, ZoomControls } from './explore.styles';
+import { Sidebar } from '../../shared/components/sidebar';
+import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
+import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
+import { setArea } from '../../modules/filters/filters.actions';
+import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
+import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 
 export const Explore = () => {
-  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
-  const [activeQuadrant, setActiveQuadrant] = useState(QUADRANT.bottomLeft);
+  const dispatch = useDispatch();
+  const searchText = useSelector(selectSearch);
+  const areaValue = useSelector(selectArea);
+  const levelValue = useSelector(selectLevel);
+  const teamValue = useSelector(selectTeam);
+  const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
+
+  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number | null>(QUADRANT.bottomLeft);
+  const [activeQuadrant, setActiveQuadrant] = useState<number | null>(null);
 
   const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
   const [zoomedTechnologies, setZoomedTechnologies] = useState<RadarTechnology[]>([]);
@@ -36,22 +50,53 @@ export const Explore = () => {
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
 
-  const updateActiveQuadrant = (newQuadrant: number) => {
+  const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
+
+  useEffect(() => {
+    if (!isEmpty(radarQuadrants) && !areaValue) {
+      dispatch(setArea(radarQuadrants[INITIAL_ACTIVE_QUADRANT].name));
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (!isEmpty(radarQuadrants)) {
+      const quadrantForArea = radarQuadrants.find((quadrant) => quadrant.name === areaValue);
+      setActiveQuadrant(quadrantForArea ? quadrantForArea.position : null);
+    }
+  }, [areaValue, radarQuadrants]);
+
+  useEffect(() => {
+    if (!isEmpty(technologies)) {
+      const filtered = getFilteredTechnologies({
+        searchText,
+        currentTechnologies,
+        rings: radarRings,
+        teamValue,
+        levelValue,
+      });
+      setFilteredTechnologies(filtered);
+    }
+  }, [searchText, zoomedQuadrant, levelValue, teamValue]);
+
+  const updateActiveQuadrant = (newQuadrant: number | null) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
     setActiveQuadrant(newQuadrant);
   };
 
   const rotateData = (newQuadrant: number) => {
-    const moveQuadrantsBy = newQuadrant - activeQuadrant;
+    const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : newQuadrant;
 
-    const movedTechnologies = radarTechnologies.map((technology) => ({
-      ...technology,
-      quadrant: (technology.quadrant + moveQuadrantsBy) % 4,
-    }));
+    const movedTechnologies = radarTechnologies.map((technology) => {
+      return {
+        ...technology,
+        quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
+      };
+    });
     const movedQuadrants = radarQuadrants.map((quadrant) => ({
       ...quadrant,
-      position: (quadrant.position + moveQuadrantsBy) % 4,
+      position: mathMod(quadrant.position + moveQuadrantsBy, 4),
     }));
+
     const sortedMovedQuadrants = sortBy(prop('position'), movedQuadrants);
 
     setZoomedTechnologies(movedTechnologies);
@@ -70,15 +115,21 @@ export const Explore = () => {
     setZoomedQuadrant(null);
   };
 
+  const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), EMPTY_RESULTS_DEBOUNCE_TIME);
+
   return (
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
-      <Sidebar>
-        <List />
-      </Sidebar>
+      <SidebarWrapper>
+        <Sidebar
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
+          emptyResults={emptyResults}
+          rings={radarRings}
+        />
+      </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>
         <Radar
-          technologies={zoomedQuadrant ? zoomedTechnologies : radarTechnologies}
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
           quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
           rings={radarRings}
           activeQuadrant={activeQuadrant}

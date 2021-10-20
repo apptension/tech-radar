@@ -1,56 +1,40 @@
 import styled from 'styled-components';
 
-import { ReactComponent as SearchIconSVG } from '../../../images/icons/search.svg';
 import * as colors from '../../../theme/color';
-
-export const Container = styled.div`
-  padding: 70px 35px;
-  color: ${colors.white};
-  height: 100%;
-  width: 100%;
-`;
-
-export const SearchWrapper = styled.div``;
-
-export const SearchInputWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const SearchInput = styled.input`
-  font-size: 20px;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-  color: ${colors.white};
-
-  ::placeholder {
-    color: ${colors.boulder};
-  }
-`;
-
-export const SearchIcon = styled(SearchIconSVG)`
-  height: 100%;
-`;
-
-export const Image = styled.img`
-  width: 100%;
-`;
+import { Tag as TagComponent } from '../tag';
 
 export const ListWrapper = styled.div`
-  margin-top: 87px;
   margin-bottom: 25px;
   display: flex;
   flex-direction: column;
-  height: 850px;
-  max-height: 100%;
-  overflow: scroll;
+  height: 100%;
+  overflow: auto;
 `;
 
 export const ListItem = styled.div`
+  margin: 10px 0;
+  cursor: default;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const ListLabel = styled.div`
+  height: 26px;
   color: ${colors.boulder};
   font-size: 18px;
-  margin: 10px 0;
+`;
+
+export const ListItemTags = styled.div`
+  display: flex;
+`;
+
+export const Tag = styled(TagComponent)`
+  margin: 0 8px;
+  background-color: ${colors.mineShaft};
+  color: ${colors.boulder}; //TODO make into variant of Tag
+`;
+
+export const EmptyResults = styled.div`
+  color: ${colors.boulder};
+  font-size: 18px;
 `;

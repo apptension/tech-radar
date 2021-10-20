@@ -9,3 +9,5 @@ export const selectArea = createSelector(selectFiltersDomain, (state) => state.a
 export const selectLevel = createSelector(selectFiltersDomain, (state) => state.level);
 
 export const selectTeam = createSelector(selectFiltersDomain, (state) => state.team);
+
+export const selectSearch = createSelector(selectFiltersDomain, (state) => state.search);

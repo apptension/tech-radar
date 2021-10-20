@@ -118,20 +118,6 @@ export default function radar_visualization(config) {
     segmented[technology.quadrant][technology.ring].push(technology);
   }
 
-  // assign unique sequential id to each technology
-  let id = 1;
-  for (let quadrant of [2, 3, 1, 0]) {
-    for (let ring = 0; ring < 4; ring++) {
-      const technologies = segmented[quadrant][ring];
-      technologies.sort(function (a, b) {
-        return a.label.localeCompare(b.label);
-      });
-      for (let i = 0; i < technologies.length; i++) {
-        technologies[i].id = '' + id++;
-      }
-    }
-  }
-
   function viewbox(quadrant) {
     return [
       Math.max(0, quadrants[quadrant].factor_x * 560) - 400 * scale,
@@ -189,7 +175,12 @@ export default function radar_visualization(config) {
     .attr('fill', 'url(#conic-gradient)')
     .attr('transform', `rotate(${getRotationForQuadrant(config.previously_active_quadrant)})`)
     .transition()
-    .attr('transform', `rotate(${getRotationForQuadrant(config.active_quadrant)})`);
+    .attr(
+      'transform',
+      config.zoomed_quadrant
+        ? `rotate(${getRotationForQuadrant(config.zoomed_quadrant)})`
+        : `rotate(${getRotationForQuadrant(config.active_quadrant)})`
+    );
 
   // grid radial gradient
   const ringGradient = defs.append('radialGradient').attr('id', 'ringGradient');
@@ -242,13 +233,13 @@ export default function radar_visualization(config) {
       .attr('x', everyQuadrantX)
       .style('fill', color.mineShaft)
       .transition()
-      .style('fill', config.active_quadrant === i ? color.silver : color.mineShaft);
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.silver : color.mineShaft);
     quadrantLabel
       .append('text')
       .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
       .attr('x', everyQuadrantX)
       .attr('text-anchor', 'left')
-      .style('fill', config.active_quadrant === i ? color.mineShaft : color.scorpion)
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
       .style('font-size', `${config.zoomed_quadrant ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');
@@ -411,7 +402,10 @@ export default function radar_visualization(config) {
   // make sure that blips stay inside their segment
   function ticked() {
     blips.attr('transform', function (d) {
-      return translate({ x: d.segment.clipx(d), y: d.segment.clipy(d) });
+      const translateData = { x: d.segment.clipx(d), y: d.segment.clipy(d) };
+      const blip = d3.select(this);
+      blip.attr('data-translate', JSON.stringify(translateData));
+      return translate(translateData);
     });
   }
 

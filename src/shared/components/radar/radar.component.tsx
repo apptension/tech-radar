@@ -5,15 +5,20 @@ import * as colors from '../../../theme/color';
 import drawTechRadar from '../../../lib/zalando-tech-radar';
 import { destroyRadar } from '../../utils/radarUtils';
 import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
-import { BASIC_RADAR_WIDTH } from './radar.constants';
+import {
+  BASIC_RADAR_WIDTH,
+  HORIZONTAL_RADAR_MARGIN,
+  HORIZONTAL_ZOOMED_RADAR_MARGIN,
+  VERTICAL_RADAR_MARGIN,
+} from './radar.constants';
 
 interface RadarProps {
   technologies: RadarTechnology[];
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
-  activeQuadrant: number;
-  previouslyActiveQuadrant: number;
+  activeQuadrant: number | null;
+  previouslyActiveQuadrant: number | null;
 }
 
 export const Radar = ({
@@ -26,8 +31,10 @@ export const Radar = ({
 }: RadarProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
-    width: zoomedQuadrant ? min(window.innerWidth - 360, BASIC_RADAR_WIDTH) : window.innerHeight + 210,
-    height: window.innerHeight - 40,
+    width: zoomedQuadrant
+      ? min(window.innerWidth - HORIZONTAL_ZOOMED_RADAR_MARGIN, BASIC_RADAR_WIDTH)
+      : window.innerHeight + HORIZONTAL_RADAR_MARGIN,
+    height: window.innerHeight - VERTICAL_RADAR_MARGIN,
     colors: {
       background: colors.codGray,
       grid: colors.mineShaft,

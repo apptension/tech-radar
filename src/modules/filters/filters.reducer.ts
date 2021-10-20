@@ -22,8 +22,13 @@ const handleSetTeam = (state: FiltersState, { payload }: PayloadAction<FilterTyp
   state.team = payload;
 };
 
+const handleSetSearch = (state: FiltersState, { payload }: PayloadAction<FilterType>) => {
+  state.search = payload;
+};
+
 export const reducer = createReducer(INITIAL_STATE, (builder) => {
   builder.addCase(actions.setArea, handleSetArea);
   builder.addCase(actions.setLevel, handleSetLevel);
   builder.addCase(actions.setTeam, handleSetTeam);
+  builder.addCase(actions.setSearch, handleSetSearch);
 });

@@ -1,55 +1,77 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useState } from 'react';
+import { sortBy, prop, toLower, compose } from 'ramda';
 
-import LineImg from '../../../images/line.png';
-import { highlightBlip, highlightLegend, unhighlightBlip } from '../../utils/radarUtils';
-import { color } from '../../../theme';
+import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import {
-  Container,
-  SearchInputWrapper,
-  SearchWrapper,
-  SearchIcon,
-  Image,
-  ListWrapper,
-  SearchInput,
-  ListItem,
-} from './list.styles';
+  getBlipDataById,
+  hideBubble,
+  highlightBlip,
+  highlightLegend,
+  showBubble,
+  unhighlightBlip,
+} from '../../utils/radarUtils';
+import { color } from '../../../theme';
+import { RadarRing, RadarTechnology } from '../radar/radar.types';
+import { selectSearch } from '../../../modules/filters/filters.selectors';
+import { TagSize } from '../tag/tag.types';
+import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
 import messages from './list.messages';
 
-// TODO List has to get same data as radar (with id,x,y)
-export const List = () => {
-  return (
-    <Container>
-      <SearchWrapper>
-        <SearchInputWrapper>
-          <FormattedMessage {...messages.searchPlaceholder}>
-            {(placeholder) => <SearchInput placeholder={placeholder.toString()} />}
-          </FormattedMessage>
-          <SearchIcon />
-        </SearchInputWrapper>
-        <Image src={LineImg} />
-      </SearchWrapper>
+interface ListProps {
+  technologies: RadarTechnology[];
+  emptyResults: boolean;
+  rings: RadarRing[];
+}
 
-      <ListWrapper>
-        {'123456789012345678901234'.split('').map((number, i) => (
-          <ListItem
-            key={i}
-            id={`list-item-${i}`}
-            onMouseEnter={() => {
-              // TODO pass real item data & show bubble
-              highlightBlip({ id: i.toString(), ring: 0 });
-              highlightLegend({ id: i.toString() });
-            }}
-            onMouseLeave={() => {
-              // TODO pass real item data & hide bubble
-              unhighlightBlip({ id: i.toString(), ring: 0, color: color.silver });
-              highlightLegend({ id: i.toString(), mode: 'off' });
-            }}
-          >
-            List item
-          </ListItem>
-        ))}
-      </ListWrapper>
-    </Container>
+export const List = ({ technologies, emptyResults, rings }: ListProps) => {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const searchText = useSelector(selectSearch);
+
+  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+
+  if (emptyResults) {
+    return (
+      <EmptyResults>
+        <FormattedMessage {...messages.empty} values={{ searchText }} />
+      </EmptyResults>
+    );
+  }
+
+  return (
+    <ListWrapper>
+      {sortedTechnologies.map((technology) => (
+        <ListItem
+          key={`list-item-${technology.id}`}
+          onMouseEnter={() => {
+            setHoveredItem(technology.id);
+            highlightBlip({ id: technology.id || '', ring: technology.ring });
+            highlightLegend({ id: technology.id || '' });
+            const blipData = getBlipDataById(technology.id || '');
+            showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
+          }}
+          onMouseLeave={() => {
+            setHoveredItem(null);
+            unhighlightBlip({
+              id: technology.id?.toString() || '',
+              ring: technology.ring,
+              color: technology.inactive ? color.mineShaft : color.silver,
+            });
+            highlightLegend({ id: technology.id || '', mode: 'off' });
+            hideBubble();
+          }}
+        >
+          <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
+          <ListItemTags>
+            {hoveredItem === technology.id && (
+              <>
+                <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
+                {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
+              </>
+            )}
+          </ListItemTags>
+        </ListItem>
+      ))}
+    </ListWrapper>
   );
 };

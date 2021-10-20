@@ -21,7 +21,7 @@ export const TitleTag = styled(TitleTagComponent)`
   z-index: ${zIndex.overlay};
 `;
 
-export const Sidebar = styled.div`
+export const SidebarWrapper = styled.div`
   height: 100%;
   width: 411px;
   min-width: 411px;
