@@ -20,5 +20,4 @@ export const FiltersContainer = styled.div`
 
 export const Tag = styled(TagComponent)`
   margin-right: 16px;
-  width: auto;
 `;

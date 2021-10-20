@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import * as colors from '../../../theme/color';
+import { Tag as TagComponent } from '../tag';
 
 export const ListWrapper = styled.div`
   margin-bottom: 25px;
@@ -12,10 +13,26 @@ export const ListWrapper = styled.div`
 `;
 
 export const ListItem = styled.div`
-  color: ${colors.boulder};
-  font-size: 18px;
   margin: 10px 0;
   cursor: default;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const ListLabel = styled.div`
+  height: 26px;
+  color: ${colors.boulder};
+  font-size: 18px;
+`;
+
+export const ListItemTags = styled.div`
+  display: flex;
+`;
+
+export const Tag = styled(TagComponent)`
+  margin: 0 8px;
+  background-color: ${colors.mineShaft};
+  color: ${colors.boulder}; //TODO make into variant of Tag
 `;
 
 export const EmptyResults = styled.div`

@@ -222,6 +222,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[], activ
       label: pathOr('', ['fields', 'label'], item),
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+      team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
       inactive: quadrant !== activeQuadrant,
       id: i.toString(),
     });

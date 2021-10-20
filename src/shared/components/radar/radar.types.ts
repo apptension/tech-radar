@@ -1,4 +1,11 @@
-export type RadarTechnology = { label: string; quadrant: number; ring: number; inactive: boolean; id: string };
+export type RadarTechnology = {
+  label: string;
+  quadrant: number;
+  ring: number;
+  inactive: boolean;
+  id: string;
+  team: string;
+};
 export type RadarRing = { name: string; position: number };
 export type RadarQuadrant = { name: string; position: number };
 export type RadarTeam = { name: string };

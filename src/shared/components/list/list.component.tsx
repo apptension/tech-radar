@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { sortBy, prop, toLower, compose } from 'ramda';
 
 import { useSelector } from 'react-redux';
@@ -11,18 +11,20 @@ import {
   unhighlightBlip,
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
-import { RadarTechnology } from '../radar/radar.types';
+import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectSearch } from '../../../modules/filters/filters.selectors';
-import { ListWrapper, ListItem, EmptyResults } from './list.styles';
+import { TagSize } from '../tag/tag.types';
+import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
 
 interface ListProps {
   technologies: RadarTechnology[];
   emptyResults: boolean;
+  rings: RadarRing[];
 }
 
-export const List = ({ technologies, emptyResults }: ListProps) => {
+export const List = ({ technologies, emptyResults, rings }: ListProps) => {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
-  //TODO display team and level tags
 
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
 
@@ -40,14 +42,15 @@ export const List = ({ technologies, emptyResults }: ListProps) => {
       {sortedTechnologies.map((technology) => (
         <ListItem
           key={`list-item-${technology.id}`}
-          id={`list-item-${technology.id}`}
           onMouseEnter={() => {
+            setHoveredItem(technology.id);
             highlightBlip({ id: technology.id || '', ring: technology.ring });
             highlightLegend({ id: technology.id || '' });
             const blipData = getBlipDataById(technology.id || '');
             showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
           }}
           onMouseLeave={() => {
+            setHoveredItem(null);
             unhighlightBlip({
               id: technology.id?.toString() || '',
               ring: technology.ring,
@@ -57,7 +60,15 @@ export const List = ({ technologies, emptyResults }: ListProps) => {
             hideBubble();
           }}
         >
-          {technology.label}
+          <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
+          <ListItemTags>
+            {hoveredItem === technology.id && (
+              <>
+                <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
+                {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
+              </>
+            )}
+          </ListItemTags>
         </ListItem>
       ))}
     </ListWrapper>

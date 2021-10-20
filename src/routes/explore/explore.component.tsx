@@ -105,6 +105,7 @@ export const Explore = () => {
         <Sidebar
           technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
           emptyResults={emptyResults}
+          rings={radarRings}
         />
       </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>

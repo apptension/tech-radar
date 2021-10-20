@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { List } from '../list';
 import { Input } from '../input';
-import { RadarTechnology } from '../radar/radar.types';
+import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectArea, selectLevel, selectTeam } from '../../../modules/filters/filters.selectors';
 import { TagSize } from '../tag/tag.types';
 import { renderWhenTrue } from '../../utils/rendering';
@@ -13,9 +13,10 @@ import { Container, FiltersContainer, Tag } from './sidebar.styles';
 interface SidebarProps {
   technologies: RadarTechnology[];
   emptyResults: boolean;
+  rings: RadarRing[];
 }
 
-export const Sidebar = ({ technologies, emptyResults }: SidebarProps) => {
+export const Sidebar = ({ technologies, emptyResults, rings }: SidebarProps) => {
   const dispatch = useDispatch();
   const areaValue = useSelector(selectArea);
   const levelValue = useSelector(selectLevel);
@@ -51,7 +52,7 @@ export const Sidebar = ({ technologies, emptyResults }: SidebarProps) => {
         {renderLevelFilterTag(!!levelValue)}
         {renderTeamFilterTag(!!teamValue)}
       </FiltersContainer>
-      <List technologies={technologies} emptyResults={emptyResults} />
+      <List technologies={technologies} emptyResults={emptyResults} rings={rings} />
     </Container>
   );
 };
