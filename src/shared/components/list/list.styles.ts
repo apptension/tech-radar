@@ -17,3 +17,8 @@ export const ListItem = styled.div`
   margin: 10px 0;
   cursor: default;
 `;
+
+export const EmptyResults = styled.div`
+  color: ${colors.boulder};
+  font-size: 18px;
+`;

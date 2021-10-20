@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { sortBy, prop } from 'ramda';
+import { sortBy, prop, isEmpty } from 'ramda';
+import { useDebounce } from 'use-debounce';
 
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
@@ -39,6 +40,8 @@ export const Explore = () => {
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
 
+  const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
+
   const filterTechnologies = () => {
     if (!searchText) {
       setFilteredTechnologies(currentTechnologies);
@@ -51,10 +54,8 @@ export const Explore = () => {
   };
 
   useEffect(() => {
-    if (technologies) filterTechnologies();
+    if (!isEmpty(technologies)) filterTechnologies();
   }, [searchText, zoomedQuadrant]);
-
-  const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
 
   const updateActiveQuadrant = (newQuadrant: number) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
@@ -90,6 +91,8 @@ export const Explore = () => {
     setZoomedQuadrant(null);
   };
 
+  const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), 100);
+
   return (
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
@@ -97,6 +100,8 @@ export const Explore = () => {
         <Sidebar
           technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
           setSearchText={setSearchText}
+          emptyResults={emptyResults}
+          searchText={searchText}
         />
       </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>

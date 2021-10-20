@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortBy, prop } from 'ramda';
+import { sortBy, prop, toLower, compose } from 'ramda';
 
 import {
   getBlipDataById,
@@ -11,14 +11,25 @@ import {
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarTechnology } from '../radar/radar.types';
-import { ListWrapper, ListItem } from './list.styles';
+import { ListWrapper, ListItem, EmptyResults } from './list.styles';
 
 interface ListProps {
   technologies: RadarTechnology[];
+  emptyResults: boolean;
+  searchText: string;
 }
 
-export const List = ({ technologies }: ListProps) => {
-  const sortedTechnologies = sortBy(prop('label'), technologies);
+export const List = ({ technologies, emptyResults, searchText }: ListProps) => {
+  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+
+  if (emptyResults) {
+    return (
+      <EmptyResults>
+        We’re sorry, but we haven’t found any technology called “{searchText}”. Please try again and note that we don’t
+        support searching by keyword, yet.
+      </EmptyResults>
+    );
+  }
 
   return (
     <ListWrapper>

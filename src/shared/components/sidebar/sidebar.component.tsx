@@ -9,14 +9,16 @@ interface SidebarProps {
   technologies: RadarTechnology[];
   filters?: string[];
   setSearchText: (text: string) => void;
+  searchText: string;
+  emptyResults: boolean;
 }
 
-export const Sidebar = ({ technologies, filters, setSearchText }: SidebarProps) => {
+export const Sidebar = ({ technologies, filters, setSearchText, emptyResults, searchText }: SidebarProps) => {
   return (
     <Container>
       <Input setSearchText={setSearchText} />
       <FiltersContainer />
-      <List technologies={technologies} />
+      <List technologies={technologies} emptyResults={emptyResults} searchText={searchText} />
     </Container>
   );
 };
