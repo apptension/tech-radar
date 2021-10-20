@@ -15,3 +15,5 @@ export const silver = '#C2C2C2';
 export const tundora = '#444444';
 export const screaminGreen = '#42F272';
 export const schoolBusYellow = '#FFDE00';
+
+export const gradient = `linear-gradient(320deg,${screaminGreen} -56.33%,rgba(66,242,114,0) 124.09%),${schoolBusYellow}`;
