@@ -5,5 +5,5 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  z-index: ${zIndex.overlay};
+  z-index: ${zIndex.contentOverlay};
 `;
