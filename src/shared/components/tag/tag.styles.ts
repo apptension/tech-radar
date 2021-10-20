@@ -28,6 +28,7 @@ export const Container = styled.div<ThemeProps<TagTheme>>`
   color: ${color.mineShaft};
   display: flex;
   align-items: center;
+  white-space: nowrap;
 
   ${theme('size', {
     [TagSize.SMALL]: tagSizeSmallStyles,

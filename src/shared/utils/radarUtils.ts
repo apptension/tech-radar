@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { clamp, pathOr, forEachObjIndexed, sortBy, prop } from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -13,11 +13,13 @@ import {
   BubbleInterface,
   ContentfulQuadrant,
   ContentfulRing,
+  ContentfulTeam,
   ContentfulTechnology,
   MinMaxFunction,
   Point,
   RadarQuadrant,
   RadarRing,
+  RadarTeam,
   RadarTechnology,
 } from '../components/radar/radar.types';
 
@@ -235,6 +237,19 @@ export const getRadarRings = (rings: ContentfulRing[]) => {
   return sortBy(prop('position'), radarRings);
 };
 
+export const getRadarTeams = (teams: ContentfulTeam[]) => {
+  const radarTeams: RadarTeam[] = [];
+  forEachObjIndexed(
+    (item) =>
+      radarTeams.push({
+        name: pathOr('', ['fields', 'label'], item),
+      }),
+    teams
+  );
+
+  return radarTeams;
+};
+
 export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
   const radarQuadrants: RadarQuadrant[] = [];
   forEachObjIndexed(
@@ -247,3 +262,5 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
   );
   return sortBy(prop('position'), radarQuadrants);
 };
+
+export const pluckNameFromList = (list: RadarRing[] | RadarQuadrant[] | RadarTeam[]) => pluck('name', list);

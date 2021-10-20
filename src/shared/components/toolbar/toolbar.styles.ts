@@ -1,28 +1,28 @@
 import styled from 'styled-components';
 
-import { color, border } from '../../../theme';
+import { color } from '../../../theme';
 import { Dropdown } from '../dropdown';
 
 export const Container = styled.div`
   background-color: ${color.codGray};
-  border: ${border.regularWhite};
-  border-radius: 2px;
   height: 60px;
-  width: 697px;
   position: fixed;
   bottom: 24px;
-  right: 340px;
   display: flex;
+
+  > div:not(:last-child) {
+    border-right: none;
+  }
 `;
 
 export const AreaDropdown = styled(Dropdown)`
-  flex: 1;
-  width: 260px;
-  border-right: ${border.regularWhite};
+  min-width: 300px;
 `;
 
 export const LevelDropdown = styled(Dropdown)`
-  border-right: ${border.regularWhite};
+  min-width: 200px;
 `;
 
-export const TeamDropdown = styled(Dropdown)``;
+export const TeamDropdown = styled(Dropdown)`
+  min-width: 200px;
+`;

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
-import { Radar as RadarComponent } from '../../shared/components/radar';
 import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { zIndex } from '../../theme';
 import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
@@ -43,7 +42,7 @@ export const Viewer = styled.div<ViewerProps>`
 
 export const Toolbar = styled(ToolbarComponent)`
   position: absolute;
-  left: 50%;
+  left: calc(50% + 205.5px);
   transform: translateX(-50%);
   bottom: 24px;
   z-index: ${zIndex.overlay};

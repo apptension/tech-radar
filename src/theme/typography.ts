@@ -3,6 +3,20 @@ import styled, { css } from 'styled-components';
 import * as colors from './color';
 import { fontFamily, fontWeight } from './font';
 
+export const BodyMedium = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 20px;
+  line-height: 28px;
+`;
+
+export const LabelMedium = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 18px;
+  line-height: 18px;
+`;
+
 export const H1 = styled.h1`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.bold};
@@ -52,20 +66,26 @@ export const ButtonLargeTypography = css`
   text-decoration: none;
 `;
 
-export const TagSmall = css`
+export const tagTypographyStyles = css`
   font-weight: ${fontWeight.bold};
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+`;
+
+export const TagSmall = css`
+  ${tagTypographyStyles};
   font-size: 12px;
   line-height: 12px;
 `;
 
 export const TagMedium = css`
-  font-weight: ${fontWeight.bold};
+  ${tagTypographyStyles};
   font-size: 14px;
   line-height: 14px;
 `;
 
 export const TagLarge = css`
-  font-weight: ${fontWeight.bold};
+  ${tagTypographyStyles};
   font-size: 20px;
   line-height: 20px;
 `;

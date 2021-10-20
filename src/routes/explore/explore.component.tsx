@@ -6,7 +6,13 @@ import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { QUADRANT } from '../../shared/components/radar/radar.constants';
-import { getRadarQuadrants, getRadarRings, getRadarTechnologies } from '../../shared/utils/radarUtils';
+import {
+  getRadarQuadrants,
+  getRadarRings,
+  getRadarTeams,
+  getRadarTechnologies,
+  pluckNameFromList,
+} from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Container, TitleTag, Viewer, Sidebar, Toolbar, ZoomControls } from './explore.styles';
 
@@ -18,10 +24,17 @@ export const Explore = () => {
   const [zoomedTechnologies, setZoomedTechnologies] = useState<RadarTechnology[]>([]);
   const [zoomedQuadrants, setZoomedQuadrants] = useState<RadarQuadrant[]>([]);
 
-  const { technologies, quadrants, rings } = useContentfulData();
+  const {
+    contentfulQuery: { isSuccess },
+    technologies,
+    quadrants,
+    rings,
+    teams,
+  } = useContentfulData();
   const radarTechnologies = getRadarTechnologies(technologies, activeQuadrant);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
+  const radarTeams = getRadarTeams(teams);
 
   const updateActiveQuadrant = (newQuadrant: number) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
@@ -60,7 +73,6 @@ export const Explore = () => {
   return (
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
-
       <Sidebar>
         <List />
       </Sidebar>
@@ -73,13 +85,21 @@ export const Explore = () => {
           zoomedQuadrant={zoomedQuadrant}
           previouslyActiveQuadrant={previouslyActiveQuadrant}
         />
-        <Toolbar />
-        <ZoomControls
-          onZoomIn={onZoomIn}
-          onZoomOut={onZoomOut}
-          zoomInDisabled={!!zoomedQuadrant}
-          zoomOutDisabled={!zoomedQuadrant}
-        />
+        {isSuccess && (
+          <>
+            <Toolbar
+              areaOptions={pluckNameFromList(radarQuadrants)}
+              levelOptions={pluckNameFromList(radarRings)}
+              teamOptions={pluckNameFromList(radarTeams)}
+            />
+            <ZoomControls
+              onZoomIn={onZoomIn}
+              onZoomOut={onZoomOut}
+              zoomInDisabled={!!zoomedQuadrant}
+              zoomOutDisabled={!zoomedQuadrant}
+            />
+          </>
+        )}
       </Viewer>
     </Container>
   );
