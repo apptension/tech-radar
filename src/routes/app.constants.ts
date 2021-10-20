@@ -3,3 +3,5 @@ export const ROUTES = {
   explore: '/explore',
   notFound: '/404',
 };
+
+export const INITIAL_ACTIVE_QUADRANT = 2;

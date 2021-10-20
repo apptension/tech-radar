@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { sortBy, prop, isEmpty, isNil, mathMod } from 'ramda';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
@@ -18,10 +18,13 @@ import {
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
+import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
+import { setArea } from '../../modules/filters/filters.actions';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 
 export const Explore = () => {
+  const dispatch = useDispatch();
   const searchText = useSelector(selectSearch);
   const areaValue = useSelector(selectArea);
   const levelValue = useSelector(selectLevel);
@@ -29,7 +32,7 @@ export const Explore = () => {
   const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
 
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number | null>(QUADRANT.bottomLeft);
-  const [activeQuadrant, setActiveQuadrant] = useState<number | null>(QUADRANT.topLeft);
+  const [activeQuadrant, setActiveQuadrant] = useState<number | null>(null);
 
   const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
   const [zoomedTechnologies, setZoomedTechnologies] = useState<RadarTechnology[]>([]);
@@ -48,6 +51,12 @@ export const Explore = () => {
   const radarTeams = getRadarTeams(teams);
 
   const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
+
+  useEffect(() => {
+    if (!isEmpty(radarQuadrants) && !areaValue) {
+      dispatch(setArea(radarQuadrants[INITIAL_ACTIVE_QUADRANT].name));
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (!isEmpty(radarQuadrants)) {
