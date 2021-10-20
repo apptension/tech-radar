@@ -17,6 +17,10 @@ import {
   pluckNameFromList,
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
+import { Sidebar } from '../../shared/components/sidebar';
+import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
+import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
+import { setArea } from '../../modules/filters/filters.actions';
 import {
   Container,
   TitleTag,
@@ -28,10 +32,6 @@ import {
   Loader,
   LOADING_ANIMATION_MS,
 } from './explore.styles';
-import { Sidebar } from '../../shared/components/sidebar';
-import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
-import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
-import { setArea } from '../../modules/filters/filters.actions';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
 
@@ -75,16 +75,12 @@ export const Explore = () => {
         setLoadingVisible(false);
       }, LOADING_ANIMATION_MS);
       setTimeout(() => {
-        setDisplayLoading(true);
+        setDisplayLoading(false);
       }, LOADING_ANIMATION_MS * 2);
     }
   }, [isSuccess]);
 
   const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
-
-  useEffect(() => {
-
-  }, [isSuccess]);
 
   useEffect(() => {
     if (!isEmpty(radarQuadrants)) {
@@ -145,54 +141,54 @@ export const Explore = () => {
 
   const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), EMPTY_RESULTS_DEBOUNCE_TIME);
 
-    const renderContent = () => (
-      <>
-        <SidebarWrapper>
-          <Sidebar
-            technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
-            emptyResults={emptyResults}
-            rings={radarRings}
-          />
-        </SidebarWrapper>
-        <Viewer fullRadar={!zoomedQuadrant}>
-          <Radar
-            technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
-            quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
-            rings={radarRings}
-            activeQuadrant={activeQuadrant}
-            zoomedQuadrant={zoomedQuadrant}
-            previouslyActiveQuadrant={previouslyActiveQuadrant}
-          />
-          {isSuccess && (
-            <>
-              <Toolbar
-                areaOptions={pluckNameFromList(radarQuadrants)}
-                levelOptions={pluckNameFromList(radarRings)}
-                teamOptions={pluckNameFromList(radarTeams)}
-              />
-              <ZoomControls
-                onZoomIn={onZoomIn}
-                onZoomOut={onZoomOut}
-                zoomInDisabled={!!zoomedQuadrant}
-                zoomOutDisabled={!zoomedQuadrant}
-              />
-            </>
-          )}
-        </Viewer>
-      </>
-    );
+  const renderContent = () => (
+    <>
+      <SidebarWrapper>
+        <Sidebar
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
+          emptyResults={emptyResults}
+          rings={radarRings}
+        />
+      </SidebarWrapper>
+      <Viewer fullRadar={!zoomedQuadrant}>
+        <Radar
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
+          quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
+          rings={radarRings}
+          activeQuadrant={activeQuadrant}
+          zoomedQuadrant={zoomedQuadrant}
+          previouslyActiveQuadrant={previouslyActiveQuadrant}
+        />
+        {isSuccess && (
+          <>
+            <Toolbar
+              areaOptions={pluckNameFromList(radarQuadrants)}
+              levelOptions={pluckNameFromList(radarRings)}
+              teamOptions={pluckNameFromList(radarTeams)}
+            />
+            <ZoomControls
+              onZoomIn={onZoomIn}
+              onZoomOut={onZoomOut}
+              zoomInDisabled={!!zoomedQuadrant}
+              zoomOutDisabled={!zoomedQuadrant}
+            />
+          </>
+        )}
+      </Viewer>
+    </>
+  );
 
-    const renderLoading = () => (
-      <Loading visible={loadingVisible} display={displayLoading}>
-        <Loader text={intl.formatMessage(messages.loading)} withEllipsis />
-      </Loading>
-    );
+  const renderLoading = () => (
+    <Loading visible={loadingVisible} display={displayLoading}>
+      <Loader text={intl.formatMessage(messages.loading)} withEllipsis />
+    </Loading>
+  );
 
-    return (
-      <Container>
-        <TitleTag size={TitleTagSize.SMALL} withLogo />
-        {renderContent()}
-        {renderLoading()}
-      </Container>
-    );
+  return (
+    <Container>
+      <TitleTag size={TitleTagSize.SMALL} withLogo />
+      {renderContent()}
+      {renderLoading()}
+    </Container>
+  );
 };
