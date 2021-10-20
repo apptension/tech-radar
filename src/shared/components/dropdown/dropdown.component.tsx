@@ -33,9 +33,9 @@ interface DropdownProps {
 
 export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
-  const optionsAmounts = options.length;
+  const optionsAmount = options.length;
   const optionsHeight =
-    optionsAmounts * LABEL_HEIGHT + (optionsAmounts - 1) * LABEL_BOTTOM_MARGIN + LIST_TOP_PADDING + LIST_BOTTOM_PADDING;
+    optionsAmount * LABEL_HEIGHT + (optionsAmount - 1) * LABEL_BOTTOM_MARGIN + LIST_TOP_PADDING + LIST_BOTTOM_PADDING;
   const theme: DropdownTheme = { open };
 
   const closeDropdoown = () => setOpen(false);

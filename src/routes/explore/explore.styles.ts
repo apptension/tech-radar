@@ -38,12 +38,11 @@ export const Viewer = styled.div<ViewerProps>`
   align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
   width: ${(props) => (props.fullRadar ? '100%' : undefined)};
-  position: relative;
 `;
 
 export const Toolbar = styled(ToolbarComponent)`
   position: absolute;
-  left: 50%;
+  left: calc(50% + 205.5px);
   transform: translateX(-50%);
   bottom: 24px;
   z-index: ${zIndex.overlay};

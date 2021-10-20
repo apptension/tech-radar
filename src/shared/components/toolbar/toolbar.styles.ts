@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { border, color } from '../../../theme';
+import { color } from '../../../theme';
 import { Dropdown } from '../dropdown';
 
 export const Container = styled.div`
@@ -9,9 +9,8 @@ export const Container = styled.div`
   position: fixed;
   bottom: 24px;
   display: flex;
-  border-right: ${border.boldWhite};
 
-  > div {
+  > div:not(:last-child) {
     border-right: none;
   }
 `;

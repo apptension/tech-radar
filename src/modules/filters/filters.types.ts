@@ -1,8 +1,8 @@
 export interface FiltersState {
-  area: string | null;
-  level: string | null;
-  team: string | null;
-  search: string | null;
+  area: FilterType;
+  level: FilterType;
+  team: FilterType;
+  search: FilterType;
 }
 
 export type FilterType = string | null;
