@@ -1,29 +1,40 @@
 import React from 'react';
+import { sortBy, prop } from 'ramda';
 
 import { highlightBlip, highlightLegend, unhighlightBlip } from '../../utils/radarUtils';
 import { color } from '../../../theme';
+import { RadarTechnology } from '../radar/radar.types';
 import { ListWrapper, ListItem } from './list.styles';
 
-// TODO List has to get same data as radar (with id,x,y)
-export const List = () => {
+interface ListProps {
+  technologies: RadarTechnology[];
+}
+
+export const List = ({ technologies }: ListProps) => {
+  const sortedTechnologies = sortBy(prop('label'), technologies);
+
   return (
     <ListWrapper>
-      {'123456789012345678901234'.split('').map((number, i) => (
+      {sortedTechnologies.map((technology) => (
         <ListItem
-          key={i}
-          id={`list-item-${i}`}
+          key={`list-item-${technology.id}`}
+          id={`list-item-${technology.id}`}
           onMouseEnter={() => {
-            // TODO pass real item data & show bubble
-            highlightBlip({ id: i.toString(), ring: 0 });
-            highlightLegend({ id: i.toString() });
+            // TODO show bubble
+            highlightBlip({ id: technology.id || '', ring: technology.ring });
+            highlightLegend({ id: technology.id || '' });
           }}
           onMouseLeave={() => {
-            // TODO pass real item data & hide bubble
-            unhighlightBlip({ id: i.toString(), ring: 0, color: color.silver });
-            highlightLegend({ id: i.toString(), mode: 'off' });
+            // TODO hide bubble
+            unhighlightBlip({
+              id: technology.id?.toString() || '',
+              ring: technology.ring,
+              color: technology.inactive ? color.mineShaft : color.silver,
+            });
+            highlightLegend({ id: technology.id || '', mode: 'off' });
           }}
         >
-          List item
+          {technology.label}
         </ListItem>
       ))}
     </ListWrapper>

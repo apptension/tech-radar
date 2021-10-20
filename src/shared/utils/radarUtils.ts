@@ -211,13 +211,14 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
 export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number) => {
   const radarTechnologies: RadarTechnology[] = [];
 
-  forEachObjIndexed<ContentfulTechnology[]>((item) => {
+  forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
       label: pathOr('', ['fields', 'label'], item),
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       inactive: quadrant !== activeQuadrant,
+      id: i.toString(),
     });
   }, technologies);
   return radarTechnologies;

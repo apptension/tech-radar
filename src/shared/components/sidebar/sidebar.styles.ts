@@ -7,3 +7,7 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
 `;
+
+export const FiltersContainer = styled.div`
+  height: 87px;
+`;

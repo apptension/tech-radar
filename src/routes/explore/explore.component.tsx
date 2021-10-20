@@ -17,6 +17,8 @@ import { Sidebar } from '../../shared/components/sidebar';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
+  const [searchText, setSearchText] = useState(''); //TODO move to state
+
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
   const [activeQuadrant, setActiveQuadrant] = useState(QUADRANT.bottomLeft);
 
@@ -74,7 +76,7 @@ export const Explore = () => {
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
       <SidebarWrapper>
-        <Sidebar />
+        <Sidebar technologies={radarTechnologies} setSearchText={setSearchText} />
       </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>
         <Radar

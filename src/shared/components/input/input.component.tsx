@@ -1,20 +1,33 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useDebouncedCallback } from 'use-debounce';
 
-import LineImg from '../../../images/line.png';
-import { SearchWrapper, SearchIcon, Image, SearchInputWrapper, SearchInput } from './input.styles';
+import { Container, SearchIcon, InputWrapper, InputComponent, InputUnderline } from './input.styles';
 import messages from './input.messages';
 
-export const Input = () => {
+interface InputProps {
+  setSearchText: (text: string) => void;
+}
+
+export const Input = ({ setSearchText }: InputProps) => {
+  const debouncedOnTextChange = useDebouncedCallback((text: string) => {
+    setSearchText(text);
+  }, 500);
+
   return (
-    <SearchWrapper>
-      <SearchInputWrapper>
+    <Container>
+      <InputWrapper>
         <FormattedMessage {...messages.placeholder}>
-          {(placeholder) => <SearchInput placeholder={placeholder.toString()} />}
+          {(placeholder) => (
+            <InputComponent
+              placeholder={placeholder.toString()}
+              onChange={(e) => debouncedOnTextChange(e.target.value)}
+            />
+          )}
         </FormattedMessage>
         <SearchIcon />
-      </SearchInputWrapper>
-      <Image src={LineImg} />
-    </SearchWrapper>
+      </InputWrapper>
+      <InputUnderline />
+    </Container>
   );
 };
