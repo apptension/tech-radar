@@ -161,6 +161,11 @@ export const unhighlightBlip = ({ id, ring, color }: BlipInterface) => {
   }
 };
 
+export const getBlipDataById = (id: string) => {
+  const blip = document.querySelector(`#blip-${id}`) as SVGGraphicsElement;
+  return JSON.parse(blip.dataset.translate || '');
+};
+
 export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
   const listItem = document.querySelector(`#list-item-${id}`) as HTMLDivElement;
   if (listItem) {

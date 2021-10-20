@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { sortBy, prop } from 'ramda';
 
 import { Radar } from '../../shared/components/radar';
@@ -18,6 +18,7 @@ import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } fr
 
 export const Explore = () => {
   const [searchText, setSearchText] = useState(''); //TODO move to state
+  const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
 
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
   const [activeQuadrant, setActiveQuadrant] = useState(QUADRANT.bottomLeft);
@@ -37,6 +38,23 @@ export const Explore = () => {
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
+
+  const filterTechnologies = () => {
+    if (!searchText) {
+      setFilteredTechnologies(currentTechnologies);
+    } else {
+      const filtered = currentTechnologies.filter((technology) =>
+        technology.label.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredTechnologies(filtered);
+    }
+  };
+
+  useEffect(() => {
+    if (technologies) filterTechnologies();
+  }, [searchText, zoomedQuadrant]);
+
+  const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
 
   const updateActiveQuadrant = (newQuadrant: number) => {
     setPreviouslyActiveQuadrant(activeQuadrant);
@@ -76,11 +94,14 @@ export const Explore = () => {
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo />
       <SidebarWrapper>
-        <Sidebar technologies={radarTechnologies} setSearchText={setSearchText} />
+        <Sidebar
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
+          setSearchText={setSearchText}
+        />
       </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>
         <Radar
-          technologies={zoomedQuadrant ? zoomedTechnologies : radarTechnologies}
+          technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
           quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
           rings={radarRings}
           activeQuadrant={activeQuadrant}

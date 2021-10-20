@@ -15,4 +15,5 @@ export const ListItem = styled.div`
   color: ${colors.boulder};
   font-size: 18px;
   margin: 10px 0;
+  cursor: default;
 `;

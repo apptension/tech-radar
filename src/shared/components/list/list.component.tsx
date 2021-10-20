@@ -1,7 +1,14 @@
 import React from 'react';
 import { sortBy, prop } from 'ramda';
 
-import { highlightBlip, highlightLegend, unhighlightBlip } from '../../utils/radarUtils';
+import {
+  getBlipDataById,
+  hideBubble,
+  highlightBlip,
+  highlightLegend,
+  showBubble,
+  unhighlightBlip,
+} from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarTechnology } from '../radar/radar.types';
 import { ListWrapper, ListItem } from './list.styles';
@@ -20,18 +27,19 @@ export const List = ({ technologies }: ListProps) => {
           key={`list-item-${technology.id}`}
           id={`list-item-${technology.id}`}
           onMouseEnter={() => {
-            // TODO show bubble
             highlightBlip({ id: technology.id || '', ring: technology.ring });
             highlightLegend({ id: technology.id || '' });
+            const blipData = getBlipDataById(technology.id || '');
+            showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
           }}
           onMouseLeave={() => {
-            // TODO hide bubble
             unhighlightBlip({
               id: technology.id?.toString() || '',
               ring: technology.ring,
               color: technology.inactive ? color.mineShaft : color.silver,
             });
             highlightLegend({ id: technology.id || '', mode: 'off' });
+            hideBubble();
           }}
         >
           {technology.label}
