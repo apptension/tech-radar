@@ -8,6 +8,7 @@ import { useContentfulData } from '../../shared/hooks/useContentfulData/useConte
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { QUADRANT } from '../../shared/components/radar/radar.constants';
 import {
+  getFilteredTechnologies,
   getRadarQuadrants,
   getRadarRings,
   getRadarTeams,
@@ -18,6 +19,7 @@ import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/ra
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
+import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 
 export const Explore = () => {
   const searchText = useSelector(selectSearch);
@@ -54,28 +56,17 @@ export const Explore = () => {
     }
   }, [areaValue, radarQuadrants]);
 
-  const filterTechnologies = () => {
-    let filtered = currentTechnologies;
-
-    if (searchText) {
-      filtered = currentTechnologies.filter((technology) =>
-        technology.label.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
-
-    if (teamValue) {
-      filtered = filtered.filter((technology) => technology.team === teamValue);
-    }
-
-    if (levelValue) {
-      filtered = filtered.filter((technology) => radarRings[technology.ring].name === levelValue);
-    }
-
-    setFilteredTechnologies(filtered);
-  };
-
   useEffect(() => {
-    if (!isEmpty(technologies)) filterTechnologies();
+    if (!isEmpty(technologies)) {
+      const filtered = getFilteredTechnologies({
+        searchText,
+        currentTechnologies,
+        rings: radarRings,
+        teamValue,
+        levelValue,
+      });
+      setFilteredTechnologies(filtered);
+    }
   }, [searchText, zoomedQuadrant, levelValue, teamValue]);
 
   const updateActiveQuadrant = (newQuadrant: number | null) => {
@@ -115,7 +106,7 @@ export const Explore = () => {
     setZoomedQuadrant(null);
   };
 
-  const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), 100);
+  const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), EMPTY_RESULTS_DEBOUNCE_TIME);
 
   return (
     <Container>

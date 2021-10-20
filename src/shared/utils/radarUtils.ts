@@ -22,6 +22,7 @@ import {
   RadarTeam,
   RadarTechnology,
 } from '../components/radar/radar.types';
+import { FilterType } from '../../modules/filters/filters.types';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -271,3 +272,35 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
 };
 
 export const pluckNameFromList = (list: RadarRing[] | RadarQuadrant[] | RadarTeam[]) => pluck('name', list);
+
+export const getFilteredTechnologies = ({
+  searchText,
+  teamValue,
+  levelValue,
+  rings,
+  currentTechnologies,
+}: {
+  searchText: FilterType;
+  teamValue: FilterType;
+  levelValue: FilterType;
+  rings: RadarRing[];
+  currentTechnologies: RadarTechnology[];
+}) => {
+  let filtered = currentTechnologies;
+
+  if (searchText) {
+    filtered = currentTechnologies.filter((technology) =>
+      technology.label.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+
+  if (teamValue) {
+    filtered = filtered.filter((technology) => technology.team === teamValue);
+  }
+
+  if (levelValue) {
+    filtered = filtered.filter((technology) => rings[technology.ring].name === levelValue);
+  }
+
+  return filtered;
+};

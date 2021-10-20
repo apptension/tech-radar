@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { sortBy, prop, toLower, compose } from 'ramda';
 
 import { useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import {
   getBlipDataById,
   hideBubble,
@@ -15,6 +16,7 @@ import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize } from '../tag/tag.types';
 import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
+import messages from './list.messages';
 
 interface ListProps {
   technologies: RadarTechnology[];
@@ -31,8 +33,7 @@ export const List = ({ technologies, emptyResults, rings }: ListProps) => {
   if (emptyResults) {
     return (
       <EmptyResults>
-        We’re sorry, but we haven’t found any technology called “{searchText}”. Please try again and note that we don’t
-        support searching by keyword, yet.
+        <FormattedMessage {...messages.empty} values={{ searchText }} />
       </EmptyResults>
     );
   }

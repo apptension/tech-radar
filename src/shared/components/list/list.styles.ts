@@ -7,8 +7,7 @@ export const ListWrapper = styled.div`
   margin-bottom: 25px;
   display: flex;
   flex-direction: column;
-  height: 850px;
-  max-height: 100%;
+  height: 100%;
   overflow: auto;
 `;
 
