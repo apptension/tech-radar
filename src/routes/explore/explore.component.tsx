@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { sortBy, prop, isEmpty } from 'ramda';
-import { useDebounce } from 'use-debounce';
 
+import { useSelector } from 'react-redux';
+import { useDebounce } from 'use-debounce';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
@@ -15,10 +16,11 @@ import {
 } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
+import { selectSearch } from '../../modules/filters/filters.selectors';
 import { Container, TitleTag, Viewer, SidebarWrapper, Toolbar, ZoomControls } from './explore.styles';
 
 export const Explore = () => {
-  const [searchText, setSearchText] = useState(''); //TODO move to state
+  const searchText = useSelector(selectSearch);
   const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
 
   const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number>(QUADRANT.bottomLeft);
@@ -42,7 +44,10 @@ export const Explore = () => {
 
   const currentTechnologies = zoomedQuadrant ? zoomedTechnologies : radarTechnologies;
 
+  //TODO set activeQuadrant based on filter
+
   const filterTechnologies = () => {
+    //TODO add all filters
     if (!searchText) {
       setFilteredTechnologies(currentTechnologies);
     } else {
@@ -99,9 +104,7 @@ export const Explore = () => {
       <SidebarWrapper>
         <Sidebar
           technologies={filteredTechnologies.length ? filteredTechnologies : currentTechnologies}
-          setSearchText={setSearchText}
           emptyResults={emptyResults}
-          searchText={searchText}
         />
       </SidebarWrapper>
       <Viewer fullRadar={!zoomedQuadrant}>

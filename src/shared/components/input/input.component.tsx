@@ -2,16 +2,17 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { useDispatch } from 'react-redux';
+import { FilterType } from '../../../modules/filters/filters.types';
+import { setSearch } from '../../../modules/filters/filters.actions';
 import { Container, SearchIcon, InputWrapper, InputComponent, InputUnderline } from './input.styles';
 import messages from './input.messages';
 
-interface InputProps {
-  setSearchText: (text: string) => void;
-}
+export const Input = () => {
+  const dispatch = useDispatch();
 
-export const Input = ({ setSearchText }: InputProps) => {
-  const debouncedOnTextChange = useDebouncedCallback((text: string) => {
-    setSearchText(text);
+  const debouncedOnTextChange = useDebouncedCallback((option: FilterType) => {
+    dispatch(setSearch(option));
   }, 500);
 
   return (

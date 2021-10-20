@@ -1,6 +1,7 @@
 import React from 'react';
 import { sortBy, prop, toLower, compose } from 'ramda';
 
+import { useSelector } from 'react-redux';
 import {
   getBlipDataById,
   hideBubble,
@@ -11,15 +12,18 @@ import {
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarTechnology } from '../radar/radar.types';
+import { selectSearch } from '../../../modules/filters/filters.selectors';
 import { ListWrapper, ListItem, EmptyResults } from './list.styles';
 
 interface ListProps {
   technologies: RadarTechnology[];
   emptyResults: boolean;
-  searchText: string;
 }
 
-export const List = ({ technologies, emptyResults, searchText }: ListProps) => {
+export const List = ({ technologies, emptyResults }: ListProps) => {
+  const searchText = useSelector(selectSearch);
+  //TODO display team and level tags
+
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
 
   if (emptyResults) {

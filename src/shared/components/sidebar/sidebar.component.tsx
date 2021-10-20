@@ -7,18 +7,17 @@ import { Container, FiltersContainer } from './sidebar.styles';
 
 interface SidebarProps {
   technologies: RadarTechnology[];
-  filters?: string[];
-  setSearchText: (text: string) => void;
-  searchText: string;
   emptyResults: boolean;
 }
 
-export const Sidebar = ({ technologies, filters, setSearchText, emptyResults, searchText }: SidebarProps) => {
+export const Sidebar = ({ technologies, emptyResults }: SidebarProps) => {
+  //TODO display filter tags
+
   return (
     <Container>
-      <Input setSearchText={setSearchText} />
+      <Input />
       <FiltersContainer />
-      <List technologies={technologies} emptyResults={emptyResults} searchText={searchText} />
+      <List technologies={technologies} emptyResults={emptyResults} />
     </Container>
   );
 };
