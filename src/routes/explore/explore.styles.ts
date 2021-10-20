@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
+import { zIndex } from '../../theme';
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
 import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
-import { zIndex } from '../../theme';
+import { Loader as LoaderComponent } from '../../shared/components/loader';
 import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
 
 export const Container = styled.div`
@@ -52,4 +53,11 @@ export const ZoomControls = styled(ZoomControlsComponent)`
   position: absolute;
   bottom: 24px;
   right: 35px;
+`;
+
+export const Loader = styled(LoaderComponent)`
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
 `;

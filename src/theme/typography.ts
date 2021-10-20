@@ -3,6 +3,13 @@ import styled, { css } from 'styled-components';
 import * as colors from './color';
 import { fontFamily, fontWeight } from './font';
 
+export const CaptionMedium = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 14px;
+  line-height: 24px;
+`;
+
 export const BodyMedium = css`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.normal};
