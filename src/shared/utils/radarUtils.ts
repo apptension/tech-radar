@@ -169,9 +169,9 @@ export const getBlipDataById = (id: string) => {
 
 export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
   const listItem = document.querySelector(`#list-item-${id}`) as HTMLDivElement;
-  if (listItem) {
-    listItem.style.color = mode === 'on' ? color.white : color.boulder;
-  }
+  const listItemTags = document.querySelector(`#list-item-tags-${id}`) as HTMLDivElement;
+  if (listItem) listItem.style.color = mode === 'on' ? color.white : color.boulder;
+  if (listItemTags) listItemTags.style.opacity = mode === 'on' ? '1' : '0';
 };
 
 export const getRotationForQuadrant = (quadrant: number | null) => {

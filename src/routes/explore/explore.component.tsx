@@ -91,9 +91,8 @@ export const Explore = () => {
   useEffect(() => {
     if (zoomedQuadrant) {
       rotateData(QUADRANT.topLeft);
-    } else {
-      updateFilteredTechnologies();
     }
+    updateFilteredTechnologies();
   }, [searchText, levelValue, teamValue, activeQuadrant]);
 
   const updateFilteredTechnologies = () => {

@@ -72,13 +72,9 @@ export const TechnologiesList = ({ technologies, emptyResults, rings }: Technolo
           }}
         >
           <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
-          <ListItemTags>
-            {hoveredItem === technology.id && (
-              <>
-                <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
-                {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
-              </>
-            )}
+          <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
+            <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
+            {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
           </ListItemTags>
         </ListItem>
       ))}
