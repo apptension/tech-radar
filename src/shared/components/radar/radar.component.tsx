@@ -1,6 +1,7 @@
-import React from 'react';
-import { isNil, min } from 'ramda';
+import React, { useState } from 'react';
+import { isNil, min, equals } from 'ramda';
 
+import { useDebouncedCallback } from 'use-debounce';
 import * as colors from '../../../theme/color';
 import drawTechRadar from '../../../lib/zalando-tech-radar';
 import { destroyRadar } from '../../utils/radarUtils';
@@ -21,6 +22,8 @@ interface RadarProps {
 }
 
 export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQuadrant }: RadarProps) => {
+  const [previousConfig, setPreviousConfig] = useState<RadarConfig | null>(null);
+
   const config: RadarConfig = {
     svg_id: 'radar',
     width: zoomedQuadrant
@@ -42,8 +45,17 @@ export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQu
   if (!isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
   if (!isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
 
-  destroyRadar();
-  drawTechRadar(config);
+  const drawRadar = () => {
+    destroyRadar();
+    drawTechRadar(config);
+  };
+
+  const debouncedDrawRadar = useDebouncedCallback(drawRadar, 120);
+
+  if (!equals(config, previousConfig)) {
+    setPreviousConfig(config);
+    debouncedDrawRadar();
+  }
 
   return <svg id="radar" />;
 };
