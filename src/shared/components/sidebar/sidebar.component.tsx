@@ -16,7 +16,7 @@ import { Container, FiltersContainer, Tag } from './sidebar.styles';
 
 interface SidebarProps {
   technologies: RadarTechnology[];
-  emptyResults: boolean;
+  emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
 }
 

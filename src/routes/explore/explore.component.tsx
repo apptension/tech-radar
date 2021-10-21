@@ -129,30 +129,32 @@ export const Explore = () => {
   };
 
   const onZoomIn = () => {
-    const targetQuadrant = QUADRANT.topLeft;
-    setZoomedQuadrant(targetQuadrant);
-    rotateData(targetQuadrant);
+    setZoomedQuadrant(QUADRANT.topLeft);
+    rotateData(QUADRANT.topLeft);
   };
 
-  const onZoomOut = () => {
-    setZoomedQuadrant(null);
-  };
+  const onZoomOut = () => setZoomedQuadrant(null);
+
+  const [emptyResultsFromSearch] = useDebounce(
+    !!searchText && isEmpty(filteredTechnologies),
+    EMPTY_RESULTS_DEBOUNCE_TIME
+  );
+  const [emptyResultsFromFiltering] = useDebounce(
+    (!!levelValue || !!teamValue) && isEmpty(filteredTechnologies),
+    EMPTY_RESULTS_DEBOUNCE_TIME
+  );
 
   const currentTechnologies = () => {
-    if (zoomedQuadrant) {
-      return zoomedTechnologies;
-    }
-    return filteredTechnologies.length ? filteredTechnologies : radarTechnologies;
+    if (zoomedQuadrant) return zoomedTechnologies;
+    return filteredTechnologies.length || emptyResultsFromFiltering ? filteredTechnologies : radarTechnologies;
   };
-
-  const [emptyResults] = useDebounce(!!searchText && isEmpty(filteredTechnologies), EMPTY_RESULTS_DEBOUNCE_TIME);
 
   const renderContent = () => (
     <>
       <SidebarWrapper>
         <Sidebar
           technologies={filteredTechnologies.length ? filteredTechnologies : radarTechnologies}
-          emptyResults={emptyResults}
+          emptyResults={{ search: emptyResultsFromSearch, filters: emptyResultsFromFiltering }}
           rings={radarRings}
         />
       </SidebarWrapper>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sortBy, prop, toLower, compose } from 'ramda';
+import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -20,7 +20,7 @@ import messages from './list.messages';
 
 interface ListProps {
   technologies: RadarTechnology[];
-  emptyResults: boolean;
+  emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
 }
 
@@ -32,10 +32,18 @@ export const List = ({ technologies, emptyResults, rings }: ListProps) => {
   const activeTechnologies = areaValue ? technologies.filter((technology) => !technology.inactive) : technologies;
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), activeTechnologies);
 
-  if (emptyResults) {
+  if (emptyResults.search) {
     return (
       <EmptyResults>
-        <FormattedMessage {...messages.empty} values={{ searchText }} />
+        <FormattedMessage {...messages.emptySearch} values={{ searchText }} />
+      </EmptyResults>
+    );
+  }
+
+  if (emptyResults.filters || isEmpty(sortedTechnologies)) {
+    return (
+      <EmptyResults>
+        <FormattedMessage {...messages.emptyFiltering} />
       </EmptyResults>
     );
   }

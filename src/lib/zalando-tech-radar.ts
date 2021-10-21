@@ -16,7 +16,6 @@ import {
   bounded_ring,
   getRadarScale,
   getRotationForQuadrant,
-  getPreviousQuadrantNumber,
 } from '../shared/utils/radarUtils';
 
 /* eslint-disable */
