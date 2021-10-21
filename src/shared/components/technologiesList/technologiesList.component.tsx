@@ -15,16 +15,16 @@ import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectArea, selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize } from '../tag/tag.types';
-import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
-import messages from './list.messages';
+import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './technologiesList.styles';
+import messages from './technologiesList.messages';
 
-interface ListProps {
+interface TechnologiesListProps {
   technologies: RadarTechnology[];
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
 }
 
-export const List = ({ technologies, emptyResults, rings }: ListProps) => {
+export const TechnologiesList = ({ technologies, emptyResults, rings }: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
   const areaValue = useSelector(selectArea);
