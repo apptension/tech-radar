@@ -183,7 +183,7 @@ export const Explore = () => {
   );
 
   const renderLoading = () => (
-    <Loading visible={loadingVisible} display={displayLoading}>
+    <Loading visible={loadingVisible} shouldDisplay={displayLoading}>
       <Loader text={intl.formatMessage(messages.loading)} withEllipsis />
     </Loading>
   );

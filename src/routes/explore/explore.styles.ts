@@ -73,7 +73,7 @@ const loadingAnimationStyles = css`
   }
 `;
 
-export const Loading = styled.div<{ visible: boolean; display: boolean }>`
+export const Loading = styled.div<{ visible: boolean; shouldDisplay: boolean }>`
   position: absolute;
   left: 0;
   top: 0;
@@ -84,5 +84,5 @@ export const Loading = styled.div<{ visible: boolean; display: boolean }>`
   transition: opacity ${LOADING_ANIMATION_MS}ms ease-in-out;
   z-index: ${zIndex.loader};
   ${({ visible }) => (visible ? null : loadingAnimationStyles)};
-  display: ${({ display }) => (display ? 'block' : 'none')};
+  display: ${({ shouldDisplay }) => (shouldDisplay ? 'block' : 'none')};
 `;
