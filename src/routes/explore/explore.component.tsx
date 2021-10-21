@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useIntl } from 'react-intl';
 
+import { area } from 'd3';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
@@ -57,15 +58,11 @@ export const Explore = () => {
 
   const {
     contentfulQuery: { isSuccess },
-    technologies,
-    quadrants,
-    rings,
-    teams,
+    radarTechnologies,
+    radarQuadrants,
+    radarRings,
+    radarTeams,
   } = useContentfulData();
-  const radarTechnologies = getRadarTechnologies(technologies, activeQuadrant);
-  const radarQuadrants = getRadarQuadrants(quadrants);
-  const radarRings = getRadarRings(rings);
-  const radarTeams = getRadarTeams(teams);
 
   useEffect(() => {
     if (!isEmpty(radarQuadrants) && !areaValue) {
@@ -85,7 +82,7 @@ export const Explore = () => {
   useEffect(() => {
     if (!isEmpty(radarQuadrants)) {
       const quadrantForArea = radarQuadrants.find((quadrant) => quadrant.name === areaValue);
-      if (quadrantForArea?.position !== activeQuadrant) {
+      if (quadrantForArea?.position !== activeQuadrant && activeQuadrant !== areaValue) {
         setActiveQuadrant(quadrantForArea ? quadrantForArea.position : null);
       }
     }

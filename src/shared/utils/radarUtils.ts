@@ -223,7 +223,7 @@ export const getUpdatedRadarTechnologies = (
   return technologies.map((technology) => ({ ...technology, inactive: technology.quadrant !== activeQuadrant }));
 };
 
-export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number | null) => {
+export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
   forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
@@ -233,7 +233,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[], activ
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
-      inactive: !isNil(activeQuadrant) ? quadrant !== activeQuadrant : true,
+      inactive: true,
       id: i.toString(),
     });
   }, technologies);
