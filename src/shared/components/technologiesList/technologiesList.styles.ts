@@ -9,6 +9,7 @@ export const ListWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   overflow: auto;
+  margin-top: 16px;
 `;
 
 export const ListItem = styled.div`
@@ -35,11 +36,10 @@ export const ListItemTags = styled.div<{ visible: boolean }>`
 
 export const Tag = styled(TagComponent)`
   margin-left: 8px;
-  background-color: ${colors.mineShaft};
-  color: ${colors.boulder}; //TODO make into variant of Tag
 `;
 
 export const EmptyResults = styled.div`
   color: ${colors.boulder};
   font-size: 18px;
+  margin-top: 16px;
 `;

@@ -14,7 +14,7 @@ import {
 import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectArea, selectSearch } from '../../../modules/filters/filters.selectors';
-import { TagSize } from '../tag/tag.types';
+import { TagSize, TagVariant } from '../tag/tag.types';
 import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './technologiesList.styles';
 import messages from './technologiesList.messages';
 
@@ -73,8 +73,14 @@ export const TechnologiesList = ({ technologies, emptyResults, rings }: Technolo
         >
           <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
           <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
-            <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
-            {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
+            <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
+              {rings[technology.ring].name}
+            </Tag>
+            {!!technology.team && (
+              <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
+                {technology.team}
+              </Tag>
+            )}
           </ListItemTags>
         </ListItem>
       ))}

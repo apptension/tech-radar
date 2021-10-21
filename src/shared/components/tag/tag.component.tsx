@@ -4,17 +4,25 @@ import { isNil } from 'ramda';
 
 import { renderWhenTrue } from '../../utils/rendering';
 import { Container, Icon, RemoveIcon } from './tag.styles';
-import { TagSize, TagTheme } from './tag.types';
+import { TagSize, TagTheme, TagVariant } from './tag.types';
 
 export interface TagProps {
   size?: TagSize;
   onRemove?: () => void;
   className?: string;
   children?: ReactNode;
+  variant?: TagVariant;
 }
 
-export const Tag = ({ children, className, onRemove, size = TagSize.MEDIUM }: TagProps) => {
-  const theme: TagTheme = { size };
+export const Tag = ({
+  children,
+  className,
+  onRemove,
+  size = TagSize.MEDIUM,
+  variant = TagVariant.DEFAULT,
+}: TagProps) => {
+  const clickable = !isNil(onRemove);
+  const theme: TagTheme = { size, variant, clickable };
 
   const renderRemoveIcon = renderWhenTrue(() => (
     <Icon onClick={onRemove}>
@@ -26,7 +34,7 @@ export const Tag = ({ children, className, onRemove, size = TagSize.MEDIUM }: Ta
     <ThemeProvider theme={theme}>
       <Container className={className}>
         {children}
-        {renderRemoveIcon(!isNil(onRemove))}
+        {renderRemoveIcon(clickable)}
       </Container>
     </ThemeProvider>
   );
