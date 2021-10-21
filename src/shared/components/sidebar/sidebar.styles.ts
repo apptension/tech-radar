@@ -4,10 +4,12 @@ import * as colors from '../../../theme/color';
 import { Tag as TagComponent } from '../tag';
 
 export const Container = styled.div`
-  padding: 70px 35px;
+  padding: 70px 35px 25px;
   color: ${colors.white};
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
 `;
 
 export const FiltersContainer = styled.div`
