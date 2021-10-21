@@ -24,12 +24,17 @@ export const ListLabel = styled.div`
   font-size: 18px;
 `;
 
-export const ListItemTags = styled.div`
+export const ListItemTags = styled.div<{ visible: boolean }>`
   display: flex;
+
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  > :last-child {
+    margin-right: 8px;
+  }
 `;
 
 export const Tag = styled(TagComponent)`
-  margin: 0 8px;
+  margin-left: 8px;
   background-color: ${colors.mineShaft};
   color: ${colors.boulder}; //TODO make into variant of Tag
 `;

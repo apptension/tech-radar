@@ -18,17 +18,9 @@ interface RadarProps {
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
   activeQuadrant: number | null;
-  previouslyActiveQuadrant: number | null;
 }
 
-export const Radar = ({
-  technologies,
-  rings,
-  quadrants,
-  zoomedQuadrant,
-  activeQuadrant,
-  previouslyActiveQuadrant,
-}: RadarProps) => {
+export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQuadrant }: RadarProps) => {
   const config: RadarConfig = {
     svg_id: 'radar',
     width: zoomedQuadrant
@@ -49,7 +41,6 @@ export const Radar = ({
 
   if (!isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
   if (!isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
-  if (!isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
 
   destroyRadar();
   drawTechRadar(config);

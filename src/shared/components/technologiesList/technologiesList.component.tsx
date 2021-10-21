@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sortBy, prop, toLower, compose } from 'ramda';
+import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -13,27 +13,37 @@ import {
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
-import { selectSearch } from '../../../modules/filters/filters.selectors';
+import { selectArea, selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize } from '../tag/tag.types';
-import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
-import messages from './list.messages';
+import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './technologiesList.styles';
+import messages from './technologiesList.messages';
 
-interface ListProps {
+interface TechnologiesListProps {
   technologies: RadarTechnology[];
-  emptyResults: boolean;
+  emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
 }
 
-export const List = ({ technologies, emptyResults, rings }: ListProps) => {
+export const TechnologiesList = ({ technologies, emptyResults, rings }: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
+  const areaValue = useSelector(selectArea);
 
-  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+  const activeTechnologies = areaValue ? technologies.filter((technology) => !technology.inactive) : technologies;
+  const sortedTechnologies = sortBy(compose(toLower, prop('label')), activeTechnologies);
 
-  if (emptyResults) {
+  if (emptyResults.search) {
     return (
       <EmptyResults>
-        <FormattedMessage {...messages.empty} values={{ searchText }} />
+        <FormattedMessage {...messages.emptySearch} values={{ searchText }} />
+      </EmptyResults>
+    );
+  }
+
+  if (emptyResults.filters || isEmpty(sortedTechnologies)) {
+    return (
+      <EmptyResults>
+        <FormattedMessage {...messages.emptyFiltering} />
       </EmptyResults>
     );
   }
@@ -62,13 +72,9 @@ export const List = ({ technologies, emptyResults, rings }: ListProps) => {
           }}
         >
           <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
-          <ListItemTags>
-            {hoveredItem === technology.id && (
-              <>
-                <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
-                {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
-              </>
-            )}
+          <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
+            <Tag size={TagSize.SMALL}>{rings[technology.ring].name}</Tag>
+            {!!technology.team && <Tag size={TagSize.SMALL}>{technology.team}</Tag>}
           </ListItemTags>
         </ListItem>
       ))}

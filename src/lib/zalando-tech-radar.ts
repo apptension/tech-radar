@@ -173,8 +173,6 @@ export default function radar_visualization(config) {
     .attr('r', rings[3].radius)
     .attr('clip-path', 'url(#semi-circle)')
     .attr('fill', 'url(#conic-gradient)')
-    .attr('transform', `rotate(${getRotationForQuadrant(config.previously_active_quadrant)})`)
-    .transition()
     .attr(
       'transform',
       config.zoomed_quadrant

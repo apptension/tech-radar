@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil } from 'ramda';
+import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil, mathMod } from 'ramda';
 import { color } from '../../theme';
 import {
   BASIC_RADAR_HEIGHT,
@@ -169,12 +169,12 @@ export const getBlipDataById = (id: string) => {
 
 export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
   const listItem = document.querySelector(`#list-item-${id}`) as HTMLDivElement;
-  if (listItem) {
-    listItem.style.color = mode === 'on' ? color.white : color.boulder;
-  }
+  const listItemTags = document.querySelector(`#list-item-tags-${id}`) as HTMLDivElement;
+  if (listItem) listItem.style.color = mode === 'on' ? color.white : color.boulder;
+  if (listItemTags) listItemTags.style.opacity = mode === 'on' ? '1' : '0';
 };
 
-export const getRotationForQuadrant = (quadrant: number) => {
+export const getRotationForQuadrant = (quadrant: number | null) => {
   switch (quadrant) {
     case 0:
       return -90;
@@ -182,8 +182,10 @@ export const getRotationForQuadrant = (quadrant: number) => {
       return 0;
     case 2:
       return 90;
-    default:
+    case 3:
       return 180;
+    default:
+      return 90;
   }
 };
 
@@ -214,7 +216,14 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
-export const getRadarTechnologies = (technologies: ContentfulTechnology[], activeQuadrant: number | null) => {
+export const getUpdatedRadarTechnologies = (
+  technologies: RadarTechnology[],
+  activeQuadrant: number | null
+): RadarTechnology[] => {
+  return technologies.map((technology) => ({ ...technology, inactive: technology.quadrant !== activeQuadrant }));
+};
+
+export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
   forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
@@ -224,7 +233,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[], activ
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
-      inactive: !isNil(activeQuadrant) ? quadrant !== activeQuadrant : true,
+      inactive: true,
       id: i.toString(),
     });
   }, technologies);
@@ -278,20 +287,20 @@ export const getFilteredTechnologies = ({
   teamValue,
   levelValue,
   rings,
-  currentTechnologies,
+  technologies,
+  activeQuadrant,
 }: {
   searchText: FilterType;
   teamValue: FilterType;
   levelValue: FilterType;
   rings: RadarRing[];
-  currentTechnologies: RadarTechnology[];
+  technologies: RadarTechnology[];
+  activeQuadrant: number | null;
 }) => {
-  let filtered = currentTechnologies;
+  let filtered = getUpdatedRadarTechnologies(technologies, activeQuadrant);
 
   if (searchText) {
-    filtered = currentTechnologies.filter((technology) =>
-      technology.label.toLowerCase().includes(searchText.toLowerCase())
-    );
+    filtered = filtered.filter((technology) => technology.label.toLowerCase().includes(searchText.toLowerCase()));
   }
 
   if (teamValue) {
@@ -303,4 +312,47 @@ export const getFilteredTechnologies = ({
   }
 
   return filtered;
+};
+
+export const getRotatedData = ({
+  activeQuadrant,
+  newQuadrant,
+  technologies,
+  quadrants,
+  searchText,
+  teamValue,
+  levelValue,
+  rings,
+}: {
+  activeQuadrant: number | null;
+  newQuadrant: number;
+  technologies: RadarTechnology[];
+  quadrants: RadarQuadrant[];
+  searchText: FilterType;
+  teamValue: FilterType;
+  levelValue: FilterType;
+  rings: RadarRing[];
+}) => {
+  const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : 0;
+
+  const filteredTechnologies = getFilteredTechnologies({
+    searchText,
+    teamValue,
+    levelValue,
+    rings,
+    technologies,
+    activeQuadrant,
+  });
+  const movedTechnologies = filteredTechnologies.map((technology) => {
+    return {
+      ...technology,
+      quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
+    };
+  });
+  const movedQuadrants = quadrants.map((quadrant) => ({
+    ...quadrant,
+    position: mathMod(quadrant.position + moveQuadrantsBy, 4),
+  }));
+
+  return { movedQuadrants: sortBy(prop('position'), movedQuadrants), movedTechnologies };
 };
