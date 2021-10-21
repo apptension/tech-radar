@@ -13,7 +13,7 @@ import {
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
-import { selectSearch } from '../../../modules/filters/filters.selectors';
+import { selectArea, selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize } from '../tag/tag.types';
 import { ListWrapper, ListItem, EmptyResults, ListLabel, ListItemTags, Tag } from './list.styles';
 import messages from './list.messages';
@@ -27,8 +27,10 @@ interface ListProps {
 export const List = ({ technologies, emptyResults, rings }: ListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
+  const areaValue = useSelector(selectArea);
 
-  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+  const activeTechnologies = areaValue ? technologies.filter((technology) => !technology.inactive) : technologies;
+  const sortedTechnologies = sortBy(compose(toLower, prop('label')), activeTechnologies);
 
   if (emptyResults) {
     return (
