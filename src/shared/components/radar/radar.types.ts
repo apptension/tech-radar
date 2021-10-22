@@ -1,3 +1,5 @@
+import { FilterType } from '../../../modules/filters/filters.types';
+
 export type RadarTechnology = {
   label: string;
   quadrant: number;
@@ -75,3 +77,16 @@ export interface Point {
 export interface MinMaxFunction {
   (min: number, max: number): number;
 }
+
+export interface RotateDataProps {
+  activeQuadrant: number | null;
+  newQuadrant: number;
+  technologies: RadarTechnology[];
+  quadrants: RadarQuadrant[];
+  searchText: FilterType;
+  teamValue: FilterType;
+  levelValue: FilterType;
+  rings: RadarRing[];
+}
+
+export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;

@@ -13,7 +13,7 @@ import {
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
-import { selectArea, selectSearch } from '../../../modules/filters/filters.selectors';
+import { selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize, TagVariant } from '../tag/tag.types';
 import {
   ListWrapper,
@@ -37,11 +37,10 @@ interface TechnologiesListProps {
 export const TechnologiesList = ({ technologies, emptyResults, rings }: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
-  const areaValue = useSelector(selectArea);
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
 
-  const activeTechnologies = areaValue ? technologies.filter((technology) => !technology.inactive) : technologies;
+  const activeTechnologies = technologies.filter((technology) => !technology.inactive);
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), activeTechnologies);
 
   const handleScroll = (e: UIEvent<HTMLUListElement>) => {
