@@ -4,8 +4,6 @@ import { ThemeProvider } from 'styled-components';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { renderWhenTrue } from '../../utils/rendering';
 import { TagSize } from '../tag/tag.types';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { Breakpoint } from '../../../theme/media';
 import {
   ChevronIcon,
   Container,
@@ -22,6 +20,8 @@ import {
   RemoveIcon,
   Tag,
   ToggleButton,
+  LabelTagContainer,
+  ToggleButtonContainer,
 } from './dropdown.styles';
 import { DropdownTheme } from './dropdown.types';
 
@@ -84,15 +84,15 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
   return (
     <ThemeProvider theme={theme}>
       <Container className={className}>
-        <div>
+        <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && (
             <Tag size={TagSize.SMALL} onRemove={removeValue}>
               {value}
             </Tag>
           )}
-        </div>
-        {renderToggleButton()}
+        </LabelTagContainer>
+        <ToggleButtonContainer>{renderToggleButton()}</ToggleButtonContainer>
         {renderOptions()}
       </Container>
     </ThemeProvider>

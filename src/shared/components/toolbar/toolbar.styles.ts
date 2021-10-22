@@ -16,7 +16,7 @@ export const Container = styled.div`
 `;
 
 export const AreaDropdown = styled(Dropdown)`
-  min-width: 300px;
+  min-width: 250px;
 `;
 
 export const LevelDropdown = styled(Dropdown)`

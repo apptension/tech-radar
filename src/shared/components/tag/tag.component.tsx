@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { isNil } from 'ramda';
 
 import { renderWhenTrue } from '../../utils/rendering';
-import { Container, Icon, RemoveIcon } from './tag.styles';
+import { Container, Icon, RemoveIcon, ChildrenContainer } from './tag.styles';
 import { TagSize, TagTheme, TagVariant } from './tag.types';
 
 export interface TagProps {
@@ -33,7 +33,7 @@ export const Tag = ({
   return (
     <ThemeProvider theme={theme}>
       <Container className={className}>
-        {children}
+        <ChildrenContainer>{children}</ChildrenContainer>
         {renderRemoveIcon(clickable)}
       </Container>
     </ThemeProvider>
