@@ -303,13 +303,14 @@ export default function radar_visualization(config) {
   const ringLabels = radar.append('g').attr('id', 'ring-labels');
   if (config.print_layout) {
     for (let i = 0; i < rings.length; i++) {
+      const isActiveRing = config.active_ring === config.rings[i]?.position || !config.active_ring;
       ringLabels
         .append('text')
         .text(config.rings[i]?.name)
         .attr('y', -rings[i].radius + 21)
         .attr('x', 7)
         .attr('text-anchor', 'left')
-        .style('fill', color.white)
+        .style('fill', isActiveRing ? color.white : color.boulder)
         .style('font-family', 'Hellix')
         .style('font-size', config.zoomed_quadrant ? 8 : 14)
         .style('text-shadow', '2px 2px 4px #000000')

@@ -121,6 +121,14 @@ export const Explore = () => {
     setZoomedQuadrants(movedQuadrants);
   };
 
+  const activeRing = () => {
+    if (levelValue) {
+      const foundActiveRing = radarRings.find((ring) => ring.name === levelValue);
+      return foundActiveRing ? foundActiveRing.position : null;
+    }
+    return null;
+  };
+
   const onZoomIn = () => {
     setZoomedQuadrant(QUADRANT.topLeft);
     rotateData(QUADRANT.topLeft);
@@ -144,6 +152,7 @@ export const Explore = () => {
       rings={radarRings}
       activeQuadrant={activeQuadrant}
       zoomedQuadrant={zoomedQuadrant}
+      activeRing={activeRing()}
     />
   ));
 
