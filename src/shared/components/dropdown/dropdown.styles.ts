@@ -130,6 +130,7 @@ export const Option = styled.li<{ active: boolean }>`
   cursor: pointer;
 
   span {
+    height: 26px;
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
