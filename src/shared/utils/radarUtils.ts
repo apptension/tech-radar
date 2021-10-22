@@ -80,7 +80,7 @@ export const getRadarScale = (): { scale: number; fullSize: boolean } => {
 
   const result = { scale: 0.95, fullSize: true };
 
-  if (window.innerWidth < sizes.desktopWide) {
+  if (window.innerWidth < sizes.desktopFull) {
     result.scale = 0.64;
     result.fullSize = false;
   }

@@ -29,5 +29,5 @@ export const SearchIcon = styled(SearchIconSVG)`
 
 export const InputUnderline = styled.div`
   height: 2px;
-  background: linear-gradient(255.76deg, ${colors.screaminGreen} -56.33%, ${colors.schoolBusYellow} 124.09%);
+  background: ${colors.gradient};
 `;

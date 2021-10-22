@@ -4,12 +4,13 @@ import { ThemeProvider } from 'styled-components';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { renderWhenTrue } from '../../utils/rendering';
 import { TagSize } from '../tag/tag.types';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { Breakpoint } from '../../../theme/media';
 import {
-  Container,
   ChevronIcon,
-  Label,
-  Tag,
+  Container,
   Icon,
+  Label,
   LABEL_BOTTOM_MARGIN,
   LABEL_HEIGHT,
   LIST_BOTTOM_PADDING,
@@ -19,6 +20,7 @@ import {
   OptionsContainer,
   OptionsContent,
   RemoveIcon,
+  Tag,
   ToggleButton,
 } from './dropdown.styles';
 import { DropdownTheme } from './dropdown.types';
@@ -33,6 +35,8 @@ interface DropdownProps {
 
 export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
+  const { matches: showTags } = useMediaQuery({ above: Breakpoint.DESKTOP_FULL });
+
   const optionsAmount = options.length;
   const optionsHeight =
     optionsAmount * LABEL_HEIGHT + (optionsAmount - 1) * LABEL_BOTTOM_MARGIN + LIST_TOP_PADDING + LIST_BOTTOM_PADDING;
@@ -83,7 +87,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
       <Container className={className}>
         <div>
           <Label>{label}</Label>
-          {!!value && (
+          {!!value && showTags && (
             <Tag size={TagSize.SMALL} onRemove={removeValue}>
               {value}
             </Tag>
