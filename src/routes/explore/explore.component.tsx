@@ -8,7 +8,7 @@ import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { QUADRANT } from '../../shared/components/radar/radar.constants';
-import { getFilteredTechnologies, getRotatedData, pluckNameFromList } from '../../shared/utils/radarUtils';
+import { getUpdatedRadarTechnologies, getRotatedData, pluckNameFromList } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
@@ -38,6 +38,7 @@ export const Explore = () => {
   const teamValue = useSelector(selectTeam);
 
   const [filteredTechnologies, setFilteredTechnologies] = useState<RadarTechnology[]>([]);
+  const [activeTechnologiesIds, setActiveTechnologiesIds] = useState<string[]>([]);
 
   const [activeQuadrant, setActiveQuadrant] = useState<number | null>(null);
   const [loadingVisible, setLoadingVisible] = useState(true);
@@ -88,7 +89,7 @@ export const Explore = () => {
 
   const updateFilteredTechnologies = () => {
     if (!isEmpty(radarTechnologies)) {
-      const filtered = getFilteredTechnologies({
+      const { updatedTechnologies, activeIds } = getUpdatedRadarTechnologies({
         searchText,
         technologies: radarTechnologies,
         rings: radarRings,
@@ -96,7 +97,8 @@ export const Explore = () => {
         levelValue,
         activeQuadrant,
       });
-      setFilteredTechnologies(filtered);
+      setFilteredTechnologies(updatedTechnologies);
+      setActiveTechnologiesIds(activeIds);
     }
   };
 
@@ -123,31 +125,26 @@ export const Explore = () => {
   const onZoomOut = () => setZoomedQuadrant(null);
 
   const [emptyResultsFromSearch] = useDebounce(
-    !!searchText && isEmpty(filteredTechnologies),
+    !!searchText && isEmpty(activeTechnologiesIds),
     EMPTY_RESULTS_DEBOUNCE_TIME
   );
   const [emptyResultsFromFiltering] = useDebounce(
-    (!!levelValue || !!teamValue) && isEmpty(filteredTechnologies),
+    (!!levelValue || !!teamValue || !!areaValue) && isEmpty(activeTechnologiesIds),
     EMPTY_RESULTS_DEBOUNCE_TIME
   );
-
-  const currentTechnologies = () => {
-    if (zoomedQuadrant) return zoomedTechnologies;
-    return filteredTechnologies.length || emptyResultsFromFiltering ? filteredTechnologies : radarTechnologies;
-  };
 
   const renderContent = () => (
     <>
       <SidebarWrapper>
         <Sidebar
-          technologies={filteredTechnologies.length ? filteredTechnologies : radarTechnologies}
+          technologies={filteredTechnologies}
           emptyResults={{ search: emptyResultsFromSearch, filters: emptyResultsFromFiltering }}
           rings={radarRings}
         />
       </SidebarWrapper>
       <Viewer>
         <Radar
-          technologies={currentTechnologies()}
+          technologies={zoomedQuadrant ? zoomedTechnologies : filteredTechnologies}
           quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
           rings={radarRings}
           activeQuadrant={activeQuadrant}

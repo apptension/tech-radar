@@ -249,13 +249,23 @@ export default function radar_visualization(config) {
       .attr('y', currentFactors[i].y)
       .style('fill', color.mineShaft)
       .transition()
-      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.silver : color.mineShaft);
+      .style(
+        'fill',
+        !config.active_quadrant || config.active_quadrant === i || config.zoomed_quadrant === i
+          ? color.silver
+          : color.mineShaft
+      );
     quadrantLabel
       .append('text')
       .attr('x', currentFactors[i].x - subtractX)
       .attr('y', currentFactors[i].y - subtractY)
       .attr('text-anchor', 'left')
-      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
+      .style(
+        'fill',
+        !config.active_quadrant || config.active_quadrant === i || config.zoomed_quadrant === i
+          ? color.mineShaft
+          : color.scorpion
+      )
       .style('font-family', 'Hellix')
       .style('font-size', `${smallerLabels ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');

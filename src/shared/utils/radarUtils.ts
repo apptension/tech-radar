@@ -15,6 +15,8 @@ import {
   RadarRing,
   RadarTeam,
   RadarTechnology,
+  RotateDataProps,
+  UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
 import { FilterType } from '../../modules/filters/filters.types';
 import { sizes } from '../../theme/media';
@@ -220,13 +222,6 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
-export const getUpdatedRadarTechnologies = (
-  technologies: RadarTechnology[],
-  activeQuadrant: number | null
-): RadarTechnology[] => {
-  return technologies.map((technology) => ({ ...technology, inactive: technology.quadrant !== activeQuadrant }));
-};
-
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
@@ -237,7 +232,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
-      inactive: true,
+      inactive: false,
       id: i.toString(),
     });
   }, technologies);
@@ -286,36 +281,51 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
 
 export const pluckNameFromList = (list: RadarRing[] | RadarQuadrant[] | RadarTeam[]) => pluck('name', list);
 
-export const getFilteredTechnologies = ({
+export const getActiveTechnologiesIds = ({
   searchText,
   teamValue,
   levelValue,
   rings,
   technologies,
   activeQuadrant,
-}: {
-  searchText: FilterType;
-  teamValue: FilterType;
-  levelValue: FilterType;
-  rings: RadarRing[];
-  technologies: RadarTechnology[];
-  activeQuadrant: number | null;
-}) => {
-  let filtered = getUpdatedRadarTechnologies(technologies, activeQuadrant);
+}: UpdateTechnologiesProps): string[] => {
+  let filtered = technologies;
 
-  if (searchText) {
+  if (!isNil(activeQuadrant)) filtered = filtered.filter((technology) => technology.quadrant === activeQuadrant);
+
+  if (searchText)
     filtered = filtered.filter((technology) => technology.label.toLowerCase().includes(searchText.toLowerCase()));
-  }
 
-  if (teamValue) {
-    filtered = filtered.filter((technology) => technology.team === teamValue);
-  }
+  if (teamValue) filtered = filtered.filter((technology) => technology.team === teamValue);
 
-  if (levelValue) {
-    filtered = filtered.filter((technology) => rings[technology.ring].name === levelValue);
-  }
+  if (levelValue) filtered = filtered.filter((technology) => rings[technology.ring].name === levelValue);
 
-  return filtered;
+  return filtered.map((technology) => technology.id);
+};
+
+export const getUpdatedRadarTechnologies = ({
+  technologies,
+  searchText,
+  teamValue,
+  levelValue,
+  rings,
+  activeQuadrant,
+}: UpdateTechnologiesProps): { updatedTechnologies: RadarTechnology[]; activeIds: string[] } => {
+  const activeTechnologiesIds = getActiveTechnologiesIds({
+    searchText,
+    teamValue,
+    technologies,
+    levelValue,
+    rings,
+    activeQuadrant,
+  });
+
+  const updatedTechnologies = technologies.map((technology) => ({
+    ...technology,
+    inactive: !activeTechnologiesIds.includes(technology.id),
+  }));
+
+  return { updatedTechnologies, activeIds: activeTechnologiesIds };
 };
 
 export const getRotatedData = ({
@@ -327,19 +337,10 @@ export const getRotatedData = ({
   teamValue,
   levelValue,
   rings,
-}: {
-  activeQuadrant: number | null;
-  newQuadrant: number;
-  technologies: RadarTechnology[];
-  quadrants: RadarQuadrant[];
-  searchText: FilterType;
-  teamValue: FilterType;
-  levelValue: FilterType;
-  rings: RadarRing[];
-}) => {
+}: RotateDataProps) => {
   const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : 0;
 
-  const filteredTechnologies = getFilteredTechnologies({
+  const { updatedTechnologies } = getUpdatedRadarTechnologies({
     searchText,
     teamValue,
     levelValue,
@@ -347,7 +348,8 @@ export const getRotatedData = ({
     technologies,
     activeQuadrant,
   });
-  const movedTechnologies = filteredTechnologies.map((technology) => {
+
+  const movedTechnologies = updatedTechnologies.map((technology) => {
     return {
       ...technology,
       quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
