@@ -35,7 +35,6 @@ interface DropdownProps {
 
 export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
   const [open, setOpen] = useState(false);
-  const { matches: showTags } = useMediaQuery({ above: Breakpoint.DESKTOP_FULL });
 
   const optionsAmount = options.length;
   const optionsHeight =
@@ -87,7 +86,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
       <Container className={className}>
         <div>
           <Label>{label}</Label>
-          {!!value && showTags && (
+          {!!value && (
             <Tag size={TagSize.SMALL} onRemove={removeValue}>
               {value}
             </Tag>
