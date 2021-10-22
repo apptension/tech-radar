@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { H1, Paragraph } from '../../theme/typography';
 import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
+import { Breakpoint, media } from '../../theme/media';
 
 export const Container = styled.div`
   height: 100%;
@@ -24,6 +25,10 @@ export const Content = styled.div`
   padding-top: 110px;
   max-width: 1500px;
   margin: 0 auto;
+
+  ${media(Breakpoint.DESKTOP)} {
+    // desktop styles
+  }
 `;
 
 export const TextContent = styled.div`

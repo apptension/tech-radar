@@ -29,6 +29,7 @@ export const Container = styled.button<ThemeProps<ButtonTheme>>`
   cursor: pointer;
   display: flex;
   align-items: center;
+  border-radius: 2px;
 
   ${theme('isDisabled', {
     true: disabledButtonStyle,

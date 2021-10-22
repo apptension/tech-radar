@@ -13,7 +13,7 @@ export const ListWrapper = styled.div`
 
 export const List = styled.ul`
   position: absolute;
-  height: 100%;
+  height: calc(100% - 16px);
   width: 100%;
   top: 0;
   left: 0;

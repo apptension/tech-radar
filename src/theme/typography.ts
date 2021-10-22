@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { mediaQuery } from './media';
 
 import * as colors from './color';
 import { fontFamily, fontWeight } from './font';
@@ -24,12 +25,22 @@ export const LabelMedium = css`
   line-height: 18px;
 `;
 
-export const H1 = styled.h1`
+export const Title = css`
   font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 32px;
+  line-height: 38.4px;
+
+  ${mediaQuery.desktop} {
+    font-size: 48px;
+    line-height: 48px;
+  }
+`;
+
+export const H1 = styled.h1`
+  ${Title};
   font-weight: ${fontWeight.bold};
   color: ${colors.white};
-  font-size: 48px;
-  line-height: 48px;
   margin: 0;
 `;
 

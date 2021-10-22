@@ -14,6 +14,9 @@ import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
 import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
 import { setArea } from '../../modules/filters/filters.actions';
+import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
+import { Breakpoint } from '../../theme/media';
+import { renderWhenTrue } from '../../shared/utils/rendering';
 import {
   Container,
   TitleTag,
@@ -29,6 +32,7 @@ import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
 
 export const Explore = () => {
+  const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const intl = useIntl();
 
   const dispatch = useDispatch();
@@ -133,6 +137,16 @@ export const Explore = () => {
     EMPTY_RESULTS_DEBOUNCE_TIME
   );
 
+  const renderRadar = renderWhenTrue(() => (
+    <Radar
+      technologies={zoomedQuadrant ? zoomedTechnologies : filteredTechnologies}
+      quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
+      rings={radarRings}
+      activeQuadrant={activeQuadrant}
+      zoomedQuadrant={zoomedQuadrant}
+    />
+  ));
+
   const renderContent = () => (
     <>
       <SidebarWrapper>
@@ -143,13 +157,7 @@ export const Explore = () => {
         />
       </SidebarWrapper>
       <Viewer>
-        <Radar
-          technologies={zoomedQuadrant ? zoomedTechnologies : filteredTechnologies}
-          quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}
-          rings={radarRings}
-          activeQuadrant={activeQuadrant}
-          zoomedQuadrant={zoomedQuadrant}
-        />
+        {renderRadar(isDesktop)}
         {isSuccess && (
           <>
             <Toolbar

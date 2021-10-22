@@ -83,7 +83,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={className}>
+      <Container className={`${className} ${open ? 'open-dropdown' : ''}`}>
         <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && (
