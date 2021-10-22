@@ -268,6 +268,7 @@ export default function radar_visualization(config) {
       )
       .style('font-family', 'Hellix')
       .style('font-size', `${smallerLabels ? 8 : 14}px`)
+      .style('font-weight', 600)
       .style('letter-spacing', '0.2em');
 
     const label = d3.select(`#quadrant-label-${i} text`);
@@ -311,6 +312,7 @@ export default function radar_visualization(config) {
         .style('fill', color.white)
         .style('font-family', 'Hellix')
         .style('font-size', config.zoomed_quadrant ? 8 : 14)
+        .style('text-shadow', '2px 2px 4px #000000')
         .style('pointer-events', 'none')
         .style('user-select', 'none');
     }
