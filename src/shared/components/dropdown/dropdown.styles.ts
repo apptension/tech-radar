@@ -22,11 +22,12 @@ export const Container = styled.div`
   position: relative;
   background: ${color.codGray};
   border: ${border.boldWhite};
+`;
 
-  div {
-    display: flex;
-    align-items: center;
-  }
+export const LabelTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 66px);
 `;
 
 export const Label = styled.label`
@@ -34,7 +35,8 @@ export const Label = styled.label`
 `;
 
 export const Tag = styled(TagComponent)`
-  margin-left: 16px;
+  margin: 0 16px;
+  max-width: calc(100% - 32px);
 `;
 
 const chevronOpenStyle = css`
@@ -47,6 +49,10 @@ export const ChevronIcon = styled(ChevronIconSVG)`
   ${theme('open', {
     true: chevronOpenStyle,
   })};
+`;
+
+export const ToggleButtonContainer = styled.div`
+  flex: 0 0 48px;
 `;
 
 export const ToggleButton = styled.button.attrs({ type: 'button' })`
@@ -124,6 +130,7 @@ export const Option = styled.li<{ active: boolean }>`
   cursor: pointer;
 
   span {
+    height: 26px;
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;

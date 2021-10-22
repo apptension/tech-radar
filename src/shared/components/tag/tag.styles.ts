@@ -60,6 +60,19 @@ export const Container = styled.div<ThemeProps<TagTheme>>`
   })}
 `;
 
+const childrenClickableStyles = css`
+  max-width: calc(100% - 16px);
+`;
+
+export const ChildrenContainer = styled.div`
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  ${theme('clickable', { true: childrenClickableStyles })}
+`;
+
 const tagIconSizeLargeStyles = css`
   position: relative;
   top: 2px;
