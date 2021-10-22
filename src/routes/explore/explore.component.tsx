@@ -4,20 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useIntl } from 'react-intl';
 
-import { area } from 'd3';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { QUADRANT } from '../../shared/components/radar/radar.constants';
-import {
-  getFilteredTechnologies,
-  getRadarQuadrants,
-  getRadarRings,
-  getRadarTeams,
-  getRadarTechnologies,
-  getRotatedData,
-  pluckNameFromList,
-} from '../../shared/utils/radarUtils';
+import { getFilteredTechnologies, getRotatedData, pluckNameFromList } from '../../shared/utils/radarUtils';
 import { RadarQuadrant, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
@@ -154,7 +145,7 @@ export const Explore = () => {
           rings={radarRings}
         />
       </SidebarWrapper>
-      <Viewer fullRadar={!zoomedQuadrant}>
+      <Viewer>
         <Radar
           technologies={currentTechnologies()}
           quadrants={zoomedQuadrant ? zoomedQuadrants : radarQuadrants}

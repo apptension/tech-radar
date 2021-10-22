@@ -30,17 +30,12 @@ export const SidebarWrapper = styled.div`
   min-width: 411px;
 `;
 
-type ViewerProps = {
-  fullRadar: boolean;
-};
-
-export const Viewer = styled.div<ViewerProps>`
+export const Viewer = styled.div`
   height: 100%;
   flex: 1;
   display: flex;
-  align-items: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
-  justify-content: ${(props) => (props.fullRadar ? 'center' : 'flex-end')};
-  width: ${(props) => (props.fullRadar ? '100%' : undefined)};
+  align-items: flex-end;
+  justify-content: flex-end;
 `;
 
 export const Toolbar = styled(ToolbarComponent)`

@@ -43,7 +43,7 @@ import {
 // THE SOFTWARE.
 
 export default function radar_visualization(config) {
-  const scale = getRadarScale();
+  const { scale, fullSize } = getRadarScale();
 
   // radial_min / radial_max are multiples of PI
   const quadrants = [
@@ -218,43 +218,70 @@ export default function radar_visualization(config) {
 
   // draw quadrant labels
   for (let i = 0; i < config.quadrants.length; i++) {
-    const oddQuadrantY = quadrants[i].factor_y * 320 * scale;
-    const evenQuadrantY = oddQuadrantY + quadrants[i].factor_y * 40 * scale;
-    const everyQuadrantX = quadrants[i].factor_x * 360 - 100 * scale;
+    const smallerLabels = config.zoomed_quadrant || !fullSize;
+    const isZoomed = i === config.zoomed_quadrant;
+    const factorX = quadrants[i].factor_x;
+    const factorY = quadrants[i].factor_y;
+    // magic numbers (found by experimentation)
+    const factorsForSmallerLabels = [
+      { x: factorX * 200, y: factorY * 220 },
+      { x: factorX * 300, y: factorY * 200 },
+      { x: factorX * 320, y: factorY * 220 },
+      { x: factorX * 200, y: factorY * 200 },
+    ];
+    const factorsForBiggerLabels = [
+      { x: factorX * 340, y: factorY * 280 },
+      { x: factorX * 510, y: factorY * 250 },
+      { x: factorX * 550, y: factorY * 300 },
+      { x: factorX * 330, y: factorY * 260 },
+    ];
+
+    const currentFactors = smallerLabels ? factorsForSmallerLabels : factorsForBiggerLabels;
+    const subtractX = smallerLabels ? 6 : 0;
+    const subtractY = smallerLabels ? 0 : -1;
 
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
     quadrantLabel
       .append('rect')
-      .attr('rx', config.zoomed_quadrant ? 12 : 20)
-      .attr('ry', config.zoomed_quadrant ? 12 : 20)
-      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
-      .attr('x', everyQuadrantX)
+      .attr('rx', smallerLabels ? 12 : 20)
+      .attr('ry', smallerLabels ? 12 : 20)
+      .attr('x', currentFactors[i].x)
+      .attr('y', currentFactors[i].y)
       .style('fill', color.mineShaft)
       .transition()
       .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.silver : color.mineShaft);
     quadrantLabel
       .append('text')
-      .attr('y', i % 2 ? oddQuadrantY : evenQuadrantY)
-      .attr('x', everyQuadrantX)
+      .attr('x', currentFactors[i].x - subtractX)
+      .attr('y', currentFactors[i].y - subtractY)
       .attr('text-anchor', 'left')
       .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
-      .style('font-size', `${config.zoomed_quadrant ? 8 : 14}px`)
+      .style('font-size', `${smallerLabels ? 8 : 14}px`)
       .style('letter-spacing', '0.2em');
 
     const label = d3.select(`#quadrant-label-${i} text`);
     label.text(config.quadrants[i].name.toUpperCase());
-    if (config.zoomed_quadrant) label.attr('x', everyQuadrantX + 115).attr('y', evenQuadrantY - 1);
+    if (config.zoomed_quadrant) {
+      const addX = fullSize && isZoomed ? -50 : 44;
+      const addY = fullSize && isZoomed ? -130 : -46;
+      label.attr('x', currentFactors[i].x + addX).attr('y', currentFactors[i].y + addY);
+    }
 
     const labelNode = label.node();
     if (labelNode) {
       const bbox = labelNode.getBBox();
+      const addX = fullSize && isZoomed ? -64 : 30;
+      const addY = fullSize && isZoomed ? -134 : -50;
 
       d3.select(`#quadrant-label-${i} rect`)
-        .attr('y', i % 2 ? oddQuadrantY - bbox.height - 5 : evenQuadrantY - bbox.height - 5)
-        .attr('x', config.zoomed_quadrant ? everyQuadrantX + 100 : everyQuadrantX - 20)
-        .attr('width', config.zoomed_quadrant ? bbox.width + 30 : bbox.width + 40)
-        .attr('height', config.zoomed_quadrant ? bbox.height + 12 : bbox.height + 18);
+        .attr('x', config.zoomed_quadrant ? currentFactors[i].x + addX : currentFactors[i].x - 20)
+        .attr(
+          'y',
+          config.zoomed_quadrant ? currentFactors[i].y - bbox.height + addY : currentFactors[i].y - bbox.height - 5
+        )
+        .attr('width', smallerLabels ? bbox.width + 30 : bbox.width + 40)
+        .attr('height', smallerLabels ? bbox.height + 12 : bbox.height + 18);
     }
   }
 
