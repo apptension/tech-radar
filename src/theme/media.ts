@@ -34,6 +34,12 @@ const getWindowWidth = () => window.innerWidth;
 
 export const getBreakpointMediaQuery = (breakpoint: Breakpoint) => `(min-width: ${sizes[breakpoint]}px)`;
 
+export const mediaQuery = {
+  mobile: `@media ${getBreakpointMediaQuery(Breakpoint.MOBILE)}`,
+  tablet: `@media ${getBreakpointMediaQuery(Breakpoint.TABLET)}`,
+  desktop: `@media ${getBreakpointMediaQuery(Breakpoint.DESKTOP)}`,
+};
+
 export const media = (breakpoint: Breakpoint, opts: { landscape?: boolean; retina?: boolean } = {}) => {
   return ((styleTemplate: TemplateStringsArray) => {
     const joinQuery = (...queries: (string | null)[]) => queries.filter(complement(isNil)).join(' and ');

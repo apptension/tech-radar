@@ -17,6 +17,11 @@ export const Container = styled.div`
 
 export const AreaDropdown = styled(Dropdown)`
   min-width: 250px;
+  border-radius: 2px 0 0 2px;
+
+  &.open-dropdown {
+    border-radius: 0 0 0 2px;
+  }
 `;
 
 export const LevelDropdown = styled(Dropdown)`
@@ -25,4 +30,9 @@ export const LevelDropdown = styled(Dropdown)`
 
 export const TeamDropdown = styled(Dropdown)`
   min-width: 200px;
+  border-radius: 0 2px 2px 0;
+
+  &.open-dropdown {
+    border-radius: 0 0 2px 0;
+  }
 `;

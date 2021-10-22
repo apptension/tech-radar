@@ -106,6 +106,7 @@ export const Options = styled.div`
   background: ${color.codGray};
   transform: translateY(100%);
   transition: transform 0.3s ease-in-out;
+  border-radius: 2px 2px 0 0;
 
   ${theme('open', {
     true: OptionsListOpenStyle,
