@@ -170,7 +170,7 @@ export const unhighlightBlip = ({ id, ring, color }: BlipInterface) => {
 
 export const getBlipDataById = (id: string) => {
   const blip = document.querySelector(`#blip-${id}`) as SVGGraphicsElement;
-  return JSON.parse(blip.dataset.translate || '');
+  return blip ? JSON.parse(blip.dataset.translate || '') : { x: -1000, y: -1000 };
 };
 
 export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' | 'off' }) => {
