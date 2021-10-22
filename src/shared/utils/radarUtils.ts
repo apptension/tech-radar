@@ -1,13 +1,7 @@
 import * as d3 from 'd3';
-import { clamp, pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil, mathMod } from 'ramda';
+import { pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil, mathMod } from 'ramda';
 import { color } from '../../theme';
-import {
-  BASIC_RADAR_HEIGHT,
-  BASIC_RADAR_WIDTH,
-  RADAR_SEED,
-  RADAR_SEED_MULTIPLIER,
-  SIDEBAR_WIDTH,
-} from '../components/radar/radar.constants';
+import { RADAR_SEED, RADAR_SEED_MULTIPLIER } from '../components/radar/radar.constants';
 import {
   BlipInterface,
   BubbleInterface,
@@ -23,6 +17,7 @@ import {
   RadarTechnology,
 } from '../components/radar/radar.types';
 import { FilterType } from '../../modules/filters/filters.types';
+import { sizes } from '../../theme/media';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -80,13 +75,22 @@ export const translate = ({ x, y }: Point) => {
   return `translate(${x}, ${y})`;
 };
 
-export const getRadarScale = (): number => {
-  const availableRadarWidth = window.innerWidth - SIDEBAR_WIDTH;
+export const getRadarScale = (): { scale: number; fullSize: boolean } => {
+  const MIN_WINDOW_HEIGHT = 800;
 
-  const widthScale = availableRadarWidth / BASIC_RADAR_WIDTH;
-  const heightScale = window.innerHeight / BASIC_RADAR_HEIGHT;
+  const result = { scale: 0.95, fullSize: true };
 
-  return clamp(0, 1, Math.min(widthScale, heightScale));
+  if (window.innerWidth < sizes.desktopWide) {
+    result.scale = 0.64;
+    result.fullSize = false;
+  }
+
+  if (window.innerHeight < MIN_WINDOW_HEIGHT) {
+    result.scale = 0.59;
+    result.fullSize = false;
+  }
+
+  return result;
 };
 
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
