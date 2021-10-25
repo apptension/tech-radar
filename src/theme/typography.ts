@@ -14,8 +14,13 @@ export const CaptionMedium = css`
 export const BodyMedium = css`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.normal};
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 16px;
+  line-height: 22px;
+
+  ${mediaQuery.desktop} {
+    font-size: 20px;
+    line-height: 28px;
+  }
 `;
 
 export const LabelMedium = css`
@@ -104,6 +109,11 @@ export const TagMedium = css`
 
 export const TagLarge = css`
   ${tagTypographyStyles};
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 16px;
+
+  ${mediaQuery.desktop} {
+    font-size: 20px;
+    line-height: 20px;
+  }
 `;
