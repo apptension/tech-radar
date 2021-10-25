@@ -1,29 +1,35 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Header } from '../../shared/components/header';
 import { Logo } from '../../shared/components/logo';
-
 import RadarImg from '../../images/radar.png';
+import RadarMobileImg from '../../images/radar-mobile.png';
 import { Background } from '../../shared/components/background';
 import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
 import { TitleTag } from '../../shared/components/titleTag';
 import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
+import { Breakpoint } from '../../theme/media';
+import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import messages from './home.messages';
 import {
   Container,
   Content,
   Description,
+  ExploreLinkContainer,
+  Header,
   Image,
+  LastUpdateInfo,
   LogoWrapper,
   RadarContent,
   TextContent,
-  LastUpdateInfo,
 } from './home.styles';
 
 export const Home = () => {
+  const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
+  const { matches: isTablet } = useMediaQuery({ above: Breakpoint.TABLET });
   const lastContentfulUpdate = useLastContentfulUpdate();
 
   return (
@@ -31,11 +37,13 @@ export const Home = () => {
       <Background />
       <Header>
         <LogoWrapper>
-          <Logo />
+          <Logo full={isDesktop} />
         </LogoWrapper>
-        <Link to="https://apptension.com" icon={ButtonIcon.OUT}>
-          <FormattedMessage {...messages.backToMainPageButton} />
-        </Link>
+        {isDesktop && (
+          <Link to="https://apptension.com" icon={ButtonIcon.OUT}>
+            <FormattedMessage {...messages.backToMainPageButton} />
+          </Link>
+        )}
       </Header>
       <Content>
         <TextContent>
@@ -43,15 +51,17 @@ export const Home = () => {
           <Description>
             <FormattedMessage {...messages.description} />
           </Description>
-          <Link to={ROUTES.explore} size={ButtonSize.LARGE} icon={ButtonIcon.ARROW}>
-            <FormattedMessage {...messages.exploreButton} />
-          </Link>
+          <ExploreLinkContainer>
+            <Link to={ROUTES.explore} size={isDesktop ? ButtonSize.LARGE : ButtonSize.REGULAR} icon={ButtonIcon.ARROW}>
+              <FormattedMessage {...messages.exploreButton} />
+            </Link>
+          </ExploreLinkContainer>
         </TextContent>
         <RadarContent>
-          <Image src={RadarImg}></Image>
+          <Image src={isTablet ? RadarImg : RadarMobileImg} />
         </RadarContent>
       </Content>
-      {!!lastContentfulUpdate && <LastUpdateInfo date={lastContentfulUpdate} />}
+      {!!lastContentfulUpdate && isDesktop && <LastUpdateInfo date={lastContentfulUpdate} />}
     </Container>
   );
 };

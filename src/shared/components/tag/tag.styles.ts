@@ -8,7 +8,7 @@ import { TagSize, TagTheme, TagVariant } from './tag.types';
 
 const tagSizeSmallStyles = css`
   ${TagSmall};
-  padding: 7px 12px;
+  padding: 6px 12px 7px;
 `;
 
 const tagSizeMediumStyles = css`
@@ -18,7 +18,7 @@ const tagSizeMediumStyles = css`
 
 const tagSizeLargeStyles = css`
   ${TagLarge};
-  padding: 7px 16px 11px;
+  padding: 9px 16px 10px;
 `;
 
 const tagVariantDefaultStyles = css`
