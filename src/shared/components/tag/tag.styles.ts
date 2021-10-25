@@ -65,6 +65,8 @@ const childrenClickableStyles = css`
 `;
 
 export const ChildrenContainer = styled.div`
+  display: flex;
+  align-items: center;
   max-width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;

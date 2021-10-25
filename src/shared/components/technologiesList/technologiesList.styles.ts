@@ -37,6 +37,8 @@ export const ListLabel = styled.div`
   height: 26px;
   color: ${colors.boulder};
   font-size: 18px;
+  display: flex;
+  align-items: center;
 `;
 
 export const ListItemTags = styled.div<{ visible: boolean }>`
@@ -53,9 +55,14 @@ export const Tag = styled(TagComponent)`
 `;
 
 export const EmptyResults = styled.div`
+  flex: 1;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
   color: ${colors.boulder};
   font-size: 18px;
   margin-top: 16px;
+  height: calc(100% - 16px);
 `;
 
 const shadowStyles = css`
@@ -69,7 +76,7 @@ const shadowStyles = css`
 
 export const ShadowBottom = styled.div<{ visible: boolean }>`
   ${shadowStyles};
-  bottom: 0;
+  bottom: -1px;
   background: ${color.shadowGradientBottom};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;

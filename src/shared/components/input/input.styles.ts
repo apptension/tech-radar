@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import * as colors from '../../../theme/color';
 import { ReactComponent as SearchIconSVG } from '../../../images/icons/search.svg';
-
 export const Container = styled.div``;
 
 export const InputWrapper = styled.div`
