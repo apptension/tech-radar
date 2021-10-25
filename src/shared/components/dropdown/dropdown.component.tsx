@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { renderWhenTrue } from '../../utils/rendering';
 import { TagSize } from '../tag/tag.types';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { Breakpoint } from '../../../theme/media';
 import {
   ChevronIcon,
   Container,
@@ -34,6 +36,7 @@ interface DropdownProps {
 }
 
 export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
+  const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const [open, setOpen] = useState(false);
 
   const optionsAmount = options.length;
@@ -86,7 +89,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
       <Container className={`${className} ${open ? 'open-dropdown' : ''}`}>
         <LabelTagContainer>
           <Label>{label}</Label>
-          {!!value && (
+          {!!value && isDesktop && (
             <Tag size={TagSize.SMALL} onRemove={removeValue}>
               {value}
             </Tag>

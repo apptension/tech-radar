@@ -156,6 +156,22 @@ export const Explore = () => {
     />
   ));
 
+  const renderViewerControls = renderWhenTrue(() => (
+    <>
+      <Toolbar
+        areaOptions={pluckNameFromList(radarQuadrants)}
+        levelOptions={pluckNameFromList(radarRings)}
+        teamOptions={pluckNameFromList(radarTeams)}
+      />
+      <ZoomControls
+        onZoomIn={onZoomIn}
+        onZoomOut={onZoomOut}
+        zoomInDisabled={!!zoomedQuadrant}
+        zoomOutDisabled={!zoomedQuadrant}
+      />
+    </>
+  ));
+
   const renderContent = () => (
     <>
       <SidebarWrapper>
@@ -163,25 +179,13 @@ export const Explore = () => {
           technologies={filteredTechnologies}
           emptyResults={{ search: emptyResultsFromSearch, filters: emptyResultsFromFiltering }}
           rings={radarRings}
+          teams={radarTeams}
+          quadrants={radarQuadrants}
         />
       </SidebarWrapper>
       <Viewer>
         {renderRadar(isDesktop)}
-        {isSuccess && (
-          <>
-            <Toolbar
-              areaOptions={pluckNameFromList(radarQuadrants)}
-              levelOptions={pluckNameFromList(radarRings)}
-              teamOptions={pluckNameFromList(radarTeams)}
-            />
-            <ZoomControls
-              onZoomIn={onZoomIn}
-              onZoomOut={onZoomOut}
-              zoomInDisabled={!!zoomedQuadrant}
-              zoomOutDisabled={!zoomedQuadrant}
-            />
-          </>
-        )}
+        {isSuccess && renderViewerControls(isDesktop)}
       </Viewer>
     </>
   );

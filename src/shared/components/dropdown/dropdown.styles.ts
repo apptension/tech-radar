@@ -6,6 +6,7 @@ import { ReactComponent as RemoveIconSVG } from '../../../images/icons/remove.sv
 import { BodyMedium, LabelMedium } from '../../../theme/typography';
 import { Tag as TagComponent } from '../tag';
 import { border, color } from '../../../theme';
+import { mediaQuery } from '../../../theme/media';
 
 export const LABEL_HEIGHT = 26;
 export const LABEL_BOTTOM_MARGIN = 12;
@@ -14,7 +15,7 @@ export const LIST_BOTTOM_PADDING = 32;
 
 export const Container = styled.div`
   height: 58px;
-  padding: 0 24px;
+  padding: 0 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,6 +23,10 @@ export const Container = styled.div`
   position: relative;
   background: ${color.codGray};
   border: ${border.boldWhite};
+
+  ${mediaQuery.desktop} {
+    padding: 0 24px;
+  }
 `;
 
 export const LabelTagContainer = styled.div`
@@ -45,14 +50,25 @@ const chevronOpenStyle = css`
 
 export const ChevronIcon = styled(ChevronIconSVG)`
   transition: transform 0.3s ease-in-out;
+  height: 10px;
+  width: 15px;
 
   ${theme('open', {
     true: chevronOpenStyle,
   })};
+
+  ${mediaQuery.desktop} {
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 export const ToggleButtonContainer = styled.div`
-  flex: 0 0 48px;
+  flex: 0 0 20px;
+
+  ${mediaQuery.desktop} {
+    flex: 0 0 48px;
+  }
 `;
 
 export const ToggleButton = styled.button.attrs({ type: 'button' })`

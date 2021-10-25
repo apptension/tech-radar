@@ -1,26 +1,32 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
-
 import { useDebouncedCallback } from 'use-debounce';
-import { TechnologiesList } from '../technologiesList';
-import { Input } from '../input';
-import { RadarRing, RadarTechnology } from '../radar/radar.types';
+
 import { selectArea, selectLevel, selectTeam } from '../../../modules/filters/filters.selectors';
-import { TagSize } from '../tag/tag.types';
-import { renderWhenTrue } from '../../utils/rendering';
 import { setArea, setLevel, setSearch, setTeam } from '../../../modules/filters/filters.actions';
+import { renderWhenTrue } from '../../utils/rendering';
+import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
+import { TagSize } from '../tag/tag.types';
 import messages from '../input/input.messages';
 import { INPUT_DEBOUNCE_TIME } from '../input/input.constants';
-import { Container, FiltersContainer, Tag } from './sidebar.styles';
+import { Input } from '../input';
+import { TechnologiesList } from '../technologiesList';
+import { pluckNameFromList } from '../../utils/radarUtils';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { Breakpoint } from '../../../theme/media';
+import { Container, FiltersContainer, Tag, Toolbar } from './sidebar.styles';
 
 interface SidebarProps {
   technologies: RadarTechnology[];
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
+  teams: RadarTeam[];
+  quadrants: RadarQuadrant[];
 }
 
-export const Sidebar = ({ technologies, emptyResults, rings }: SidebarProps) => {
+export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }: SidebarProps) => {
+  const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const intl = useIntl();
   const dispatch = useDispatch();
   const areaValue = useSelector(selectArea);
@@ -52,6 +58,14 @@ export const Sidebar = ({ technologies, emptyResults, rings }: SidebarProps) => 
     </Tag>
   ));
 
+  const renderToolbar = renderWhenTrue(() => (
+    <Toolbar
+      areaOptions={pluckNameFromList(quadrants)}
+      levelOptions={pluckNameFromList(rings)}
+      teamOptions={pluckNameFromList(teams)}
+    />
+  ));
+
   return (
     <Container>
       <Input withSearchIcon placeholder={intl.formatMessage(messages.placeholder)} onChange={debouncedOnTextChange} />
@@ -61,6 +75,7 @@ export const Sidebar = ({ technologies, emptyResults, rings }: SidebarProps) => 
         {renderTeamFilterTag(!!teamValue)}
       </FiltersContainer>
       <TechnologiesList technologies={technologies} emptyResults={emptyResults} rings={rings} />
+      {renderToolbar(!isDesktop)}
     </Container>
   );
 };

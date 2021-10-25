@@ -6,6 +6,7 @@ import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { Loader as LoaderComponent } from '../../shared/components/loader';
 import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
 import { SIDEBAR_WIDTH, ZOOM_BUTTONS_WIDTH } from '../../shared/components/radar/radar.constants';
+import { mediaQuery } from '../../theme/media';
 
 export const LOADING_ANIMATION_MS = 500;
 
@@ -18,17 +19,28 @@ export const Container = styled.div`
 
 export const TitleTag = styled(TitleTagComponent)`
   position: absolute;
-  top: 38px;
-  right: 39px;
+  top: 30px;
+  left: 24px;
+  right: initial;
+  z-index: ${zIndex.overlay};
   display: flex;
   align-items: center;
-  z-index: ${zIndex.overlay};
+
+  ${mediaQuery.desktop} {
+    top: 38px;
+    left: initial;
+    right: 39px;
+  }
 `;
 
 export const SidebarWrapper = styled.div`
   height: 100%;
-  width: 411px;
-  min-width: 411px;
+  width: 100%;
+
+  ${mediaQuery.desktop} {
+    width: 411px;
+    min-width: 411px;
+  }
 `;
 
 export const Viewer = styled.div`
