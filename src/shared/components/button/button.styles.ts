@@ -22,6 +22,10 @@ const buttonSizeLargeStyles = css`
   padding: 16px 32px;
 `;
 
+const buttonNoBorderStyles = css`
+  border: none;
+`;
+
 export const Container = styled.button<ThemeProps<ButtonTheme>>`
   border: ${border.regularWhite};
   background: none;
@@ -39,6 +43,10 @@ export const Container = styled.button<ThemeProps<ButtonTheme>>`
     [ButtonSize.REGULAR]: buttonSizeRegularStyles,
     [ButtonSize.LARGE]: buttonSizeLargeStyles,
   })};
+
+  ${theme('withBorder', {
+    false: buttonNoBorderStyles,
+  })}
 `;
 
 export const Icon = styled.span`

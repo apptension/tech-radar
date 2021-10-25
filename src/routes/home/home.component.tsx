@@ -12,7 +12,6 @@ import { TitleTag } from '../../shared/components/titleTag';
 import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
-import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import messages from './home.messages';
 import {
   Container,
@@ -37,7 +36,13 @@ export const Home = () => {
       <Background />
       <Header>
         <LogoWrapper>
-          <Logo full={isDesktop} />
+          {isDesktop ? (
+            <Logo />
+          ) : (
+            <Link to="https://apptension.com" withBorder={false}>
+              <Logo full={false} />
+            </Link>
+          )}
         </LogoWrapper>
         {isDesktop && (
           <Link to="https://apptension.com" icon={ButtonIcon.OUT}>

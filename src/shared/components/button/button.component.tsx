@@ -10,6 +10,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   icon?: ButtonIcon;
+  withBorder?: boolean;
 }
 
 export const Button = ({
@@ -19,10 +20,11 @@ export const Button = ({
   variant = ButtonVariant.PRIMARY,
   size = ButtonSize.REGULAR,
   onClick = empty,
+  withBorder = true,
   icon,
   ...other
 }: ButtonProps) => {
-  const theme: ButtonTheme = { size, variant, isDisabled: disabled };
+  const theme: ButtonTheme = { size, variant, isDisabled: disabled, withBorder };
 
   const iconTypes = {
     [ButtonIcon.ARROW]: () => <ArrowIcon />,
