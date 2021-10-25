@@ -64,7 +64,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
   );
 
   const renderOptions = () => (
-    <OptionsContainer height={optionsHeight}>
+    <OptionsContainer height={optionsHeight} className="options-container">
       <Options>
         <OptionsContent>
           {options.map((option: string) => (
@@ -86,7 +86,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={`${className} ${open ? 'open-dropdown' : ''}`}>
+      <Container className={`${className} ${open ? 'open-dropdown' : ''}`} onBlur={() => setOpen(false)}>
         <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && isDesktop && (

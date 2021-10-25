@@ -21,8 +21,18 @@ export const Container = styled.div`
   }
 `;
 
-export const AreaDropdown = styled(Dropdown)`
-  min-width: 100px;
+export const ToolbarDropdown = styled(Dropdown)`
+  .options-container {
+    min-width: calc(100vw - 50px);
+
+    ${mediaQuery.tablet} {
+      min-width: initial;
+    }
+  }
+`;
+
+export const AreaDropdown = styled(ToolbarDropdown)`
+  min-width: calc(100% / 3);
   border-radius: 2px 0 0 2px;
 
   &.open-dropdown {
@@ -34,16 +44,24 @@ export const AreaDropdown = styled(Dropdown)`
   }
 `;
 
-export const LevelDropdown = styled(Dropdown)`
-  min-width: 100px;
+export const LevelDropdown = styled(ToolbarDropdown)`
+  min-width: calc(100% / 3);
 
   ${mediaQuery.desktop} {
     min-width: 200px;
   }
+
+  .options-container {
+    margin-left: calc(-100% - 2px);
+
+    ${mediaQuery.tablet} {
+      margin-left: initial;
+    }
+  }
 `;
 
-export const TeamDropdown = styled(Dropdown)`
-  min-width: 100px;
+export const TeamDropdown = styled(ToolbarDropdown)`
+  min-width: calc(100% / 3);
   border-radius: 0 2px 2px 0;
 
   &.open-dropdown {
@@ -52,5 +70,13 @@ export const TeamDropdown = styled(Dropdown)`
 
   ${mediaQuery.desktop} {
     min-width: 200px;
+  }
+
+  .options-container {
+    margin-left: calc(-200% - 8px);
+
+    ${mediaQuery.tablet} {
+      margin-left: initial;
+    }
   }
 `;
