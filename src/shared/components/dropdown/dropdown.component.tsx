@@ -44,7 +44,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
     optionsAmount * LABEL_HEIGHT + (optionsAmount - 1) * LABEL_BOTTOM_MARGIN + LIST_TOP_PADDING + LIST_BOTTOM_PADDING;
   const theme: DropdownTheme = { open };
 
-  const closeDropdoown = () => setOpen(false);
+  const closeDropdown = () => setOpen(false);
 
   const toggleOpen = () => setOpen(!open);
 
@@ -54,7 +54,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   const handleOptionClick = (option: string) => {
     value === option ? removeValue() : onSelect(option);
-    closeDropdoown();
+    closeDropdown();
   };
 
   const renderToggleButton = () => (
@@ -86,7 +86,10 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={`${className} ${open ? 'open-dropdown' : ''}`} onBlur={() => setOpen(false)}>
+      <Container
+        className={`${className} ${open ? 'open-dropdown' : ''}`}
+        onBlur={() => setTimeout(closeDropdown, 100)}
+      >
         <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && isDesktop && (
