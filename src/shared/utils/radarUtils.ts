@@ -88,7 +88,7 @@ export const getRadarScale = (): { scale: number; fullSize: boolean } => {
   }
 
   if (window.innerHeight < MIN_WINDOW_HEIGHT) {
-    result.scale = 0.59;
+    result.scale = 0.55;
     result.fullSize = false;
   }
 
