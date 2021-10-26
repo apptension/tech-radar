@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { isEmpty } from 'ramda';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
@@ -27,6 +27,7 @@ import {
   Loading,
   Loader,
   LOADING_ANIMATION_MS,
+  Error,
 } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
@@ -47,13 +48,14 @@ export const Explore = () => {
   const [activeQuadrant, setActiveQuadrant] = useState<number | null>(null);
   const [loadingVisible, setLoadingVisible] = useState(true);
   const [displayLoading, setDisplayLoading] = useState(true);
+  const [displayError, setDisplayError] = useState(false);
 
   const [zoomedQuadrant, setZoomedQuadrant] = useState<number | null>(null);
   const [zoomedTechnologies, setZoomedTechnologies] = useState<RadarTechnology[]>([]);
   const [zoomedQuadrants, setZoomedQuadrants] = useState<RadarQuadrant[]>([]);
 
   const {
-    contentfulQuery: { isSuccess },
+    contentfulQuery: { isSuccess, isError },
     radarTechnologies,
     radarQuadrants,
     radarRings,
@@ -73,7 +75,11 @@ export const Explore = () => {
         setDisplayLoading(false);
       }, LOADING_ANIMATION_MS * 2);
     }
-  }, [isSuccess]);
+
+    if (isError) {
+      setDisplayError(true);
+    }
+  }, [isSuccess, isError]);
 
   useEffect(() => {
     if (!isEmpty(radarQuadrants)) {
@@ -172,23 +178,32 @@ export const Explore = () => {
     </>
   ));
 
-  const renderContent = () => (
-    <>
-      <SidebarWrapper>
-        <Sidebar
-          technologies={filteredTechnologies}
-          emptyResults={{ search: emptyResultsFromSearch, filters: emptyResultsFromFiltering }}
-          rings={radarRings}
-          teams={radarTeams}
-          quadrants={radarQuadrants}
-        />
-      </SidebarWrapper>
-      <Viewer>
-        {renderRadar(isDesktop)}
-        {isSuccess && renderViewerControls(isDesktop)}
-      </Viewer>
-    </>
+  const renderError = () => (
+    <Error shouldDisplay={displayError}>
+      <FormattedMessage {...messages.error} />
+    </Error>
   );
+
+  const renderContent = () =>
+    displayError ? (
+      renderError()
+    ) : (
+      <>
+        <SidebarWrapper>
+          <Sidebar
+            technologies={filteredTechnologies}
+            emptyResults={{ search: emptyResultsFromSearch, filters: emptyResultsFromFiltering }}
+            rings={radarRings}
+            teams={radarTeams}
+            quadrants={radarQuadrants}
+          />
+        </SidebarWrapper>
+        <Viewer>
+          {renderRadar(isDesktop)}
+          {isSuccess && renderViewerControls(isDesktop)}
+        </Viewer>
+      </>
+    );
 
   const renderLoading = () => (
     <Loading visible={loadingVisible} shouldDisplay={displayLoading}>
