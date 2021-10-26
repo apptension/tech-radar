@@ -14,7 +14,8 @@ const RadarHomeAnimation = () => {
     },
   };
 
-  const moveRadarBy = max(1000 - window.innerHeight, 0);
+  const MIN_WINDOW_HEIGHT_FOR_RADAR = 1000;
+  const moveRadarBy = max(MIN_WINDOW_HEIGHT_FOR_RADAR - window.innerHeight, 0);
 
   return (
     <div>

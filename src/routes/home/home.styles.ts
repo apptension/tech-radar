@@ -5,7 +5,6 @@ import { Header as HeaderComponent } from '../../shared/components/header';
 import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
 import { mediaQuery } from '../../theme/media';
 import { zIndex } from '../../theme';
-import { Link } from '../../shared/components/link';
 
 export const Container = styled.div`
   height: 100%;
@@ -56,14 +55,12 @@ export const ExploreLinkContainer = styled.span`
 export const RadarContent = styled.div`
   flex: 1;
   display: flex;
+  justify-content: center;
   align-items: flex-end;
   position: absolute;
   bottom: 0;
 
   ${mediaQuery.desktop} {
-    position: initial;
-    bottom: initial;
-    max-height: initial;
     width: 100%;
   }
 `;
