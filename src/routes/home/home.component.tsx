@@ -5,6 +5,7 @@ import { Logo } from '../../shared/components/logo';
 import RadarImg from '../../images/radar.png';
 import RadarMobileImg from '../../images/radar-mobile.png';
 import { Background } from '../../shared/components/background';
+import { RadarHomeAnimation } from '../../shared/components/radarHomeAnimation';
 import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
@@ -63,7 +64,7 @@ export const Home = () => {
           </ExploreLinkContainer>
         </TextContent>
         <RadarContent>
-          <Image src={isTablet ? RadarImg : RadarMobileImg} />
+          {isDesktop ? <RadarHomeAnimation /> : <Image src={isTablet ? RadarImg : RadarMobileImg} />}
         </RadarContent>
       </Content>
       {!!lastContentfulUpdate && isDesktop && <LastUpdateInfo date={lastContentfulUpdate} />}
