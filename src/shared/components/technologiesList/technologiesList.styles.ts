@@ -24,16 +24,11 @@ export const List = styled.ul`
   padding: 0;
   margin: 16px 0 0;
   list-style: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background: ${color.codGray};
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: ${color.mineShaft};
-    border-radius: 5px;
+    display: none;
   }
 `;
 
