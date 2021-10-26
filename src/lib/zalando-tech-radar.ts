@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as d3 from 'd3';
+import { isNil } from 'ramda';
 import { color } from '../theme';
 import {
   translate,
@@ -251,7 +252,7 @@ export default function radar_visualization(config) {
       .transition()
       .style(
         'fill',
-        !config.active_quadrant || config.active_quadrant === i || config.zoomed_quadrant === i
+        isNil(config.active_quadrant) || config.active_quadrant === i || config.zoomed_quadrant === i
           ? color.silver
           : color.mineShaft
       );
@@ -262,7 +263,7 @@ export default function radar_visualization(config) {
       .attr('text-anchor', 'left')
       .style(
         'fill',
-        !config.active_quadrant || config.active_quadrant === i || config.zoomed_quadrant === i
+        isNil(config.active_quadrant) || config.active_quadrant === i || config.zoomed_quadrant === i
           ? color.mineShaft
           : color.scorpion
       )
