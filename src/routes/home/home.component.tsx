@@ -9,7 +9,6 @@ import { RadarHomeAnimation } from '../../shared/components/radarHomeAnimation';
 import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
-import { TitleTag } from '../../shared/components/titleTag';
 import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
@@ -25,6 +24,7 @@ import {
   LogoWrapper,
   RadarContent,
   TextContent,
+  TitleTag,
 } from './home.styles';
 
 export const Home = () => {

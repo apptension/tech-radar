@@ -1,10 +1,11 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { H1, Paragraph } from '../../theme/typography';
 import { Header as HeaderComponent } from '../../shared/components/header';
+import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
 import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
 import { mediaQuery } from '../../theme/media';
-import { zIndex } from '../../theme';
+import { color, zIndex } from '../../theme';
 
 export const Container = styled.div`
   height: 100%;
@@ -48,8 +49,40 @@ export const TextContent = styled.div`
   max-width: 722px;
 `;
 
+export const textEnterAnimation = keyframes`
+  0% {opacity: 0; }
+  100% {opacity: 1; filter: blur(0); transform: translateY(0)}
+`;
+
+const textAnimationStyles = css`
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(-25px);
+  animation-name: ${textEnterAnimation};
+  animation-duration: 2.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+`;
+
+export const TitleTag = styled(TitleTagComponent)`
+  ${textAnimationStyles}
+`;
+
+export const Description = styled(Paragraph)`
+  z-index: ${zIndex.header};
+  animation-delay: 0.23s;
+  margin: 24px 24px 36px;
+  ${textAnimationStyles}
+
+  ${mediaQuery.desktop} {
+    margin: 48px 0;
+  }
+`;
+
 export const ExploreLinkContainer = styled.span`
   z-index: ${zIndex.header};
+  animation-delay: 0.7s;
+  ${textAnimationStyles}
 `;
 
 export const RadarContent = styled.div`
@@ -68,17 +101,6 @@ export const RadarContent = styled.div`
 export const Image = styled.img`
   width: 100%;
   object-fit: contain;
-`;
-
-export const Title = styled(H1)``;
-
-export const Description = styled(Paragraph)`
-  margin: 24px 24px 36px;
-  z-index: ${zIndex.header};
-
-  ${mediaQuery.desktop} {
-    margin: 48px 0;
-  }
 `;
 
 export const LastUpdateInfo = styled(LastUpdateInfoComponent)`
