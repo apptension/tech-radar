@@ -58,11 +58,15 @@ export const H1small = css`
 export const Paragraph = styled.p`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.normal};
-  font-size: 20px;
+  font-size: 16px;
   line-height: 140%;
   color: ${colors.boulder};
   margin: 0;
   padding: 0;
+
+  ${mediaQuery.desktop} {
+    font-size: 20px;
+  }
 `;
 
 export const Paragraph2 = styled.p`

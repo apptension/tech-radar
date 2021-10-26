@@ -17,7 +17,7 @@ export const Title = styled(H1)`
 `;
 
 const titleTagSizeSmallStyles = css`
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const titleTagSizeLargeStyles = css`

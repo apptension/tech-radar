@@ -4,6 +4,7 @@ export interface ButtonTheme extends DefaultTheme {
   variant: ButtonVariant;
   size: ButtonSize;
   isDisabled: boolean;
+  withBorder: boolean;
 }
 
 export enum ButtonVariant {
