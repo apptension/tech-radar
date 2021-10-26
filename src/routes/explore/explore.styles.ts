@@ -95,3 +95,13 @@ export const Loading = styled.div<{ visible: boolean; shouldDisplay: boolean }>`
   ${({ visible }) => (visible ? null : loadingAnimationStyles)};
   display: ${({ shouldDisplay }) => (shouldDisplay ? 'block' : 'none')};
 `;
+
+export const Error = styled.div<{ shouldDisplay: boolean }>`
+  position: absolute;
+  width: 100vw;
+  bottom: 100px;
+  background: ${color.codGray};
+  z-index: ${zIndex.loader};
+  display: ${({ shouldDisplay }) => (shouldDisplay ? 'flex' : 'none')};
+  justify-content: center;
+`;
