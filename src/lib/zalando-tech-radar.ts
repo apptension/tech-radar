@@ -18,6 +18,7 @@ import {
   getRadarScale,
   getRotationForQuadrant,
 } from '../shared/utils/radarUtils';
+import { sizes } from '../theme/media';
 
 /* eslint-disable */
 
@@ -437,6 +438,25 @@ export default function radar_visualization(config) {
       unhighlightBlip(d);
       highlightLegend({ id: d.id, mode: 'off' });
     });
+
+  // gradient on right side for wider screens when zoomed in
+  if (config.zoomed_quadrant && window.innerWidth > sizes.desktopFull) {
+    const fade = defs.append('linearGradient').attr('id', 'fadeGradient');
+    fade.attr('x1', '50%').attr('y1', '100%').attr('x2', '50%').attr('y2', '0%');
+    fade.append('stop').attr('offset', '30%').attr('stop-color', color.codGray).attr('stop-opacity', 1);
+    fade.append('stop').attr('offset', '50%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
+
+    radar
+      .append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', rings[3].radius)
+      .attr('clip-path', 'url(#semi-circle)')
+      .attr('fill', 'url(#fadeGradient)')
+      .attr('stroke', 'url(#fadeGradient)')
+      .attr('stroke-width', 2)
+      .attr('transform', 'rotate(270)');
+  }
 
   // make sure that blips stay inside their segment
   function ticked() {
