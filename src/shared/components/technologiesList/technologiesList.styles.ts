@@ -20,10 +20,21 @@ export const List = styled.ul`
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
+  overflow-y: scroll;
   padding: 0;
   margin: 16px 0 0;
   list-style: none;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: ${color.codGray};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${color.mineShaft};
+    border-radius: 5px;
+  }
 `;
 
 export const ListItem = styled.li`
