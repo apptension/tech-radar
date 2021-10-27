@@ -77,9 +77,9 @@ export const translate = ({ x, y }: Point) => {
   return `translate(${x}, ${y})`;
 };
 
-export const getRadarScale = (): { scale: number; fullSize: boolean } => {
-  const MIN_WINDOW_HEIGHT = 800;
+const MIN_WINDOW_HEIGHT = 800;
 
+export const getRadarScale = (): { scale: number; fullSize: boolean } => {
   const result = { scale: 0.95, fullSize: true };
 
   if (window.innerWidth < sizes.desktopFull) {
@@ -193,6 +193,32 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
     default:
       return 90;
   }
+};
+
+export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
+  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
+};
+
+export const getPxToAddQuadrantLabelTextZoomed = (
+  fullSize: boolean,
+  isZoomed: boolean
+): { addX: number; addY: number } => {
+  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
+  if (isSmallScreen) {
+    return { addX: isZoomed ? 56 : -50, addY: isZoomed ? -26 : -130 };
+  }
+  return { addX: fullSize && isZoomed ? -50 : 24, addY: fullSize && isZoomed ? -130 : -26 };
+};
+
+export const getPxToAddQuadrantLabelRectZoomed = (
+  fullSize: boolean,
+  isZoomed: boolean
+): { addX: number; addY: number } => {
+  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
+  if (isSmallScreen) {
+    return { addX: isZoomed ? 42 : -64, addY: isZoomed ? -30 : -134 };
+  }
+  return { addX: fullSize && isZoomed ? -64 : 10, addY: fullSize && isZoomed ? -134 : -30 };
 };
 
 export const destroyRadar = () => {
