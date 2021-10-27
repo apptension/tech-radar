@@ -470,6 +470,7 @@ export default function radar_visualization(config) {
 
   // distribute blips, while avoiding collisions
   d3.forceSimulation()
+    .alphaMin(0.00001)
     .nodes(config.technologies)
     .velocityDecay(0.19) // magic number (found by experimentation)
     .force('collision', d3.forceCollide().radius(12).strength(0.85))

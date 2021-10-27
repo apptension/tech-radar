@@ -89,7 +89,7 @@ export const ShadowBottom = styled.div<{ visible: boolean }>`
 
 export const ShadowTop = styled.div<{ visible: boolean }>`
   ${shadowStyles};
-  top: 16px;
+  top: 15px;
   background: ${color.shadowGradientTop};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;

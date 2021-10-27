@@ -196,7 +196,7 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
 };
 
 export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
-  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
+  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 1 : -1 };
 };
 
 export const getPxToAddQuadrantLabelTextZoomed = (
