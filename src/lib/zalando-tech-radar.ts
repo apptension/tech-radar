@@ -17,6 +17,9 @@ import {
   bounded_ring,
   getRadarScale,
   getRotationForQuadrant,
+  getPxToSubtractQuadrantLabelText,
+  getPxToAddQuadrantLabelTextZoomed,
+  getPxToAddQuadrantLabelRectZoomed,
 } from '../shared/utils/radarUtils';
 import { sizes } from '../theme/media';
 
@@ -239,8 +242,7 @@ export default function radar_visualization(config) {
     ];
 
     const currentFactors = smallerLabels ? factorsForSmallerLabels : factorsForBiggerLabels;
-    const subtractX = smallerLabels ? 6 : 0;
-    const subtractY = smallerLabels ? 0 : -1;
+    const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerLabels);
 
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
     quadrantLabel
@@ -276,16 +278,14 @@ export default function radar_visualization(config) {
     const label = d3.select(`#quadrant-label-${i} text`);
     label.text(config.quadrants[i].name.toUpperCase());
     if (config.zoomed_quadrant) {
-      const addX = fullSize && isZoomed ? -50 : 44;
-      const addY = fullSize && isZoomed ? -130 : -46;
+      const { addX, addY } = getPxToAddQuadrantLabelTextZoomed(fullSize, isZoomed);
       label.attr('x', currentFactors[i].x + addX).attr('y', currentFactors[i].y + addY);
     }
 
     const labelNode = label.node();
     if (labelNode) {
       const bbox = labelNode.getBBox();
-      const addX = fullSize && isZoomed ? -64 : 30;
-      const addY = fullSize && isZoomed ? -134 : -50;
+      const { addX, addY } = getPxToAddQuadrantLabelRectZoomed(fullSize, isZoomed);
 
       d3.select(`#quadrant-label-${i} rect`)
         .attr('x', config.zoomed_quadrant ? currentFactors[i].x + addX : currentFactors[i].x - 20)
