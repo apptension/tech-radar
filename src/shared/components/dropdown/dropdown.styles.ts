@@ -48,19 +48,32 @@ const chevronOpenStyle = css`
   transform: rotate(180deg);
 `;
 
+const chevronMobileOpenStyle = css`
+  transform: rotate(180deg) scaleX(2);
+`;
+
+export const ChevronIconMobile = styled.span`
+  transition: transform 0.3s ease-in-out;
+  color: white;
+  transform: scaleX(2);
+
+  ::after {
+    content: '^';
+  }
+
+  ${theme('open', {
+    true: chevronMobileOpenStyle,
+  })};
+`;
+
 export const ChevronIcon = styled(ChevronIconSVG)`
   transition: transform 0.3s ease-in-out;
-  height: 10px;
-  width: 15px;
+  height: 100%;
+  width: 100%;
 
   ${theme('open', {
     true: chevronOpenStyle,
   })};
-
-  ${mediaQuery.desktop} {
-    height: 100%;
-    width: 100%;
-  }
 `;
 
 export const ToggleButtonContainer = styled.div`

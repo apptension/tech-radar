@@ -8,6 +8,7 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
 import {
   ChevronIcon,
+  ChevronIconMobile,
   Container,
   Icon,
   Label,
@@ -62,9 +63,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
   };
 
   const renderToggleButton = () => (
-    <ToggleButton onClick={handleToggleButtonClick}>
-      <ChevronIcon />
-    </ToggleButton>
+    <ToggleButton onClick={handleToggleButtonClick}>{isDesktop ? <ChevronIcon /> : <ChevronIconMobile />}</ToggleButton>
   );
 
   const renderOptions = () => (
