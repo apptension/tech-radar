@@ -1,11 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { H1, Paragraph } from '../../theme/typography';
+import { Paragraph } from '../../theme/typography';
 import { Header as HeaderComponent } from '../../shared/components/header';
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
 import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
 import { mediaQuery } from '../../theme/media';
-import { color, zIndex } from '../../theme';
+import { zIndex } from '../../theme';
 
 export const Container = styled.div`
   height: 100%;
@@ -89,18 +89,23 @@ export const RadarContent = styled.div<{ moveImageBy: number }>`
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
   position: absolute;
   bottom: ${(props) => props.moveImageBy}px;
 
   ${mediaQuery.desktop} {
     width: 100%;
+    align-items: flex-end;
   }
 `;
 
 export const Image = styled.img`
-  width: 100%;
+  width: 100vw;
   object-fit: contain;
+
+  ${mediaQuery.desktop} {
+    width: 100%;
+  }
 `;
 
 export const LastUpdateInfo = styled(LastUpdateInfoComponent)`
