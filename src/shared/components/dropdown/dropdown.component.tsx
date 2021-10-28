@@ -8,6 +8,7 @@ import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
 import {
   ChevronIcon,
+  ChevronIconMobile,
   Container,
   Icon,
   Label,
@@ -57,10 +58,12 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
     closeDropdown();
   };
 
+  const delayedCloseDropdown = () => {
+    if (!isDesktop) setTimeout(closeDropdown, 100);
+  };
+
   const renderToggleButton = () => (
-    <ToggleButton onClick={handleToggleButtonClick}>
-      <ChevronIcon />
-    </ToggleButton>
+    <ToggleButton onClick={handleToggleButtonClick}>{isDesktop ? <ChevronIcon /> : <ChevronIconMobile />}</ToggleButton>
   );
 
   const renderOptions = () => (
@@ -86,10 +89,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   return (
     <ThemeProvider theme={theme}>
-      <Container
-        className={`${className} ${open ? 'open-dropdown' : ''}`}
-        onBlur={() => setTimeout(closeDropdown, 100)}
-      >
+      <Container className={`${className} ${open ? 'open-dropdown' : ''}`} onMouseLeave={delayedCloseDropdown}>
         <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && isDesktop && (
