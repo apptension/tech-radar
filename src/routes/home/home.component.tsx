@@ -12,6 +12,7 @@ import { Link } from '../../shared/components/link';
 import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
+import { getMoveImageBy } from '../../shared/utils/radarImageUtils';
 import messages from './home.messages';
 import {
   Container,
@@ -31,6 +32,8 @@ export const Home = () => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const { matches: isTablet } = useMediaQuery({ above: Breakpoint.TABLET });
   const lastContentfulUpdate = useLastContentfulUpdate();
+
+  const moveRadarImageBy = getMoveImageBy(!isTablet);
 
   return (
     <Container>
@@ -63,7 +66,7 @@ export const Home = () => {
             </Link>
           </ExploreLinkContainer>
         </TextContent>
-        <RadarContent>
+        <RadarContent moveImageBy={moveRadarImageBy}>
           {isDesktop ? <RadarHomeAnimation /> : <Image src={isTablet ? RadarImg : RadarMobileImg} />}
         </RadarContent>
       </Content>

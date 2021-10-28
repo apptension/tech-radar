@@ -85,13 +85,13 @@ export const ExploreLinkContainer = styled.span`
   ${textAnimationStyles}
 `;
 
-export const RadarContent = styled.div`
+export const RadarContent = styled.div<{ moveImageBy: number }>`
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   position: absolute;
-  bottom: 0;
+  bottom: ${(props) => props.moveImageBy}px;
 
   ${mediaQuery.desktop} {
     width: 100%;
