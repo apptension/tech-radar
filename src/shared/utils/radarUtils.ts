@@ -78,21 +78,17 @@ export const translate = ({ x, y }: Point) => {
 };
 
 const MIN_WINDOW_HEIGHT = 800;
+const MAX_WINDOW_HEIGHT = 1080;
 
 export const getRadarScale = (): { scale: number; fullSize: boolean } => {
-  const result = { scale: 0.95, fullSize: true };
+  const isFullWidth = window.innerWidth >= sizes.desktopFull;
+  const isFullHeight = window.innerHeight >= MAX_WINDOW_HEIGHT;
+  const isShortHeight = window.innerHeight < MIN_WINDOW_HEIGHT;
 
-  if (window.innerWidth < sizes.desktopFull) {
-    result.scale = 0.64;
-    result.fullSize = false;
-  }
-
-  if (window.innerHeight < MIN_WINDOW_HEIGHT) {
-    result.scale = 0.55;
-    result.fullSize = false;
-  }
-
-  return result;
+  if (isFullWidth && isFullHeight) return { scale: 0.95, fullSize: true };
+  if (isFullWidth && !isFullHeight) return { scale: 0.8, fullSize: true };
+  if (!isFullWidth && !isShortHeight && !isFullHeight) return { scale: 0.64, fullSize: false };
+  return { scale: 0.55, fullSize: false };
 };
 
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
@@ -207,7 +203,10 @@ export const getPxToAddQuadrantLabelTextZoomed = (
   if (isSmallScreen) {
     return { addX: isZoomed ? 56 : -50, addY: isZoomed ? -26 : -130 };
   }
-  return { addX: fullSize && isZoomed ? -50 : 24, addY: fullSize && isZoomed ? -130 : -26 };
+  if (fullSize) {
+    return { addX: isZoomed ? -50 : 240, addY: isZoomed ? -130 : -26 };
+  }
+  return { addX: isZoomed ? 24 : -50, addY: isZoomed ? -26 : -130 };
 };
 
 export const getPxToAddQuadrantLabelRectZoomed = (
@@ -218,7 +217,10 @@ export const getPxToAddQuadrantLabelRectZoomed = (
   if (isSmallScreen) {
     return { addX: isZoomed ? 42 : -64, addY: isZoomed ? -30 : -134 };
   }
-  return { addX: fullSize && isZoomed ? -64 : 10, addY: fullSize && isZoomed ? -134 : -30 };
+  if (fullSize) {
+    return { addX: isZoomed ? -64 : -1000, addY: isZoomed ? -134 : -30 };
+  }
+  return { addX: isZoomed ? 10 : -64, addY: isZoomed ? -30 : -134 };
 };
 
 export const destroyRadar = () => {
