@@ -5,6 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import * as colors from '../../../theme/color';
 import drawTechRadar from '../../../lib/zalando-tech-radar';
 import { destroyRadar } from '../../utils/radarUtils';
+import { isSafari } from '../../utils/isSafari';
 import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 import {
   BASIC_RADAR_WIDTH,
@@ -52,8 +53,7 @@ export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQu
     drawTechRadar(config);
   };
 
-  // @ts-ignore
-  const debouncedDrawRadar = useDebouncedCallback(drawRadar, window.safari !== undefined ? 250 : 120);
+  const debouncedDrawRadar = useDebouncedCallback(drawRadar, isSafari() ? 250 : 120);
 
   if (!equals(config, previousConfig)) {
     setPreviousConfig(config);

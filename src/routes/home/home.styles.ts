@@ -85,18 +85,31 @@ export const ExploreLinkContainer = styled.span`
   ${textAnimationStyles}
 `;
 
-export const RadarContent = styled.div<{ moveImageBy: number }>`
+const radarContentStyles = css`
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
   position: absolute;
-  bottom: ${(props) => props.moveImageBy}px;
+`;
 
-  ${mediaQuery.desktop} {
-    width: 100%;
-    align-items: flex-end;
-  }
+export const RadarAnimationContainer = styled.div`
+  align-items: flex-end;
+  bottom: 0;
+  ${radarContentStyles}
+`;
+
+export const RadarContent = styled.div`
+  align-items: flex-end;
+  max-width: 80vw;
+  bottom: -150px;
+  ${radarContentStyles}
+`;
+
+export const MobileRadarContent = styled.div<{ moveImageBy: number }>`
+  align-items: flex-start;
+  bottom: ${(props) => props.moveImageBy}px;
+  max-height: 60%;
+  ${radarContentStyles}
 `;
 
 export const Image = styled.img`
