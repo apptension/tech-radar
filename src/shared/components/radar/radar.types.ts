@@ -23,6 +23,7 @@ export type RadarConfig = {
   technologies: RadarTechnology[];
   zoomed_quadrant?: number;
   active_quadrant?: number;
+  previously_active_quadrant?: number;
   active_ring?: number;
 };
 

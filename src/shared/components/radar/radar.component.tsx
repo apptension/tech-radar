@@ -19,10 +19,19 @@ interface RadarProps {
   quadrants: RadarQuadrant[];
   zoomedQuadrant: null | number;
   activeQuadrant: number | null;
+  previouslyActiveQuadrant: number | null;
   activeRing: number | null;
 }
 
-export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQuadrant, activeRing }: RadarProps) => {
+export const Radar = ({
+  technologies,
+  rings,
+  quadrants,
+  zoomedQuadrant,
+  activeQuadrant,
+  activeRing,
+  previouslyActiveQuadrant,
+}: RadarProps) => {
   const [previousConfig, setPreviousConfig] = useState<RadarConfig | null>(null);
 
   const config: RadarConfig = {
@@ -45,6 +54,7 @@ export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQu
 
   if (!isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
   if (!isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
+  if (!isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
   if (!isNil(activeRing)) config.active_ring = activeRing;
 
   const drawRadar = () => {

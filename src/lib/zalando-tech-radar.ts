@@ -182,7 +182,7 @@ export default function radar_visualization(config) {
       'transform',
       config.zoomed_quadrant
         ? `rotate(${getRotationForQuadrant(config.zoomed_quadrant - 1)})`
-        : `rotate(${getRotationForQuadrant(config.active_quadrant + 1)})`
+        : `rotate(${getRotationForQuadrant(config.previously_active_quadrant)})`
     )
     .transition()
     .attr(
