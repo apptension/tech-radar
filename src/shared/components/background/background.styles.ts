@@ -17,24 +17,24 @@ export const Container = styled.div`
 
 export const firstCloudAnimation = keyframes`
   0% {opacity: 0.15;  transform: translate(0, 0)}
-  25% {opacity: 0.2; transform: translate(-100, -400)}
-  50% {opacity: 0.15; transform: translate(-300, 600)}
-  75% {opacity: 0.1; transform: translate(-350, -300)}
+  25% {opacity: 0.2; transform: translate(-10px, 0px)}
+  50% {opacity: 0.15; transform: translate(-5px, 0px)}
+  75% {opacity: 0.1; transform: translate(5px, 0px)}
   100% {opacity: 0.15; transform: translate(0, 0)}
 `;
 
 export const secondCloudAnimation = keyframes`
   0% {opacity: 0.1; transform: translate(0, 0)}
-  25% {opacity: 0.15; transform: translate(-100, 400)}
-  50% {opacity: 0.2; transform: translate(300, -600)}
-  75% {opacity: 0.15; transform: translate(-350, 300)}
+  25% {opacity: 0.15; transform: translate(-10px, 0px)}
+  50% {opacity: 0.2; transform: translate(-30px, 0px)}
+  75% {opacity: 0.15; transform: translate(-15px, 0px)}
   100% {opacity: 0.1;  transform: translate(0, 0)}
 `;
 
 const animatedImageStyles = css`
   transform: translate(0, 0);
   animation-name: ${firstCloudAnimation};
-  animation-duration: 7s;
+  animation-duration: 10s;
   animation-iteration-count: infinite;
 `;
 
@@ -58,9 +58,9 @@ export const MovingImage = styled.img`
   height: 100%;
   object-fit: cover;
   mix-blend-mode: overlay;
-  opacity: 0.1;
-  transform: translate(0, 0) scaleX(-1);
+  opacity: 0.2;
+  transform: translate(0, 0);
   animation-name: ${secondCloudAnimation};
-  animation-duration: 5s;
+  animation-duration: 8s;
   animation-iteration-count: infinite;
 `;
