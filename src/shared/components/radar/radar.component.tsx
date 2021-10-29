@@ -52,7 +52,8 @@ export const Radar = ({ technologies, rings, quadrants, zoomedQuadrant, activeQu
     drawTechRadar(config);
   };
 
-  const debouncedDrawRadar = useDebouncedCallback(drawRadar, 120);
+  // @ts-ignore
+  const debouncedDrawRadar = useDebouncedCallback(drawRadar, window.safari !== undefined ? 250 : 120);
 
   if (!equals(config, previousConfig)) {
     setPreviousConfig(config);
