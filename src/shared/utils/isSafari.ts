@@ -1,4 +1,4 @@
 export const isSafari = () => {
   // @ts-ignore
-  return window.safari !== undefined;
+  return window?.safari !== undefined;
 };
