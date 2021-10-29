@@ -3,6 +3,7 @@ import Lottie from 'react-lottie';
 import { max } from 'ramda';
 
 import animationData from '../../../lottie/radar/data.json';
+import { Container } from './radarHomeAnimation.styles';
 
 const RadarHomeAnimation = () => {
   const defaultOptions = {
@@ -18,9 +19,9 @@ const RadarHomeAnimation = () => {
   const moveRadarBy = max(MIN_WINDOW_HEIGHT_FOR_RADAR - window.innerHeight, 0);
 
   return (
-    <div>
+    <Container>
       <Lottie options={defaultOptions} height={window.innerHeight - moveRadarBy} width={window.innerWidth} />
-    </div>
+    </Container>
   );
 };
 

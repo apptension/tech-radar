@@ -13,6 +13,7 @@ import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/us
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
 import { getMoveImageBy } from '../../shared/utils/radarImageUtils';
+import { isSafari } from '../../shared/utils/isSafari';
 import messages from './home.messages';
 import {
   Container,
@@ -24,6 +25,8 @@ import {
   LastUpdateInfo,
   LogoWrapper,
   RadarContent,
+  MobileRadarContent,
+  RadarAnimationContainer,
   TextContent,
   TitleTag,
 } from './home.styles';
@@ -33,7 +36,28 @@ export const Home = () => {
   const { matches: isTablet } = useMediaQuery({ above: Breakpoint.TABLET });
   const lastContentfulUpdate = useLastContentfulUpdate();
 
-  const moveRadarImageBy = getMoveImageBy(!isTablet);
+  const displayRadarAnimation = isDesktop && !isSafari();
+  const moveMobileRadarImageBy = getMoveImageBy(!isTablet);
+
+  const renderRadarContent = () => {
+    if (displayRadarAnimation)
+      return (
+        <RadarAnimationContainer>
+          <RadarHomeAnimation />
+        </RadarAnimationContainer>
+      );
+    if (isTablet)
+      return (
+        <RadarContent>
+          <Image src={RadarImg} />
+        </RadarContent>
+      );
+    return (
+      <MobileRadarContent moveImageBy={moveMobileRadarImageBy}>
+        <Image src={RadarMobileImg} />
+      </MobileRadarContent>
+    );
+  };
 
   return (
     <Container>
@@ -66,9 +90,7 @@ export const Home = () => {
             </Link>
           </ExploreLinkContainer>
         </TextContent>
-        <RadarContent moveImageBy={moveRadarImageBy}>
-          {isDesktop ? <RadarHomeAnimation /> : <Image src={isTablet ? RadarImg : RadarMobileImg} />}
-        </RadarContent>
+        {renderRadarContent()}
       </Content>
       {!!lastContentfulUpdate && isDesktop && <LastUpdateInfo date={lastContentfulUpdate} />}
     </Container>
