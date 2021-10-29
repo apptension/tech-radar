@@ -8,7 +8,7 @@ export const Container = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: ${zIndex.content};
+  z-index: ${zIndex.contentOverlay};
 
   ${mediaQuery.desktop} {
     top: -160px;
