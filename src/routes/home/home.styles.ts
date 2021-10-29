@@ -62,6 +62,7 @@ const textAnimationStyles = css`
   animation-duration: 2.3s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
+  z-index: ${zIndex.contentOverlay};
 `;
 
 export const TitleTag = styled(TitleTagComponent)`
