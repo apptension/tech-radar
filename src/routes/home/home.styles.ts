@@ -54,7 +54,7 @@ export const textEnterAnimation = keyframes`
   100% {opacity: 1; filter: blur(0); transform: translateY(0)}
 `;
 
-const textAnimationStyles = css`
+export const textAnimationStyles = css`
   opacity: 0;
   filter: blur(4px);
   transform: translateY(-25px);
