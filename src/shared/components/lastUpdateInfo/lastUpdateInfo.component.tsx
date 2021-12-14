@@ -6,7 +6,7 @@ import { Container } from './lastUpdateInfo.styles';
 import messages from './lastUpdateInfo.messages';
 
 export interface LastUpdateInfoProps {
-  date: Date;
+  date: number;
   className?: string;
 }
 
