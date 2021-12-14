@@ -33,14 +33,13 @@ export const List = styled.ul`
 `;
 
 export const ListItem = styled.li`
-  margin: 10px 0;
+  margin: 6px 0;
   cursor: default;
   display: flex;
   justify-content: space-between;
 `;
 
 export const ListLabel = styled.div`
-  height: 26px;
   color: ${colors.boulder};
   font-size: 18px;
   display: flex;
@@ -49,6 +48,7 @@ export const ListLabel = styled.div`
 
 export const ListItemTags = styled.div<{ visible: boolean }>`
   display: flex;
+  height: 26px;
 
   opacity: ${(props) => (props.visible ? 1 : 0)};
   > :last-child {
