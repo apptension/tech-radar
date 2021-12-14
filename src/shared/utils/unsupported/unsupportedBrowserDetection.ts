@@ -30,10 +30,10 @@ const DEFAULT_SUPPORTED_BROWSERS_CONFIG: BrowserConfig = {
       browser: 'ie',
       versions: [11, 'edge'],
     },
-    /*{
+    {
       browser: 'chrome',
       minversion: 45,
-    },*/
+    },
     {
       browser: 'edge',
     },
