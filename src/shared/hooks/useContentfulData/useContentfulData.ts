@@ -49,7 +49,7 @@ export const useLastContentfulUpdate = () => {
     }
   );
 
-  return dateQuery.data;
+  return dateQuery.dataUpdatedAt;
 };
 
 export const useContentfulData = () => {
