@@ -388,23 +388,6 @@ export default function radar_visualization(config) {
       blip.append('circle').attr('r', 6).attr('fill', d.color);
     } else if (d.ring === 1) {
       blip
-        .append('rect') // outer square
-        .attr('x', -8.4)
-        .attr('y', -8.4)
-        .attr('width', 16.8)
-        .attr('height', 16.8)
-        .attr('fill', 'url(#mainGradient)')
-        .style('opacity', 0);
-
-      blip
-        .append('rect') // square
-        .attr('x', -5.4)
-        .attr('y', -5.4)
-        .attr('width', 10.8)
-        .attr('height', 10.8)
-        .attr('fill', d.color);
-    } else if (d.ring === 2) {
-      blip
         .append('rect') // outer diamond
         .attr('x', -8.4)
         .attr('y', -8.4)
@@ -421,6 +404,23 @@ export default function radar_visualization(config) {
         .attr('width', 10.8)
         .attr('height', 10.8)
         .attr('transform', 'rotate(45)')
+        .attr('fill', d.color);
+    } else if (d.ring === 2) {
+      blip
+        .append('rect') // outer square
+        .attr('x', -8.4)
+        .attr('y', -8.4)
+        .attr('width', 16.8)
+        .attr('height', 16.8)
+        .attr('fill', 'url(#mainGradient)')
+        .style('opacity', 0);
+
+      blip
+        .append('rect') // square
+        .attr('x', -5.4)
+        .attr('y', -5.4)
+        .attr('width', 10.8)
+        .attr('height', 10.8)
         .attr('fill', d.color);
     } else {
       blip

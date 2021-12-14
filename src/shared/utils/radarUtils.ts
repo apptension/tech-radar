@@ -138,10 +138,10 @@ export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
       changeHighlight({ id, shape: 'circle', opacity: 0.3 });
       break;
     case 1:
-      changeHighlight({ id, shape: 'rect', opacity: 0.3 });
+      changeHighlight({ id, shape: 'rect', opacity: 0.3, fill: 'url(#diamondMainGradient)' });
       break;
     case 2:
-      changeHighlight({ id, shape: 'rect', opacity: 0.3, fill: 'url(#diamondMainGradient)' });
+      changeHighlight({ id, shape: 'rect', opacity: 0.3 });
       break;
     default:
       changeHighlight({ id, shape: 'path', opacity: 0.3 });
