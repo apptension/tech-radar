@@ -3,6 +3,7 @@ import theme from 'styled-theming';
 
 import { H1, H1small } from '../../../theme/typography';
 import { Logo as LogoComponent } from '../logo/logo.component';
+import { Link as LinkComponent } from '../link';
 import { VersionTag as VersionTagComponent } from '../versionTag';
 import { TitleTagSize, TitleTagTheme } from './titleTag.types';
 
@@ -44,4 +45,9 @@ export const VersionTag = styled(VersionTagComponent)`
 
 export const Logo = styled(LogoComponent)`
   margin-right: 16px;
+`;
+
+export const LogoLink = styled(LinkComponent)`
+  line-height: 0;
+  padding: 0;
 `;

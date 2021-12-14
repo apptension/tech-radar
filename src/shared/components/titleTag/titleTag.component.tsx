@@ -3,7 +3,8 @@ import { ThemeProvider } from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
 import { TagSize } from '../tag/tag.types';
-import { Container, TitleWithTagWrapper, Title, VersionTag, Logo } from './titleTag.styles';
+import { ROUTES } from '../../../routes/app.constants';
+import { Container, TitleWithTagWrapper, Title, VersionTag, Logo, LogoLink } from './titleTag.styles';
 import { TitleTagSize, TitleTagTheme } from './titleTag.types';
 import messages from './titleTag.messages';
 
@@ -19,7 +20,11 @@ export const TitleTag = ({ size = TitleTagSize.LARGE, withLogo = false, classNam
   return (
     <ThemeProvider theme={theme}>
       <Container className={className}>
-        {withLogo && <Logo full={false} />}
+        {withLogo && (
+          <LogoLink to={ROUTES.home} withBorder={false}>
+            <Logo full={false} />
+          </LogoLink>
+        )}
         <TitleWithTagWrapper>
           <Title>
             <FormattedMessage {...messages.title} />
