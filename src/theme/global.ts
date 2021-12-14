@@ -9,18 +9,20 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-family: ${fontFamily.primary};
     color: ${color.white};
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   *, *:before, *:after {
     box-sizing: inherit;
   }
-  
+
   #app {
     height: 100vh;
     width: 100vw;
     background-color: ${color.codGray};
     overflow: hidden;
-    
+
     & > div:first-of-type {
       ${maxWidthStyles};
     }
