@@ -26,6 +26,31 @@ const buttonNoBorderStyles = css`
   border: none;
 `;
 
+export const IconContainer = styled.span`
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  width: 23px;
+  overflow: hidden;
+`;
+
+export const IconContainerInner = styled.span`
+  display: flex;
+  align-items: center;
+  transform: translateX(-50%);
+  will-change: transform;
+`;
+
+export const Icon = styled.span`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+export const OutIcon = styled(OutIconSVG)``;
+
+export const ArrowIcon = styled(ArrowIconSVG)``;
+
 export const Container = styled.button<ThemeProps<ButtonTheme>>`
   border: ${border.regularWhite};
   background: none;
@@ -47,14 +72,12 @@ export const Container = styled.button<ThemeProps<ButtonTheme>>`
   ${theme('withBorder', {
     false: buttonNoBorderStyles,
   })}
+
+  &:hover ${IconContainerInner} {
+     {
+      transform: translateX(0);
+      transition: transform 0.25s ease-in-out;
+      transition-delay: 0.02s;
+    }
+  }
 `;
-
-export const Icon = styled.span`
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
-
-export const OutIcon = styled(OutIconSVG)``;
-
-export const ArrowIcon = styled(ArrowIconSVG)``;
