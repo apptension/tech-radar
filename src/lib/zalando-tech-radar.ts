@@ -381,59 +381,59 @@ export default function radar_visualization(config) {
     if (d.ring === 0) {
       blip
         .append('circle') // outer circle
-        .attr('r', 10)
+        .attr('r', 8.5)
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
-      blip.append('circle').attr('r', 6).attr('fill', d.color);
+      blip.append('circle').attr('r', 5).attr('fill', d.color);
     } else if (d.ring === 1) {
       blip
         .append('rect') // outer diamond
-        .attr('x', -8.4)
-        .attr('y', -8.4)
-        .attr('width', 16.8)
-        .attr('height', 16.8)
+        .attr('x', -7.4)
+        .attr('y', -7.4)
+        .attr('width', 14.8)
+        .attr('height', 14.8)
         .attr('transform', 'rotate(45)')
         .attr('fill', 'url(#diamondMainGradient)')
         .style('opacity', 0);
 
       blip
         .append('rect') // diamond
-        .attr('x', -5.4)
-        .attr('y', -5.4)
-        .attr('width', 10.8)
-        .attr('height', 10.8)
+        .attr('x', -4.5)
+        .attr('y', -4.5)
+        .attr('width', 9)
+        .attr('height', 9)
         .attr('transform', 'rotate(45)')
         .attr('fill', d.color);
     } else if (d.ring === 2) {
       blip
         .append('rect') // outer square
-        .attr('x', -8.4)
-        .attr('y', -8.4)
-        .attr('width', 16.8)
-        .attr('height', 16.8)
+        .attr('x', -7.4)
+        .attr('y', -7.4)
+        .attr('width', 14.8)
+        .attr('height', 14.8)
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
       blip
         .append('rect') // square
-        .attr('x', -5.4)
-        .attr('y', -5.4)
-        .attr('width', 10.8)
-        .attr('height', 10.8)
+        .attr('x', -4.5)
+        .attr('y', -4.5)
+        .attr('width', 9)
+        .attr('height', 9)
         .attr('fill', d.color);
     } else {
       blip
         .append('path')
         .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z') // outer triangle pointing up
-        .style('transform', 'scale(1.05)')
+        .style('transform', 'scale(0.9)')
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
       blip
         .append('path')
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
-        .style('transform', 'scale(0.6)')
+        .style('transform', 'scale(0.5)')
         .attr('fill', d.color);
     }
   });
