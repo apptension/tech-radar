@@ -264,23 +264,13 @@ export default function radar_visualization(config) {
       .attr('y', currentFactors[i].y)
       .style('fill', color.mineShaft)
       .transition()
-      .style(
-        'fill',
-        isNil(config.active_quadrant) || config.active_quadrant === i || config.zoomed_quadrant === i
-          ? color.silver
-          : color.mineShaft
-      );
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.silver : color.mineShaft);
     quadrantLabel
       .append('text')
       .attr('x', currentFactors[i].x - subtractX)
       .attr('y', currentFactors[i].y - subtractY)
       .attr('text-anchor', 'left')
-      .style(
-        'fill',
-        isNil(config.active_quadrant) || config.active_quadrant === i || config.zoomed_quadrant === i
-          ? color.mineShaft
-          : color.scorpion
-      )
+      .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
       .style('font-size', `${smallerLabels ? 8 : 14}px`)
       .style('font-weight', 600)
@@ -326,7 +316,6 @@ export default function radar_visualization(config) {
         .style('fill', isActiveRing ? color.white : color.boulder)
         .style('font-family', 'Hellix')
         .style('font-size', config.zoomed_quadrant ? 8 : 14)
-        .style('text-shadow', '2px 2px 4px #000000')
         .style('pointer-events', 'none')
         .style('user-select', 'none');
     }
@@ -351,6 +340,9 @@ export default function radar_visualization(config) {
   blips.each(function (d) {
     let blip = d3.select(this);
     blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
+
+    // blip color if no quadrants are selected
+    const blipColor = isNil(config.active_quadrant) ? color.mineShaft : d.color;
 
     // blip link
     if (!config.print_layout && d.active && d.hasOwnProperty('link')) {
@@ -385,7 +377,7 @@ export default function radar_visualization(config) {
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
-      blip.append('circle').attr('r', 5).attr('fill', d.color);
+      blip.append('circle').attr('r', 6).attr('fill', blipColor);
     } else if (d.ring === 1) {
       blip
         .append('rect') // outer diamond
@@ -404,7 +396,7 @@ export default function radar_visualization(config) {
         .attr('width', 9)
         .attr('height', 9)
         .attr('transform', 'rotate(45)')
-        .attr('fill', d.color);
+        .attr('fill', blipColor);
     } else if (d.ring === 2) {
       blip
         .append('rect') // outer square
@@ -421,7 +413,7 @@ export default function radar_visualization(config) {
         .attr('y', -4.5)
         .attr('width', 9)
         .attr('height', 9)
-        .attr('fill', d.color);
+        .attr('fill', blipColor);
     } else {
       blip
         .append('path')
@@ -434,7 +426,7 @@ export default function radar_visualization(config) {
         .append('path')
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
         .style('transform', 'scale(0.5)')
-        .attr('fill', d.color);
+        .attr('fill', blipColor);
     }
   });
 

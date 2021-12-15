@@ -40,7 +40,7 @@ export const AreaDropdown = styled(ToolbarDropdown)`
   }
 
   ${mediaQuery.desktop} {
-    min-width: 250px;
+    min-width: 300px;
   }
 `;
 
