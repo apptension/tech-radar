@@ -326,7 +326,6 @@ export default function radar_visualization(config) {
         .style('fill', isActiveRing ? color.white : color.boulder)
         .style('font-family', 'Hellix')
         .style('font-size', config.zoomed_quadrant ? 8 : 14)
-        .style('text-shadow', '2px 2px 4px #000000')
         .style('pointer-events', 'none')
         .style('user-select', 'none');
     }
