@@ -273,7 +273,7 @@ export default function radar_visualization(config) {
       .attr('text-anchor', 'left')
       .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
-      .style('font-size', `${isZoomed ? (smallerRadar ? 5 : 6.5) : 13}px`)
+      .style('font-size', `${isZoomed ? (smallerRadar ? 5.5 : 6.5) : 13}px`)
       .style('font-weight', 600)
       .style('letter-spacing', '0.2em');
 
@@ -296,7 +296,7 @@ export default function radar_visualization(config) {
           config.zoomed_quadrant ? currentFactors[i].y - bbox.height + addY : currentFactors[i].y - bbox.height - 5
         )
         .attr('width', bbox.width + 30)
-        .attr('height', isZoomed ? (smallerRadar ? 13 : 16) : 32);
+        .attr('height', isZoomed ? (smallerRadar ? 14 : 16) : 32);
     }
   }
 

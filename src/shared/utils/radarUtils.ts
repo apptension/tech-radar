@@ -198,6 +198,10 @@ export const getPxToAddQuadrantLabelTextZoomed = (
   fullSize: boolean,
   isZoomed: boolean
 ): { addX: number; addY: number } => {
+  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
+  if (isSmallScreen) {
+    return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? 22.5 : -1000 };
+  }
   return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? -27.7 : -1000 };
 };
 
@@ -205,6 +209,10 @@ export const getPxToAddQuadrantLabelRectZoomed = (
   fullSize: boolean,
   isZoomed: boolean
 ): { addX: number; addY: number } => {
+  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
+  if (isSmallScreen) {
+    return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? 20 : -1000 };
+  }
   return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? -30 : -1000 };
 };
 
