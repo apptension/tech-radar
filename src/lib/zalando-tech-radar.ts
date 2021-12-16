@@ -476,6 +476,6 @@ export default function radar_visualization(config) {
     .alphaMin(0.00001)
     .nodes(config.technologies)
     .velocityDecay(0.19) // magic number (found by experimentation)
-    .force('collision', d3.forceCollide().radius(12).strength(0.85))
+    .force('collision', d3.forceCollide().radius(12).strength(0.01))
     .on('tick', ticked);
 }
