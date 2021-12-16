@@ -342,7 +342,9 @@ export default function radar_visualization(config) {
     blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
 
     // blip color if no quadrants are selected
-    const blipColor = isNil(config.active_quadrant) ? color.mineShaft : d.color;
+    if (isNil(config.active_quadrant)) {
+      d.color = color.mineShaft;
+    }
 
     // blip link
     if (!config.print_layout && d.active && d.hasOwnProperty('link')) {
@@ -380,7 +382,7 @@ export default function radar_visualization(config) {
       blip
         .append('circle')
         .attr('r', config.zoomed_quadrant ? 4 : 5.5)
-        .attr('fill', blipColor);
+        .attr('fill', d.color);
     } else if (d.ring === 1) {
       blip
         .append('rect') // outer diamond
@@ -399,7 +401,7 @@ export default function radar_visualization(config) {
         .attr('width', config.zoomed_quadrant ? 7 : 9)
         .attr('height', config.zoomed_quadrant ? 7 : 9)
         .attr('transform', 'rotate(45)')
-        .attr('fill', blipColor);
+        .attr('fill', d.color);
     } else if (d.ring === 2) {
       blip
         .append('rect') // outer square
@@ -416,7 +418,7 @@ export default function radar_visualization(config) {
         .attr('y', config.zoomed_quadrant ? -3.5 : -4.5)
         .attr('width', config.zoomed_quadrant ? 7 : 9)
         .attr('height', config.zoomed_quadrant ? 7 : 9)
-        .attr('fill', blipColor);
+        .attr('fill', d.color);
     } else {
       blip
         .append('path')
@@ -429,7 +431,7 @@ export default function radar_visualization(config) {
         .append('path')
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
         .style('transform', config.zoomed_quadrant ? 'scale(0.39)' : 'scale(0.5)')
-        .attr('fill', blipColor);
+        .attr('fill', d.color);
     }
   });
 
