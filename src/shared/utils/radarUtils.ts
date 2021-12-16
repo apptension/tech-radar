@@ -18,7 +18,6 @@ import {
   RotateDataProps,
   UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
-import { FilterType } from '../../modules/filters/filters.types';
 import { sizes } from '../../theme/media';
 
 // custom random number generator, to make random sequence reproducible
@@ -192,35 +191,21 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
 };
 
 export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
-  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 1 : -1 };
+  return { subtractX: smallerLabels ? 6 : 0, subtractY: -1 };
 };
 
 export const getPxToAddQuadrantLabelTextZoomed = (
   fullSize: boolean,
   isZoomed: boolean
 ): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 56 : -50, addY: isZoomed ? -26 : -130 };
-  }
-  if (fullSize) {
-    return { addX: isZoomed ? -50 : 240, addY: isZoomed ? -130 : -26 };
-  }
-  return { addX: isZoomed ? 24 : -50, addY: isZoomed ? -26 : -130 };
+  return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? -27.7 : -1000 };
 };
 
 export const getPxToAddQuadrantLabelRectZoomed = (
   fullSize: boolean,
   isZoomed: boolean
 ): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 42 : -64, addY: isZoomed ? -30 : -134 };
-  }
-  if (fullSize) {
-    return { addX: isZoomed ? -64 : -1000, addY: isZoomed ? -134 : -30 };
-  }
-  return { addX: isZoomed ? 10 : -64, addY: isZoomed ? -30 : -134 };
+  return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? -30 : -1000 };
 };
 
 export const destroyRadar = () => {
