@@ -32,6 +32,7 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
   const areaValue = useSelector(selectArea);
   const levelValue = useSelector(selectLevel);
   const teamValue = useSelector(selectTeam);
+  const hasNoAreaSelected = !areaValue;
 
   const debouncedOnTextChange = useDebouncedCallback((text: string) => {
     dispatch(setSearch(text));
@@ -74,7 +75,12 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
         {renderLevelFilterTag(!!levelValue)}
         {renderTeamFilterTag(!!teamValue)}
       </FiltersContainer>
-      <TechnologiesList technologies={technologies} emptyResults={emptyResults} rings={rings} />
+      <TechnologiesList
+        technologies={technologies}
+        emptyResults={emptyResults}
+        rings={rings}
+        hasNoAreaSelected={hasNoAreaSelected}
+      />
       {renderToolbar(!isDesktop)}
     </Container>
   );

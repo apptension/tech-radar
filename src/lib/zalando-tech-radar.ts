@@ -342,7 +342,9 @@ export default function radar_visualization(config) {
     blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
 
     // blip color if no quadrants are selected
-    const blipColor = isNil(config.active_quadrant) ? color.mineShaft : d.color;
+    if (isNil(config.active_quadrant)) {
+      d.color = color.mineShaft;
+    }
 
     // blip link
     if (!config.print_layout && d.active && d.hasOwnProperty('link')) {
@@ -373,60 +375,63 @@ export default function radar_visualization(config) {
     if (d.ring === 0) {
       blip
         .append('circle') // outer circle
-        .attr('r', 8.5)
+        .attr('r', config.zoomed_quadrant ? 7 : 9)
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
-      blip.append('circle').attr('r', 6).attr('fill', blipColor);
+      blip
+        .append('circle')
+        .attr('r', config.zoomed_quadrant ? 4 : 5.5)
+        .attr('fill', d.color);
     } else if (d.ring === 1) {
       blip
         .append('rect') // outer diamond
-        .attr('x', -7.4)
-        .attr('y', -7.4)
-        .attr('width', 14.8)
-        .attr('height', 14.8)
+        .attr('x', config.zoomed_quadrant ? -6.4 : -7.4)
+        .attr('y', config.zoomed_quadrant ? -6.4 : -7.4)
+        .attr('width', config.zoomed_quadrant ? 12.8 : 14.8)
+        .attr('height', config.zoomed_quadrant ? 12.8 : 14.8)
         .attr('transform', 'rotate(45)')
         .attr('fill', 'url(#diamondMainGradient)')
         .style('opacity', 0);
 
       blip
         .append('rect') // diamond
-        .attr('x', -4.5)
-        .attr('y', -4.5)
-        .attr('width', 9)
-        .attr('height', 9)
+        .attr('x', config.zoomed_quadrant ? -3.5 : -4.5)
+        .attr('y', config.zoomed_quadrant ? -3.5 : -4.5)
+        .attr('width', config.zoomed_quadrant ? 7 : 9)
+        .attr('height', config.zoomed_quadrant ? 7 : 9)
         .attr('transform', 'rotate(45)')
-        .attr('fill', blipColor);
+        .attr('fill', d.color);
     } else if (d.ring === 2) {
       blip
         .append('rect') // outer square
-        .attr('x', -7.4)
-        .attr('y', -7.4)
-        .attr('width', 14.8)
-        .attr('height', 14.8)
+        .attr('x', config.zoomed_quadrant ? -6.4 : -7.4)
+        .attr('y', config.zoomed_quadrant ? -6.4 : -7.4)
+        .attr('width', config.zoomed_quadrant ? 12.8 : 14.8)
+        .attr('height', config.zoomed_quadrant ? 12.8 : 14.8)
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
       blip
         .append('rect') // square
-        .attr('x', -4.5)
-        .attr('y', -4.5)
-        .attr('width', 9)
-        .attr('height', 9)
-        .attr('fill', blipColor);
+        .attr('x', config.zoomed_quadrant ? -3.5 : -4.5)
+        .attr('y', config.zoomed_quadrant ? -3.5 : -4.5)
+        .attr('width', config.zoomed_quadrant ? 7 : 9)
+        .attr('height', config.zoomed_quadrant ? 7 : 9)
+        .attr('fill', d.color);
     } else {
       blip
         .append('path')
         .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z') // outer triangle pointing up
-        .style('transform', 'scale(0.9)')
+        .style('transform', config.zoomed_quadrant ? 'scale(0.79)' : 'scale(0.9)')
         .attr('fill', 'url(#mainGradient)')
         .style('opacity', 0);
 
       blip
         .append('path')
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z') // triangle pointing up
-        .style('transform', 'scale(0.5)')
-        .attr('fill', blipColor);
+        .style('transform', config.zoomed_quadrant ? 'scale(0.39)' : 'scale(0.5)')
+        .attr('fill', d.color);
     }
   });
 
@@ -476,6 +481,6 @@ export default function radar_visualization(config) {
     .alphaMin(0.00001)
     .nodes(config.technologies)
     .velocityDecay(0.19) // magic number (found by experimentation)
-    .force('collision', d3.forceCollide().radius(12).strength(0.85))
+    .force('collision', d3.forceCollide().radius(12).strength(0.01))
     .on('tick', ticked);
 }

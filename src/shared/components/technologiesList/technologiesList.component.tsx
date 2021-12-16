@@ -32,9 +32,10 @@ interface TechnologiesListProps {
   technologies: RadarTechnology[];
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
+  hasNoAreaSelected: boolean;
 }
 
-export const TechnologiesList = ({ technologies, emptyResults, rings }: TechnologiesListProps) => {
+export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaSelected }: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
@@ -48,6 +49,14 @@ export const TechnologiesList = ({ technologies, emptyResults, rings }: Technolo
     const scrollBottom = scrollHeight - clientHeight;
     setScrollTopReached(scrollTop === 0);
     setScrollBottomReached(scrollTop >= scrollBottom);
+  };
+
+  const getBlipColor = (isTechnologyInactive: boolean, isAllAreasInactive: boolean) => {
+    if (isAllAreasInactive) {
+      return color.mineShaft;
+    }
+
+    return isTechnologyInactive ? color.mineShaft : color.silver;
   };
 
   if (emptyResults.search) {
@@ -84,7 +93,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings }: Technolo
               unhighlightBlip({
                 id: technology.id?.toString() || '',
                 ring: technology.ring,
-                color: technology.inactive ? color.mineShaft : color.silver,
+                color: getBlipColor(technology.inactive, hasNoAreaSelected),
               });
               highlightLegend({ id: technology.id || '', mode: 'off' });
               hideBubble();
