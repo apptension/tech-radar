@@ -234,32 +234,33 @@ export default function radar_visualization(config) {
 
   // draw quadrant labels
   for (let i = 0; i < config.quadrants.length; i++) {
-    const smallerLabels = config.zoomed_quadrant || !fullSize;
+    const smallerRadar = !fullSize;
     const isZoomed = i === config.zoomed_quadrant;
     const factorX = quadrants[i].factor_x;
     const factorY = quadrants[i].factor_y;
     // magic numbers (found by experimentation)
-    const factorsForSmallerLabels = [
-      { x: factorX * 200, y: factorY * 220 },
-      { x: factorX * 300, y: factorY * 200 },
-      { x: factorX * 320, y: factorY * 220 },
-      { x: factorX * 200, y: factorY * 200 },
+    const factorsForSmallerRadar = [
+      { x: factorX * 210, y: factorY * 220 },
+      { x: factorX * 350, y: factorY * 200 },
+      { x: factorX * (isZoomed ? 300 : 410), y: factorY * 220 },
+      { x: factorX * 220, y: factorY * 200 },
     ];
-    const factorsForBiggerLabels = [
-      { x: factorX * 340, y: factorY * 280 },
-      { x: factorX * 510, y: factorY * 250 },
-      { x: factorX * 550, y: factorY * 300 },
-      { x: factorX * 330, y: factorY * 260 },
+    const factorsForBiggerRadar = [
+      { x: factorX * 290, y: factorY * 280 },
+      { x: factorX * 450, y: factorY * 250 },
+      { x: factorX * (isZoomed ? 400 : 480), y: factorY * (isZoomed ? 270 : 300) },
+      { x: factorX * 300, y: factorY * 260 },
     ];
 
-    const currentFactors = smallerLabels ? factorsForSmallerLabels : factorsForBiggerLabels;
-    const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerLabels);
+    const currentFactors = smallerRadar ? factorsForSmallerRadar : factorsForBiggerRadar;
+    const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerRadar);
 
     const quadrantLabel = grid.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
+
     quadrantLabel
       .append('rect')
-      .attr('rx', smallerLabels ? 12 : 20)
-      .attr('ry', smallerLabels ? 12 : 20)
+      .attr('rx', isZoomed ? 7 : 15)
+      .attr('ry', isZoomed ? 7 : 15)
       .attr('x', currentFactors[i].x)
       .attr('y', currentFactors[i].y)
       .style('fill', color.mineShaft)
@@ -272,7 +273,7 @@ export default function radar_visualization(config) {
       .attr('text-anchor', 'left')
       .style('fill', config.active_quadrant === i || config.zoomed_quadrant === i ? color.mineShaft : color.scorpion)
       .style('font-family', 'Hellix')
-      .style('font-size', `${smallerLabels ? 8 : 14}px`)
+      .style('font-size', `${isZoomed ? (smallerRadar ? 5.5 : 6.5) : 13}px`)
       .style('font-weight', 600)
       .style('letter-spacing', '0.2em');
 
@@ -294,8 +295,8 @@ export default function radar_visualization(config) {
           'y',
           config.zoomed_quadrant ? currentFactors[i].y - bbox.height + addY : currentFactors[i].y - bbox.height - 5
         )
-        .attr('width', smallerLabels ? bbox.width + 30 : bbox.width + 40)
-        .attr('height', smallerLabels ? bbox.height + 12 : bbox.height + 18);
+        .attr('width', bbox.width + 30)
+        .attr('height', isZoomed ? (smallerRadar ? 14 : 16) : 32);
     }
   }
 
