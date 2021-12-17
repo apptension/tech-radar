@@ -99,12 +99,10 @@ export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
       .attr('transform', translate({ x: x - 8, y: ring === 3 ? y - 18 : y - 14 }))
       .style('opacity', 1);
     d3.select('#bubble rect')
-      .attr('x', -bbox.width - 36)
-      .attr('y', 0)
-      .attr('width', bbox.width + 20)
-      .attr('height', bbox.height + 14)
+      .attr('x', -bbox.width - 26)
+      .attr('width', bbox.width + 16)
       .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
-    tooltip.attr('x', -bbox.width - 26).attr('y', 16);
+    tooltip.attr('x', -bbox.width - 18).attr('y', 16.5);
   }
 };
 

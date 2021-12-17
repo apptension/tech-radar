@@ -331,8 +331,18 @@ export default function radar_visualization(config) {
     .style('opacity', 0)
     .style('pointer-events', 'none')
     .style('user-select', 'none');
-  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
-  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
+  bubble
+    .append('rect')
+    .attr('rx', `${config.zoomed_quadrant ? '3px' : '6px'}`)
+    .attr('ry', `${config.zoomed_quadrant ? '3px' : '6px'}`)
+    .attr('height', `${config.zoomed_quadrant ? '18px' : '26px'}`)
+    .attr('y', config.zoomed_quadrant ? 5 : -0.5)
+    .style('fill', color.mineShaft);
+  bubble
+    .append('text')
+    .style('font-family', 'Hellix')
+    .style('font-size', `${config.zoomed_quadrant ? '7px' : '12px'}`)
+    .style('fill', color.silver);
 
   // draw blips on radar
   const blips = rink.selectAll('.blip').data(config.technologies).enter().append('g').attr('class', 'blip');
