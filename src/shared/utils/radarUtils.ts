@@ -175,6 +175,21 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
   if (listItemTags) listItemTags.style.opacity = mode === 'on' ? '1' : '0';
 };
 
+export const toggleQuadrant = (quadrant: number, show: boolean, activeQuadrant: number | null) => {
+  const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
+  const quadrantLabel = document.querySelector(`#quadrant-label-${quadrant}`) as SVGGElement;
+
+  if (quadrant !== activeQuadrant) {
+    if (quadrantElement) quadrantElement.style.opacity = show ? '1' : '0';
+    if (quadrantLabel) {
+      const rect = quadrantLabel.querySelector('rect');
+      const text = quadrantLabel.querySelector('text');
+      if (rect) rect.style.fill = show ? color.silver : color.mineShaft;
+      if (text) text.style.fill = show ? color.mineShaft : color.scorpion;
+    }
+  }
+};
+
 export const getRotationForQuadrant = (quadrant: number | null) => {
   switch (quadrant) {
     case 0:

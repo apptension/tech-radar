@@ -10,6 +10,7 @@ import {
   highlightLegend,
   showBubble,
   unhighlightBlip,
+  toggleQuadrant,
 } from '../../utils/radarUtils';
 import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
@@ -33,9 +34,16 @@ interface TechnologiesListProps {
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
   hasNoAreaSelected: boolean;
+  activeQuadrant: number | null;
 }
 
-export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaSelected }: TechnologiesListProps) => {
+export const TechnologiesList = ({
+  technologies,
+  emptyResults,
+  rings,
+  hasNoAreaSelected,
+  activeQuadrant,
+}: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
@@ -83,6 +91,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
             key={`list-item-${technology.id}`}
             onMouseEnter={() => {
               setHoveredItem(technology.id);
+              toggleQuadrant(technology.quadrant, true, activeQuadrant);
               highlightBlip({ id: technology.id || '', ring: technology.ring });
               highlightLegend({ id: technology.id || '' });
               const blipData = getBlipDataById(technology.id || '');
@@ -90,6 +99,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
             }}
             onMouseLeave={() => {
               setHoveredItem(null);
+              toggleQuadrant(technology.quadrant, false, activeQuadrant);
               unhighlightBlip({
                 id: technology.id?.toString() || '',
                 ring: technology.ring,

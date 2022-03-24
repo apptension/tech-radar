@@ -20,6 +20,7 @@ import {
   getPxToSubtractQuadrantLabelText,
   getPxToAddQuadrantLabelTextZoomed,
   getPxToAddQuadrantLabelRectZoomed,
+  toggleQuadrant,
 } from '../shared/utils/radarUtils';
 import { sizes } from '../theme/media';
 
@@ -163,13 +164,13 @@ export default function radar_visualization(config) {
     .append('rect')
     .attr('x', -rings[3].radius)
     .attr('y', 0)
-    .attr('width', rings[3].radius * 2)
+    .attr('width', rings[3].radius)
     .attr('height', rings[3].radius);
 
   const conicGradient = defs.append('linearGradient').attr('id', 'conic-gradient');
   conicGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
-  conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.tundora).attr('stop-opacity', 0.7);
-  conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
+  conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.white20).attr('stop-opacity', 0.7);
+  conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(0, 0, 0, 0)').attr('stop-opacity', 1);
 
   grid
     .append('circle')
@@ -178,6 +179,7 @@ export default function radar_visualization(config) {
     .attr('r', rings[3].radius)
     .attr('clip-path', 'url(#semi-circle)')
     .attr('fill', 'url(#conic-gradient)')
+    .style('opacity', config.active_quadrant ? 1 : 0)
     .attr(
       'transform',
       config.zoomed_quadrant
@@ -201,6 +203,37 @@ export default function radar_visualization(config) {
   ringGradient.append('stop').attr('offset', '60%').attr('stop-color', 'transparent').attr('stop-opacity', 1);
   ringGradient.append('stop').attr('offset', '85%').attr('stop-color', 'transparent').attr('stop-opacity', 0.8);
   ringGradient.append('stop').attr('offset', '100%').attr('stop-color', color.tundora).attr('stop-opacity', 0.2);
+
+  // layer for grid
+  const quadrantSectors = radar.append('g').attr('id', 'quadrants');
+  const quadrantData = [
+    { position: -90, quadrant: 0 },
+    { position: 0, quadrant: 1 },
+    {
+      position: 90,
+      quadrant: 2,
+    },
+    { position: 180, quadrant: 3 },
+  ];
+
+  quadrantData.forEach(({ position, quadrant }) => {
+    quadrantSectors
+      .append('circle')
+      .attr('id', `quadrant-${quadrant}`)
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', rings[3].radius)
+      .attr('clip-path', 'url(#semi-circle)')
+      .style('opacity', 0)
+      .attr('transform', `rotate(${position})`)
+      .attr('fill', 'url(#conic-gradient)')
+      .on('mouseover', () => {
+        toggleQuadrant(quadrant, true, config.active_quadrant);
+      })
+      .on('mouseleave', () => {
+        toggleQuadrant(quadrant, false, config.active_quadrant);
+      });
+  });
 
   // draw rings
   for (let i = 0; i < rings.length; i++) {
@@ -341,7 +374,6 @@ export default function radar_visualization(config) {
   blips.each(function (d) {
     let blip = d3.select(this);
     blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
-
     // blip color if no quadrants are selected
     if (isNil(config.active_quadrant)) {
       d.color = color.mineShaft;
@@ -438,11 +470,13 @@ export default function radar_visualization(config) {
 
   blips
     .on('mouseover', function (event, d) {
+      toggleQuadrant(d.quadrant, true, config.active_quadrant);
       showBubble(d);
       highlightBlip(d);
       highlightLegend({ id: d.id });
     })
     .on('mouseout', function (event, d) {
+      toggleQuadrant(d.quadrant, false, config.active_quadrant);
       hideBubble();
       unhighlightBlip(d);
       highlightLegend({ id: d.id, mode: 'off' });

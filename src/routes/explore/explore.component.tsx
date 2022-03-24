@@ -203,6 +203,7 @@ export const Explore = () => {
             rings={radarRings}
             teams={radarTeams}
             quadrants={radarQuadrants}
+            activeQuadrant={activeQuadrant}
           />
         </SidebarWrapper>
         <Viewer>
