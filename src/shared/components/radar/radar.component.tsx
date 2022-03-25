@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { isNil, min, equals } from 'ramda';
 
 import { useDebouncedCallback } from 'use-debounce';
+import { useDispatch } from 'react-redux';
 import * as colors from '../../../theme/color';
 import drawTechRadar from '../../../lib/zalando-tech-radar';
 import { destroyRadar } from '../../utils/radarUtils';
 import { isSafari } from '../../utils/isSafari';
+import { FilterType } from '../../../modules/filters/filters.types';
+import { setArea } from '../../../modules/filters/filters.actions';
 import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 import {
   BASIC_RADAR_WIDTH,
@@ -33,7 +36,9 @@ export const Radar = ({
   activeRing,
   previouslyActiveQuadrant,
 }: RadarProps) => {
+  const dispatch = useDispatch();
   const [previousConfig, setPreviousConfig] = useState<RadarConfig | null>(null);
+  const handleAreaSelect = (option: FilterType) => dispatch(setArea(option));
 
   const config: RadarConfig = {
     svg_id: 'radar',
@@ -60,7 +65,7 @@ export const Radar = ({
 
   const drawRadar = () => {
     destroyRadar();
-    drawTechRadar(config);
+    drawTechRadar({ ...config, handleAreaSelect });
   };
 
   const debouncedDrawRadar = useDebouncedCallback(drawRadar, isSafari() ? 250 : 120);

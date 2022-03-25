@@ -179,7 +179,7 @@ export default function radar_visualization(config) {
     .attr('r', rings[3].radius)
     .attr('clip-path', 'url(#semi-circle)')
     .attr('fill', 'url(#conic-gradient)')
-    .style('opacity', config.active_quadrant ? 1 : 0)
+    .style('opacity', config.active_quadrant === undefined ? 0 : 1)
     .attr(
       'transform',
       config.zoomed_quadrant
@@ -216,7 +216,7 @@ export default function radar_visualization(config) {
     { position: 180, quadrant: 3 },
   ];
 
-  quadrantData.forEach(({ position, quadrant }) => {
+  quadrantData.forEach(({ position, quadrant }, index) => {
     quadrantSectors
       .append('circle')
       .attr('id', `quadrant-${quadrant}`)
@@ -227,6 +227,9 @@ export default function radar_visualization(config) {
       .style('opacity', 0)
       .attr('transform', `rotate(${position})`)
       .attr('fill', 'url(#conic-gradient)')
+      .on('click', () => {
+        config.handleAreaSelect(config.quadrants[index].name);
+      })
       .on('mouseover', () => {
         toggleQuadrant(quadrant, true, config.active_quadrant);
       })
@@ -471,15 +474,23 @@ export default function radar_visualization(config) {
   blips
     .on('mouseover', function (event, d) {
       toggleQuadrant(d.quadrant, true, config.active_quadrant);
-      showBubble(d);
-      highlightBlip(d);
-      highlightLegend({ id: d.id });
+
+      if (config.active_quadrant === undefined || !d.inactive) {
+        showBubble(d);
+        highlightBlip(d);
+        highlightLegend({ id: d.id });
+      }
     })
     .on('mouseout', function (event, d) {
       toggleQuadrant(d.quadrant, false, config.active_quadrant);
       hideBubble();
       unhighlightBlip(d);
       highlightLegend({ id: d.id, mode: 'off' });
+    })
+    .on('click', function (event, d) {
+      if (config.active_quadrant !== undefined && d.inactive) {
+        config.handleAreaSelect(config.quadrants[d.quadrant].name);
+      }
     });
 
   // gradient on right side for wider screens when zoomed in
