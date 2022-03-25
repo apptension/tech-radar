@@ -209,28 +209,6 @@ export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subt
   return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
 };
 
-export const getPxToAddQuadrantLabelTextZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? 22.5 : -1000 };
-  }
-  return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? -27.7 : -1000 };
-};
-
-export const getPxToAddQuadrantLabelRectZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? 20 : -1000 };
-  }
-  return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? -30 : -1000 };
-};
-
 export const destroyRadar = () => {
   d3.select('.radar').remove();
 };
@@ -362,39 +340,4 @@ export const getUpdatedRadarTechnologies = ({
   }));
 
   return { updatedTechnologies, activeIds: activeTechnologiesIds };
-};
-
-export const getRotatedData = ({
-  activeQuadrant,
-  newQuadrant,
-  technologies,
-  quadrants,
-  searchText,
-  teamValue,
-  levelValue,
-  rings,
-}: RotateDataProps) => {
-  const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : 0;
-
-  const { updatedTechnologies } = getUpdatedRadarTechnologies({
-    searchText,
-    teamValue,
-    levelValue,
-    rings,
-    technologies,
-    activeQuadrant,
-  });
-
-  const movedTechnologies = updatedTechnologies.map((technology) => {
-    return {
-      ...technology,
-      quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
-    };
-  });
-  const movedQuadrants = quadrants.map((quadrant) => ({
-    ...quadrant,
-    position: mathMod(quadrant.position + moveQuadrantsBy, 4),
-  }));
-
-  return { movedQuadrants: sortBy(prop('position'), movedQuadrants), movedTechnologies };
 };

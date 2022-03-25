@@ -1,4 +1,7 @@
+import { Selection } from 'd3';
 import { FilterType } from '../../../modules/filters/filters.types';
+
+export type RadarContainer = Selection<null, unknown, null, undefined>;
 
 export type RadarTechnology = {
   label: string;
@@ -7,6 +10,7 @@ export type RadarTechnology = {
   inactive: boolean;
   id: string;
   team: string;
+  color?: string;
 };
 export type RadarRing = { name: string; position: number };
 export type RadarQuadrant = { name: string; position: number };
@@ -92,3 +96,5 @@ export interface RotateDataProps {
 }
 
 export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;
+
+export type Rings = { radius: number }[];
