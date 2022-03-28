@@ -1,79 +1,100 @@
-import React, { useState } from 'react';
-import { isNil, min, equals } from 'ramda';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
+import { useEffectOnce } from 'react-use';
+import { Selection, select } from 'd3';
 import * as colors from '../../../theme/color';
-import drawTechRadar from '../../../lib/zalando-tech-radar';
-import { destroyRadar } from '../../utils/radarUtils';
-import { isSafari } from '../../utils/isSafari';
+import {
+  getRadarScale,
+  hideBubble,
+  highlightLegend,
+  showBubble,
+  toggleQuadrant,
+  translate,
+} from '../../utils/radarUtils';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { setArea } from '../../../modules/filters/filters.actions';
-import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
-import {
-  BASIC_RADAR_WIDTH,
-  HORIZONTAL_RADAR_MARGIN,
-  HORIZONTAL_ZOOMED_RADAR_MARGIN,
-  VERTICAL_RADAR_MARGIN,
-} from './radar.constants';
+import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
+import { HORIZONTAL_RADAR_MARGIN, VERTICAL_RADAR_MARGIN } from './radar.constants';
+import { renderBubble, renderGrid, renderQuadrantSectors, renderRingLabels, renderTechnologies } from './radar.helpers';
+import { SVG } from './radar.styles';
 
 interface RadarProps {
   technologies: RadarTechnology[];
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
-  zoomedQuadrant: null | number;
   activeQuadrant: number | null;
-  previouslyActiveQuadrant: number | null;
   activeRing: number | null;
 }
 
-export const Radar = ({
-  technologies,
-  rings,
-  quadrants,
-  zoomedQuadrant,
-  activeQuadrant,
-  activeRing,
-  previouslyActiveQuadrant,
-}: RadarProps) => {
+export const Radar = ({ technologies, rings: radarRings, quadrants, activeQuadrant, activeRing }: RadarProps) => {
+  const [quadrantSectors, setQuadrantSectors] = useState<Selection<
+    SVGGElement,
+    { position: number; quadrant: number },
+    SVGGElement,
+    unknown
+  > | null>(null);
+  const [blips, setBlips] = useState<Selection<any, any, SVGGElement, unknown> | null>(null);
+  const [ringLabels, setRingLabels] = useState<Selection<SVGTextElement, { radius: number }, any, unknown> | null>(
+    null
+  );
+  const radarRef = useRef(null);
   const dispatch = useDispatch();
-  const [previousConfig, setPreviousConfig] = useState<RadarConfig | null>(null);
   const handleAreaSelect = (option: FilterType) => dispatch(setArea(option));
+  const width = window.innerHeight + HORIZONTAL_RADAR_MARGIN;
+  const height = window.innerHeight - VERTICAL_RADAR_MARGIN;
 
-  const config: RadarConfig = {
-    svg_id: 'radar',
-    width: zoomedQuadrant
-      ? min(window.innerWidth - HORIZONTAL_ZOOMED_RADAR_MARGIN, BASIC_RADAR_WIDTH)
-      : window.innerHeight + HORIZONTAL_RADAR_MARGIN,
-    height: window.innerHeight - VERTICAL_RADAR_MARGIN,
-    colors: {
-      background: colors.codGray,
-      grid: colors.mineShaft,
-      inactive: colors.mineShaft,
-      default: colors.silver,
-    },
-    print_layout: true,
-    quadrants,
-    rings,
-    technologies,
-  };
+  useEffectOnce(() => {
+    const { scale, fullSize } = getRadarScale();
+    const rings = [{ radius: 140 * scale }, { radius: 245 * scale }, { radius: 350 * scale }, { radius: 450 * scale }];
+    const container = select(radarRef.current);
+    container.selectAll('*').remove();
+    container.style('background-color', colors.codGray).attr('width', width).attr('height', height);
 
-  if (!isNil(zoomedQuadrant)) config.zoomed_quadrant = zoomedQuadrant;
-  if (!isNil(activeQuadrant)) config.active_quadrant = activeQuadrant;
-  if (!isNil(previouslyActiveQuadrant)) config.previously_active_quadrant = previouslyActiveQuadrant;
-  if (!isNil(activeRing)) config.active_ring = activeRing;
+    const radar = container.append('g').attr('class', 'radar');
 
-  const drawRadar = () => {
-    destroyRadar();
-    drawTechRadar({ ...config, handleAreaSelect });
-  };
+    container.attr('viewBox', `0 0 ${width} ${height}`);
+    radar.attr('transform', translate({ x: width / 2, y: height / 2 }));
 
-  const debouncedDrawRadar = useDebouncedCallback(drawRadar, isSafari() ? 250 : 120);
+    renderGrid({ radar, scale, rings });
+    const quadrantSectors = renderQuadrantSectors({ quadrants, rings, radar, fullSize });
+    setQuadrantSectors(quadrantSectors);
+    const renderedTechnologies = renderTechnologies({ radar, technologies, rings });
+    setBlips(renderedTechnologies);
+    const renderedRingLabels = renderRingLabels({ radar, radarRings, rings, quadrants });
+    renderBubble(radar);
+    setRingLabels(renderedRingLabels);
+    renderedTechnologies
+      .on('mouseover', function (event: MouseEvent, d) {
+        toggleQuadrant(d.quadrant, true);
+        highlightLegend({ id: d.id });
+        showBubble(d);
+      })
+      .on('mouseout', function (event: MouseEvent, d) {
+        toggleQuadrant(d.quadrant, false);
+        highlightLegend({ id: d.id, mode: 'off' });
+        hideBubble();
+      })
+      .on('click', function (event: MouseEvent, d) {
+        if (activeQuadrant !== undefined && d.inactive) {
+          handleAreaSelect(quadrants[d.quadrant].name);
+        }
+      });
 
-  if (!equals(config, previousConfig)) {
-    setPreviousConfig(config);
-    debouncedDrawRadar();
-  }
+    quadrantSectors.on('click', (event, d) => {
+      handleAreaSelect(quadrants[d.quadrant].name);
+    });
+  });
 
-  return <svg id="radar" />;
+  useEffect(() => {
+    if (quadrantSectors) {
+      quadrantSectors.classed('active', (d) => d.quadrant === activeQuadrant);
+      blips
+        ?.classed('active', (d) => !technologies[d.index].inactive && activeQuadrant !== null)
+        .classed('hover-active', activeQuadrant === null);
+      ringLabels?.classed('active', (d, i) => i + 1 === activeRing || !activeRing);
+    }
+  }, [quadrantSectors, technologies]);
+
+  return <SVG ref={radarRef} />;
 };

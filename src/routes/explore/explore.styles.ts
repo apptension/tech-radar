@@ -4,8 +4,7 @@ import { color, zIndex } from '../../theme';
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
 import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { Loader as LoaderComponent } from '../../shared/components/loader';
-import { ZoomControls as ZoomControlsComponent } from '../../shared/components/zoomControls';
-import { SIDEBAR_WIDTH, ZOOM_BUTTONS_WIDTH } from '../../shared/components/radar/radar.constants';
+import { SIDEBAR_WIDTH } from '../../shared/components/radar/radar.constants';
 import { mediaQuery } from '../../theme/media';
 
 export const LOADING_ANIMATION_MS = 500;
@@ -53,17 +52,11 @@ export const Viewer = styled.div`
 
 export const Toolbar = styled(ToolbarComponent)`
   position: absolute;
-  left: calc(50% + ${SIDEBAR_WIDTH / 2}px - ${ZOOM_BUTTONS_WIDTH}px);
+  left: calc(50% + ${SIDEBAR_WIDTH / 2}px);
   transform: translateX(-50%);
   bottom: 24px;
   z-index: ${zIndex.contentOverlay};
-  max-width: calc(100% - ${SIDEBAR_WIDTH}px - ${ZOOM_BUTTONS_WIDTH}px);
-`;
-
-export const ZoomControls = styled(ZoomControlsComponent)`
-  position: absolute;
-  bottom: 24px;
-  right: 35px;
+  max-width: calc(100% - ${SIDEBAR_WIDTH}px);
 `;
 
 export const Loader = styled(LoaderComponent)`

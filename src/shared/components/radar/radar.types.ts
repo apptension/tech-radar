@@ -7,25 +7,11 @@ export type RadarTechnology = {
   inactive: boolean;
   id: string;
   team: string;
+  color?: string;
 };
 export type RadarRing = { name: string; position: number };
 export type RadarQuadrant = { name: string; position: number };
 export type RadarTeam = { name: string };
-
-export type RadarConfig = {
-  svg_id: string;
-  width: number;
-  height: number;
-  colors: { background: string; grid: string; inactive: string; default: string };
-  print_layout: true;
-  quadrants: RadarQuadrant[];
-  rings: RadarRing[];
-  technologies: RadarTechnology[];
-  zoomed_quadrant?: number;
-  active_quadrant?: number;
-  previously_active_quadrant?: number;
-  active_ring?: number;
-};
 
 export enum QuadrantPositions {
   bottomRight,
@@ -92,3 +78,5 @@ export interface RotateDataProps {
 }
 
 export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;
+
+export type Rings = { radius: number }[];

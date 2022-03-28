@@ -75,6 +75,7 @@
     "react-router-dom": "^5",
     "react-scripts": "npm:@apptension/react-scripts",
     "react-test-renderer": "^16.13.1",
+    "react-use": "^17.3.2",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.2",
     "redux-saga-test-plan": "4.0.0-rc.3",

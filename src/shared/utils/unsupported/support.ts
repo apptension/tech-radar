@@ -1,5 +1,3 @@
-import { DEFAULT_LOCALE, translationMessages } from '../../../i18n';
-
 //eslint-disable-next-line import/first
 import UnsupportedBrowserDetection from './unsupportedBrowserDetection';
 import { unsupportedPageContent } from './unsupportedPage/unsupportedPage';

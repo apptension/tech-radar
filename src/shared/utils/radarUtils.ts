@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil, mathMod } from 'ramda';
+import { pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil } from 'ramda';
 import { color } from '../../theme';
 import { RADAR_SEED, RADAR_SEED_MULTIPLIER } from '../components/radar/radar.constants';
 import {
@@ -15,7 +15,6 @@ import {
   RadarRing,
   RadarTeam,
   RadarTechnology,
-  RotateDataProps,
   UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
 import { sizes } from '../../theme/media';
@@ -118,17 +117,19 @@ export const changeHighlight = ({
   id,
   shape,
   opacity,
+  hide,
   fill = 'url(#mainGradient)',
 }: {
   id: string;
   shape: string;
   opacity: number;
   fill?: string;
+  hide?: boolean;
 }) => {
   const outerBlip = d3.select(`#blip-${id} ${shape}`);
-  outerBlip.style('opacity', opacity);
+  outerBlip.style('opacity', hide ? '' : opacity);
   const fullBlip = d3.selectAll(`#blip-${id} ${shape}`);
-  fullBlip.style('fill', fill);
+  fullBlip.style('fill', hide ? '' : fill);
 };
 
 export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
@@ -147,19 +148,19 @@ export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
   }
 };
 
-export const unhighlightBlip = ({ id, ring, color }: BlipInterface) => {
+export const unhighlightBlip = ({ id, ring }: BlipInterface) => {
   switch (ring) {
     case 0:
-      changeHighlight({ id, shape: 'circle', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'circle', opacity: 0, hide: true });
       break;
     case 1:
-      changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'rect', opacity: 0, hide: true });
       break;
     case 2:
-      changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'rect', opacity: 0, hide: true });
       break;
     default:
-      changeHighlight({ id, shape: 'path', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'path', opacity: 0, hide: true });
   }
 };
 
@@ -175,18 +176,16 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
   if (listItemTags) listItemTags.style.opacity = mode === 'on' ? '1' : '0';
 };
 
-export const toggleQuadrant = (quadrant: number, show: boolean, activeQuadrant: number | null) => {
+export const toggleQuadrant = (quadrant: number, show: boolean) => {
   const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
-  const quadrantLabel = document.querySelector(`#quadrant-label-${quadrant}`) as SVGGElement;
 
-  if (quadrant !== activeQuadrant) {
-    if (quadrantElement) quadrantElement.style.opacity = show ? '1' : '0';
-    if (quadrantLabel) {
-      const rect = quadrantLabel.querySelector('rect');
-      const text = quadrantLabel.querySelector('text');
-      if (rect) rect.style.fill = show ? color.silver : color.mineShaft;
-      if (text) text.style.fill = show ? color.mineShaft : color.scorpion;
-    }
+  if (quadrantElement) {
+    const rect = quadrantElement.querySelector('rect');
+    const circle = quadrantElement.querySelector('circle');
+    const text = quadrantElement.querySelector('text');
+    if (circle) circle.style.opacity = show ? '0.5' : '';
+    if (rect) rect.style.fill = show ? color.silver : '';
+    if (text) text.style.fill = show ? color.mineShaft : '';
   }
 };
 
@@ -207,32 +206,6 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
 
 export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
   return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
-};
-
-export const getPxToAddQuadrantLabelTextZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? 22.5 : -1000 };
-  }
-  return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? -27.7 : -1000 };
-};
-
-export const getPxToAddQuadrantLabelRectZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? 20 : -1000 };
-  }
-  return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? -30 : -1000 };
-};
-
-export const destroyRadar = () => {
-  d3.select('.radar').remove();
 };
 
 export const getQuadrantPosition = (position: string) => {
@@ -362,39 +335,4 @@ export const getUpdatedRadarTechnologies = ({
   }));
 
   return { updatedTechnologies, activeIds: activeTechnologiesIds };
-};
-
-export const getRotatedData = ({
-  activeQuadrant,
-  newQuadrant,
-  technologies,
-  quadrants,
-  searchText,
-  teamValue,
-  levelValue,
-  rings,
-}: RotateDataProps) => {
-  const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : 0;
-
-  const { updatedTechnologies } = getUpdatedRadarTechnologies({
-    searchText,
-    teamValue,
-    levelValue,
-    rings,
-    technologies,
-    activeQuadrant,
-  });
-
-  const movedTechnologies = updatedTechnologies.map((technology) => {
-    return {
-      ...technology,
-      quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
-    };
-  });
-  const movedQuadrants = quadrants.map((quadrant) => ({
-    ...quadrant,
-    position: mathMod(quadrant.position + moveQuadrantsBy, 4),
-  }));
-
-  return { movedQuadrants: sortBy(prop('position'), movedQuadrants), movedTechnologies };
 };
