@@ -21,24 +21,16 @@
 // THE SOFTWARE.
 
 import { Selection, select, forceSimulation, forceCollide } from 'd3';
-import { isNil } from 'ramda';
 import { color } from '../../../theme';
 import {
   bounded_box,
   bounded_ring,
   cartesian,
   getPxToSubtractQuadrantLabelText,
-  getRotationForQuadrant,
-  hideBubble,
-  highlightBlip,
-  highlightLegend,
   normal_between,
   polar,
   random_between,
-  showBubble,
-  toggleQuadrant,
   translate,
-  unhighlightBlip,
 } from '../../utils/radarUtils';
 import { RadarQuadrant, RadarRing, RadarTechnology, Rings } from './radar.types';
 
@@ -99,21 +91,17 @@ export const renderGrid = ({ radar, scale, rings }: RenderGrid) => {
   return grid;
 };
 
-type RenderActiveQuadrantContainer = {
-  grid: Selection<SVGGElement, unknown, null, undefined>;
-  activeQuadrant: number | null;
-  previouslyActiveQuadrant: number | null;
-  rings: { radius: number }[];
+type RenderQuadrantSectors = {
+  radar: Selection<SVGGElement, unknown, null, undefined>;
+  quadrants: RadarQuadrant[];
+  rings: Rings;
+  fullSize: boolean;
 };
 
-export const renderActiveQuadrantContainer = ({
-  grid,
-  activeQuadrant,
-  previouslyActiveQuadrant,
-  rings,
-}: RenderActiveQuadrantContainer) => {
-  const defs = grid.select('defs');
-  const semiCircle = grid.select('defs').append('clipPath').attr('id', 'semi-circle');
+export const renderQuadrantSectors = ({ radar, quadrants, rings, fullSize }: RenderQuadrantSectors) => {
+  const quadrantsContainer = radar.append('g').attr('id', 'quadrants');
+  const defs = radar.select('defs');
+  const semiCircle = radar.select('defs').append('clipPath').attr('id', 'semi-circle');
   semiCircle
     .append('rect')
     .attr('x', -rings[3].radius)
@@ -125,27 +113,6 @@ export const renderActiveQuadrantContainer = ({
   conicGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
   conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.white20).attr('stop-opacity', 0.7);
   conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(0, 0, 0, 0)').attr('stop-opacity', 1);
-
-  return grid
-    .append('circle')
-    .attr('cx', 0)
-    .attr('cy', 0)
-    .attr('r', rings[3].radius)
-    .attr('clip-path', 'url(#semi-circle)')
-    .attr('fill', 'url(#conic-gradient)')
-    .style('opacity', activeQuadrant === undefined ? 0 : 1)
-    .attr('transform', `rotate(${getRotationForQuadrant(activeQuadrant)})`);
-};
-
-type RenderQuadrantSectors = {
-  radar: Selection<SVGGElement, unknown, null, undefined>;
-  activeQuadrant: number | null;
-  quadrants: RadarQuadrant[];
-  rings: Rings;
-};
-
-export const renderQuadrantSectors = ({ radar, activeQuadrant, quadrants, rings }: RenderQuadrantSectors) => {
-  const quadrantSectors = radar.append('g').attr('id', 'quadrants');
   const quadrantData = [
     { position: -90, quadrant: 0 },
     { position: 0, quadrant: 1 },
@@ -156,34 +123,27 @@ export const renderQuadrantSectors = ({ radar, activeQuadrant, quadrants, rings 
     { position: 180, quadrant: 3 },
   ];
 
-  return quadrantSectors
-    .selectAll('.quadrant')
+  const quadrantSectors = quadrantsContainer
+    .selectAll('.quadrant-circle')
     .data(quadrantData)
     .enter()
-    .append('circle')
+    .append('g')
     .attr('class', 'quadrant')
-    .attr('id', (d) => `quadrant-${d.quadrant}`)
+    .attr('id', (d) => `quadrant-${d.quadrant}`);
+
+  quadrantSectors
+    .append('circle')
+    .attr('class', 'quadrant-circle')
     .attr('cx', 0)
     .attr('cy', 0)
     .attr('r', rings[3].radius)
     .attr('clip-path', 'url(#semi-circle)')
-    .style('opacity', 0)
     .attr('transform', (d) => `rotate(${d.position})`)
     .attr('fill', 'url(#conic-gradient)');
-};
 
-type RenderQuadrantLabels = {
-  activeQuadrant: number | null;
-  quadrants: RadarQuadrant[];
-  fullSize: boolean;
-  radar: Selection<SVGGElement, unknown, null, undefined>;
-};
+  const smallerRadar = !fullSize;
 
-export const renderQuadrantLabels = ({ quadrants, activeQuadrant, fullSize, radar }: RenderQuadrantLabels) => {
-  const quandrantLabelsContainer = radar.append('g').attr('id', 'quadrant-labels-container');
-
-  for (let i = 0; i < quadrantsData.length; i++) {
-    const smallerRadar = !fullSize;
+  const getFactors = (i: number) => {
     const factorX = quadrantsData[i].factor_x;
     const factorY = quadrantsData[i].factor_y;
     const factorsForSmallerRadar = [
@@ -199,44 +159,32 @@ export const renderQuadrantLabels = ({ quadrants, activeQuadrant, fullSize, rada
       { x: factorX * 300, y: factorY * 260 },
     ];
 
-    const currentFactors = smallerRadar ? factorsForSmallerRadar : factorsForBiggerRadar;
-    const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerRadar);
+    const factors = smallerRadar ? factorsForSmallerRadar : factorsForBiggerRadar;
 
-    const quadrantLabel = quandrantLabelsContainer.append('g').attr('id', `quadrant-label-${i}`).style('opacity', 1);
+    return factors[i];
+  };
+  const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerRadar);
+  const rect = quadrantSectors.append('rect').attr('rx', 15).attr('ry', 15).transition();
+  const text = quadrantSectors
+    .append('text')
+    .attr('x', (d) => getFactors(d.quadrant).x - subtractX)
+    .attr('y', (d) => getFactors(d.quadrant).y - subtractY)
+    .attr('text-anchor', 'left')
+    .style('font-family', 'Hellix')
+    .style('font-size', '13px')
+    .style('font-weight', 600)
+    .style('letter-spacing', '0.2em')
+    .text((d) => quadrants[d.quadrant].name.toUpperCase());
 
-    quadrantLabel
-      .append('rect')
-      .attr('rx', 15)
-      .attr('ry', 15)
-      .attr('x', currentFactors[i].x)
-      .attr('y', currentFactors[i].y)
-      .style('fill', color.mineShaft)
-      .transition()
-      .style('fill', activeQuadrant === i ? color.silver : color.mineShaft);
-    const text = quadrantLabel
-      .append('text')
-      .attr('x', currentFactors[i].x - subtractX)
-      .attr('y', currentFactors[i].y - subtractY)
-      .attr('text-anchor', 'left')
-      .style('fill', activeQuadrant === i ? color.mineShaft : color.scorpion)
-      .style('font-family', 'Hellix')
-      .style('font-size', '13px')
-      .style('font-weight', 600)
-      .style('letter-spacing', '0.2em');
+  const textNodes = text.nodes();
 
-    text.text(quadrants[i].name.toUpperCase());
+  rect
+    .attr('x', (d) => getFactors(d.quadrant).x - 20)
+    .attr('y', (d) => getFactors(d.quadrant).y - textNodes[d.quadrant].getBBox().height - 5)
+    .attr('width', (d) => textNodes[d.quadrant].getBBox().width + 30)
+    .attr('height', 32);
 
-    const labelNode = text.node() as SVGTextElement;
-    if (labelNode) {
-      const bbox = labelNode.getBBox();
-
-      select(`#quadrant-label-${i} rect`)
-        .attr('x', currentFactors[i].x - 20)
-        .attr('y', currentFactors[i].y - bbox.height - 5)
-        .attr('width', bbox.width + 30)
-        .attr('height', 32);
-    }
-  }
+  return quadrantSectors;
 };
 
 type RenderRinkLabels = {
@@ -244,39 +192,38 @@ type RenderRinkLabels = {
   quadrants: RadarQuadrant[];
   rings: Rings;
   radarRings: RadarRing[];
-  activeRing: number | null;
 };
 
-export const renderRingLabels = ({ radar, rings, activeRing, radarRings }: RenderRinkLabels) => {
-  const ringLabels = radar.append('g').attr('id', 'ring-labels');
-  for (let i = 0; i < rings.length; i++) {
-    const isActiveRing = activeRing === radarRings[i]?.position || !activeRing;
-    ringLabels
-      .append('text')
-      .text(radarRings[i]?.name)
-      .attr('y', -rings[i].radius + 21)
-      .attr('x', 7)
-      .attr('text-anchor', 'left')
-      .style('fill', isActiveRing ? color.white : color.boulder)
-      .style('font-family', 'Hellix')
-      .style('font-size', 14)
-      .style('pointer-events', 'none')
-      .style('user-select', 'none');
-  }
+export const renderRingLabels = ({ radar, rings, radarRings }: RenderRinkLabels) => {
+  return radar
+    .append('g')
+    .attr('id', 'ring-labels')
+    .selectAll('.ring-label')
+    .data(rings)
+    .enter()
+    .append('text')
+    .classed('ring-label', true)
+    .text((d, i) => radarRings[i]?.name)
+    .attr('y', (d) => -d.radius + 21)
+    .attr('x', 7)
+    .attr('text-anchor', 'left')
+    .style('font-family', 'Hellix')
+    .style('font-size', 14)
+    .style('pointer-events', 'none')
+    .style('user-select', 'none');
 };
 
 type RenderTechnologies = {
   radar: Selection<SVGGElement, unknown, null, undefined>;
-  activeQuadrant: number | null;
   technologies: RadarTechnology[];
   rings: Rings;
 };
 
-export const renderTechnologies = ({ radar, technologies, activeQuadrant, rings }: RenderTechnologies) => {
+export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnologies) => {
   function getSegment(quadrant: number, ring: number) {
     const polar_min = {
       t: quadrantsData[quadrant].radial_min * Math.PI,
-      r: ring == 0 ? 30 : rings[ring - 1].radius,
+      r: ring === 0 ? 30 : rings[ring - 1].radius,
     };
     const polar_max = {
       t: quadrantsData[quadrant].radial_max * Math.PI,
@@ -313,7 +260,7 @@ export const renderTechnologies = ({ radar, technologies, activeQuadrant, rings 
     };
   }
 
-  const formattedTechnologies = technologies.map((technology, index) => {
+  const formattedTechnologies = technologies.map((technology) => {
     const segment = getSegment(technology.quadrant, technology.ring);
     return { ...technology, segment, ...segment.random(), color: technology.inactive ? color.mineShaft : color.silver };
   });
@@ -332,26 +279,11 @@ export const renderTechnologies = ({ radar, technologies, activeQuadrant, rings 
 
   const rink = radar.append('g').attr('id', 'rink');
 
-  const bubble = radar
-    .append('g')
-    .attr('id', 'bubble')
-    .attr('x', 0)
-    .attr('y', 0)
-    .style('opacity', 0)
-    .style('pointer-events', 'none')
-    .style('user-select', 'none');
-  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
-  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
-
   const blips = rink.selectAll('.blip').data(formattedTechnologies).enter().append('g').attr('class', 'blip');
 
   blips.each(function (d) {
     const blip = select(this);
     blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
-
-    if (isNil(activeQuadrant)) {
-      d.color = color.mineShaft;
-    }
 
     const blipDefs = blip.append('defs');
 
@@ -373,61 +305,52 @@ export const renderTechnologies = ({ radar, technologies, activeQuadrant, rings 
       .attr('stop-opacity', 1);
 
     if (d.ring === 0) {
-      blip.append('circle').attr('r', 9).attr('fill', 'url(#mainGradient)').style('opacity', 0);
+      blip.append('circle').classed('outer', true).attr('r', 9).attr('fill', 'url(#mainGradient)');
 
-      blip
-        .append('circle')
-        .attr('r', 5.5)
-        .attr('fill', d.color || '');
+      blip.append('circle').classed('circle', true).attr('r', 5.5);
     } else if (d.ring === 1) {
       blip
         .append('rect')
+        .classed('outer', true)
         .attr('x', -7.4)
         .attr('y', -7.4)
         .attr('width', 14.8)
         .attr('height', 14.8)
         .attr('transform', 'rotate(45)')
-        .attr('fill', 'url(#diamondMainGradient)')
-        .style('opacity', 0);
+        .attr('fill', 'url(#diamondMainGradient)');
 
       blip
         .append('rect')
+        .classed('diamond', true)
         .attr('x', -4.5)
         .attr('y', -4.5)
         .attr('width', 9)
         .attr('height', 9)
-        .attr('transform', 'rotate(45)')
-        .attr('fill', d.color || '');
+        .attr('transform', 'rotate(45)');
     } else if (d.ring === 2) {
       blip
         .append('rect')
+        .classed('outer', true)
         .attr('x', -7.4)
         .attr('y', -7.4)
         .attr('width', 14.8)
         .attr('height', 14.8)
-        .attr('fill', 'url(#mainGradient)')
-        .style('opacity', 0);
+        .attr('fill', 'url(#mainGradient)');
 
-      blip
-        .append('rect')
-        .attr('x', -4.5)
-        .attr('y', -4.5)
-        .attr('width', 9)
-        .attr('height', 9)
-        .attr('fill', d.color || '');
+      blip.append('rect').classed('square', true).attr('x', -4.5).attr('y', -4.5).attr('width', 9).attr('height', 9);
     } else {
       blip
         .append('path')
+        .classed('outer', true)
         .attr('d', 'M 12.5 4.999 L -0.0003 -13 L -12.5 5 L 12.5 4.999 Z')
         .style('transform', 'scale(0.9)')
-        .attr('fill', 'url(#mainGradient)')
-        .style('opacity', 0);
+        .attr('fill', 'url(#mainGradient)');
 
       blip
         .append('path')
+        .classed('triangle', true)
         .attr('d', 'M 12.5 3.999 L -0.0003 -14 L -12.5 4 L 12.5 3.999 Z')
-        .style('transform', 'scale(0.5)')
-        .attr('fill', d.color || '');
+        .style('transform', 'scale(0.5)');
     }
   });
 
@@ -448,4 +371,17 @@ export const renderTechnologies = ({ radar, technologies, activeQuadrant, rings 
     .on('tick', ticked);
 
   return blips;
+};
+
+export const renderBubble = (radar: Selection<SVGGElement, unknown, null, undefined>) => {
+  const bubble = radar
+    .append('g')
+    .attr('id', 'bubble')
+    .attr('x', 0)
+    .attr('y', 0)
+    .style('opacity', 0)
+    .style('pointer-events', 'none')
+    .style('user-select', 'none');
+  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
+  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 };

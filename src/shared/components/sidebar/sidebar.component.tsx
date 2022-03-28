@@ -23,10 +23,9 @@ interface SidebarProps {
   rings: RadarRing[];
   teams: RadarTeam[];
   quadrants: RadarQuadrant[];
-  activeQuadrant: number | null;
 }
 
-export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants, activeQuadrant }: SidebarProps) => {
+export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }: SidebarProps) => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -80,7 +79,6 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants, a
         technologies={technologies}
         emptyResults={emptyResults}
         rings={rings}
-        activeQuadrant={activeQuadrant}
         hasNoAreaSelected={hasNoAreaSelected}
       />
       {renderToolbar(!isDesktop)}

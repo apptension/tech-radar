@@ -1,41 +1,22 @@
-import React, { SetStateAction, useEffect, useRef, useState } from 'react';
-import { isNil, min, equals } from 'ramda';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { useEffectOnce } from 'react-use';
 import { Selection, select } from 'd3';
 import * as colors from '../../../theme/color';
 import {
-  destroyRadar,
   getRadarScale,
-  getRotationForQuadrant,
   hideBubble,
-  highlightBlip,
   highlightLegend,
   showBubble,
   toggleQuadrant,
   translate,
-  unhighlightBlip,
 } from '../../utils/radarUtils';
-import { isSafari } from '../../utils/isSafari';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { setArea } from '../../../modules/filters/filters.actions';
-import { RadarConfig, RadarTechnology, RadarQuadrant, RadarRing, RadarContainer } from './radar.types';
-import {
-  BASIC_RADAR_WIDTH,
-  HORIZONTAL_RADAR_MARGIN,
-  HORIZONTAL_ZOOMED_RADAR_MARGIN,
-  VERTICAL_RADAR_MARGIN,
-} from './radar.constants';
-import {
-  renderActiveQuadrantContainer,
-  renderGrid,
-  renderQuadrantLabels,
-  renderQuadrantSectors,
-  renderRingLabels,
-  renderTechnologies,
-} from './radar.helpers';
+import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
+import { HORIZONTAL_RADAR_MARGIN, VERTICAL_RADAR_MARGIN } from './radar.constants';
+import { renderBubble, renderGrid, renderQuadrantSectors, renderRingLabels, renderTechnologies } from './radar.helpers';
 import { SVG } from './radar.styles';
 
 interface RadarProps {
@@ -43,33 +24,21 @@ interface RadarProps {
   rings: RadarRing[];
   quadrants: RadarQuadrant[];
   activeQuadrant: number | null;
-  previouslyActiveQuadrant: number | null;
   activeRing: number | null;
 }
 
-export const Radar = ({
-  technologies,
-  rings: radarRings,
-  quadrants,
-  activeQuadrant,
-  activeRing,
-  previouslyActiveQuadrant,
-}: RadarProps) => {
-  const [radarNode, setRadarNode] = useState<RadarContainer | null>(null);
-  const [activeQuadrantContainer, setActiveQuadrantContainer] = useState<Selection<
-    SVGCircleElement,
-    unknown,
-    null,
-    undefined
-  > | null>(null);
+export const Radar = ({ technologies, rings: radarRings, quadrants, activeQuadrant, activeRing }: RadarProps) => {
   const [quadrantSectors, setQuadrantSectors] = useState<Selection<
-    SVGCircleElement,
+    SVGGElement,
     { position: number; quadrant: number },
     SVGGElement,
     unknown
   > | null>(null);
+  const [blips, setBlips] = useState<Selection<any, any, SVGGElement, unknown> | null>(null);
+  const [ringLabels, setRingLabels] = useState<Selection<SVGTextElement, { radius: number }, any, unknown> | null>(
+    null
+  );
   const radarRef = useRef(null);
-  const activeQuadrantRef = useRef(activeQuadrant);
   const dispatch = useDispatch();
   const handleAreaSelect = (option: FilterType) => dispatch(setArea(option));
   const width = window.innerHeight + HORIZONTAL_RADAR_MARGIN;
@@ -82,42 +51,29 @@ export const Radar = ({
     container.selectAll('*').remove();
     container.style('background-color', colors.codGray).attr('width', width).attr('height', height);
 
-    setRadarNode(container);
-
     const radar = container.append('g').attr('class', 'radar');
 
     container.attr('viewBox', `0 0 ${width} ${height}`);
     radar.attr('transform', translate({ x: width / 2, y: height / 2 }));
 
-    const grid = renderGrid({ radar, scale, rings });
-    const activeQuadrantContainer = renderActiveQuadrantContainer({
-      activeQuadrant,
-      previouslyActiveQuadrant,
-      rings,
-      grid,
-    });
-    setActiveQuadrantContainer(activeQuadrantContainer);
-    const quadrantSectors = renderQuadrantSectors({ quadrants, activeQuadrant, rings, radar });
+    renderGrid({ radar, scale, rings });
+    const quadrantSectors = renderQuadrantSectors({ quadrants, rings, radar, fullSize });
     setQuadrantSectors(quadrantSectors);
-    renderQuadrantLabels({ activeQuadrant, quadrants, fullSize, radar });
-    const blips = renderTechnologies({ radar, technologies, activeQuadrant, rings });
-    renderRingLabels({ radar, activeRing, radarRings, rings, quadrants });
-
-    blips
-      .on('mouseover', function (event: MouseEvent, d: RadarTechnology) {
-        // toggleQuadrant(d.quadrant, true, activeQuadrant);
-        // if (activeQuadrant === undefined || !d.inactive) {
-        //   // @ts-ignore
-        //   showBubble(d);
-        //   highlightBlip(d);
-        //   highlightLegend({ id: d.id });
-        // }
+    const renderedTechnologies = renderTechnologies({ radar, technologies, rings });
+    setBlips(renderedTechnologies);
+    const renderedRingLabels = renderRingLabels({ radar, radarRings, rings, quadrants });
+    renderBubble(radar);
+    setRingLabels(renderedRingLabels);
+    renderedTechnologies
+      .on('mouseover', function (event: MouseEvent, d) {
+        toggleQuadrant(d.quadrant, true);
+        highlightLegend({ id: d.id });
+        showBubble(d);
       })
       .on('mouseout', function (event: MouseEvent, d) {
-        // toggleQuadrant(d.quadrant, false, activeQuadrant);
-        // hideBubble();
-        // unhighlightBlip(d);
-        // highlightLegend({ id: d.id, mode: 'off' });
+        toggleQuadrant(d.quadrant, false);
+        highlightLegend({ id: d.id, mode: 'off' });
+        hideBubble();
       })
       .on('click', function (event: MouseEvent, d) {
         if (activeQuadrant !== undefined && d.inactive) {
@@ -131,16 +87,14 @@ export const Radar = ({
   });
 
   useEffect(() => {
-    if (activeQuadrantContainer) {
-      activeQuadrantContainer.transition().attr('transform', `rotate(${getRotationForQuadrant(activeQuadrant)})`);
+    if (quadrantSectors) {
+      quadrantSectors.classed('active', (d) => d.quadrant === activeQuadrant);
+      blips
+        ?.classed('active', (d) => !technologies[d.index].inactive && activeQuadrant !== null)
+        .classed('hover-active', activeQuadrant === null);
+      ringLabels?.classed('active', (d, i) => i + 1 === activeRing || !activeRing);
     }
-    if (quadrantSectors && typeof activeQuadrant === 'number') {
-      // quadrantSectors.each((d) => toggleQuadrant(d.quadrant, false, d.quadrant));
-      quadrantSectors
-        .on('mouseover', (event, d) => toggleQuadrant(d.quadrant, true, activeQuadrant))
-        .on('mouseleave', (event, d) => toggleQuadrant(d.quadrant, false, activeQuadrant));
-    }
-  }, [activeQuadrant, activeQuadrantContainer]);
+  }, [quadrantSectors, technologies]);
 
   return <SVG ref={radarRef} />;
 };

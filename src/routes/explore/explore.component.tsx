@@ -44,7 +44,6 @@ export const Explore = () => {
   const [activeTechnologiesIds, setActiveTechnologiesIds] = useState<string[]>([]);
 
   const [activeQuadrant, setActiveQuadrant] = useState<number | null>(null);
-  const [previouslyActiveQuadrant, setPreviouslyActiveQuadrant] = useState<number | null>(null);
   const [loadingVisible, setLoadingVisible] = useState(true);
   const [displayLoading, setDisplayLoading] = useState(true);
   const [displayError, setDisplayError] = useState(false);
@@ -80,7 +79,6 @@ export const Explore = () => {
     if (!isEmpty(radarQuadrants)) {
       const quadrantForArea = radarQuadrants.find((quadrant) => quadrant.name === areaValue);
       if (quadrantForArea?.position !== activeQuadrant && activeQuadrant !== areaValue) {
-        setPreviouslyActiveQuadrant(activeQuadrant);
         setActiveQuadrant(quadrantForArea ? quadrantForArea.position : null);
       }
     }
@@ -89,10 +87,6 @@ export const Explore = () => {
   useEffect(() => {
     updateFilteredTechnologies();
   }, [searchText, levelValue, teamValue, activeQuadrant]);
-
-  useEffect(() => {
-    setPreviouslyActiveQuadrant(activeQuadrant);
-  }, [searchText, levelValue, teamValue]);
 
   const updateFilteredTechnologies = () => {
     if (!isEmpty(radarTechnologies)) {
@@ -132,7 +126,6 @@ export const Explore = () => {
       quadrants={radarQuadrants}
       rings={radarRings}
       activeQuadrant={activeQuadrant}
-      previouslyActiveQuadrant={previouslyActiveQuadrant}
       activeRing={activeRing()}
     />
   ));
@@ -165,7 +158,6 @@ export const Explore = () => {
             rings={radarRings}
             teams={radarTeams}
             quadrants={radarQuadrants}
-            activeQuadrant={activeQuadrant}
           />
         </SidebarWrapper>
         <Viewer>

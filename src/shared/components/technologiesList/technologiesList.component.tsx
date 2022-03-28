@@ -34,16 +34,9 @@ interface TechnologiesListProps {
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
   hasNoAreaSelected: boolean;
-  activeQuadrant: number | null;
 }
 
-export const TechnologiesList = ({
-  technologies,
-  emptyResults,
-  rings,
-  hasNoAreaSelected,
-  activeQuadrant,
-}: TechnologiesListProps) => {
+export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaSelected }: TechnologiesListProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
@@ -91,7 +84,7 @@ export const TechnologiesList = ({
             key={`list-item-${technology.id}`}
             onMouseEnter={() => {
               setHoveredItem(technology.id);
-              toggleQuadrant(technology.quadrant, true, activeQuadrant);
+              toggleQuadrant(technology.quadrant, true);
               highlightBlip({ id: technology.id || '', ring: technology.ring });
               highlightLegend({ id: technology.id || '' });
               const blipData = getBlipDataById(technology.id || '');
@@ -99,7 +92,7 @@ export const TechnologiesList = ({
             }}
             onMouseLeave={() => {
               setHoveredItem(null);
-              toggleQuadrant(technology.quadrant, false, activeQuadrant);
+              toggleQuadrant(technology.quadrant, false);
               unhighlightBlip({
                 id: technology.id?.toString() || '',
                 ring: technology.ring,
