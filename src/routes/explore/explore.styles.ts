@@ -26,7 +26,7 @@ export const TitleTag = styled(TitleTagComponent)`
   align-items: center;
 
   ${mediaQuery.desktop} {
-    top: 38px;
+    top: 32px;
     left: initial;
     right: 39px;
   }

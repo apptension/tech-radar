@@ -14,7 +14,7 @@ export const Container = styled.div`
   flex-flow: column nowrap;
 
   ${mediaQuery.desktop} {
-    padding: 70px 35px 25px;
+    padding: 38px 35px 25px;
   }
 `;
 
