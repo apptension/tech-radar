@@ -2,12 +2,9 @@ import styled from 'styled-components';
 import { color } from '../../../theme';
 
 export const SVG = styled.svg`
-  .quadrant {
-    circle {
-      transition: opacity 300ms linear;
-      opacity: 0;
-    }
+  overflow: visible;
 
+  .quadrant-legend {
     rect {
       transition: fill 300ms linear;
       fill: ${color.mineShaft};
@@ -18,11 +15,8 @@ export const SVG = styled.svg`
       fill: ${color.scorpion};
     }
 
-    &:hover {
-      circle {
-        opacity: 0.5;
-      }
 
+    &.active {
       rect {
         fill: ${color.silver};
       }
@@ -31,18 +25,17 @@ export const SVG = styled.svg`
         fill: ${color.mineShaft};
       }
     }
+  }
+
+  .quadrant {
+    circle {
+      transition: opacity 300ms linear;
+      opacity: 0;
+    }
 
     &.active {
       circle {
         opacity: 1;
-      }
-
-      rect {
-        fill: ${color.silver};
-      }
-
-      text {
-        fill: ${color.mineShaft};
       }
     }
   }
