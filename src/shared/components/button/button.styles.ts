@@ -39,19 +39,33 @@ export const IconContainerInner = styled.span`
   align-items: center;
   transform: translateX(-50%);
   will-change: transform;
+  transition: transform 0.25s ease-in-out;
 `;
 
 export const Icon = styled.span`
   display: flex;
   align-items: center;
   margin-right: 10px;
+
+  path {
+    transition: stroke 0.25s ease-in-out;
+  }
+
+  &:first-of-type path {
+    stroke: ${color.black};
+  }
 `;
 
 export const OutIcon = styled(OutIconSVG)``;
 
 export const ArrowIcon = styled(ArrowIconSVG)``;
 
-export const Container = styled.button<ThemeProps<ButtonTheme>>`
+interface ContainerProps extends ThemeProps<ButtonTheme> {
+  withoutHoverEffects?: boolean;
+  withMovingArrow?: boolean;
+}
+
+export const Container = styled.button<ContainerProps>`
   border: ${border.regularWhite};
   background: none;
   color: ${color.white};
@@ -59,6 +73,8 @@ export const Container = styled.button<ThemeProps<ButtonTheme>>`
   display: flex;
   align-items: center;
   border-radius: 2px;
+  transition: 0.25s ease-in-out;
+  transition-property: background, color;
 
   ${theme('isDisabled', {
     true: disabledButtonStyle,
@@ -73,11 +89,17 @@ export const Container = styled.button<ThemeProps<ButtonTheme>>`
     false: buttonNoBorderStyles,
   })}
 
-  &:hover ${IconContainerInner} {
-     {
-      transform: translateX(0);
-      transition: transform 0.25s ease-in-out;
-      transition-delay: 0.02s;
+  &:hover {
+    color: ${color.black};
+    border-color: transparent;
+    background: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'transparent' : `${color.gradient}`)};
+
+    ${IconContainerInner} {
+      transform: ${({ withMovingArrow }) => (withMovingArrow ? 'translateX(0)' : 'translateX(-50%)')};
+    }
+
+    ${IconContainerInner} ${Icon}:last-of-type path {
+      stroke: ${({ withMovingArrow }) => (withMovingArrow ? `${color.white}` : `${color.black}`)};
     }
   }
 `;
