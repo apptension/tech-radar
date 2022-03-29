@@ -43,11 +43,10 @@ export const SidebarWrapper = styled.div`
 `;
 
 export const Viewer = styled.div`
-  height: 100%;
-  flex: 1;
+  margin: 87px auto 0;
+  width: 100%;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: center;
 `;
 
 export const Toolbar = styled(ToolbarComponent)`

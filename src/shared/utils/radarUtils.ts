@@ -17,7 +17,6 @@ import {
   RadarTechnology,
   UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
-import { sizes } from '../../theme/media';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -73,20 +72,6 @@ export const bounded_box = (point: Point, min: Point, max: Point) => {
 
 export const translate = ({ x, y }: Point) => {
   return `translate(${x}, ${y})`;
-};
-
-const MIN_WINDOW_HEIGHT = 800;
-const MAX_WINDOW_HEIGHT = 1080;
-
-export const getRadarScale = (): { scale: number; fullSize: boolean } => {
-  const isFullWidth = window.innerWidth >= sizes.desktopFull;
-  const isFullHeight = window.innerHeight >= MAX_WINDOW_HEIGHT;
-  const isShortHeight = window.innerHeight < MIN_WINDOW_HEIGHT;
-
-  if (isFullWidth && isFullHeight) return { scale: 0.95, fullSize: true };
-  if (isFullWidth && !isFullHeight) return { scale: 0.8, fullSize: true };
-  if (!isFullWidth && !isShortHeight && !isFullHeight) return { scale: 0.64, fullSize: false };
-  return { scale: 0.55, fullSize: false };
 };
 
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
@@ -178,11 +163,13 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
 
 export const toggleQuadrant = (quadrant: number, show: boolean) => {
   const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
-
-  if (quadrantElement) {
-    const rect = quadrantElement.querySelector('rect');
+  const quadrantLegendElement = document.querySelector(`#quadrant-legend-${quadrant}`) as HTMLDivElement;
+  const isActiveElement = quadrantElement.classList.contains('active') && show;
+  if (quadrantElement && !isActiveElement) {
     const circle = quadrantElement.querySelector('circle');
-    const text = quadrantElement.querySelector('text');
+    const rect = quadrantLegendElement.querySelector('rect');
+    const text = quadrantLegendElement.querySelector('text');
+
     if (circle) circle.style.opacity = show ? '0.5' : '';
     if (rect) rect.style.fill = show ? color.silver : '';
     if (text) text.style.fill = show ? color.mineShaft : '';
@@ -202,10 +189,6 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
     default:
       return 90;
   }
-};
-
-export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
-  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
 };
 
 export const getQuadrantPosition = (position: string) => {

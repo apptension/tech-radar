@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { isEmpty } from 'ramda';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
@@ -33,6 +33,7 @@ import messages from './explore.messages';
 export const Explore = () => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const intl = useIntl();
+  const viewerRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
   const searchText = useSelector(selectSearch);
@@ -127,6 +128,8 @@ export const Explore = () => {
       rings={radarRings}
       activeQuadrant={activeQuadrant}
       activeRing={activeRing()}
+      viewerHeight={viewerRef.current?.offsetHeight || 0}
+      viewerWidth={viewerRef.current?.offsetWidth || 0}
     />
   ));
 
@@ -160,8 +163,8 @@ export const Explore = () => {
             quadrants={radarQuadrants}
           />
         </SidebarWrapper>
-        <Viewer>
-          {renderRadar(isDesktop && isFetched && !!filteredTechnologies.length)}
+        <Viewer ref={viewerRef}>
+          {renderRadar(isDesktop && isFetched && !!filteredTechnologies.length && !!viewerRef.current)}
           {isSuccess && renderViewerControls(isDesktop)}
         </Viewer>
       </>

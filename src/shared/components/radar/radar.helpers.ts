@@ -26,7 +26,6 @@ import {
   bounded_box,
   bounded_ring,
   cartesian,
-  getPxToSubtractQuadrantLabelText,
   normal_between,
   polar,
   random_between,
@@ -35,10 +34,10 @@ import {
 import { RadarQuadrant, RadarRing, RadarTechnology, Rings } from './radar.types';
 
 const quadrantsData = [
-  { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
-  { radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1 },
-  { radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1 },
-  { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
+  { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1, position: -90, quadrant: 0 },
+  { radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1, position: 0, quadrant: 1 },
+  { radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1, position: 90, quadrant: 2 },
+  { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1, position: 180, quadrant: 3 },
 ];
 
 type RenderGrid = {
@@ -93,12 +92,10 @@ export const renderGrid = ({ radar, scale, rings }: RenderGrid) => {
 
 type RenderQuadrantSectors = {
   radar: Selection<SVGGElement, unknown, null, undefined>;
-  quadrants: RadarQuadrant[];
   rings: Rings;
-  fullSize: boolean;
 };
 
-export const renderQuadrantSectors = ({ radar, quadrants, rings, fullSize }: RenderQuadrantSectors) => {
+export const renderQuadrantSectors = ({ radar, rings }: RenderQuadrantSectors) => {
   const quadrantsContainer = radar.append('g').attr('id', 'quadrants');
   const defs = radar.select('defs');
   const semiCircle = radar.select('defs').append('clipPath').attr('id', 'semi-circle');
@@ -113,19 +110,10 @@ export const renderQuadrantSectors = ({ radar, quadrants, rings, fullSize }: Ren
   conicGradient.attr('x1', '0%').attr('y1', '100%').attr('x2', '100%').attr('y2', '0%');
   conicGradient.append('stop').attr('offset', '0%').attr('stop-color', color.white20).attr('stop-opacity', 0.7);
   conicGradient.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(0, 0, 0, 0)').attr('stop-opacity', 1);
-  const quadrantData = [
-    { position: -90, quadrant: 0 },
-    { position: 0, quadrant: 1 },
-    {
-      position: 90,
-      quadrant: 2,
-    },
-    { position: 180, quadrant: 3 },
-  ];
 
   const quadrantSectors = quadrantsContainer
     .selectAll('.quadrant-circle')
-    .data(quadrantData)
+    .data(quadrantsData)
     .enter()
     .append('g')
     .attr('class', 'quadrant')
@@ -141,34 +129,42 @@ export const renderQuadrantSectors = ({ radar, quadrants, rings, fullSize }: Ren
     .attr('transform', (d) => `rotate(${d.position})`)
     .attr('fill', 'url(#conic-gradient)');
 
-  const smallerRadar = !fullSize;
+  return quadrantSectors;
+};
 
+type RenderLegend = {
+  legend: Selection<SVGGElement, unknown, null, undefined>;
+  quadrants: RadarQuadrant[];
+  rings: Rings;
+};
+
+export const renderLegend = ({ legend, rings, quadrants }: RenderLegend) => {
+  const quadrantLegend = legend
+    .selectAll('.quadrant-legend')
+    .data(quadrantsData)
+    .enter()
+    .append('g')
+    .attr('class', 'quadrant-legend')
+    .attr('id', (d) => `quadrant-legend-${d.quadrant}`);
   const getFactors = (i: number) => {
     const factorX = quadrantsData[i].factor_x;
     const factorY = quadrantsData[i].factor_y;
-    const factorsForSmallerRadar = [
-      { x: factorX * 210, y: factorY * 220 },
-      { x: factorX * 350, y: factorY * 200 },
-      { x: factorX * 410, y: factorY * 220 },
-      { x: factorX * 220, y: factorY * 200 },
-    ];
-    const factorsForBiggerRadar = [
-      { x: factorX * 290, y: factorY * 280 },
-      { x: factorX * 450, y: factorY * 250 },
-      { x: factorX * 480, y: factorY * 300 },
-      { x: factorX * 300, y: factorY * 260 },
-    ];
 
-    const factors = smallerRadar ? factorsForSmallerRadar : factorsForBiggerRadar;
+    const factors = [
+      { x: factorX * rings[3].radius - 68, y: factorY * rings[3].radius - 150 },
+      { x: factorX * rings[3].radius - 75, y: factorY * rings[3].radius - 150 },
+      { x: factorX * rings[3].radius - 160, y: factorY * rings[3].radius + 150 },
+      { x: factorX * rings[3].radius - 75, y: factorY * rings[3].radius + 150 },
+    ];
 
     return factors[i];
   };
-  const { subtractX, subtractY } = getPxToSubtractQuadrantLabelText(smallerRadar);
-  const rect = quadrantSectors.append('rect').attr('rx', 15).attr('ry', 15).transition();
-  const text = quadrantSectors
+
+  const rect = quadrantLegend.append('rect').attr('rx', 15).attr('ry', 15).transition();
+  const text = quadrantLegend
     .append('text')
-    .attr('x', (d) => getFactors(d.quadrant).x - subtractX)
-    .attr('y', (d) => getFactors(d.quadrant).y - subtractY)
+    .attr('x', (d) => getFactors(d.quadrant).x)
+    .attr('y', (d) => getFactors(d.quadrant).y)
     .attr('text-anchor', 'left')
     .style('font-family', 'Hellix')
     .style('font-size', '13px')
@@ -179,12 +175,12 @@ export const renderQuadrantSectors = ({ radar, quadrants, rings, fullSize }: Ren
   const textNodes = text.nodes();
 
   rect
-    .attr('x', (d) => getFactors(d.quadrant).x - 20)
-    .attr('y', (d) => getFactors(d.quadrant).y - textNodes[d.quadrant].getBBox().height - 5)
+    .attr('x', (d) => getFactors(d.quadrant).x - 15)
+    .attr('y', (d) => getFactors(d.quadrant).y - textNodes[d.quadrant].getBBox().height - 6)
     .attr('width', (d) => textNodes[d.quadrant].getBBox().width + 30)
     .attr('height', 32);
 
-  return quadrantSectors;
+  return quadrantLegend;
 };
 
 type RenderRinkLabels = {

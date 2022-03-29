@@ -9,5 +9,6 @@ export const RADAR_SEED = 42;
 export const RADAR_SEED_MULTIPLIER = 10000;
 
 export const SIDEBAR_WIDTH = 411;
-export const VERTICAL_RADAR_MARGIN = 40;
-export const HORIZONTAL_RADAR_MARGIN = 210;
+export const RADAR_RADIUS = 450;
+export const VERTICAL_RADAR_MARGIN = 87;
+export const HORIZONTAL_RADAR_MARGIN = 300;
