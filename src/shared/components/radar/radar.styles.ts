@@ -1,35 +1,65 @@
 import styled from 'styled-components';
 import { color } from '../../../theme';
 
+const transition = '200ms ease-in-out';
+const tooltipDelay = '250ms';
+
 export const SVG = styled.svg`
   overflow: visible;
 
+  .radar {
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity ${transition} ${tooltipDelay};
+  }
+
   .quadrant-legend {
-    rect {
-      transition: fill 300ms linear;
+    transition: opacity ${transition};
+    cursor: pointer;
+
+    & > rect {
+      transition: fill ${transition};
       fill: ${color.mineShaft};
     }
 
-    text {
-      transition: fill 300ms linear;
+    & > text {
+      transition: fill ${transition};
       fill: ${color.scorpion};
     }
 
 
+    &:hover,
     &.active {
-      rect {
+      & > rect {
         fill: ${color.silver};
       }
 
-      text {
+      & > text {
         fill: ${color.mineShaft};
+      }
+    }
+
+    &.not-active {
+      transition: opacity ${transition} ${tooltipDelay};
+      opacity: 0.25;
+    }
+
+    .legend-tooltip {
+      transition: opacity ${transition};
+
+      & > rect {
+        fill: ${color.mineShaft};
+      }
+
+      & > text {
+        fill: ${color.white};
       }
     }
   }
 
   .quadrant {
     circle {
-      transition: opacity 300ms linear;
+      transition: opacity ${transition};
       opacity: 0;
     }
 

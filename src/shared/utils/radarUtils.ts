@@ -164,7 +164,7 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
 export const toggleQuadrant = (quadrant: number, show: boolean) => {
   const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
   const quadrantLegendElement = document.querySelector(`#quadrant-legend-${quadrant}`) as HTMLDivElement;
-  const isActiveElement = quadrantElement.classList.contains('active') && show;
+  const isActiveElement = quadrantElement?.classList.contains('active') && show;
   if (quadrantElement && !isActiveElement) {
     const circle = quadrantElement.querySelector('circle');
     const rect = quadrantLegendElement.querySelector('rect');
@@ -264,6 +264,7 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
     (item) =>
       radarQuadrants.push({
         name: pathOr('', ['fields', 'label'], item),
+        description: pathOr('', ['fields', 'description'], item),
         position: getQuadrantPosition(pathOr('top-left', ['fields', 'position'], item)),
       }),
     quadrants
