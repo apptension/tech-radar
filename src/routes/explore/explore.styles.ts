@@ -97,3 +97,40 @@ export const Error = styled.div<{ shouldDisplay: boolean }>`
   display: ${({ shouldDisplay }) => (shouldDisplay ? 'flex' : 'none')};
   justify-content: center;
 `;
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 397px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease-in-out 250ms;
+  width: fit-content;
+`;
+
+export const TooltipArrow = styled.div`
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: ${color.mineShaft};
+  transform-origin: center center;
+  transform: rotate(45deg);
+`;
+
+export const TooltipContent = styled.p`
+  position: relative;
+  padding: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  background-color: ${color.mineShaft};
+  box-shadow: 0 12px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: ${color.silver};
+  margin: 0;
+`;

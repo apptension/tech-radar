@@ -26,6 +26,9 @@ import {
   Loader,
   LOADING_ANIMATION_MS,
   Error,
+  Tooltip,
+  TooltipArrow,
+  TooltipContent,
 } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
@@ -181,6 +184,10 @@ export const Explore = () => {
       <TitleTag size={TitleTagSize.SMALL} withLogo />
       {renderContent()}
       {renderLoading()}
+      <Tooltip className="tooltip-container">
+        <TooltipContent />
+        <TooltipArrow className="tooltip-arrow" />
+      </Tooltip>
     </Container>
   );
 };

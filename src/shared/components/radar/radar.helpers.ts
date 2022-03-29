@@ -173,11 +173,12 @@ export const renderLegend = ({ legend, rings, quadrants }: RenderLegend) => {
     .text((d) => quadrants[d.quadrant].name.toUpperCase());
 
   const textNodes = text.nodes();
+  const getSize = (index: number) => textNodes[index].getBBox();
 
   rect
     .attr('x', (d) => getFactors(d.quadrant).x - 15)
-    .attr('y', (d) => getFactors(d.quadrant).y - textNodes[d.quadrant].getBBox().height - 6)
-    .attr('width', (d) => textNodes[d.quadrant].getBBox().width + 30)
+    .attr('y', (d) => getFactors(d.quadrant).y - getSize(d.quadrant).height - 6)
+    .attr('width', (d) => getSize(d.quadrant).width + 30)
     .attr('height', 32);
 
   return quadrantLegend;
@@ -380,4 +381,29 @@ export const renderBubble = (radar: Selection<SVGGElement, unknown, null, undefi
     .style('user-select', 'none');
   bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
   bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
+};
+
+export const showTooltip = (target: Element, text: string, factorX: number) => {
+  const leftPlacement = factorX === 1;
+  const { x, y, width, height } = target.getBoundingClientRect();
+
+  const tooltipContainer = select('.tooltip-container')
+    .style('opacity', 1)
+    .style('visibility', 'visible')
+    .style('height', `${height}px`)
+    .style('top', `${y}px`)
+    .style('left', leftPlacement ? `${x - 20}px` : `${x + width + 20}px`)
+    .style('transform', `translateX(${leftPlacement ? '-100%' : '0%'})`);
+
+  tooltipContainer.select('p').text(text);
+
+  tooltipContainer
+    .select('.tooltip-arrow')
+    .style('left', leftPlacement ? 'auto' : '-9px')
+    .style('right', leftPlacement ? '-9px' : 'auto')
+    .style('top', `${height / 4}px`);
+};
+
+export const hideTooltip = () => {
+  select('.tooltip-container').style('opacity', 0).style('visibility', 'hidden');
 };

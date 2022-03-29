@@ -10,12 +10,14 @@ import { setArea } from '../../../modules/filters/filters.actions';
 import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 import { RADAR_RADIUS, VERTICAL_RADAR_MARGIN, HORIZONTAL_RADAR_MARGIN } from './radar.constants';
 import {
+  hideTooltip,
   renderBubble,
   renderGrid,
   renderLegend,
   renderQuadrantSectors,
   renderRingLabels,
   renderTechnologies,
+  showTooltip,
 } from './radar.helpers';
 import { SVG } from './radar.styles';
 
@@ -73,7 +75,7 @@ export const Radar = ({
     legend.attr('transform', translate({ x: radarSize / 2, y: Math.ceil(rings[3].radius) }));
 
     renderGrid({ radar, scale, rings });
-    const quadrantSectors = renderQuadrantSectors({ rings, radar });
+    const renderedSectors = renderQuadrantSectors({ rings, radar });
     const renderedTechnologies = renderTechnologies({ radar, technologies, rings });
     const renderedRingLabels = renderRingLabels({ radar, radarRings, rings, quadrants });
     const renderedLegend = renderLegend({ quadrants, rings, legend });
@@ -82,34 +84,56 @@ export const Radar = ({
     setBlips(renderedTechnologies);
     setRingLabels(renderedRingLabels);
     setQuadrantLegend(renderedLegend);
-    setQuadrantSectors(quadrantSectors);
+    setQuadrantSectors(renderedSectors);
 
     renderedTechnologies
-      .on('mouseover', function (event: MouseEvent, d) {
+      .on('mouseover', (event: MouseEvent, d) => {
         toggleQuadrant(d.quadrant, true);
         highlightLegend({ id: d.id });
         showBubble(d);
       })
-      .on('mouseout', function (event: MouseEvent, d) {
+      .on('mouseout', (event: MouseEvent, d) => {
         toggleQuadrant(d.quadrant, false);
         highlightLegend({ id: d.id, mode: 'off' });
         hideBubble();
       })
-      .on('click', function (event: MouseEvent, d) {
+      .on('click', (event: MouseEvent, d) => {
         if (activeQuadrant !== undefined && d.inactive) {
           handleAreaSelect(quadrants[d.quadrant].name);
         }
       });
 
-    quadrantSectors
+    renderedSectors
       .on('click', (event, d) => {
         handleAreaSelect(quadrants[d.quadrant].name);
       })
-      .on('mouseover', function (event: MouseEvent, d) {
+      .on('mouseover', (event: MouseEvent, d) => {
         toggleQuadrant(d.quadrant, true);
       })
-      .on('mouseout', function (event: MouseEvent, d) {
+      .on('mouseout', (event: MouseEvent, d) => {
         toggleQuadrant(d.quadrant, false);
+      });
+
+    renderedLegend
+      .on('click', (event, d) => {
+        handleAreaSelect(quadrants[d.quadrant].name);
+      })
+      .on('mouseover', (event: MouseEvent, d) => {
+        const text = quadrants[d.quadrant].description;
+        if (!text.length) {
+          return;
+        }
+        renderedLegend.classed('not-active', ({ quadrant }) => d.quadrant !== quadrant);
+        const target = renderedLegend.select(`#quadrant-legend-${d.quadrant} rect`).node() as Element;
+        if (target) {
+          showTooltip(target, text, d.factor_x);
+        }
+        radar.style('opacity', 0.25);
+      })
+      .on('mouseout', () => {
+        renderedLegend.classed('not-active', false);
+        hideTooltip();
+        radar.style('opacity', 1);
       });
   };
 
@@ -117,7 +141,7 @@ export const Radar = ({
 
   useEffect(() => {
     if (quadrantSectors && quadrantLegend) {
-      if (activeQuadrant) {
+      if (typeof activeQuadrant === 'number') {
         toggleQuadrant(activeQuadrant, false);
       }
       quadrantSectors.classed('active', (d) => d.quadrant === activeQuadrant);

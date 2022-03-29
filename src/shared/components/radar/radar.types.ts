@@ -10,7 +10,7 @@ export type RadarTechnology = {
   color?: string;
 };
 export type RadarRing = { name: string; position: number };
-export type RadarQuadrant = { name: string; position: number };
+export type RadarQuadrant = { name: string; position: number; description: string };
 export type RadarTeam = { name: string };
 
 export enum QuadrantPositions {
