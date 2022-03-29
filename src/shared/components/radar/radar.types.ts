@@ -9,7 +9,7 @@ export type RadarTechnology = {
   team: string;
   color?: string;
 };
-export type RadarRing = { name: string; position: number };
+export type RadarRing = { name: string; position: number; description: string };
 export type RadarQuadrant = { name: string; position: number; description: string };
 export type RadarTeam = { name: string };
 
@@ -79,4 +79,4 @@ export interface RotateDataProps {
 
 export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;
 
-export type Rings = { radius: number }[];
+export type Rings = { radius: number; description: string; name: string }[];

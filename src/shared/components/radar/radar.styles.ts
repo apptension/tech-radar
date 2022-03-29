@@ -1,19 +1,23 @@
 import styled from 'styled-components';
 import { color } from '../../../theme';
-
-const transition = '200ms ease-in-out';
-const tooltipDelay = '250ms';
+import { tooltipDelay, transition } from '../../utils/constants';
 
 export const SVG = styled.svg`
   overflow: visible;
 
-  .radar {
+  .radar,
+  .ring-labels,
+  .area-labels {
     opacity: 1;
     will-change: opacity;
     transition: opacity ${transition} ${tooltipDelay};
   }
 
-  .quadrant-legend {
+  .ring-label {
+    cursor: pointer;
+  }
+
+  .area-label {
     transition: opacity ${transition};
     cursor: pointer;
 
@@ -27,7 +31,6 @@ export const SVG = styled.svg`
       fill: ${color.scorpion};
     }
 
-
     &:hover,
     &.active {
       & > rect {
@@ -39,21 +42,9 @@ export const SVG = styled.svg`
       }
     }
 
-    &.not-active {
+    &.not-hovered {
       transition: opacity ${transition} ${tooltipDelay};
       opacity: 0.25;
-    }
-
-    .legend-tooltip {
-      transition: opacity ${transition};
-
-      & > rect {
-        fill: ${color.mineShaft};
-      }
-
-      & > text {
-        fill: ${color.white};
-      }
     }
   }
 
@@ -108,15 +99,20 @@ export const SVG = styled.svg`
     }
   }
 
-   .blip:not(.active):not(.hover-active) {
-     pointer-events: none;
-   }
-   }
+  .blip:not(.active):not(.hover-active) {
+    pointer-events: none;
+  }
 
   .ring-label {
     fill: ${color.boulder};
+    opacity: 1;
+    transition: opacity ${transition} ${tooltipDelay}, fill ${transition} ${tooltipDelay};
 
-    &.active {
+    &.active:not(.not-hovered) {
+      fill: ${color.white};
+    }
+
+    &:hover {
       fill: ${color.white};
     }
   }

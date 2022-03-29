@@ -11,11 +11,11 @@ export const INITIAL_STATE: FiltersState = {
 };
 
 const handleSetArea = (state: FiltersState, { payload }: PayloadAction<FilterType>) => {
-  state.area = payload;
+  state.area = payload === state.area ? null : payload;
 };
 
 const handleSetLevel = (state: FiltersState, { payload }: PayloadAction<FilterType>) => {
-  state.level = payload;
+  state.level = payload === state.level ? null : payload;
 };
 
 const handleSetTeam = (state: FiltersState, { payload }: PayloadAction<FilterType>) => {

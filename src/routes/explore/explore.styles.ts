@@ -6,6 +6,7 @@ import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { Loader as LoaderComponent } from '../../shared/components/loader';
 import { SIDEBAR_WIDTH } from '../../shared/components/radar/radar.constants';
 import { mediaQuery } from '../../theme/media';
+import { tooltipDelay, transition } from '../../shared/utils/constants';
 
 export const LOADING_ANIMATION_MS = 500;
 
@@ -105,7 +106,7 @@ export const Tooltip = styled.div`
   max-width: 397px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 200ms ease-in-out 250ms;
+  transition: opacity ${transition} ${tooltipDelay};
   width: fit-content;
 `;
 
@@ -116,6 +117,7 @@ export const TooltipArrow = styled.div`
   background-color: ${color.mineShaft};
   transform-origin: center center;
   transform: rotate(45deg);
+  border-radius: 0 6px;
 `;
 
 export const TooltipContent = styled.p`

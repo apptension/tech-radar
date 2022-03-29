@@ -132,20 +132,20 @@ export const renderQuadrantSectors = ({ radar, rings }: RenderQuadrantSectors) =
   return quadrantSectors;
 };
 
-type RenderLegend = {
-  legend: Selection<SVGGElement, unknown, null, undefined>;
+type RenderAreaLabels = {
+  areaLabelsContainer: Selection<SVGGElement, unknown, null, undefined>;
   quadrants: RadarQuadrant[];
   rings: Rings;
 };
 
-export const renderLegend = ({ legend, rings, quadrants }: RenderLegend) => {
-  const quadrantLegend = legend
-    .selectAll('.quadrant-legend')
+export const renderAreaLabels = ({ areaLabelsContainer, rings, quadrants }: RenderAreaLabels) => {
+  const areaLabel = areaLabelsContainer
+    .selectAll('.area-label')
     .data(quadrantsData)
     .enter()
     .append('g')
-    .attr('class', 'quadrant-legend')
-    .attr('id', (d) => `quadrant-legend-${d.quadrant}`);
+    .attr('class', 'area-label')
+    .attr('id', (d) => `area-label-${d.quadrant}`);
   const getFactors = (i: number) => {
     const factorX = quadrantsData[i].factor_x;
     const factorY = quadrantsData[i].factor_y;
@@ -160,8 +160,8 @@ export const renderLegend = ({ legend, rings, quadrants }: RenderLegend) => {
     return factors[i];
   };
 
-  const rect = quadrantLegend.append('rect').attr('rx', 15).attr('ry', 15).transition();
-  const text = quadrantLegend
+  const rect = areaLabel.append('rect').attr('rx', 15).attr('ry', 15);
+  const text = areaLabel
     .append('text')
     .attr('x', (d) => getFactors(d.quadrant).x)
     .attr('y', (d) => getFactors(d.quadrant).y)
@@ -181,18 +181,18 @@ export const renderLegend = ({ legend, rings, quadrants }: RenderLegend) => {
     .attr('width', (d) => getSize(d.quadrant).width + 30)
     .attr('height', 32);
 
-  return quadrantLegend;
+  return areaLabel;
 };
 
 type RenderRinkLabels = {
-  radar: Selection<SVGGElement, unknown, null, undefined>;
+  ringLabelsContainer: Selection<SVGGElement, unknown, null, undefined>;
   quadrants: RadarQuadrant[];
   rings: Rings;
   radarRings: RadarRing[];
 };
 
-export const renderRingLabels = ({ radar, rings, radarRings }: RenderRinkLabels) => {
-  return radar
+export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels) => {
+  return ringLabelsContainer
     .append('g')
     .attr('id', 'ring-labels')
     .selectAll('.ring-label')
@@ -205,9 +205,7 @@ export const renderRingLabels = ({ radar, rings, radarRings }: RenderRinkLabels)
     .attr('x', 7)
     .attr('text-anchor', 'left')
     .style('font-family', 'Hellix')
-    .style('font-size', 14)
-    .style('pointer-events', 'none')
-    .style('user-select', 'none');
+    .style('font-size', 14);
 };
 
 type RenderTechnologies = {
@@ -383,7 +381,7 @@ export const renderBubble = (radar: Selection<SVGGElement, unknown, null, undefi
   bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
 };
 
-export const showTooltip = (target: Element, text: string, factorX: number) => {
+export const showTooltip = (target: Element, text: string, factorX: number, arrowTop?: number) => {
   const leftPlacement = factorX === 1;
   const { x, y, width, height } = target.getBoundingClientRect();
 
@@ -401,7 +399,7 @@ export const showTooltip = (target: Element, text: string, factorX: number) => {
     .select('.tooltip-arrow')
     .style('left', leftPlacement ? 'auto' : '-9px')
     .style('right', leftPlacement ? '-9px' : 'auto')
-    .style('top', `${height / 4}px`);
+    .style('top', typeof arrowTop === 'number' ? arrowTop : `${height / 4}px`);
 };
 
 export const hideTooltip = () => {
