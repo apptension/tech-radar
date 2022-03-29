@@ -5,6 +5,7 @@ import { H1, H1small } from '../../../theme/typography';
 import { Logo as LogoComponent } from '../logo/logo.component';
 import { Link as LinkComponent } from '../link';
 import { VersionTag as VersionTagComponent } from '../versionTag';
+import { color } from '../../../theme';
 import { TitleTagSize, TitleTagTheme } from './titleTag.types';
 
 const titleSmallStyles = css`
@@ -41,6 +42,7 @@ export const TitleWithTagWrapper = styled.div`
 
 export const VersionTag = styled(VersionTagComponent)`
   margin-left: 16px;
+  background: ${color.gradient};
 `;
 
 export const Logo = styled(LogoComponent)`

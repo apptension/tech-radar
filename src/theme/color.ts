@@ -18,6 +18,6 @@ export const tundora = '#444444';
 export const screaminGreen = '#42F272';
 export const schoolBusYellow = '#FFDE00';
 
-export const gradient = `linear-gradient(320deg,${screaminGreen} -56.33%,rgba(66,242,114,0) 124.09%),${schoolBusYellow}`;
+export const gradient = `linear-gradient(255deg,${screaminGreen} -56.33%,rgba(66,242,114,0) 124.09%),${schoolBusYellow}`;
 export const shadowGradientBottom = `linear-gradient(-180deg, ${codGrayOpacity} 0, ${codGray} 100%);`;
 export const shadowGradientTop = `linear-gradient(180deg, ${codGray} 0, ${codGrayOpacity} 100%);`;
