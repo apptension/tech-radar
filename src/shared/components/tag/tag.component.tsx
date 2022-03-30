@@ -32,7 +32,7 @@ export const Tag = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={className}>
+      <Container className={className} onClick={(e) => e.stopPropagation()}>
         <ChildrenContainer>{children}</ChildrenContainer>
         {renderRemoveIcon(clickable)}
       </Container>

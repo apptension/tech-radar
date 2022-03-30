@@ -62,9 +62,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
     if (!isDesktop) setTimeout(closeDropdown, 100);
   };
 
-  const renderToggleButton = () => (
-    <ToggleButton onClick={handleToggleButtonClick}>{isDesktop ? <ChevronIcon /> : <ChevronIconMobile />}</ToggleButton>
-  );
+  const renderToggleButton = () => <ToggleButton>{isDesktop ? <ChevronIcon /> : <ChevronIconMobile />}</ToggleButton>;
 
   const renderOptions = () => (
     <OptionsContainer height={optionsHeight} className="options-container">
@@ -89,7 +87,11 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className={`${className} ${open ? 'open-dropdown' : ''}`} onMouseLeave={delayedCloseDropdown}>
+      <Container
+        className={`${className} ${open ? 'open-dropdown' : ''}`}
+        onMouseLeave={delayedCloseDropdown}
+        onClick={handleToggleButtonClick}
+      >
         <LabelTagContainer>
           <Label>{label}</Label>
           {!!value && isDesktop && (
