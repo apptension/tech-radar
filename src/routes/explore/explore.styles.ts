@@ -60,7 +60,7 @@ export const Toolbar = styled(ToolbarComponent)`
 
 export const Loader = styled(LoaderComponent)`
   position: absolute;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
   transition: transform ${LOADING_ANIMATION_MS}ms ease-in-out;

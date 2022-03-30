@@ -4,11 +4,11 @@ import { CaptionMedium } from '../../../theme/typography';
 
 export const pulseBorderKeyframe = keyframes`
 	0% {
-		padding: 24px;
+		padding: 20px;
 		opacity: 0.25;
 	}
 	75% {
-		padding: 48px;
+		padding: 38px;
 		opacity: 0;
 	}
 	100% {
@@ -23,8 +23,8 @@ export const Container = styled.div`
 `;
 
 export const Circle = styled.div`
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   position: relative;
 
   &:after {
@@ -65,7 +65,7 @@ const withEllipsisStyles = css`
 export const Text = styled.p<{ withEllipsis: boolean }>`
   ${CaptionMedium};
   padding: 0;
-  margin: 64px 0 0;
+  margin: 50px 0 0;
 
   ${({ withEllipsis }) => (withEllipsis ? withEllipsisStyles : null)};
 `;
