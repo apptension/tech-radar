@@ -1,18 +1,21 @@
-import React from 'react';
+import Lottie from 'react-lottie';
 
-import { Container, Circle, Text } from './loader.styles';
+import animationData from '../../../lottie/loader/data.json';
+import { Container } from './loader.styles';
 
-export interface HeaderProps {
-  text?: string;
-  withEllipsis?: boolean;
-  className?: string;
-}
+export const Loader = () => {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
 
-export const Loader = ({ className, text = 'loading', withEllipsis = false }: HeaderProps) => {
   return (
-    <Container className={className}>
-      <Circle />
-      <Text withEllipsis={withEllipsis}>{text}</Text>
+    <Container>
+      <Lottie options={defaultOptions} height={window.innerHeight} width={window.innerWidth} />
     </Container>
   );
 };
