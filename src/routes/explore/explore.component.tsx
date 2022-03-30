@@ -130,6 +130,7 @@ export const Explore = () => {
       quadrants={radarQuadrants}
       rings={radarRings}
       activeQuadrant={activeQuadrant}
+      hasFilters={!!(areaValue || teamValue || levelValue)}
       activeRing={activeRing()}
       viewerHeight={viewerRef.current?.offsetHeight || 0}
       viewerWidth={viewerRef.current?.offsetWidth || 0}

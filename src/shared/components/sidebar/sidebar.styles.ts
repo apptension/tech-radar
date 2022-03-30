@@ -29,7 +29,7 @@ export const FiltersContainer = styled.div`
 
   ${mediaQuery.desktop} {
     order: 0;
-    align-items: flex-end;
+    flex-direction: column;
     margin-top: 10px;
   }
 `;
