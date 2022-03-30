@@ -217,6 +217,21 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
+const getIcon = (item: ContentfulTechnology) => ({
+  url: pathOr('', ['fields', 'icon', 'fields', 'file', 'url'], item),
+  description: pathOr('', ['fields', 'icon', 'fields', 'description'], item),
+  name: pathOr('', ['fields', 'icon', 'fields', 'title'], item),
+});
+
+const getAlternatives = (item: ContentfulTechnology) => {
+  const alternatives = pathOr([], ['fields', 'alternatives'], item);
+
+  return alternatives.map((alternative) => ({
+    label: pathOr('', ['fields', 'label'], alternative),
+    icon: getIcon(alternative),
+  }));
+};
+
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
@@ -224,6 +239,13 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
       label: pathOr('', ['fields', 'label'], item),
+      description: pathOr('', ['fields', 'description'], item),
+      specification: pathOr('', ['fields', 'specification'], item),
+      github: pathOr('', ['fields', 'specification'], item),
+      projects: pathOr('', ['fields', 'projects'], item),
+      experts: pathOr('', ['fields', 'experts'], item),
+      icon: getIcon(item as ContentfulTechnology),
+      alternatives: getAlternatives(item as ContentfulTechnology),
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
