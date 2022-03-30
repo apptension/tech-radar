@@ -163,12 +163,12 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
 
 export const toggleQuadrant = (quadrant: number, show: boolean) => {
   const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
-  const quadrantLegendElement = document.querySelector(`#quadrant-legend-${quadrant}`) as HTMLDivElement;
+  const areaLabelElement = document.querySelector(`#area-label-${quadrant}`) as HTMLDivElement;
   const isActiveElement = quadrantElement?.classList.contains('active') && show;
   if (quadrantElement && !isActiveElement) {
     const circle = quadrantElement.querySelector('circle');
-    const rect = quadrantLegendElement.querySelector('rect');
-    const text = quadrantLegendElement.querySelector('text');
+    const rect = areaLabelElement.querySelector('rect');
+    const text = areaLabelElement.querySelector('text');
 
     if (circle) circle.style.opacity = show ? '0.5' : '';
     if (rect) rect.style.fill = show ? color.silver : '';
@@ -237,6 +237,7 @@ export const getRadarRings = (rings: ContentfulRing[]) => {
     (item) =>
       radarRings.push({
         name: pathOr('', ['fields', 'label'], item),
+        description: pathOr('', ['fields', 'description'], item),
         position: pathOr(1, ['fields', 'position'], item),
       }),
     rings
