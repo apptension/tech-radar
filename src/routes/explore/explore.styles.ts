@@ -106,8 +106,14 @@ export const Tooltip = styled.div`
   max-width: 397px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity ${transition} ${tooltipDelay};
+  transition: opacity ${transition}, visibility ${transition};
   width: fit-content;
+
+  &.show {
+    opacity: 1;
+    transition: opacity ${transition} ${tooltipDelay}, visibility ${transition} ${tooltipDelay};
+    visibility: visible;
+  }
 `;
 
 export const TooltipArrow = styled.div`

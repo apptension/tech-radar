@@ -125,19 +125,19 @@ export const Radar = ({
         if (!text.length) {
           return;
         }
-        renderedAreaLabels.classed('not-hovered', ({ quadrant }) => d.quadrant !== quadrant);
         const target = renderedAreaLabels.select(`#area-label-${d.quadrant} rect`).node() as Element;
         if (target) {
           showTooltip(target, text, d.factor_x);
         }
-        radar.style('opacity', 0.25);
-        ringLabelsContainer.style('opacity', 0.25);
+        renderedAreaLabels.classed('not-hovered', ({ quadrant }) => d.quadrant !== quadrant);
+        radar.classed('not-hovered', true);
+        ringLabelsContainer.classed('not-hovered', true);
       })
       .on('mouseout', () => {
-        renderedAreaLabels.classed('not-hovered', false);
         hideTooltip();
-        radar.style('opacity', 1);
-        ringLabelsContainer.style('opacity', 1);
+        renderedAreaLabels.classed('not-hovered', false);
+        radar.classed('not-hovered', false);
+        ringLabelsContainer.classed('not-hovered', false);
       });
 
     renderedRingLabels
@@ -154,14 +154,14 @@ export const Radar = ({
           showTooltip(target, d.description, -1, 0);
         }
         renderedRingLabels.classed('not-hovered', ({ name }) => name !== d.name);
-        radar.style('opacity', 0.25);
-        areaLabelsContainer.style('opacity', 0.25);
+        radar.classed('not-hovered', true);
+        areaLabelsContainer.classed('not-hovered', true);
       })
       .on('mouseout', () => {
         hideTooltip();
         renderedRingLabels.classed('not-hovered', false);
-        radar.style('opacity', 1);
-        areaLabelsContainer.style('opacity', 1);
+        radar.classed('not-hovered', false);
+        areaLabelsContainer.classed('not-hovered', false);
       });
   };
 

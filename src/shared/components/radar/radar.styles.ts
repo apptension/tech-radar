@@ -10,6 +10,12 @@ export const SVG = styled.svg`
   .area-labels {
     opacity: 1;
     will-change: opacity;
+    transition: opacity ${transition};
+  }
+  .radar.not-hovered,
+  .ring-labels.not-hovered,
+  .area-labels.not-hovered {
+    opacity: 0.25;
     transition: opacity ${transition} ${tooltipDelay};
   }
 
@@ -110,6 +116,7 @@ export const SVG = styled.svg`
 
     &.active:not(.not-hovered) {
       fill: ${color.white};
+      transition: opacity ${transition}, fill ${transition};
     }
 
     &:hover {

@@ -386,8 +386,7 @@ export const showTooltip = (target: Element, text: string, factorX: number, arro
   const { x, y, width, height } = target.getBoundingClientRect();
 
   const tooltipContainer = select('.tooltip-container')
-    .style('opacity', 1)
-    .style('visibility', 'visible')
+    .classed('show', true)
     .style('height', `${height}px`)
     .style('top', `${y}px`)
     .style('left', leftPlacement ? `${x - 20}px` : `${x + width + 20}px`)
@@ -403,5 +402,5 @@ export const showTooltip = (target: Element, text: string, factorX: number, arro
 };
 
 export const hideTooltip = () => {
-  select('.tooltip-container').style('opacity', 0).style('visibility', 'hidden');
+  select('.tooltip-container').classed('show', false);
 };
