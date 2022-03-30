@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { isEmpty } from 'ramda';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
@@ -35,7 +35,6 @@ import messages from './explore.messages';
 
 export const Explore = () => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
-  const intl = useIntl();
   const viewerRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
@@ -175,7 +174,7 @@ export const Explore = () => {
 
   const renderLoading = () => (
     <Loading visible={loadingVisible} shouldDisplay={displayLoading}>
-      <Loader text={intl.formatMessage(messages.loading)} withEllipsis />
+      <Loader />
     </Loading>
   );
 
