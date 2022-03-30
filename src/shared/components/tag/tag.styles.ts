@@ -43,6 +43,7 @@ export const Container = styled.div<ThemeProps<TagTheme>>`
   display: flex;
   align-items: center;
   white-space: nowrap;
+  cursor: initial;
 
   ${theme('size', {
     [TagSize.SMALL]: tagSizeSmallStyles,
