@@ -29,6 +29,7 @@ interface RadarProps {
   activeRing: number | null;
   viewerHeight: number;
   viewerWidth: number;
+  hasFilters: boolean;
 }
 
 export const Radar = ({
@@ -39,6 +40,7 @@ export const Radar = ({
   activeRing,
   viewerHeight,
   viewerWidth,
+  hasFilters,
 }: RadarProps) => {
   const [quadrantSectors, setQuadrantSectors] = useState<Selection<SVGGElement, any, SVGGElement, unknown> | null>(
     null
@@ -175,7 +177,7 @@ export const Radar = ({
       quadrantSectors.classed('active', (d) => d.quadrant === activeQuadrant);
       areaLabels.classed('active', (d) => d.quadrant === activeQuadrant);
       blips
-        ?.classed('active', (d) => !technologies[d.index].inactive && activeQuadrant !== null)
+        ?.classed('active', (d) => hasFilters && !technologies[d.index].inactive)
         .classed('hover-active', activeQuadrant === null);
       ringLabels?.classed('active', (d, i) => i + 1 === activeRing || !activeRing);
     }

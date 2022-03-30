@@ -89,6 +89,11 @@ export const SVG = styled.svg`
     opacity: 0;
   }
 
+  .blip-inner {
+    transition: transform ${transition};
+    transform: scale(1);
+  }
+
   .blip:hover {
     .square,
     .circle,
@@ -102,6 +107,10 @@ export const SVG = styled.svg`
 
     .outer {
       opacity: 0.3;
+    }
+
+    .blip-inner {
+      transform: scale(1.5);
     }
   }
 

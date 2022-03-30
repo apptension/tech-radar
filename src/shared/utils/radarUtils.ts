@@ -83,10 +83,10 @@ export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
       .attr('transform', translate({ x: x - 8, y: ring === 3 ? y - 18 : y - 14 }))
       .style('opacity', 1);
     d3.select('#bubble rect')
-      .attr('x', -bbox.width - 36)
-      .attr('y', 0)
-      .attr('width', bbox.width + 20)
-      .attr('height', bbox.height + 14)
+      .attr('x', -bbox.width - 38)
+      .attr('y', -4)
+      .attr('width', bbox.width + 24)
+      .attr('height', bbox.height + 20)
       .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
     tooltip.attr('x', -bbox.width - 26).attr('y', 16);
   }
@@ -111,10 +111,13 @@ export const changeHighlight = ({
   fill?: string;
   hide?: boolean;
 }) => {
-  const outerBlip = d3.select(`#blip-${id} ${shape}`);
+  const blip = d3.select(`#blip-${id}`);
+  const outerBlip = blip.select(shape);
+  const blipInner = blip.select('.blip-inner');
   outerBlip.style('opacity', hide ? '' : opacity);
-  const fullBlip = d3.selectAll(`#blip-${id} ${shape}`);
+  const fullBlip = blip.selectAll(shape);
   fullBlip.style('fill', hide ? '' : fill);
+  blipInner.style('transform', hide ? '' : 'scale(1.5)');
 };
 
 export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {

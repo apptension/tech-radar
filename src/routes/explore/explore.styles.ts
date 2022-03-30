@@ -102,16 +102,21 @@ export const Tooltip = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 397px;
+  max-width: 350px;
   opacity: 0;
   visibility: hidden;
   transition: opacity ${transition}, visibility ${transition};
   width: fit-content;
+  z-index: 11;
 
   &.show {
     opacity: 1;
     transition: opacity ${transition} ${tooltipDelay}, visibility ${transition} ${tooltipDelay};
     visibility: visible;
+  }
+
+  ${mediaQuery.desktopWide} {
+    max-width: 397px;
   }
 `;
 

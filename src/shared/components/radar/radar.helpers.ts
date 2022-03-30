@@ -274,11 +274,18 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
 
   const rink = radar.append('g').attr('id', 'rink');
 
-  const blips = rink.selectAll('.blip').data(formattedTechnologies).enter().append('g').attr('class', 'blip');
+  const blips = rink
+    .selectAll('.blip')
+    .data(formattedTechnologies)
+    .enter()
+    .append('g')
+    .attr('class', 'blip')
+    .attr('id', (d) => `blip-${d.id}`);
+  const blipsInner = blips.append('g').attr('class', 'blip-inner');
 
-  blips.each(function (d) {
+  blipsInner.each(function (d) {
     const blip = select(this);
-    blip.attr('id', `blip-${d.id}`).style('opacity', 0).transition().duration(700).style('opacity', 1);
+    blip.style('opacity', 0).transition().duration(700).style('opacity', 1);
 
     const blipDefs = blip.append('defs');
 
@@ -377,8 +384,13 @@ export const renderBubble = (radar: Selection<SVGGElement, unknown, null, undefi
     .style('opacity', 0)
     .style('pointer-events', 'none')
     .style('user-select', 'none');
-  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.mineShaft);
-  bubble.append('text').style('font-family', 'Hellix').style('font-size', '10px').style('fill', color.white);
+  bubble.append('rect').attr('rx', 6).attr('ry', 6).style('fill', color.codGray);
+  bubble
+    .append('text')
+    .style('font-family', 'Hellix')
+    .style('font-size', '12px')
+    .style('font-weight', '600')
+    .style('fill', color.silver);
 };
 
 export const showTooltip = (target: Element, text: string, factorX: number, arrowTop?: number) => {
