@@ -5,14 +5,20 @@ import { mediaQuery } from '../../../theme/media';
 export const Container = styled.div`
   background-color: ${color.mineShaft2};
   position: relative;
-  padding: 24px 20px 20px;
+  padding: 24px 20px 109px;
   overflow: auto;
-  width: 346px;
-  max-width: 100%;
+  width: 100vw;
   height: calc(100vh - 120px);
   border-radius: 24px 24px 0 0;
+  margin: 0 auto;
+
+  ${mediaQuery.tablet} {
+    width: 50vw;
+  }
 
   ${mediaQuery.desktop} {
+    padding-bottom: 20px;
+    width: 100%;
     height: auto;
     border-radius: 8px;
   }
