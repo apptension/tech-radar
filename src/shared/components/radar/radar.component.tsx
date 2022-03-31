@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'react-use';
 import { Selection, select } from 'd3';
 import * as colors from '../../../theme/color';
 import { hideBubble, highlightLegend, showBubble, toggleQuadrant, translate } from '../../utils/radarUtils';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { setArea, setLevel } from '../../../modules/filters/filters.actions';
+import { openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
+import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
 import { RADAR_RADIUS, VERTICAL_RADAR_MARGIN, HORIZONTAL_RADAR_MARGIN } from './radar.constants';
 import {
@@ -54,9 +57,13 @@ export const Radar = ({
     unknown
   > | null>(null);
   const radarRef = useRef(null);
+
   const dispatch = useDispatch();
   const handleAreaSelect = (option: FilterType) => dispatch(setArea(option));
   const handleLevelSelect = (option: FilterType) => dispatch(setLevel(option));
+  const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
+
+  const technologyId = useSelector(selectTechnologyId);
 
   const renderRadar = () => {
     const height = viewerHeight - VERTICAL_RADAR_MARGIN;
@@ -102,6 +109,10 @@ export const Radar = ({
         hideBubble();
       })
       .on('click', (event: MouseEvent, d) => {
+        if (d.description) {
+          handleOpenPopup(d.id);
+        }
+
         if (activeQuadrant !== undefined && d.inactive) {
           handleAreaSelect(quadrants[d.quadrant].name);
         }
@@ -174,6 +185,7 @@ export const Radar = ({
       if (typeof activeQuadrant === 'number') {
         toggleQuadrant(activeQuadrant, false);
       }
+
       quadrantSectors.classed('active', (d) => d.quadrant === activeQuadrant);
       areaLabels.classed('active', (d) => d.quadrant === activeQuadrant);
       blips
@@ -182,6 +194,10 @@ export const Radar = ({
       ringLabels?.classed('active', (d, i) => i + 1 === activeRing || !activeRing);
     }
   }, [quadrantSectors, technologies]);
+
+  useEffect(() => {
+    blips?.classed('selected', (d) => technologyId === d.id);
+  }, [technologyId]);
 
   return <SVG ref={radarRef} />;
 };

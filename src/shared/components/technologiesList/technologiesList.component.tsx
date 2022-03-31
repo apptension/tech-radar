@@ -1,7 +1,7 @@
 import React, { useState, UIEvent } from 'react';
 import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import {
   getBlipDataById,
@@ -16,6 +16,8 @@ import { color } from '../../../theme';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectSearch } from '../../../modules/filters/filters.selectors';
 import { TagSize, TagVariant } from '../tag/tag.types';
+import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
+import { openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import {
   ListWrapper,
   List,
@@ -42,8 +44,10 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
 
-  const activeTechnologies = technologies.filter((technology) => !technology.inactive);
-  const sortedTechnologies = sortBy(compose(toLower, prop('label')), activeTechnologies);
+  const dispatch = useDispatch();
+  const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
+
+  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
 
   const handleScroll = (e: UIEvent<HTMLUListElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -81,7 +85,20 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
       <List onScroll={handleScroll}>
         {sortedTechnologies.map((technology) => (
           <ListItem
+            showTechnology={!technology.inactive}
+            showPointer={!!technology.description.length}
             key={`list-item-${technology.id}`}
+            onClick={() => {
+              if (technology.description) {
+                hideBubble();
+                handleOpenPopup(technology.id);
+                unhighlightBlip({
+                  id: technology.id?.toString() || '',
+                  ring: technology.ring,
+                  color: getBlipColor(technology.inactive, hasNoAreaSelected),
+                });
+              }
+            }}
             onMouseEnter={() => {
               setHoveredItem(technology.id);
               toggleQuadrant(technology.quadrant, true);

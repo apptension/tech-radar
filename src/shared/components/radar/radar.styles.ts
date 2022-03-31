@@ -94,7 +94,8 @@ export const SVG = styled.svg`
     transform: scale(1);
   }
 
-  .blip:hover {
+  .blip:hover,
+  .blip.selected {
     .square,
     .circle,
     .triangle {
