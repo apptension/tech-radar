@@ -44,10 +44,14 @@ export const SidebarWrapper = styled.div`
 `;
 
 export const Viewer = styled.div`
+  display: none;
   margin: 87px auto 0;
   width: 100%;
-  display: flex;
   justify-content: center;
+
+  ${mediaQuery.desktop} {
+    display: flex;
+  }
 `;
 
 export const Toolbar = styled(ToolbarComponent)`
