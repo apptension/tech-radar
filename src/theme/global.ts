@@ -11,6 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     color: ${color.white};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: ${color.codGray};
   }
 
   *, *:before, *:after {
@@ -20,7 +21,6 @@ export const GlobalStyle = createGlobalStyle`
   #app {
     height: 100vh;
     width: 100vw;
-    background-color: ${color.codGray};
     overflow: hidden;
 
     & > div:first-of-type {
