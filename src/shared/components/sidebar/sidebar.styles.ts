@@ -5,8 +5,8 @@ import { mediaQuery } from '../../../theme/media';
 import { Tag as TagComponent } from '../tag';
 import { Toolbar as ToolbarComponent } from '../toolbar';
 
-export const Container = styled.div`
-  padding: 120px 25px 10px;
+export const Container = styled.div<{ noPadding: boolean }>`
+  padding: ${({ noPadding }) => (noPadding ? '120px 0 0' : '120px 25px 10px')};
   color: ${colors.white};
   height: 100%;
   width: 100%;

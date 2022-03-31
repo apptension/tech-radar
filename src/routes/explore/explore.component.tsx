@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isEmpty } from 'ramda';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { FormattedMessage } from 'react-intl';
 
@@ -11,8 +11,6 @@ import { getUpdatedRadarTechnologies, pluckNameFromList } from '../../shared/uti
 import { RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
-import { INITIAL_ACTIVE_QUADRANT } from '../app.constants';
-import { setArea } from '../../modules/filters/filters.actions';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
 import { renderWhenTrue } from '../../shared/utils/rendering';
@@ -37,7 +35,6 @@ export const Explore = () => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const viewerRef = useRef<HTMLDivElement>(null);
 
-  const dispatch = useDispatch();
   const searchText = useSelector(selectSearch);
   const areaValue = useSelector(selectArea);
   const levelValue = useSelector(selectLevel);
@@ -60,10 +57,7 @@ export const Explore = () => {
   } = useContentfulData();
 
   useEffect(() => {
-    if (!isEmpty(radarQuadrants) && !areaValue) {
-      dispatch(setArea(radarQuadrants[INITIAL_ACTIVE_QUADRANT].name));
-    }
-
+    updateFilteredTechnologies();
     if (isSuccess) {
       setTimeout(() => {
         setLoadingVisible(false);
@@ -129,7 +123,7 @@ export const Explore = () => {
       quadrants={radarQuadrants}
       rings={radarRings}
       activeQuadrant={activeQuadrant}
-      hasFilters={!!(areaValue || teamValue || levelValue)}
+      hasFilters={!!(areaValue || teamValue || levelValue || searchText)}
       activeRing={activeRing()}
       viewerHeight={viewerRef.current?.offsetHeight || 0}
       viewerWidth={viewerRef.current?.offsetWidth || 0}

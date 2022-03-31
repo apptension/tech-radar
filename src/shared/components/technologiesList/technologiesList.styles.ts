@@ -32,11 +32,11 @@ export const List = styled.ul`
   }
 `;
 
-export const ListItem = styled.li`
+export const ListItem = styled.li<{ showPointer: boolean; showTechnology: boolean }>`
   margin: 6px 0;
-  cursor: default;
-  display: flex;
   justify-content: space-between;
+  cursor: ${({ showPointer }) => (showPointer ? 'pointer' : 'default')};
+  display: ${({ showTechnology }) => (showTechnology ? 'flex' : 'none')};
 `;
 
 export const ListLabel = styled.div`

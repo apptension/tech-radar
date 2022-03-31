@@ -17,6 +17,8 @@ export const silver = '#C2C2C2';
 export const tundora = '#444444';
 export const screaminGreen = '#42F272';
 export const schoolBusYellow = '#FFDE00';
+export const mineShaft2 = '#222222';
+export const dustyGray = '#999999';
 
 export const gradient = `linear-gradient(255deg,${screaminGreen} -56.33%,rgba(66,242,114,0) 124.09%),${schoolBusYellow}`;
 export const shadowGradientBottom = `linear-gradient(-180deg, ${codGrayOpacity} 0, ${codGray} 100%);`;

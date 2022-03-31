@@ -4,6 +4,7 @@ export type RadarTechnology = {
   label: string;
   quadrant: number;
   ring: number;
+  ringLabel: string;
   inactive: boolean;
   id: string;
   team: string;

@@ -280,7 +280,9 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
     .enter()
     .append('g')
     .attr('class', 'blip')
-    .attr('id', (d) => `blip-${d.id}`);
+    .attr('id', (d) => `blip-${d.id}`)
+    .style('cursor', (d) => (d.description ? 'pointer' : 'default'));
+
   const blipsInner = blips.append('g').attr('class', 'blip-inner');
 
   blipsInner.each(function (d) {
