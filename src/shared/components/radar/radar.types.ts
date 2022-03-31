@@ -14,7 +14,12 @@ export type RadarTechnology = {
   github: string;
   projects: string;
   icon: { url: string; description: string; name: string };
-  alternatives: { label: string; icon: { url: string; description: string; name: string } }[];
+  alternatives: {
+    label: string;
+    icon: { url: string; description: string; name: string };
+    id: string;
+    description: string;
+  }[];
   experts: string;
 };
 export type RadarRing = { name: string; position: number; description: string };
@@ -43,7 +48,9 @@ export type ContentfulQuadrant = { fields: { label: string; position: QuadrantPo
 
 export type ContentfulIcon = { fields: { file: { url: string }; description: string; name: string } };
 
-export type ContentfulAlternative = { fields: { label: string; icon: ContentfulIcon } };
+export type ContentfulAlternative = {
+  fields: { label: string; icon: ContentfulIcon; id: string; description: string };
+};
 
 export type ContentfulTechnology = {
   fields: {
