@@ -42,5 +42,10 @@ export const Tag = styled(TagComponent)`
 export const Toolbar = styled(ToolbarComponent)`
   max-width: 100%;
   order: 3;
+  margin-top: 12px;
   margin-bottom: 50px;
+
+  ${mediaQuery.desktop} {
+    margin-top: 0;
+  }
 `;
