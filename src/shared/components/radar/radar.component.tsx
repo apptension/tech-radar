@@ -190,7 +190,7 @@ export const Radar = ({
       areaLabels.classed('active', (d) => d.quadrant === activeQuadrant);
       blips
         ?.classed('active', (d) => hasFilters && !technologies[d.index].inactive)
-        .classed('hover-active', activeQuadrant === null);
+        .classed('hover-active', !hasFilters);
       ringLabels?.classed('active', (d, i) => i + 1 === activeRing || !activeRing);
     }
   }, [quadrantSectors, technologies]);
