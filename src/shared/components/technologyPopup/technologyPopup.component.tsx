@@ -5,8 +5,9 @@ import { FormattedMessage } from 'react-intl';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
-import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { renderWhenTrue } from '../../utils/rendering';
+import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import {
   Container,
   CloseWrapper,
@@ -19,6 +20,7 @@ import {
   Link,
   BlocksWrapper,
   Block,
+  BlockButton,
   BlockIcon,
   BlockLabel,
   BlockTitle,
@@ -46,6 +48,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     experts = '',
   } = technologies.find(({ id }) => id === technologyId) || {};
   const handleClosePopup = () => dispatch(closeTechnologyPopup());
+  const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const renderIcon = renderWhenTrue(() => <TechnologyIcon src={icon?.url} alt={icon?.description} />);
   const links = [
@@ -53,7 +56,6 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     { url: specification, label: messages.specification },
     { url: projects, label: messages.projects },
   ].filter(({ url }) => !!url.length);
-  const firstAlternative = alternatives[0];
 
   const renderLinks = renderWhenTrue(() => (
     <LinksWrapper>
@@ -65,17 +67,17 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     </LinksWrapper>
   ));
 
-  const renderAlternativeBlock = renderWhenTrue(() => (
-    <Block>
-      <BlockTitle>
-        <FormattedMessage {...messages.alternatives} />
-      </BlockTitle>
-      {firstAlternative.icon.url && (
-        <BlockIcon src={firstAlternative.icon.url} alt={firstAlternative.icon.description} />
-      )}
-      <BlockLabel>{firstAlternative.label}</BlockLabel>
-    </Block>
-  ));
+  const renderAlternativeBlocks = renderWhenTrue(() =>
+    alternatives.map(({ id, icon, label, description }, index) => (
+      <BlockButton onClick={() => handleOpenPopup(id)} isClickAble={!!description} key={index}>
+        <BlockTitle>
+          <FormattedMessage {...messages.alternatives} />
+        </BlockTitle>
+        {icon.url && <BlockIcon src={icon.url} alt={icon.description} />}
+        <BlockLabel>{label}</BlockLabel>
+      </BlockButton>
+    ))
+  );
 
   const renderExpertsBlock = renderWhenTrue(() => (
     <Block>
@@ -88,7 +90,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
 
   const renderBlocks = renderWhenTrue(() => (
     <BlocksWrapper>
-      {renderAlternativeBlock(!!firstAlternative)}
+      {renderAlternativeBlocks(!!alternatives.length)}
       {renderExpertsBlock(!!experts)}
     </BlocksWrapper>
   ));
@@ -108,7 +110,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       </Title>
       <Description>{description}</Description>
       {renderLinks(!!links)}
-      {renderBlocks(!!experts.length || !!firstAlternative)}
+      {renderBlocks(!!experts.length || !!alternatives.length)}
     </Container>
   );
 };

@@ -228,6 +228,8 @@ const getAlternatives = (item: ContentfulTechnology) => {
 
   return alternatives.map((alternative) => ({
     label: pathOr('', ['fields', 'label'], alternative),
+    description: pathOr('', ['fields', 'description'], alternative),
+    id: pathOr('', ['sys', 'id'], alternative),
     icon: getIcon(alternative),
   }));
 };
@@ -235,7 +237,7 @@ const getAlternatives = (item: ContentfulTechnology) => {
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
-  forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
+  forEachObjIndexed<ContentfulTechnology[]>((item) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
       label: pathOr('', ['fields', 'label'], item),
@@ -251,7 +253,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
       ringLabel: pathOr('', ['fields', 'ring', 'fields', 'label'], item),
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
       inactive: false,
-      id: i.toString(),
+      id: pathOr('', ['sys', 'id'], item),
     });
   }, technologies);
   return radarTechnologies;
