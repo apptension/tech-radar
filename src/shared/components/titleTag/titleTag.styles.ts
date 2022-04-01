@@ -42,6 +42,7 @@ export const TitleWithTagWrapper = styled.div`
 
 export const VersionTag = styled(VersionTagComponent)`
   margin-left: 16px;
+  padding-right: 12px;
   background: ${color.gradient};
 `;
 

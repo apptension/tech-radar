@@ -66,6 +66,7 @@ interface ContainerProps extends ThemeProps<ButtonTheme> {
 }
 
 export const Container = styled.button<ContainerProps>`
+  position: relative;
   border: ${border.regularWhite};
   background: none;
   color: ${color.white};
@@ -89,10 +90,28 @@ export const Container = styled.button<ContainerProps>`
     false: buttonNoBorderStyles,
   })}
 
+  &::before {
+    content: '';
+    display: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'none' : 'block')};
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    z-index: -1;
+    border-radius: 2px;
+    background: ${color.gradient};
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+  }
+
   &:hover {
     color: ${color.black};
     border-color: transparent;
-    background: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'transparent' : `${color.gradient}`)};
+
+    &::before {
+      opacity: 1;
+    }
 
     ${IconContainerInner} {
       transform: ${({ withMovingArrow }) => (withMovingArrow ? 'translateX(0)' : 'translateX(-50%)')};
