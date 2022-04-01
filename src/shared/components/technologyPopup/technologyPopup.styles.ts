@@ -1,18 +1,24 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { color } from '../../../theme';
 import { mediaQuery } from '../../../theme/media';
 
 export const Container = styled.div`
   background-color: ${color.mineShaft2};
   position: relative;
-  padding: 24px 20px 20px;
+  padding: 24px 20px 109px;
   overflow: auto;
-  width: 346px;
-  max-width: 100%;
+  width: 100vw;
   height: calc(100vh - 120px);
   border-radius: 24px 24px 0 0;
+  margin: 0 auto;
+
+  ${mediaQuery.tablet} {
+    width: 50vw;
+  }
 
   ${mediaQuery.desktop} {
+    padding-bottom: 20px;
+    width: 100%;
     height: auto;
     border-radius: 8px;
   }
@@ -89,7 +95,7 @@ export const BlocksWrapper = styled.div`
   margin-top: 40px;
 `;
 
-export const Block = styled.div`
+const blockStyles = css`
   background-color: ${color.mineShaft};
   padding: 20px 0 28px;
   text-align: center;
@@ -98,6 +104,19 @@ export const Block = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+`;
+
+export const Block = styled.div`
+  ${blockStyles};
+`;
+
+export const BlockButton = styled.button<{ isClickAble: boolean }>`
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  pointer-events: ${({ isClickAble }) => (isClickAble ? 'auto' : 'none')};
+  ${blockStyles};
 `;
 
 export const BlockTitle = styled.h4`
@@ -123,7 +142,7 @@ export const BlockLabel = styled.p`
 `;
 
 export const BlockExpert = styled.h2`
-  margin: 14px 0 0 0;
+  margin: 14px 0 33px 0;
   font-size: 46px;
   line-height: 46px;
   letter-spacing: 3.3px;
