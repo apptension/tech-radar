@@ -71,7 +71,7 @@ export const Radar = ({
     const radarSize = width < height ? width : height;
 
     const scale = (radarSize - 1) / (RADAR_RADIUS * 2);
-    const ringRadius = [140 * scale, 245 * scale, 350 * scale, RADAR_RADIUS * scale];
+    const ringRadius = [180 * scale, 270 * scale, 360 * scale, RADAR_RADIUS * scale];
     const rings = radarRings.map((ring, index) => ({ ...ring, radius: ringRadius[index] }));
     const container = select(radarRef.current);
     container.selectAll('*').remove();
