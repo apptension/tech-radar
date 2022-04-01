@@ -61,7 +61,9 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     <LinksWrapper>
       {links.map(({ url, label }, index) => (
         <Link href={url} target="_blank" key={index}>
-          <FormattedMessage {...label} />
+          <span>
+            <FormattedMessage {...label} />
+          </span>
         </Link>
       ))}
     </LinksWrapper>

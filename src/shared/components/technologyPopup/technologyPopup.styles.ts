@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { color } from '../../../theme';
 import { mediaQuery } from '../../../theme/media';
+import { transition } from '../../utils/constants';
 
 export const Container = styled.div`
   background-color: ${color.mineShaft2};
@@ -69,22 +70,53 @@ export const Description = styled.p`
   padding-right: 28px;
 `;
 
-export const LinksWrapper = styled.div`
-  display: flex;
-  margin-top: 40px;
-`;
-
 export const Link = styled.a`
   color: ${color.white};
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
-  margin-right: 12px;
+  padding-left: 12px;
+
+  & > span {
+    opacity: 1;
+    padding-bottom: 1px;
+    border-bottom: 1px solid transparent;
+    transition: border ${transition}, opacity ${transition};
+  }
+
+  &:hover {
+    span {
+      border-bottom: 1px solid ${color.white};
+    }
+  }
+
+  &:first-child {
+    padding-left: 0;
+  }
 
   &:not(:last-child):after {
+    transition: opacity ${transition};
     content: '|';
-    margin-left: 12px;
+    padding-left: 12px;
+  }
+`;
+
+export const LinksWrapper = styled.div`
+  display: inline-flex;
+  margin-top: 40px;
+
+  &:hover {
+    ${Link} span {
+      opacity: 0.5;
+    }
+    ${Link}:after {
+      opacity: 0.5;
+    }
+  }
+
+  ${Link}:hover span {
+    opacity: 1;
   }
 `;
 
@@ -97,7 +129,8 @@ export const BlocksWrapper = styled.div`
 
 const blockStyles = css`
   background-color: ${color.mineShaft};
-  padding: 20px 0 28px;
+  border: 2px solid ${color.mineShaft};
+  padding: 18px 0 26px;
   text-align: center;
   border-radius: 8px;
   color: ${color.dustyGray};
@@ -105,6 +138,7 @@ const blockStyles = css`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  transition: background-color ${transition};
 `;
 
 export const Block = styled.div`
@@ -117,6 +151,10 @@ export const BlockButton = styled.button<{ isClickAble: boolean }>`
   cursor: pointer;
   pointer-events: ${({ isClickAble }) => (isClickAble ? 'auto' : 'none')};
   ${blockStyles};
+
+  &:hover {
+    background-color: ${color.codGray2};
+  }
 `;
 
 export const BlockTitle = styled.h4`

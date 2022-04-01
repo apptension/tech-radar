@@ -8,6 +8,7 @@ export const secondary = '#2249f9';
 export const error = '#fa7265';
 
 export const codGray = '#111111';
+export const codGray2 = '#181818';
 export const codGrayOpacity = 'rgba(17, 17, 17, 0)';
 export const white20 = 'rgba(255, 255, 255, 0.2)';
 export const boulder = '#767676';
