@@ -80,17 +80,19 @@ export const Radar = ({
     const radar = container.append('g').attr('class', 'radar');
     const areaLabelsContainer = container.append('g').attr('class', 'area-labels');
     const ringLabelsContainer = container.append('g').attr('class', 'ring-labels');
+    const bubbleContainer = container.append('g').attr('class', 'bubble-container');
     container.attr('viewBox', `0 0 ${radarSize} ${radarSize}`);
     radar.attr('transform', translate({ x: radarSize / 2, y: Math.ceil(rings[3].radius) }));
     areaLabelsContainer.attr('transform', translate({ x: radarSize / 2, y: Math.ceil(rings[3].radius) }));
     ringLabelsContainer.attr('transform', translate({ x: radarSize / 2, y: Math.ceil(rings[3].radius) }));
+    bubbleContainer.attr('transform', translate({ x: radarSize / 2, y: Math.ceil(rings[3].radius) }));
 
     renderGrid({ radar, scale, rings });
     const renderedSectors = renderQuadrantSectors({ rings, radar });
     const renderedTechnologies = renderTechnologies({ radar, technologies, rings });
     const renderedRingLabels = renderRingLabels({ ringLabelsContainer, radarRings, rings, quadrants });
     const renderedAreaLabels = renderAreaLabels({ quadrants, rings, areaLabelsContainer });
-    renderBubble(radar);
+    renderBubble(bubbleContainer);
 
     setBlips(renderedTechnologies);
     setRingLabels(renderedRingLabels);

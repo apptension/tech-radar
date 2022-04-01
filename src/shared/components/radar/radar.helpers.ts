@@ -377,8 +377,8 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
   return blips;
 };
 
-export const renderBubble = (radar: Selection<SVGGElement, unknown, null, undefined>) => {
-  const bubble = radar
+export const renderBubble = (bubbleContainer: Selection<SVGGElement, unknown, null, undefined>) => {
+  const bubble = bubbleContainer
     .append('g')
     .attr('id', 'bubble')
     .attr('x', 0)
