@@ -40,8 +40,14 @@ export const TitleWithTagWrapper = styled.div`
   })};
 `;
 
-export const VersionTag = styled(VersionTagComponent)`
+interface VersionTagProps {
+  size: TitleTagSize;
+}
+
+export const VersionTag = styled(VersionTagComponent)<VersionTagProps>`
   margin-left: 16px;
+  padding-top: ${({ size }) => (size === TitleTagSize.LARGE ? '7px' : '6px')};
+  padding-right: ${({ size }) => (size === TitleTagSize.LARGE ? '12px' : '10px')};
   background: ${color.gradient};
 `;
 
