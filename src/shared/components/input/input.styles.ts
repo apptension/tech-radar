@@ -17,6 +17,8 @@ export const InputComponent = styled.input`
   outline: none;
   width: 100%;
   color: ${colors.white};
+  padding: 1px 2px;
+
   ::placeholder {
     color: ${colors.boulder};
   }
