@@ -1,36 +1,74 @@
-## Node version
+# Apptension Tech Radar
+
+## Overview
+
+Bootstrapped with [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
+
+The Tech Radar is a tool to support development teams at Apptension to pick the best technologies for new projects. It allows for knowledge and experience sharing, to reflect technology decisions and evolve our technology landscape.
+
+## What is the Tech Radar?
+
+The Tech Radar is a list of technologies along with their assessment result presented as 4 rings with the following meanings:
+
+**Adopt** - Technologies we have high confidence in. Technologies with a usage culture in our production environment, low risk and recommended to be widely used.
+
+**Trial** - Technologies that we have seen work with success in project work to solve a real problem; first serious usage experience that confirm benefits and can uncover limitations. Trial technologies are slightly more risky; some engineers in our organization walked this path and will share knowledge and experiences.
+
+**Assess** - Technologies that are promising and have clear potential value-add for us; technologies worth to invest some research and prototyping efforts in to see if it has impact. Assess technologies have higher risks; they are often brand new and highly unproven in our organisation.
+
+**Hold** - Technologies not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. Hold technologies should not be used for new projects, but usually can be continued for existing projects.
+
+## Data source
+
+Apptension Tech Radar uses Contentful CMS for data storage and will not work locally right from the start as required keys are not provided in the source code.
+
+To conntect your own Contentful space see `.env.example` file for required keys and `src/shared/hooks/useContentfulData.ts` along with `src/shared/services/api/contentful.ts` to see how we pull Contenful data currently.
+
+Or connect your own preferable CMS or other data source.
+
+For reference of data models used in the tech radar see types defined in `src/shared/components/radar/radar.types.ts`.
+
+## Usage
+
+### Node version
 
 `>= 15.0.1`
 
 `.nvmrc` file is added
 
-## Tag version in Title
+### Run development environment
 
-Tag version in title is taken from `package.json` file.
+Install dependencies with yarn (or npm):
 
-example:  
- `version": "2.0"` => `Tech Radar 2.0`
+```Shell
+yarn install
+```
 
-This project was bootstrapped with [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
+Run development server:
 
-## Available Scripts
+```Shell
+yarn start
+```
 
-In the project directory, you can run:
+Open [http://localhost:3000](http://localhost:300) to view it in the browser.
 
-### `yarn start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
+The page will realod if you make edits.  
 You will also see any lint errors in the console.
 
-### `yarn test`
+### Tag Version in the Title
+
+Tag version in title is taken from **package.json** file.
+
+`"version": "2.0" => Tech Radar 2.0`
+
+### Other available scripts
+
+#### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+#### `yarn build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -40,7 +78,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+#### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -50,15 +88,15 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-### `yarn extract-intl language1, language2, [...]`
+#### `yarn extract-intl language1, language2, [...]`
 
 Automatically generates `.json` files with messages gathered from application.
 
-### `yarn lint`
+#### `yarn lint`
 
 Lints your JavaScript.
 
-### `yarn plop`
+#### `yarn plop`
 
 Generate Redux module (reducer, saga, selectors, action types, action creators, tests):
 
@@ -78,6 +116,14 @@ Generate React component (class or function) in specified path
 yarn plop component
 ```
 
-## Learn More
+## Licence
 
-You can learn more on [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
+© 2022 Apptension Sp. z o.o.
+
+Built and maintained by Apptension.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
