@@ -22,7 +22,7 @@ The Tech Radar is a list of technologies along with their assessment result pres
 
 Apptension Tech Radar uses Contentful CMS for data storage and will not work locally right from the start as required keys are not provided in the source code.
 
-To conntect your own Contentful space see `.env.example` file for required keys and `src/shared/hooks/useContentfulData.ts` along with `src/shared/services/api/contentful.ts` to see how we pull Contenful data currently.
+To connect your own Contentful space see `.env.example` file for required keys and `src/shared/hooks/useContentfulData.ts` along with `src/shared/services/api/contentful.ts` to see how we pull Contentful data currently.
 
 Or connect your own preferable CMS or other data source.
 
@@ -52,12 +52,12 @@ yarn start
 
 Open [http://localhost:3000](http://localhost:300) to view it in the browser.
 
-The page will realod if you make edits.  
+The page will reload if you make edits.  
 You will also see any lint errors in the console.
 
 ### Tag Version in the Title
 
-Tag version in title is taken from **package.json** file.
+The tag version in the title is taken from **package.json** file.
 
 `"version": "2.0" => Tech Radar 2.0`
 
@@ -84,13 +84,13 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point, you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However, we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 #### `yarn extract-intl language1, language2, [...]`
 
-Automatically generates `.json` files with messages gathered from application.
+Automatically generates `.json` files with messages gathered from the application.
 
 #### `yarn lint`
 
@@ -104,13 +104,13 @@ Generate Redux module (reducer, saga, selectors, action types, action creators, 
 yarn plop module
 ```
 
-Generate Redux container and its react component in specified path:
+Generate Redux container and its react component in the specified path:
 
 ```Shell
 yarn plop container
 ```
 
-Generate React component (class or function) in specified path
+Generate React component (class or function) in the specified path
 
 ```Shell
 yarn plop component
