@@ -58,7 +58,10 @@ export const Icon = styled.span`
 
 export const OutIcon = styled(OutIconSVG)``;
 
-export const ArrowIcon = styled(ArrowIconSVG)``;
+export const ArrowIcon = styled(ArrowIconSVG)`
+  width: 24px;
+  height: 14px;
+`;
 
 interface ContainerProps extends ThemeProps<ButtonTheme> {
   withoutHoverEffects?: boolean;

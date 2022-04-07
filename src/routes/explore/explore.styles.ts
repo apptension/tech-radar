@@ -59,7 +59,7 @@ export const Toolbar = styled(ToolbarComponent)`
   left: calc(50% + ${SIDEBAR_WIDTH / 2}px);
   transform: translateX(-50%);
   bottom: 24px;
-  z-index: ${zIndex.contentOverlay};
+  z-index: 12;
   max-width: calc(100% - ${SIDEBAR_WIDTH}px);
 `;
 
