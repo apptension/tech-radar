@@ -7,7 +7,7 @@ import * as colors from '../../../theme/color';
 import { hideBubble, highlightLegend, showBubble, toggleQuadrant, translate } from '../../utils/radarUtils';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { setArea, setLevel } from '../../../modules/filters/filters.actions';
-import { openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
@@ -59,6 +59,7 @@ export const Radar = ({
   const radarRef = useRef(null);
 
   const dispatch = useDispatch();
+  const handleCloseTechnologyPopup = () => dispatch(closeTechnologyPopup());
   const handleAreaSelect = (option: FilterType) => dispatch(setArea(option));
   const handleLevelSelect = (option: FilterType) => dispatch(setLevel(option));
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
@@ -122,6 +123,7 @@ export const Radar = ({
 
     renderedSectors
       .on('click', (event, d) => {
+        handleCloseTechnologyPopup();
         handleAreaSelect(quadrants[d.quadrant].name);
       })
       .on('mouseover', (event: MouseEvent, d) => {
@@ -133,6 +135,8 @@ export const Radar = ({
 
     renderedAreaLabels
       .on('click', (event, d) => {
+        quadrants.map((el) => (el.name !== quadrants[d.quadrant].name ? toggleQuadrant(el.position, false) : null));
+        handleCloseTechnologyPopup();
         handleAreaSelect(quadrants[d.quadrant].name);
       })
       .on('mouseover', (event: MouseEvent, d) => {
@@ -157,6 +161,8 @@ export const Radar = ({
 
     renderedRingLabels
       .on('click', (event, d) => {
+        quadrants.map((el) => toggleQuadrant(el.position, false));
+        handleCloseTechnologyPopup();
         handleLevelSelect(d.name);
       })
       .on('mouseover', (event: MouseEvent, d) => {

@@ -133,6 +133,7 @@ export const Explore = () => {
   const renderViewerControls = renderWhenTrue(() => (
     <>
       <Toolbar
+        quadrants={radarQuadrants}
         areaOptions={pluckNameFromList(radarQuadrants)}
         levelOptions={pluckNameFromList(radarRings)}
         teamOptions={pluckNameFromList(radarTeams)}
