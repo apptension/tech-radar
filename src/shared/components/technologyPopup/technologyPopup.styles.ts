@@ -148,12 +148,12 @@ export const Block = styled.div`
 export const BlockButton = styled.button<{ isClickAble: boolean }>`
   margin: 0;
   border: none;
-  cursor: pointer;
+  cursor: ${({ isClickAble }) => (isClickAble ? 'pointer' : 'none')};
   pointer-events: ${({ isClickAble }) => (isClickAble ? 'auto' : 'none')};
   ${blockStyles};
 
   &:hover {
-    background-color: ${color.codGray2};
+    background-color: ${({ isClickAble }) => (isClickAble ? `${color.codGray2}` : `${color.mineShaft}`)};
   }
 `;
 
