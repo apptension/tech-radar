@@ -3,6 +3,7 @@ import { color } from '../../../theme';
 import { tooltipDelay, transition } from '../../utils/constants';
 
 export const SVG = styled.svg`
+  width: 100%;
   overflow: visible;
 
   .radar,
