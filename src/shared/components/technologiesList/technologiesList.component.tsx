@@ -43,7 +43,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
-
+  const isTouchDevice = Boolean('ontouchstart' in window || navigator.maxTouchPoints);
   const dispatch = useDispatch();
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
@@ -62,6 +62,37 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
     }
 
     return isTechnologyInactive ? color.mineShaft : color.silver;
+  };
+
+  const handleOpenTechnologyPopup = (technology: RadarTechnology) => {
+    hideBubble();
+    handleOpenPopup(technology.id);
+    unhighlightBlip({
+      id: technology.id?.toString() || '',
+      ring: technology.ring,
+      color: getBlipColor(technology.inactive, hasNoAreaSelected),
+    });
+  };
+
+  const handleShowTags = (technology: RadarTechnology) => {
+    setHoveredItem(technology.id);
+    toggleQuadrant(technology.quadrant, true);
+    highlightBlip({ id: technology.id || '', ring: technology.ring });
+    highlightLegend({ id: technology.id || '' });
+    const blipData = getBlipDataById(technology.id || '');
+    showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
+  };
+
+  const handleHideTags = (technology: RadarTechnology) => {
+    setHoveredItem(null);
+    toggleQuadrant(technology.quadrant, false);
+    unhighlightBlip({
+      id: technology.id?.toString() || '',
+      ring: technology.ring,
+      color: getBlipColor(technology.inactive, hasNoAreaSelected),
+    });
+    highlightLegend({ id: technology.id || '', mode: 'off' });
+    hideBubble();
   };
 
   if (emptyResults.search) {
@@ -86,40 +117,36 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
         {sortedTechnologies.map((technology) => (
           <ListItem
             showTechnology={!technology.inactive}
-            showPointer={!!technology.description.length}
             key={`list-item-${technology.id}`}
-            onClick={() => {
-              if (technology.description) {
-                hideBubble();
-                handleOpenPopup(technology.id);
-                unhighlightBlip({
-                  id: technology.id?.toString() || '',
-                  ring: technology.ring,
-                  color: getBlipColor(technology.inactive, hasNoAreaSelected),
-                });
-              }
-            }}
             onMouseEnter={() => {
-              setHoveredItem(technology.id);
-              toggleQuadrant(technology.quadrant, true);
-              highlightBlip({ id: technology.id || '', ring: technology.ring });
-              highlightLegend({ id: technology.id || '' });
-              const blipData = getBlipDataById(technology.id || '');
-              showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
+              if (isTouchDevice) return;
+
+              handleShowTags(technology);
             }}
             onMouseLeave={() => {
-              setHoveredItem(null);
-              toggleQuadrant(technology.quadrant, false);
-              unhighlightBlip({
-                id: technology.id?.toString() || '',
-                ring: technology.ring,
-                color: getBlipColor(technology.inactive, hasNoAreaSelected),
-              });
-              highlightLegend({ id: technology.id || '', mode: 'off' });
-              hideBubble();
+              handleHideTags(technology);
             }}
           >
-            <ListLabel id={`list-item-${technology.id}`}>{technology.label}</ListLabel>
+            <ListLabel
+              id={`list-item-${technology.id}`}
+              showPointer={!!technology.description.length}
+              onTouchStart={() => {
+                if (technology.description) {
+                  handleOpenTechnologyPopup(technology);
+                } else {
+                  handleShowTags(technology);
+                }
+              }}
+              onClick={() => {
+                if (technology.description) {
+                  handleOpenTechnologyPopup(technology);
+                } else {
+                  handleShowTags(technology);
+                }
+              }}
+            >
+              {technology.label}
+            </ListLabel>
             <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
               <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
                 {rings[technology.ring].name}
