@@ -236,13 +236,13 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
     return {
       clipx: function (d: any) {
         const c = bounded_box(d, cartesian_min, cartesian_max);
-        const p = bounded_ring(polar(c), polar_min.r + 15, polar_max.r - 15);
+        const p = bounded_ring(polar(c), polar_min.r + 35, polar_max.r - 35);
         d.x = cartesian(p).x;
         return d.x;
       },
       clipy: function (d: any) {
         const c = bounded_box(d, cartesian_min, cartesian_max);
-        const p = bounded_ring(polar(c), polar_min.r + 15, polar_max.r - 15);
+        const p = bounded_ring(polar(c), polar_min.r + 35, polar_max.r - 35);
         d.y = cartesian(p).y;
         return d.y;
       },
@@ -311,7 +311,7 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
     if (d.ring === 0) {
       blip.append('circle').classed('outer', true).attr('r', 9).attr('fill', 'url(#mainGradient)');
 
-      blip.append('circle').classed('circle', true).attr('r', 5.5);
+      blip.append('circle').classed('circle', true).attr('r', 4.5);
     } else if (d.ring === 1) {
       blip
         .append('rect')
