@@ -203,8 +203,20 @@ export const Radar = ({
     }
   }, [quadrantSectors, technologies]);
 
+  const applySelectedByTechnology = (d: any) => {
+    const selectedTechnology = technologies.filter((el) => el.id === technologyId);
+
+    if (selectedTechnology.length) {
+      return d.quadrant === selectedTechnology[0].quadrant;
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     blips?.classed('selected', (d) => technologyId === d.id);
+    quadrantSectors?.classed('selected', (d) => applySelectedByTechnology(d));
+    areaLabels?.classed('selected', (d) => applySelectedByTechnology(d));
   }, [technologyId]);
 
   return <SVG ref={radarRef} />;

@@ -39,7 +39,8 @@ export const SVG = styled.svg`
     }
 
     &:hover,
-    &.active {
+    &.active,
+    &.selected {
       & > rect {
         fill: ${color.silver};
       }
@@ -61,7 +62,8 @@ export const SVG = styled.svg`
       opacity: 0;
     }
 
-    &.active {
+    &.active,
+    &.selected {
       circle {
         opacity: 1;
       }
