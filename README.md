@@ -1,10 +1,14 @@
-# Apptension Tech Radar
+![Apptension Tech Radar](./public/images/og_image.png)
 
 ## Overview
 
 Bootstrapped with [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
 
 The Tech Radar is a tool to support development teams at Apptension to pick the best technologies for new projects. It allows for knowledge and experience sharing, to reflect technology decisions and evolve our technology landscape.
+
+![Filtered Radar](./images/radar.png)
+
+![Technology Details](./images/radar_tech.png)
 
 ## What is the Tech Radar?
 
@@ -17,6 +21,14 @@ The Tech Radar is a list of technologies along with their assessment result pres
 **Assess** - Technologies that are promising and have clear potential value-add for us; technologies worth to invest some research and prototyping efforts in to see if it has impact. Assess technologies have higher risks; they are often brand new and highly unproven in our organisation.
 
 **Hold** - Technologies not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. Hold technologies should not be used for new projects, but usually can be continued for existing projects.
+
+## Features
+
+- Technical Radar with technologies in 4 categories and 4 adoption levels
+- Search to filter out elements on the radar
+- Filtering by adoption levels and teams who use specific technologies/tools
+- Details view with logo, description, alternatives and links
+- Mobile support
 
 ## Data source
 
