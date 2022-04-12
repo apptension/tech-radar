@@ -236,13 +236,13 @@ export const renderTechnologies = ({ radar, technologies, rings }: RenderTechnol
     return {
       clipx: function (d: any) {
         const c = bounded_box(d, cartesian_min, cartesian_max);
-        const p = bounded_ring(polar(c), polar_min.r + 35, polar_max.r - 35);
+        const p = bounded_ring(polar(c), polar_min.r + 10, polar_max.r - 35);
         d.x = cartesian(p).x;
         return d.x;
       },
       clipy: function (d: any) {
         const c = bounded_box(d, cartesian_min, cartesian_max);
-        const p = bounded_ring(polar(c), polar_min.r + 35, polar_max.r - 35);
+        const p = bounded_ring(polar(c), polar_min.r + 10, polar_max.r - 35);
         d.y = cartesian(p).y;
         return d.y;
       },

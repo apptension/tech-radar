@@ -72,6 +72,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
       ring: technology.ring,
       color: getBlipColor(technology.inactive, hasNoAreaSelected),
     });
+    toggleQuadrant(technology.quadrant, false);
   };
 
   const handleShowTags = (technology: RadarTechnology) => {
