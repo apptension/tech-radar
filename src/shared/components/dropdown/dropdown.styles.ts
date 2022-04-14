@@ -23,9 +23,15 @@ export const Container = styled.div`
   position: relative;
   background: ${color.codGray};
   border: ${border.boldWhite};
+  transition: background 0.25s ease-in-out;
+  cursor: pointer;
 
   ${mediaQuery.desktop} {
     padding: 0 24px;
+  }
+
+  &:hover {
+    background: ${color.black};
   }
 `;
 
@@ -37,6 +43,7 @@ export const LabelTagContainer = styled.div`
 
 export const Label = styled.label`
   ${BodyMedium};
+  cursor: pointer;
 `;
 
 export const Tag = styled(TagComponent)`

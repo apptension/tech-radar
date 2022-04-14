@@ -38,6 +38,7 @@ export const mediaQuery = {
   mobile: `@media ${getBreakpointMediaQuery(Breakpoint.MOBILE)}`,
   tablet: `@media ${getBreakpointMediaQuery(Breakpoint.TABLET)}`,
   desktop: `@media ${getBreakpointMediaQuery(Breakpoint.DESKTOP)}`,
+  desktopWide: `@media ${getBreakpointMediaQuery(Breakpoint.DESKTOP_WIDE)}`,
 };
 
 export const media = (breakpoint: Breakpoint, opts: { landscape?: boolean; retina?: boolean } = {}) => {

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil, mathMod } from 'ramda';
+import { pathOr, forEachObjIndexed, sortBy, prop, pluck, isNil } from 'ramda';
 import { color } from '../../theme';
 import { RADAR_SEED, RADAR_SEED_MULTIPLIER } from '../components/radar/radar.constants';
 import {
@@ -15,10 +15,8 @@ import {
   RadarRing,
   RadarTeam,
   RadarTechnology,
-  RotateDataProps,
   UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
-import { sizes } from '../../theme/media';
 
 // custom random number generator, to make random sequence reproducible
 // source: https://stackoverflow.com/questions/521295
@@ -76,20 +74,6 @@ export const translate = ({ x, y }: Point) => {
   return `translate(${x}, ${y})`;
 };
 
-const MIN_WINDOW_HEIGHT = 800;
-const MAX_WINDOW_HEIGHT = 1080;
-
-export const getRadarScale = (): { scale: number; fullSize: boolean } => {
-  const isFullWidth = window.innerWidth >= sizes.desktopFull;
-  const isFullHeight = window.innerHeight >= MAX_WINDOW_HEIGHT;
-  const isShortHeight = window.innerHeight < MIN_WINDOW_HEIGHT;
-
-  if (isFullWidth && isFullHeight) return { scale: 0.95, fullSize: true };
-  if (isFullWidth && !isFullHeight) return { scale: 0.8, fullSize: true };
-  if (!isFullWidth && !isShortHeight && !isFullHeight) return { scale: 0.64, fullSize: false };
-  return { scale: 0.55, fullSize: false };
-};
-
 export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
   const tooltip = d3.select('#bubble text').text(label);
   const tooltipNode = tooltip.node() as SVGGraphicsElement | null;
@@ -99,10 +83,10 @@ export const showBubble = ({ label, x, y, ring }: BubbleInterface) => {
       .attr('transform', translate({ x: x - 8, y: ring === 3 ? y - 18 : y - 14 }))
       .style('opacity', 1);
     d3.select('#bubble rect')
-      .attr('x', -bbox.width - 36)
-      .attr('y', 0)
-      .attr('width', bbox.width + 20)
-      .attr('height', bbox.height + 14)
+      .attr('x', -bbox.width - 38)
+      .attr('y', -4)
+      .attr('width', bbox.width + 24)
+      .attr('height', bbox.height + 20)
       .style('filter', `drop-shadow(2px 4px 2px rgba(0, 0, 0, .1))`);
     tooltip.attr('x', -bbox.width - 26).attr('y', 16);
   }
@@ -118,17 +102,22 @@ export const changeHighlight = ({
   id,
   shape,
   opacity,
+  hide,
   fill = 'url(#mainGradient)',
 }: {
   id: string;
   shape: string;
   opacity: number;
   fill?: string;
+  hide?: boolean;
 }) => {
-  const outerBlip = d3.select(`#blip-${id} ${shape}`);
-  outerBlip.style('opacity', opacity);
-  const fullBlip = d3.selectAll(`#blip-${id} ${shape}`);
-  fullBlip.style('fill', fill);
+  const blip = d3.select(`#blip-${id}`);
+  const outerBlip = blip.select(shape);
+  const blipInner = blip.select('.blip-inner');
+  outerBlip.style('opacity', hide ? '' : opacity);
+  const fullBlip = blip.selectAll(shape);
+  fullBlip.style('fill', hide ? '' : fill);
+  blipInner.style('transform', hide ? '' : 'scale(1.5)');
 };
 
 export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
@@ -147,19 +136,19 @@ export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
   }
 };
 
-export const unhighlightBlip = ({ id, ring, color }: BlipInterface) => {
+export const unhighlightBlip = ({ id, ring }: BlipInterface) => {
   switch (ring) {
     case 0:
-      changeHighlight({ id, shape: 'circle', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'circle', opacity: 0, hide: true });
       break;
     case 1:
-      changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'rect', opacity: 0, hide: true });
       break;
     case 2:
-      changeHighlight({ id, shape: 'rect', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'rect', opacity: 0, hide: true });
       break;
     default:
-      changeHighlight({ id, shape: 'path', opacity: 0, fill: color });
+      changeHighlight({ id, shape: 'path', opacity: 0, hide: true });
   }
 };
 
@@ -175,6 +164,21 @@ export const highlightLegend = ({ id, mode = 'on' }: { id: string; mode?: 'on' |
   if (listItemTags) listItemTags.style.opacity = mode === 'on' ? '1' : '0';
 };
 
+export const toggleQuadrant = (quadrant: number, show: boolean) => {
+  const quadrantElement = document.querySelector(`#quadrant-${quadrant}`) as HTMLDivElement;
+  const areaLabelElement = document.querySelector(`#area-label-${quadrant}`) as HTMLDivElement;
+  const isActiveElement = quadrantElement?.classList.contains('active') && show;
+  if (quadrantElement && !isActiveElement) {
+    const circle = quadrantElement.querySelector('circle');
+    const rect = areaLabelElement.querySelector('rect');
+    const text = areaLabelElement.querySelector('text');
+
+    if (circle) circle.style.opacity = show ? '0.5' : '';
+    if (rect) rect.style.fill = show ? color.silver : '';
+    if (text) text.style.fill = show ? color.mineShaft : '';
+  }
+};
+
 export const getRotationForQuadrant = (quadrant: number | null) => {
   switch (quadrant) {
     case 0:
@@ -188,36 +192,6 @@ export const getRotationForQuadrant = (quadrant: number | null) => {
     default:
       return 90;
   }
-};
-
-export const getPxToSubtractQuadrantLabelText = (smallerLabels: boolean): { subtractX: number; subtractY: number } => {
-  return { subtractX: smallerLabels ? 6 : 0, subtractY: smallerLabels ? 0 : -1 };
-};
-
-export const getPxToAddQuadrantLabelTextZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? 22.5 : -1000 };
-  }
-  return { addX: isZoomed ? 56 : -1000, addY: isZoomed ? -27.7 : -1000 };
-};
-
-export const getPxToAddQuadrantLabelRectZoomed = (
-  fullSize: boolean,
-  isZoomed: boolean
-): { addX: number; addY: number } => {
-  const isSmallScreen = window.innerWidth < sizes.desktopWide || window.innerHeight < MIN_WINDOW_HEIGHT;
-  if (isSmallScreen) {
-    return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? 20 : -1000 };
-  }
-  return { addX: isZoomed ? 42 : -1000, addY: isZoomed ? -30 : -1000 };
-};
-
-export const destroyRadar = () => {
-  d3.select('.radar').remove();
 };
 
 export const getQuadrantPosition = (position: string) => {
@@ -243,18 +217,43 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
   return getQuadrantPosition(position);
 };
 
+const getIcon = (item: ContentfulTechnology) => ({
+  url: pathOr('', ['fields', 'icon', 'fields', 'file', 'url'], item),
+  description: pathOr('', ['fields', 'icon', 'fields', 'description'], item),
+  name: pathOr('', ['fields', 'icon', 'fields', 'title'], item),
+});
+
+const getAlternatives = (item: ContentfulTechnology) => {
+  const alternatives = pathOr([], ['fields', 'alternatives'], item);
+
+  return alternatives.map((alternative) => ({
+    label: pathOr('', ['fields', 'label'], alternative),
+    description: pathOr('', ['fields', 'description'], alternative),
+    id: pathOr('', ['sys', 'id'], alternative),
+    icon: getIcon(alternative),
+  }));
+};
+
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
-  forEachObjIndexed<ContentfulTechnology[]>((item, i) => {
+  forEachObjIndexed<ContentfulTechnology[]>((item) => {
     const quadrant = getTechnologyQuadrant(item as ContentfulTechnology);
     return radarTechnologies.push({
       label: pathOr('', ['fields', 'label'], item),
+      description: pathOr('', ['fields', 'description'], item),
+      specification: pathOr('', ['fields', 'specification'], item),
+      github: pathOr('', ['fields', 'github'], item),
+      projects: pathOr('', ['fields', 'projects'], item),
+      experts: pathOr('', ['fields', 'experts'], item),
+      icon: getIcon(item as ContentfulTechnology),
+      alternatives: getAlternatives(item as ContentfulTechnology),
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
+      ringLabel: pathOr('', ['fields', 'ring', 'fields', 'label'], item),
       team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
       inactive: false,
-      id: i.toString(),
+      id: pathOr('', ['sys', 'id'], item),
     });
   }, technologies);
   return radarTechnologies;
@@ -266,6 +265,7 @@ export const getRadarRings = (rings: ContentfulRing[]) => {
     (item) =>
       radarRings.push({
         name: pathOr('', ['fields', 'label'], item),
+        description: pathOr('', ['fields', 'description'], item),
         position: pathOr(1, ['fields', 'position'], item),
       }),
     rings
@@ -293,6 +293,7 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
     (item) =>
       radarQuadrants.push({
         name: pathOr('', ['fields', 'label'], item),
+        description: pathOr('', ['fields', 'description'], item),
         position: getQuadrantPosition(pathOr('top-left', ['fields', 'position'], item)),
       }),
     quadrants
@@ -347,39 +348,4 @@ export const getUpdatedRadarTechnologies = ({
   }));
 
   return { updatedTechnologies, activeIds: activeTechnologiesIds };
-};
-
-export const getRotatedData = ({
-  activeQuadrant,
-  newQuadrant,
-  technologies,
-  quadrants,
-  searchText,
-  teamValue,
-  levelValue,
-  rings,
-}: RotateDataProps) => {
-  const moveQuadrantsBy = !isNil(activeQuadrant) ? newQuadrant - activeQuadrant : 0;
-
-  const { updatedTechnologies } = getUpdatedRadarTechnologies({
-    searchText,
-    teamValue,
-    levelValue,
-    rings,
-    technologies,
-    activeQuadrant,
-  });
-
-  const movedTechnologies = updatedTechnologies.map((technology) => {
-    return {
-      ...technology,
-      quadrant: mathMod(technology.quadrant + moveQuadrantsBy, 4),
-    };
-  });
-  const movedQuadrants = quadrants.map((quadrant) => ({
-    ...quadrant,
-    position: mathMod(quadrant.position + moveQuadrantsBy, 4),
-  }));
-
-  return { movedQuadrants: sortBy(prop('position'), movedQuadrants), movedTechnologies };
 };

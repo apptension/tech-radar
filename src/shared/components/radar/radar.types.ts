@@ -4,28 +4,27 @@ export type RadarTechnology = {
   label: string;
   quadrant: number;
   ring: number;
+  ringLabel: string;
   inactive: boolean;
   id: string;
   team: string;
+  color?: string;
+  description: string;
+  specification: string;
+  github: string;
+  projects: string;
+  icon: { url: string; description: string; name: string };
+  alternatives: {
+    label: string;
+    icon: { url: string; description: string; name: string };
+    id: string;
+    description: string;
+  }[];
+  experts: string;
 };
-export type RadarRing = { name: string; position: number };
-export type RadarQuadrant = { name: string; position: number };
+export type RadarRing = { name: string; position: number; description: string };
+export type RadarQuadrant = { name: string; position: number; description: string };
 export type RadarTeam = { name: string };
-
-export type RadarConfig = {
-  svg_id: string;
-  width: number;
-  height: number;
-  colors: { background: string; grid: string; inactive: string; default: string };
-  print_layout: true;
-  quadrants: RadarQuadrant[];
-  rings: RadarRing[];
-  technologies: RadarTechnology[];
-  zoomed_quadrant?: number;
-  active_quadrant?: number;
-  previously_active_quadrant?: number;
-  active_ring?: number;
-};
 
 export enum QuadrantPositions {
   bottomRight,
@@ -47,11 +46,24 @@ export type ContentfulTeam = { fields: { label: string } };
 
 export type ContentfulQuadrant = { fields: { label: string; position: QuadrantPositions } };
 
+export type ContentfulIcon = { fields: { file: { url: string }; description: string; name: string } };
+
+export type ContentfulAlternative = {
+  fields: { label: string; icon: ContentfulIcon; id: string; description: string };
+};
+
 export type ContentfulTechnology = {
   fields: {
     label: string;
     quadrant: ContentfulQuadrant;
     ring: ContentfulRing;
+    description: string;
+    specification: string;
+    github: string;
+    projects: string;
+    icon: ContentfulIcon;
+    alternatives: ContentfulAlternative[];
+    experts: string;
   };
   sys: { contentType: { id: string } };
 };
@@ -92,3 +104,5 @@ export interface RotateDataProps {
 }
 
 export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;
+
+export type Rings = { radius: number; description: string; name: string }[];

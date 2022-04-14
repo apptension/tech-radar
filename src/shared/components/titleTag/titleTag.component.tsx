@@ -21,7 +21,7 @@ export const TitleTag = ({ size = TitleTagSize.LARGE, withLogo = false, classNam
     <ThemeProvider theme={theme}>
       <Container className={className}>
         {withLogo && (
-          <LogoLink to={ROUTES.home} withBorder={false}>
+          <LogoLink to={ROUTES.home} withBorder={false} withoutHoverEffects>
             <Logo full={false} />
           </LogoLink>
         )}

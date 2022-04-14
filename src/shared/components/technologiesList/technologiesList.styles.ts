@@ -21,6 +21,7 @@ export const List = styled.ul`
   flex-direction: column;
   flex: 1;
   overflow-y: scroll;
+  overflow-x: hidden;
   padding: 0;
   margin: 16px 0 0;
   list-style: none;
@@ -32,18 +33,19 @@ export const List = styled.ul`
   }
 `;
 
-export const ListItem = styled.li`
+export const ListItem = styled.li<{ showTechnology: boolean }>`
   margin: 6px 0;
-  cursor: default;
-  display: flex;
   justify-content: space-between;
+  display: ${({ showTechnology }) => (showTechnology ? 'flex' : 'none')};
 `;
 
-export const ListLabel = styled.div`
+export const ListLabel = styled.div<{ showPointer: boolean }>`
   color: ${colors.boulder};
   font-size: 18px;
   display: flex;
   align-items: center;
+  cursor: ${({ showPointer }) => (showPointer ? 'pointer' : 'default')};
+  flex-grow: 1;
 `;
 
 export const ListItemTags = styled.div<{ visible: boolean }>`
@@ -51,6 +53,7 @@ export const ListItemTags = styled.div<{ visible: boolean }>`
   height: 26px;
 
   opacity: ${(props) => (props.visible ? 1 : 0)};
+  pointer-events: ${(props) => (props.visible ? 'initial' : 'none')};
   > :last-child {
     margin-right: 8px;
   }

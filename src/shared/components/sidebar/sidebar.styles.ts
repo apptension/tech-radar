@@ -5,8 +5,8 @@ import { mediaQuery } from '../../../theme/media';
 import { Tag as TagComponent } from '../tag';
 import { Toolbar as ToolbarComponent } from '../toolbar';
 
-export const Container = styled.div`
-  padding: 120px 25px 10px;
+export const Container = styled.div<{ noPadding: boolean }>`
+  padding: ${({ noPadding }) => (noPadding ? '120px 0 0' : '120px 25px 10px')};
   color: ${colors.white};
   height: 100%;
   width: 100%;
@@ -14,7 +14,7 @@ export const Container = styled.div`
   flex-flow: column nowrap;
 
   ${mediaQuery.desktop} {
-    padding: 70px 35px 25px;
+    padding: 38px 35px 25px;
   }
 `;
 
@@ -29,7 +29,7 @@ export const FiltersContainer = styled.div`
 
   ${mediaQuery.desktop} {
     order: 0;
-    align-items: flex-end;
+    flex-direction: column;
     margin-top: 10px;
   }
 `;
@@ -42,5 +42,10 @@ export const Tag = styled(TagComponent)`
 export const Toolbar = styled(ToolbarComponent)`
   max-width: 100%;
   order: 3;
+  margin-top: 12px;
   margin-bottom: 50px;
+
+  ${mediaQuery.desktop} {
+    margin-top: 0;
+  }
 `;

@@ -11,6 +11,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   icon?: ButtonIcon;
   withBorder?: boolean;
+  withoutHoverEffects?: boolean;
 }
 
 export const Button = ({
@@ -21,6 +22,7 @@ export const Button = ({
   size = ButtonSize.REGULAR,
   onClick = empty,
   withBorder = true,
+  withoutHoverEffects = false,
   icon,
   ...other
 }: ButtonProps) => {
@@ -44,7 +46,14 @@ export const Button = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Container onClick={onClick} className={className} disabled={disabled} {...other}>
+      <Container
+        onClick={onClick}
+        className={className}
+        disabled={disabled}
+        withoutHoverEffects={withoutHoverEffects}
+        withMovingArrow={icon === 'arrow'}
+        {...other}
+      >
         {children}
         {renderIcon(!!icon)}
       </Container>

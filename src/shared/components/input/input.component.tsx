@@ -5,14 +5,19 @@ import { Container, SearchIcon, InputWrapper, InputComponent, InputUnderline } f
 interface InputProps {
   withSearchIcon?: boolean;
   placeholder?: string;
+  defaultValue?: string;
   onChange: (text: string) => void;
 }
 
-export const Input = ({ withSearchIcon, placeholder, onChange }: InputProps) => {
+export const Input = ({ withSearchIcon, placeholder, onChange, defaultValue = '' }: InputProps) => {
   return (
     <Container>
       <InputWrapper>
-        <InputComponent placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+        <InputComponent
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          defaultValue={defaultValue}
+        />
         {withSearchIcon && <SearchIcon />}
       </InputWrapper>
       <InputUnderline />

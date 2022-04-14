@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { selectArea, selectLevel, selectTeam } from '../../../modules/filters/filters.selectors';
+import { selectArea, selectLevel, selectSearch, selectTeam } from '../../../modules/filters/filters.selectors';
 import { setArea, setLevel, setSearch, setTeam } from '../../../modules/filters/filters.actions';
-import { renderWhenTrue } from '../../utils/rendering';
+import { renderWhenTrue, renderWhenTrueOtherwise } from '../../utils/rendering';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
 import { TagSize } from '../tag/tag.types';
 import messages from '../input/input.messages';
@@ -15,6 +15,8 @@ import { TechnologiesList } from '../technologiesList';
 import { pluckNameFromList } from '../../utils/radarUtils';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
+import { TechnologyPopup } from '../technologyPopup';
+import { selectTechnologyPopupOpen } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { Container, FiltersContainer, Tag, Toolbar } from './sidebar.styles';
 
 interface SidebarProps {
@@ -29,9 +31,11 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const intl = useIntl();
   const dispatch = useDispatch();
+  const technologyPopupOpen = useSelector(selectTechnologyPopupOpen);
   const areaValue = useSelector(selectArea);
   const levelValue = useSelector(selectLevel);
   const teamValue = useSelector(selectTeam);
+  const searchText = useSelector(selectSearch);
   const hasNoAreaSelected = !areaValue;
 
   const debouncedOnTextChange = useDebouncedCallback((text: string) => {
@@ -67,9 +71,15 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
     />
   ));
 
-  return (
-    <Container>
-      <Input withSearchIcon placeholder={intl.formatMessage(messages.placeholder)} onChange={debouncedOnTextChange} />
+  const renderTechnologyPopup = () => <TechnologyPopup technologies={technologies} />;
+  const renderFilteringList = () => (
+    <>
+      <Input
+        withSearchIcon
+        placeholder={intl.formatMessage(messages.placeholder)}
+        onChange={debouncedOnTextChange}
+        defaultValue={searchText || ''}
+      />
       <FiltersContainer>
         {renderAreaFilterTag(!!areaValue)}
         {renderLevelFilterTag(!!levelValue)}
@@ -82,6 +92,10 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
         hasNoAreaSelected={hasNoAreaSelected}
       />
       {renderToolbar(!isDesktop)}
-    </Container>
+    </>
   );
+
+  const renderContent = renderWhenTrueOtherwise(renderTechnologyPopup, renderFilteringList);
+
+  return <Container noPadding={technologyPopupOpen}>{renderContent(technologyPopupOpen)}</Container>;
 };

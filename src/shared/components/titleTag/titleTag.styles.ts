@@ -5,6 +5,7 @@ import { H1, H1small } from '../../../theme/typography';
 import { Logo as LogoComponent } from '../logo/logo.component';
 import { Link as LinkComponent } from '../link';
 import { VersionTag as VersionTagComponent } from '../versionTag';
+import { color } from '../../../theme';
 import { TitleTagSize, TitleTagTheme } from './titleTag.types';
 
 const titleSmallStyles = css`
@@ -39,8 +40,15 @@ export const TitleWithTagWrapper = styled.div`
   })};
 `;
 
-export const VersionTag = styled(VersionTagComponent)`
+interface VersionTagProps {
+  size: TitleTagSize;
+}
+
+export const VersionTag = styled(VersionTagComponent)<VersionTagProps>`
   margin-left: 16px;
+  padding-top: ${({ size }) => (size === TitleTagSize.LARGE ? '7px' : '6px')};
+  padding-right: ${({ size }) => (size === TitleTagSize.LARGE ? '12px' : '10px')};
+  background: ${color.gradient};
 `;
 
 export const Logo = styled(LogoComponent)`
