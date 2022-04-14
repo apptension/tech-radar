@@ -4,7 +4,7 @@
 
 Bootstrapped with [Create React App (by Apptension)](https://github.com/apptension/react-scripts-apptension).
 
-The Tech Radar is a tool to support development teams at Apptension to pick the best technologies for new projects. It allows for knowledge and experience sharing, to reflect technology decisions and evolve our technology landscape.
+The Tech Radar is a tool to support production teams at Apptension in presenting in front of the clients and candidates what technologies, tools, and methods they use internally. It also allows to pick the best stacks for our future projects based on shared experience levels and trends we pursue.
 
 ![Filtered Radar](./images/radar.png)
 
