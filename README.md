@@ -40,6 +40,8 @@ Or connect your own preferable CMS or other data source.
 
 For reference of data models used in the tech radar see types defined in `src/shared/components/radar/radar.types.ts`.
 
+You can also import the data models into your own Contentful space with `contentful-cli` (see export file `contentful-export-2022-04-18.json`).
+
 ## Usage
 
 ### Node version
