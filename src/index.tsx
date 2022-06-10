@@ -13,6 +13,7 @@ import { Router } from 'react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import 'normalize.css/normalize.css';
 import './theme/global';
+import TagManager from 'react-gtm-module';
 import configureStore from './config/store';
 import browserHistory from './shared/utils/history';
 import UnsupportedBrowserDetection from './shared/utils/unsupported/unsupportedBrowserDetection';
@@ -39,6 +40,14 @@ openSansObserver.load().then(
 const initialState = {};
 const store = configureStore(initialState);
 const queryClient = new QueryClient();
+
+if (process.env.REACT_APP_GTM_ID) {
+  const tagManagerArgs = {
+    gtmId: process.env.REACT_APP_GTM_ID || '',
+  };
+
+  TagManager.initialize(tagManagerArgs);
+}
 
 const render = (): void => {
   const NextApp = require('./routes').default;
