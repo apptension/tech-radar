@@ -43,7 +43,7 @@ const queryClient = new QueryClient();
 
 if (process.env.REACT_APP_GTM_ID) {
   const tagManagerArgs = {
-    gtmId: process.env.REACT_APP_GTM_ID || '',
+    gtmId: process.env.REACT_APP_GTM_ID,
   };
 
   TagManager.initialize(tagManagerArgs);
