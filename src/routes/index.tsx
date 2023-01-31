@@ -14,6 +14,8 @@ const Home = asyncComponent(() => import('./home'), 'Home');
 const Explore = asyncComponent(() => import('./explore'), 'Explore');
 // @ts-ignore
 const NotFound = asyncComponent(() => import('./notFound'), 'NotFound');
+// @ts-ignore
+const AdminPanel = asyncComponent(() => import('./adminPanel'), 'AdminPanel');
 
 export default () => {
   return (
@@ -29,7 +31,7 @@ export default () => {
           </Route>
 
           <Route exact path={ROUTES.adminPanel}>
-            <p>Admin panel will be done in next task</p>
+            <AdminPanel />
           </Route>
 
           {/* <-- INJECT ROUTE --> */}

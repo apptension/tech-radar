@@ -16529,6 +16529,13 @@ react-colorful@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.5.0.tgz#8359f218984a927095477a190ab9927eaf865c0c"
   integrity sha512-BuzrlrM0ylg7coPkXOrRqlf2BgHLw5L44sybbr9Lg4xy7w9e5N7fGYbojOO0s8J0nvrM3PERN2rVFkvSa24lnQ==
 
+react-data-grid@7.0.0-canary.49:
+  version "7.0.0-canary.49"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-7.0.0-canary.49.tgz#31625d271b6c7e48b2f3d12fb2cae378f619744d"
+  integrity sha512-Jg83CRnJtnv8FF7XeByke0KiJBdfXbnrsS08yxHcqyfTEICFmMdtQXFK8SCH7prYR3HiGtI6NqYcju/Te2Kl6w==
+  dependencies:
+    clsx "^1.1.1"
+
 react-dev-utils@^10.0.0:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
