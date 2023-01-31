@@ -27,6 +27,11 @@ export default () => {
           <Route exact path={ROUTES.explore}>
             <Explore />
           </Route>
+
+          <Route exact path={ROUTES.adminPanel}>
+            <p>Admin panel will be done in next task</p>
+          </Route>
+
           {/* <-- INJECT ROUTE --> */}
 
           <Route>
