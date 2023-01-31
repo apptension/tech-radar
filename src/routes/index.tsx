@@ -29,7 +29,7 @@ export default () => {
           </Route>
 
           <Route exact path={ROUTES.adminPanel}>
-            <p>Admin panel will be done in next task</p>
+            <p>Coming soon</p>
           </Route>
 
           {/* <-- INJECT ROUTE --> */}
