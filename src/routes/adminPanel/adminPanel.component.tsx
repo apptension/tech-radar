@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import Select from 'react-select';
-import { AdminPanelTable } from './adminPanelTable';
-import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable/adminPanelTable.styles';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { AdminPanelTable } from './adminPanelTable';
+import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable/adminPanelTable.styles';
 import { TechnologyTable } from './adminPanel.types';
 
 export const AdminPanel = () => {
