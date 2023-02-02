@@ -4,16 +4,16 @@ import { ExtendedRadarTechnology, TechnologyTable } from '../adminPanel.types';
 import { TablePagination } from './tablePagination.component';
 
 interface EditableCellProps {
-  value: string;
+  value: string | number;
   row: { index: number };
   column: { id: string };
-  updateMyData: (index: number, id: string, value: string) => void;
+  updateMyData: (index: number, id: string, value: string | number) => void;
 }
 
 interface TableProps {
   columns: TechnologyTable[];
   data: ExtendedRadarTechnology[];
-  updateMyData: (rowIndex: number, columnId: number, value: number) => void;
+  updateMyData: (rowIndex: number, columnId: string, value: string | number) => void;
   skipPageReset?: boolean;
 }
 

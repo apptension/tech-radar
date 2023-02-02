@@ -43,9 +43,23 @@ export const AdminPanel = () => {
             Header: 'quadrant',
             accessor: 'quadrant',
             Cell: (row) => {
-              const { value } = row;
+              const {
+                value,
+                updateMyData,
+                row: { id },
+                column: { Header },
+              } = row;
+
               return (
-                <StyledSelect value={value}>
+                <StyledSelect
+                  value={value}
+                  onChange={(e) => {
+                    const {
+                      target: { value },
+                    } = e;
+                    updateMyData(parseInt(id), Header, value);
+                  }}
+                >
                   {!!radarQuadrants &&
                     radarQuadrants.map(({ position, name }: RadarQuadrant) => {
                       return (
@@ -62,12 +76,21 @@ export const AdminPanel = () => {
             Header: 'ring',
             accessor: 'ring',
             Cell: (row) => {
-              const { value } = row;
+              const {
+                value,
+                updateMyData,
+                row: { id },
+                column: { Header },
+              } = row;
+
               return (
                 <StyledSelect
                   value={value}
                   onChange={(e) => {
-                    console.log(e);
+                    const {
+                      target: { value },
+                    } = e;
+                    updateMyData(parseInt(id), Header, value);
                   }}
                 >
                   {!!radarRings &&
@@ -118,13 +141,29 @@ export const AdminPanel = () => {
             Header: 'alternatives',
             accessor: 'alternatives',
             Cell: (row) => {
-              const { value } = row;
-              const selected = value?.map(({ id, label }: RadarTechnology) => ({ value: id, label }));
-              const options = radarTechnologies?.map(({ id, label }: RadarTechnology) => ({ value: id, label }));
+              const {
+                value,
+                updateMyData,
+                row: { id },
+                column: { Header },
+              } = row;
+              const options = radarTechnologies?.map((tech: RadarTechnology) => ({ value: tech.id, ...tech }));
 
               return (
                 <InlineSelectContainer>
-                  <Select defaultValue={selected} isMulti options={options} classNamePrefix="react-select" />
+                  <Select
+                    defaultValue={value}
+                    isMulti
+                    options={options}
+                    onChange={(data) => {
+                      const updatedData = data.map((item) => {
+                        delete item.value;
+                        return item;
+                      });
+                      updateMyData(parseInt(id), Header, updatedData);
+                    }}
+                    classNamePrefix="react-select"
+                  />
                 </InlineSelectContainer>
               );
             },
@@ -142,33 +181,33 @@ export const AdminPanel = () => {
             },
           },
           {
-            Header: 'ringLabel',
-            accessor: 'ringLabel',
-            Cell: (row) => {
-              const { value } = row;
-              return <p>{value}</p>;
-            },
-          },
-          {
             Header: 'team',
             accessor: 'team',
             Cell: (row) => {
-              const { value } = row;
+              const {
+                value,
+                updateMyData,
+                row: { id },
+                column: { Header },
+              } = row;
+
               return (
                 <StyledSelect
                   value={value}
                   onChange={(e) => {
-                    console.log(e);
+                    const {
+                      target: { value },
+                    } = e;
+                    updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {!!radarTeams &&
-                    radarTeams.map(({ name }: RadarTeam) => {
-                      return (
-                        <option key={name} value={name} selected={name === value}>
-                          {name}
-                        </option>
-                      );
-                    })}
+                  {radarTeams?.map(({ name }: RadarTeam) => {
+                    return (
+                      <option key={name} value={name} selected={name === value}>
+                        {name}
+                      </option>
+                    );
+                  })}
                 </StyledSelect>
               );
             },

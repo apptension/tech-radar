@@ -32,7 +32,7 @@ export const Styles = styled.div`
 
       input {
         font-size: 1rem;
-        padding: 0;
+        padding: 0 0 0 5px;
         margin: 0;
         border: 0;
         height: ${HEIGHT};
@@ -118,4 +118,5 @@ export const InlineSelectContainer = styled.div`
 export const StyledSelect = styled.select`
   height: ${HEIGHT};
   min-width: 100px;
+  border-radius: 4px;
 `;
