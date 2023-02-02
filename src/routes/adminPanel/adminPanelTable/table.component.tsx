@@ -7,13 +7,13 @@ interface EditableCellProps {
   value: string | number;
   row: { index: number };
   column: { id: string };
-  updateMyData: (index: number, id: string, value: string | number) => void;
+  updateMyData: (index: number, id: string, value: string | number | boolean) => void;
 }
 
 interface TableProps {
   columns: TechnologyTable[];
   data: ExtendedRadarTechnology[];
-  updateMyData: (rowIndex: number, columnId: string, value: string | number) => void;
+  updateMyData: (rowIndex: number, columnId: string, value: string | number | boolean) => void;
   skipPageReset?: boolean;
 }
 

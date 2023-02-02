@@ -176,8 +176,26 @@ export const AdminPanel = () => {
             Header: 'inactive',
             accessor: 'inactive',
             Cell: (row) => {
-              const { value } = row;
-              return <input type="checkbox" id="inactive" name="inactive" value={value} />;
+              const {
+                value,
+                updateMyData,
+                row: { id },
+                column: { Header },
+              } = row;
+              return (
+                <input
+                  type="checkbox"
+                  id="inactive"
+                  name="inactive"
+                  onChange={(e) => {
+                    const {
+                      target: { checked },
+                    } = e;
+                    updateMyData(parseInt(id), Header, checked);
+                  }}
+                  value={value}
+                />
+              );
             },
           },
           {

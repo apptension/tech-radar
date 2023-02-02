@@ -20,7 +20,7 @@ export const AdminPanelTable = ({ columns, rows }: AdminPanelTableProps) => {
     setSkipPageReset(false);
   }, [data]);
 
-  const updateMyData = (rowIndex: number, columnId: string, value: string | number) => {
+  const updateMyData = (rowIndex: number, columnId: string, value: string | number | boolean) => {
     setSkipPageReset(true);
     setData(() =>
       rows.map((row, index) => {
