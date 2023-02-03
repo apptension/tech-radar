@@ -27,11 +27,11 @@ export const TablePagination = ({
     <div className="pagination">
       <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
         {'<<'}
-      </button>{' '}
-      <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+      </button>
+      <button onClick={previousPage} disabled={!canPreviousPage}>
         {'<'}
       </button>{' '}
-      <button onClick={() => nextPage()} disabled={!canNextPage}>
+      <button onClick={nextPage} disabled={!canNextPage}>
         {'>'}
       </button>{' '}
       <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>

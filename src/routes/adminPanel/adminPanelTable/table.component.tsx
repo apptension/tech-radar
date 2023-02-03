@@ -60,7 +60,7 @@ export function Table({ columns, data, updateMyData, skipPageReset }: TableProps
       columns,
       data,
       defaultColumn,
-      autoResetPage: !skipPageReset,
+      autoResetPageIndex: !skipPageReset,
       updateMyData,
     },
     usePagination
@@ -83,9 +83,9 @@ export function Table({ columns, data, updateMyData, skipPageReset }: TableProps
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                })}
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                ))}
               </tr>
             );
           })}

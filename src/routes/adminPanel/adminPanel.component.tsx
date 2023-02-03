@@ -60,14 +60,13 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {!!radarQuadrants &&
-                    radarQuadrants.map(({ position, name }: RadarQuadrant) => {
-                      return (
-                        <option key={name} value={position} selected={position === value}>
-                          {name}
-                        </option>
-                      );
-                    })}
+                  {radarQuadrants?.map(({ position, name }: RadarQuadrant) => {
+                    return (
+                      <option key={name} value={position} selected={position === value}>
+                        {name}
+                      </option>
+                    );
+                  })}
                 </StyledSelect>
               );
             },
@@ -93,14 +92,13 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {!!radarRings &&
-                    radarRings.map(({ position, name }: RadarRing, index: number) => {
-                      return (
-                        <option key={name} value={index} selected={position === value}>
-                          {name}
-                        </option>
-                      );
-                    })}
+                  {radarRings?.map(({ position, name }: RadarRing, index: number) => {
+                    return (
+                      <option key={name} value={index} selected={position === value}>
+                        {name}
+                      </option>
+                    );
+                  })}
                 </StyledSelect>
               );
             },

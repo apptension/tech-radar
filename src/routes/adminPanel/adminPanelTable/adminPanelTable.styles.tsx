@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { color } from '../../../theme';
+import { regularBlack } from '../../../theme/border';
 
 export const HEIGHT = '40px';
 
@@ -9,7 +11,7 @@ export const Styles = styled.div`
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border: ${regularBlack};
 
     tr {
       :last-child {
@@ -23,8 +25,8 @@ export const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      border-bottom: ${regularBlack};
+      border-right: ${regularBlack};
 
       :last-child {
         border-right: 0;
@@ -95,7 +97,7 @@ export const InlineSelectContainer = styled.div`
 
   .react-select__option {
     text-align: left;
-    color: black;
+    color: ${color.black};
     &:hover,
     &:focus {
       background: none;
