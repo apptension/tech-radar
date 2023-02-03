@@ -99,4 +99,4 @@ export function Table({ columns, data, updateMyData }: TableProps) {
       />
     </>
   );
-};
+}

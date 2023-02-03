@@ -47,10 +47,10 @@ export const TablePagination = ({
       </button>
       <button onClick={previousPage} disabled={!canPreviousPage}>
         {'<'}
-      </button>{' '}
+      </button>
       <button onClick={nextPage} disabled={!canNextPage}>
         {'>'}
-      </button>{' '}
+      </button>
       <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
         {'>>'}
       </button>{' '}
