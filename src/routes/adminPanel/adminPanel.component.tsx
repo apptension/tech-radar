@@ -62,7 +62,7 @@ export const AdminPanel = () => {
                 >
                   {radarQuadrants?.map(({ position, name }: RadarQuadrant) => {
                     return (
-                      <option key={name} value={position} selected={position === value}>
+                      <option key={name} value={position}>
                         {name}
                       </option>
                     );
@@ -94,7 +94,7 @@ export const AdminPanel = () => {
                 >
                   {radarRings?.map(({ position, name }: RadarRing, index: number) => {
                     return (
-                      <option key={name} value={index} selected={position === value}>
+                      <option key={name} value={index}>
                         {name}
                       </option>
                     );
@@ -219,7 +219,7 @@ export const AdminPanel = () => {
                 >
                   {radarTeams?.map(({ name }: RadarTeam) => {
                     return (
-                      <option key={name} value={name} selected={name === value}>
+                      <option key={name} value={name}>
                         {name}
                       </option>
                     );
@@ -231,8 +231,10 @@ export const AdminPanel = () => {
         ],
       },
     ],
-    []
+    [extendedRadarTechnologies]
   );
+
+  if (extendedRadarTechnologies.length === 0) return <p>Data not found...</p>;
 
   return <AdminPanelTable columns={technologiesColumns} rows={extendedRadarTechnologies} />;
 };

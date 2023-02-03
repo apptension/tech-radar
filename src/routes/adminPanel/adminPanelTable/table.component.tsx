@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { ExtendedRadarTechnology, TechnologyTable } from '../adminPanel.types';
 import { TablePagination } from './tablePagination.component';
@@ -14,10 +14,9 @@ interface TableProps {
   columns: TechnologyTable[];
   data: ExtendedRadarTechnology[];
   updateMyData: (rowIndex: number, columnId: string, value: string | number | boolean) => void;
-  skipPageReset?: boolean;
 }
 
-export function Table({ columns, data, updateMyData, skipPageReset }: TableProps) {
+export function Table({ columns, data, updateMyData }: TableProps) {
   const EditableCell = ({ value: initialValue, row: { index }, column: { id }, updateMyData }: EditableCellProps) => {
     const [value, setValue] = useState(initialValue);
 
@@ -28,10 +27,6 @@ export function Table({ columns, data, updateMyData, skipPageReset }: TableProps
     const onBlur = () => {
       updateMyData(index, id, value);
     };
-
-    useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
 
     return <input value={value} onChange={onChange} onBlur={onBlur} />;
   };
@@ -60,7 +55,6 @@ export function Table({ columns, data, updateMyData, skipPageReset }: TableProps
       columns,
       data,
       defaultColumn,
-      autoResetPageIndex: !skipPageReset,
       updateMyData,
     },
     usePagination
@@ -105,4 +99,4 @@ export function Table({ columns, data, updateMyData, skipPageReset }: TableProps
       />
     </>
   );
-}
+};
