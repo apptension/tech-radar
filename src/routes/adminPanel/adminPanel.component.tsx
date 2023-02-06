@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Select from 'react-select';
+import { useHistory } from 'react-router-dom';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { AdminPanelTable } from '../../shared/components/adminPanelTable';
@@ -8,10 +9,13 @@ import {
   InlineSelectContainer,
   StyledSelect,
 } from '../../shared/components/adminPanelTable/adminPanelTable.styles';
+import { ROUTES } from '../app.constants';
 import { TechnologyTable } from './adminPanel.types';
 
 export const AdminPanel = () => {
+  const [token, setToken] = useState(sessionStorage.getItem('accessToken'));
   const { radarTechnologies, radarTeams, radarQuadrants, radarRings } = useContentfulData();
+  const history = useHistory();
 
   const extendedRadarTechnologies = radarTechnologies?.map((tech: RadarTechnology) => {
     const {
@@ -228,6 +232,8 @@ export const AdminPanel = () => {
     ],
     [extendedRadarTechnologies]
   );
+
+  if (!token) history.push(ROUTES.login);
 
   if (extendedRadarTechnologies.length === 0) return <p>Data not found...</p>;
 
