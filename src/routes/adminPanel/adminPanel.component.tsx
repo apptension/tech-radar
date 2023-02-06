@@ -1,13 +1,32 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
+import { useHistory } from 'react-router-dom';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { ROUTES } from '../app.constants';
+import { Login } from '../login';
 import { AdminPanelTable } from './adminPanelTable';
 import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable/adminPanelTable.styles';
 import { TechnologyTable } from './adminPanel.types';
 
 export const AdminPanel = () => {
+  const [token, setToken] = useState(sessionStorage.getItem('accessToken'));
   const { radarTechnologies, radarTeams, radarQuadrants, radarRings } = useContentfulData();
+  const history = useHistory();
+
+  // useEffect(() => {
+  //   const handleStorage = (event: StorageEvent) => {
+  //     console.log("🚀 ~ file: adminPanel.component.tsx:16 ~ handleStorage ~ event", event)
+  //     if (event.key === 'accessToken') {
+  //       setToken(event.newValue);
+  //     }
+  //   };
+
+  //   window.addEventListener('storage', handleStorage);
+  //   return () => {
+  //     window.removeEventListener('storage', handleStorage);
+  //   };
+  // }, []);
 
   const extendedRadarTechnologies = radarTechnologies?.map((tech: RadarTechnology) => {
     const {
@@ -233,6 +252,10 @@ export const AdminPanel = () => {
     ],
     [extendedRadarTechnologies]
   );
+
+  console.log('🚀 ~ file: adminPanel.component.tsx:254 ~ AdminPanel ~ token', token);
+
+  if (!token) history.push(ROUTES.login);
 
   if (extendedRadarTechnologies.length === 0) return <p>Data not found...</p>;
 
