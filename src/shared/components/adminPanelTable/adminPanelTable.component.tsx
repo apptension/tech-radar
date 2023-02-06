@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { ExtendedRadarTechnology, TechnologyTable } from '../adminPanel.types';
-import { signOutFromAdminPanel } from '../auth/firebase';
+import { ExtendedRadarTechnology, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { signOutFromAdminPanel } from '../../../routes/adminPanel/auth/firebase';
+import { Table } from '../table';
 import { Styles } from './adminPanelTable.styles';
-import { Table } from './table.component';
 
 interface AdminPanelTableProps {
   columns: TechnologyTable[];
@@ -11,12 +11,12 @@ interface AdminPanelTableProps {
 }
 
 export const AdminPanelTable = ({ columns, rows }: AdminPanelTableProps) => {
-  const [data, setData] = useState<ExtendedRadarTechnology[]>(() => rows);
+  const [data, setData] = useState<ExtendedRadarTechnology[]>(rows);
   const history = useHistory();
 
   const updateMyData = (rowIndex: number, columnId: string, value: string | number | boolean) => {
-    setData(() =>
-      data.map((row, index) => {
+    setData((prevState) =>
+      prevState.map((row, index) => {
         if (index === rowIndex) {
           return {
             ...rows[rowIndex],

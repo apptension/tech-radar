@@ -3,30 +3,19 @@ import Select from 'react-select';
 import { useHistory } from 'react-router-dom';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { AdminPanelTable } from '../../shared/components/adminPanelTable';
+import {
+  HEIGHT,
+  InlineSelectContainer,
+  StyledSelect,
+} from '../../shared/components/adminPanelTable/adminPanelTable.styles';
 import { ROUTES } from '../app.constants';
-import { Login } from '../login';
-import { AdminPanelTable } from './adminPanelTable';
-import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable/adminPanelTable.styles';
 import { TechnologyTable } from './adminPanel.types';
 
 export const AdminPanel = () => {
   const [token, setToken] = useState(sessionStorage.getItem('accessToken'));
   const { radarTechnologies, radarTeams, radarQuadrants, radarRings } = useContentfulData();
   const history = useHistory();
-
-  // useEffect(() => {
-  //   const handleStorage = (event: StorageEvent) => {
-  //     console.log("🚀 ~ file: adminPanel.component.tsx:16 ~ handleStorage ~ event", event)
-  //     if (event.key === 'accessToken') {
-  //       setToken(event.newValue);
-  //     }
-  //   };
-
-  //   window.addEventListener('storage', handleStorage);
-  //   return () => {
-  //     window.removeEventListener('storage', handleStorage);
-  //   };
-  // }, []);
 
   const extendedRadarTechnologies = radarTechnologies?.map((tech: RadarTechnology) => {
     const {
@@ -79,13 +68,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarQuadrants?.map(({ position, name }: RadarQuadrant) => {
-                    return (
-                      <option key={name} value={position}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarQuadrants?.map(({ position, name }: RadarQuadrant) => (
+                    <option key={name} value={position}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },
@@ -111,13 +98,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarRings?.map(({ position, name }: RadarRing, index: number) => {
-                    return (
-                      <option key={name} value={index}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarRings?.map(({ position, name }: RadarRing, index: number) => (
+                    <option key={name} value={index}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },
@@ -173,10 +158,7 @@ export const AdminPanel = () => {
                     isMulti
                     options={options}
                     onChange={(data) => {
-                      const updatedData = data.map((item) => {
-                        delete item.value;
-                        return item;
-                      });
+                      const updatedData = data.map(({ value, ...item }) => item);
                       updateMyData(parseInt(id), Header, updatedData);
                     }}
                     classNamePrefix="react-select"
@@ -236,13 +218,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarTeams?.map(({ name }: RadarTeam) => {
-                    return (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarTeams?.map(({ name }: RadarTeam) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },
@@ -252,8 +232,6 @@ export const AdminPanel = () => {
     ],
     [extendedRadarTechnologies]
   );
-
-  console.log('🚀 ~ file: adminPanel.component.tsx:254 ~ AdminPanel ~ token', token);
 
   if (!token) history.push(ROUTES.login);
 

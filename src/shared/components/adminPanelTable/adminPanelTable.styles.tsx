@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { color } from '../../../theme';
-import { regularBlack } from '../../../theme/border';
+import { color, border } from '../../../theme/index';
 
 export const HEIGHT = '40px';
 
@@ -11,7 +10,7 @@ export const Styles = styled.div`
 
   table {
     border-spacing: 0;
-    border: ${regularBlack};
+    border: ${border.regularBlack};
 
     tr {
       :last-child {
@@ -25,8 +24,8 @@ export const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: ${regularBlack};
-      border-right: ${regularBlack};
+      border-bottom: ${border.regularBlack};
+      border-right: ${border.regularBlack};
 
       :last-child {
         border-right: 0;
