@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { StyledSpan, PaginationWrapper, StyledInput, StyledFirstWord } from './tablePagination.styles';
 
 interface TablePaginationProps {
   gotoPage: (page: number) => void;
@@ -41,7 +42,7 @@ export const TablePagination = ({
   };
 
   return (
-    <div className="pagination">
+    <PaginationWrapper>
       <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
         {'<<'}
       </button>
@@ -53,24 +54,23 @@ export const TablePagination = ({
       </button>
       <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
         {'>>'}
-      </button>{' '}
-      <span>
-        Page{' '}
+      </button>
+      <StyledSpan>
+        <StyledFirstWord>Page</StyledFirstWord>
         <strong>
           {pageIndex + 1} of {pageOptions.length}
-        </strong>{' '}
-      </span>
-      <span>
-        | Go to page:{' '}
-        <input
+        </strong>
+      </StyledSpan>
+      <StyledSpan>
+        Go to page:
+        <StyledInput
           type="number"
           min={1}
           max={pageOptions.length}
           defaultValue={pageIndex + 1}
           onChange={handleGoToPage}
-          style={{ width: '100px' }}
         />
-      </span>{' '}
+      </StyledSpan>
       <select value={pageSize} onChange={handlePageSize}>
         {[10, 20, 30, 40, 50].map((pageSize) => (
           <option key={pageSize} value={pageSize}>
@@ -78,6 +78,6 @@ export const TablePagination = ({
           </option>
         ))}
       </select>
-    </div>
+    </PaginationWrapper>
   );
 };

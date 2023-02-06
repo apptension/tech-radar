@@ -2,8 +2,12 @@ import { useMemo } from 'react';
 import Select from 'react-select';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
-import { AdminPanelTable } from './adminPanelTable';
-import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable/adminPanelTable.styles';
+import { AdminPanelTable } from '../../shared/components/adminPanelTable';
+import {
+  HEIGHT,
+  InlineSelectContainer,
+  StyledSelect,
+} from '../../shared/components/adminPanelTable/adminPanelTable.styles';
 import { TechnologyTable } from './adminPanel.types';
 
 export const AdminPanel = () => {
@@ -60,13 +64,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarQuadrants?.map(({ position, name }: RadarQuadrant) => {
-                    return (
-                      <option key={name} value={position}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarQuadrants?.map(({ position, name }: RadarQuadrant) => (
+                    <option key={name} value={position}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },
@@ -92,13 +94,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarRings?.map(({ position, name }: RadarRing, index: number) => {
-                    return (
-                      <option key={name} value={index}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarRings?.map(({ position, name }: RadarRing, index: number) => (
+                    <option key={name} value={index}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },
@@ -154,10 +154,7 @@ export const AdminPanel = () => {
                     isMulti
                     options={options}
                     onChange={(data) => {
-                      const updatedData = data.map((item) => {
-                        delete item.value;
-                        return item;
-                      });
+                      const updatedData = data.map(({ value, ...item }) => item);
                       updateMyData(parseInt(id), Header, updatedData);
                     }}
                     classNamePrefix="react-select"
@@ -217,13 +214,11 @@ export const AdminPanel = () => {
                     updateMyData(parseInt(id), Header, value);
                   }}
                 >
-                  {radarTeams?.map(({ name }: RadarTeam) => {
-                    return (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    );
-                  })}
+                  {radarTeams?.map(({ name }: RadarTeam) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
                 </StyledSelect>
               );
             },

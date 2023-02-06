@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ExtendedRadarTechnology, TechnologyTable } from '../adminPanel.types';
+import { ExtendedRadarTechnology, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { Table } from '../table';
 import { Styles } from './adminPanelTable.styles';
-import { Table } from './table.component';
 
 interface AdminPanelTableProps {
   columns: TechnologyTable[];
@@ -9,11 +9,11 @@ interface AdminPanelTableProps {
 }
 
 export const AdminPanelTable = ({ columns, rows }: AdminPanelTableProps) => {
-  const [data, setData] = useState<ExtendedRadarTechnology[]>(() => rows);
+  const [data, setData] = useState<ExtendedRadarTechnology[]>(rows);
 
   const updateMyData = (rowIndex: number, columnId: string, value: string | number | boolean) => {
-    setData(() =>
-      data.map((row, index) => {
+    setData((prevState) =>
+      prevState.map((row, index) => {
         if (index === rowIndex) {
           return {
             ...rows[rowIndex],

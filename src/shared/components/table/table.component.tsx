@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTable, usePagination } from 'react-table';
-import { ExtendedRadarTechnology, TechnologyTable } from '../adminPanel.types';
-import { TablePagination } from './tablePagination.component';
+import { ExtendedRadarTechnology, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { TablePagination } from '../pagination';
 
 interface EditableCellProps {
   value: string | number;
