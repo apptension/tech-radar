@@ -2,7 +2,15 @@ import * as contentfulDelivery from 'contentful';
 import * as contentful from 'contentful-management';
 import { isEmpty, values, any } from 'ramda';
 
-export const contentfulConfig = {
+export interface ContentfulConfigType {
+  space: string;
+  accessToken: string;
+  environment: string;
+  contentManagementApi: string;
+  contentManagementToken: string;
+}
+
+export const contentfulConfig: ContentfulConfigType = {
   space: process.env.REACT_APP_CONTENTFUL_SPACE_ID || '',
   accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN || '',
   environment: process.env.REACT_APP_CONTENTFUL_ENVIRONMENT || '',

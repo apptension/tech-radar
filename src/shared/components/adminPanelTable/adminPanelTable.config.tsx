@@ -2,7 +2,7 @@ import Select from 'react-select';
 import { AlternativesTableType, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
 import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable.styles';
-import { updateEntry } from './adminPanelTable.utils';
+import { deleteEntry, updateEntry } from './adminPanelTable.utils';
 
 interface CreateTechnologiesColumnsProps {
   radarTechnologies: RadarTechnology[];
@@ -205,10 +205,11 @@ export const createTechnologiesColumns = ({
           accessor: 'delete',
           Cell: (rowData) => {
             const {
-              row: { values },
+              row: {
+                values: { id },
+              },
             } = rowData;
-            // console.log('Mariusz row: ', values);
-            return <button>Delete</button>;
+            return <button onClick={() => deleteEntry(id)}>Delete</button>;
           },
         },
       ],
