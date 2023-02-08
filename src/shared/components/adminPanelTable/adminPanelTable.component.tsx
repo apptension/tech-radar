@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { ExtendedRadarTechnology, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { signOutFromAdminPanel } from '../../../routes/adminPanel/auth/firebase';
+import { TableRadarTechnology } from '../radar/radar.types';
 import { Table } from '../table';
 import { Styles } from './adminPanelTable.styles';
 
 interface AdminPanelTableProps {
   columns: TechnologyTable[];
-  rows: ExtendedRadarTechnology[];
+  rows: TableRadarTechnology[];
 }
 
 export const AdminPanelTable = ({ columns, rows }: AdminPanelTableProps) => {
-  const [data, setData] = useState<ExtendedRadarTechnology[]>(rows);
+  const [data, setData] = useState<TableRadarTechnology[]>(rows);
   const history = useHistory();
 
   const updateMyData = (rowIndex: number, columnId: string, value: string | number | boolean) => {

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTable, usePagination } from 'react-table';
-import { ExtendedRadarTechnology, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { TablePagination } from '../pagination';
+import { TableRadarTechnology } from '../radar/radar.types';
 
 interface EditableCellProps {
   value: string | number;
@@ -12,7 +13,7 @@ interface EditableCellProps {
 
 interface TableProps {
   columns: TechnologyTable[];
-  data: ExtendedRadarTechnology[];
+  data: TableRadarTechnology[];
   updateMyData: (rowIndex: number, columnId: string, value: string | number | boolean) => void;
 }
 

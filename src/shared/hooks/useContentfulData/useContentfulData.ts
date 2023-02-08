@@ -10,7 +10,13 @@ import {
   ContentfulData,
   ContentfulTeam,
 } from '../../components/radar/radar.types';
-import { getRadarQuadrants, getRadarRings, getRadarTeams, getRadarTechnologies } from '../../utils/radarUtils';
+import {
+  getRadarQuadrants,
+  getRadarRings,
+  getRadarTeams,
+  getRadarTechnologies,
+  getRadarTechnologiesForTable,
+} from '../../utils/radarUtils';
 
 export const getEntries =
   (content: ContentfulData | undefined) =>
@@ -58,6 +64,7 @@ export const useContentfulData = () => {
     async (): Promise<ContentfulData | undefined> => {
       try {
         const { items } = await client.getEntries({ limit: 1000 });
+        console.log('🚀 ~ file: useContentfulData.ts:61 ~ items', items);
 
         return items as ContentfulData;
       } catch (error) {
@@ -71,11 +78,13 @@ export const useContentfulData = () => {
 
   const selectData = getEntries(contentfulQuery.data);
   const technologies = selectData('entry') as ContentfulTechnology[];
+  console.log('🚀 ~ file: useContentfulData.ts:74 ~ useContentfulData ~ technologies', technologies);
   const quadrants = selectData('quadrant') as ContentfulQuadrant[];
   const rings = selectData('ring') as ContentfulRing[];
   const teams = selectData('team') as ContentfulTeam[];
 
   const radarTechnologies = getRadarTechnologies(technologies);
+  const tableRadarTechnologies = getRadarTechnologiesForTable(technologies);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
@@ -86,5 +95,6 @@ export const useContentfulData = () => {
     radarQuadrants,
     radarRings,
     radarTeams,
+    tableRadarTechnologies,
   };
 };
