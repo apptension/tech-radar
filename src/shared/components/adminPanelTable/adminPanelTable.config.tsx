@@ -1,6 +1,6 @@
 import Select from 'react-select';
-import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
-import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology, TableRadarTechnology } from '../radar/radar.types';
+import { AlternativesTableType, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
 import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable.styles';
 import { updateEntry } from './adminPanelTable.utils';
 
@@ -44,16 +44,13 @@ export const createTechnologiesColumns = ({
               column: { Header },
             } = row;
 
-            const defaultValue = value?.sys?.id;
-
             return (
               <StyledSelect
-                value={defaultValue}
+                value={value}
                 onChange={(e) => {
                   const {
                     target: { value },
                   } = e;
-                  console.log();
                   updateMyData(parseInt(id), Header, value);
                 }}
               >
@@ -77,11 +74,9 @@ export const createTechnologiesColumns = ({
               column: { Header },
             } = row;
 
-            const defaultValue = value?.sys?.id;
-
             return (
               <StyledSelect
-                value={defaultValue}
+                value={value}
                 onChange={(e) => {
                   const {
                     target: { value },
@@ -135,12 +130,14 @@ export const createTechnologiesColumns = ({
               column: { Header },
             } = row;
 
+            const defaultValue = value?.map((tech: AlternativesTableType) => ({ value: tech.id, ...tech }));
             const options = radarTechnologies?.map((tech: RadarTechnology) => ({ value: tech.id, ...tech }));
 
             return (
               <InlineSelectContainer>
                 <Select
-                  defaultValue={value}
+                  name="alternatives"
+                  defaultValue={defaultValue}
                   isMulti
                   options={options}
                   onChange={(data) => {
@@ -152,6 +149,7 @@ export const createTechnologiesColumns = ({
                     }));
                     updateMyData(parseInt(id), Header, updatedData);
                   }}
+                  isSearchable
                   classNamePrefix="react-select"
                 />
               </InlineSelectContainer>
@@ -161,32 +159,6 @@ export const createTechnologiesColumns = ({
         {
           Header: 'experts',
           accessor: 'experts',
-        },
-        {
-          Header: 'inactive',
-          accessor: 'inactive',
-          Cell: (row) => {
-            const {
-              value,
-              updateMyData,
-              row: { id },
-              column: { Header },
-            } = row;
-            return (
-              <input
-                type="checkbox"
-                id="inactive"
-                name="inactive"
-                onChange={(e) => {
-                  const {
-                    target: { checked },
-                  } = e;
-                  updateMyData(parseInt(id), Header, checked);
-                }}
-                value={value}
-              />
-            );
-          },
         },
         {
           Header: 'team',
@@ -199,11 +171,9 @@ export const createTechnologiesColumns = ({
               column: { Header },
             } = row;
 
-            const defaultValue = value?.sys?.id;
-
             return (
               <StyledSelect
-                value={defaultValue}
+                value={value}
                 onChange={(e) => {
                   const {
                     target: { value },

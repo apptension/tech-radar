@@ -18,6 +18,7 @@ interface TableProps {
 }
 
 export function Table({ columns, data, updateMyData }: TableProps) {
+  console.log('🚀 ~ file: table.component.tsx:21 ~ Table ~ data', data);
   const EditableCell = ({ value: initialValue, row: { index }, column: { id }, updateMyData }: EditableCellProps) => {
     const [value, setValue] = useState(initialValue);
 

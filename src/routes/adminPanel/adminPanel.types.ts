@@ -8,3 +8,14 @@ export type TechnologyTable = {
   Header: string;
   columns: TechnologyColumn[];
 };
+
+export type AlternativesTableType = {
+  description: string;
+  icon: {
+    description: string;
+    name: string;
+    url: string;
+  };
+  id: string;
+  lable: string;
+};

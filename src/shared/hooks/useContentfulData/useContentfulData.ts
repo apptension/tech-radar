@@ -64,7 +64,6 @@ export const useContentfulData = () => {
     async (): Promise<ContentfulData | undefined> => {
       try {
         const { items } = await client.getEntries({ limit: 1000 });
-        console.log('🚀 ~ file: useContentfulData.ts:61 ~ items', items);
 
         return items as ContentfulData;
       } catch (error) {
@@ -78,7 +77,6 @@ export const useContentfulData = () => {
 
   const selectData = getEntries(contentfulQuery.data);
   const technologies = selectData('entry') as ContentfulTechnology[];
-  console.log('🚀 ~ file: useContentfulData.ts:74 ~ useContentfulData ~ technologies', technologies);
   const quadrants = selectData('quadrant') as ContentfulQuadrant[];
   const rings = selectData('ring') as ContentfulRing[];
   const teams = selectData('team') as ContentfulTeam[];

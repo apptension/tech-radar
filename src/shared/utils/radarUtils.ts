@@ -273,9 +273,9 @@ export const getRadarTechnologiesForTable = (technologies: ContentfulTechnology[
       experts: pathOr('', ['fields', 'experts'], item),
       icon: getIcon(item as ContentfulTechnology),
       alternatives: getAlternatives(item as ContentfulTechnology),
-      quadrant: pathOr('', ['fields', 'quadrant'], item),
-      ring: pathOr('', ['fields', 'ring'], item),
-      team: pathOr('', ['fields', 'team'], item),
+      quadrant: pathOr('', ['fields', 'quadrant', 'sys', 'id'], item),
+      ring: pathOr('', ['fields', 'ring', 'sys', 'id'], item),
+      team: pathOr('', ['fields', 'team', 'sys', 'id'], item),
       inactive: false,
       id: pathOr('', ['sys', 'id'], item),
     });

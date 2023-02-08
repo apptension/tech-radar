@@ -1,14 +1,5 @@
 import { contentfulConfig, managementClient } from '../../services/api/contentful';
-import { ContentfulTechnology, RadarTechnology } from '../radar/radar.types';
-
-export const createTechnologiesRows = (technologies: ContentfulTechnology[]) => {
-  const arrayOfObjects = Object.values(technologies).flat();
-
-  return arrayOfObjects?.map((tech: ContentfulTechnology) => ({
-    id: tech.sys.id,
-    ...tech.fields,
-  }));
-};
+import { RadarTechnology } from '../radar/radar.types';
 
 export const updateEntry = (editedEntry: any) =>
   managementClient
@@ -27,10 +18,11 @@ export const updateEntry = (editedEntry: any) =>
       entry.fields.ring['en-US'] = prepareReference(ring);
       entry.fields.specification['en-US'] = specification;
       entry.fields.team['en-US'] = prepareReference(team);
+
       await entry.update();
       publishEntry(editedEntry);
     })
-    .then((entry) => alert(`Entry updated.`))
+    .then(() => alert(`Entry updated.`))
     .catch(console.error);
 
 export const publishEntry = (editedEntry: any) =>
@@ -41,7 +33,7 @@ export const publishEntry = (editedEntry: any) =>
     .then(async (entry) => {
       return await entry.publish();
     })
-    .catch((err) => console.log('Mariusz error'));
+    .catch((err) => console.log('error: ', err));
 
 export const deleteEntry = (editedEntry: any) =>
   managementClient
@@ -64,7 +56,6 @@ export const prepareAlternativesArray = ({ alternatives }: any) =>
   });
 
 export const prepareIcon = ({ icon }: any) => {
-  console.log('Mariusz icon: ', icon);
   return {
     sys: {
       id: icon.url,
@@ -75,10 +66,9 @@ export const prepareIcon = ({ icon }: any) => {
 };
 
 export const prepareReference = (reference: any) => {
-  const id = reference?.sys?.id || reference;
   return {
     sys: {
-      id,
+      id: reference,
       type: 'Link',
       linkType: 'Entry',
     },

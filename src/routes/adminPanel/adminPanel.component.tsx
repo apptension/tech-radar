@@ -12,7 +12,6 @@ export const AdminPanel = () => {
 
   const { radarTechnologies, radarTeams, radarQuadrants, radarRings, tableRadarTechnologies } = useContentfulData();
   const technologiesColumns = createTechnologiesColumns({ radarTechnologies, radarTeams, radarQuadrants, radarRings });
-  // const technologiesRows = createTechnologiesRows(tableRadarTechnologies)
 
   if (tableRadarTechnologies.length === 0) return <p>Data not found...</p>;
 
