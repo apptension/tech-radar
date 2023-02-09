@@ -5178,6 +5178,11 @@
   resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.2.7.tgz#226a9e31680835a6188e887f3988e60c04d3f6a3"
   integrity sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==
 
+"@types/json-patch@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/json-patch/-/json-patch-0.0.30.tgz#7c562173216c50529e70126ceb8e7a533f865e9b"
+  integrity sha512-MhCUjojzDhVLnZnxwPwa+rETFRDQ0ffjxYdrqOP6TBO2O0/Z64PV5tNeYApo4bc4y4frbWOrRwv/eEkXlI13Rw==
+
 "@types/json-schema@*", "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
@@ -6628,6 +6633,14 @@ axios@^0.22.0:
   integrity sha512-Z0U3uhqQeg1oNcihswf4ZD57O3NrR1+ZXhxaROaWpDmsDTx7T2HNBV2ulBtie2hwJptu8UvgnJoK+BIqdzh/1w==
   dependencies:
     follow-redirects "^1.14.4"
+
+axios@^0.27.1:
+  version "0.27.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
+  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
+  dependencies:
+    follow-redirects "^1.14.9"
+    form-data "^4.0.0"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -8269,6 +8282,18 @@ content-type@~1.0.4:
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
   integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
 
+contentful-management@^10.29.1:
+  version "10.29.1"
+  resolved "https://registry.yarnpkg.com/contentful-management/-/contentful-management-10.29.1.tgz#6afce7c674f4d3211acc7ae1ef4ccab367ba857a"
+  integrity sha512-lP929UAf/0fK7ZTjVXrj0O/b7+MtW490Vj8lAb0HGhKKNwS1VhG9q71sKyx/OvsHIYXqVy4zAlKOf2TfchMdiA==
+  dependencies:
+    "@types/json-patch" "0.0.30"
+    axios "^0.27.1"
+    contentful-sdk-core "^7.0.1"
+    fast-copy "^3.0.0"
+    lodash.isplainobject "^4.0.6"
+    type-fest "^3.0.0"
+
 contentful-resolve-response@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/contentful-resolve-response/-/contentful-resolve-response-1.3.0.tgz#79530897b109d326c47a32c4b327afa04966cbb7"
@@ -8282,6 +8307,17 @@ contentful-sdk-core@^6.9.0:
   integrity sha512-IUBkAU1sJuVaEa2Nv1NKK5ImqpBZ5Q3EmaCFmMZx/UHKa+i98nDCSTUBOL1aJnpZ/s3AaSramsh73VQ4aK2kyA==
   dependencies:
     fast-copy "^2.1.0"
+    lodash.isplainobject "^4.0.6"
+    lodash.isstring "^4.0.1"
+    p-throttle "^4.1.1"
+    qs "^6.9.4"
+
+contentful-sdk-core@^7.0.1:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/contentful-sdk-core/-/contentful-sdk-core-7.0.5.tgz#d7ad000d12da639f6ccf425e55591b4f2305f103"
+  integrity sha512-GG+DvFRwaoTeco072WjN+uyfpHs8Gilxl3ryJcXo3mlxeN/A/inbAqhX+RrKB5HNOVREdNWeMBAg0D7hLvlBXQ==
+  dependencies:
+    fast-copy "^2.1.7"
     lodash.isplainobject "^4.0.6"
     lodash.isstring "^4.0.1"
     p-throttle "^4.1.1"
@@ -10538,6 +10574,16 @@ fast-copy@^2.1.0:
   resolved "https://registry.yarnpkg.com/fast-copy/-/fast-copy-2.1.1.tgz#f5cbcf2df64215e59b8e43f0b2caabc19848083a"
   integrity sha512-Qod3DdRgFZ8GUIM6ygeoZYpQ0QLW9cf/FS9KhhjlYggcSZXWAemAw8BOCO5LuYCrR3Uj3qXDVTUzOUwG8C7beQ==
 
+fast-copy@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/fast-copy/-/fast-copy-2.1.7.tgz#affc9475cb4b555fb488572b2a44231d0c9fa39e"
+  integrity sha512-ozrGwyuCTAy7YgFCua8rmqmytECYk/JYAMXcswOcm0qvGoE3tPb7ivBeIHTOK2DiapBhDZgacIhzhQIKU5TCfA==
+
+fast-copy@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/fast-copy/-/fast-copy-3.0.0.tgz#875ebf33b13948ae012b6e51d33da5e6e7571ab8"
+  integrity sha512-4HzS+9pQ5Yxtv13Lhs1Z1unMXamBdn5nA4bEi1abYpDNSpSp7ODYQ1KPMF6nTatfEzgH6/zPvXKU1zvHiUjWlA==
+
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -10913,6 +10959,11 @@ follow-redirects@^1.14.4:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
   integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
 
+follow-redirects@^1.14.9:
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
+  integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
+
 fontfaceobserver@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/fontfaceobserver/-/fontfaceobserver-2.1.0.tgz#e2705d293e2c585a6531c2a722905657317a2991"
@@ -10998,6 +11049,15 @@ form-data@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-3.0.1.tgz#ebd53791b78356a99af9a300d4282c4d5eb9755f"
   integrity sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
+
+form-data@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
@@ -20308,6 +20368,11 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
+
+type-fest@^3.0.0:
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.5.6.tgz#f8f3a630c185fb5d66ca6950c7cbc2893deb6b84"
+  integrity sha512-6bd2bflx8ed7c99tc6zSTIzHr1/QG29bQoK4Qh8MYGnlPbODUzGxklLShjwc/xWQQFHgIci+y5Arv7Rbb0LjXw==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
