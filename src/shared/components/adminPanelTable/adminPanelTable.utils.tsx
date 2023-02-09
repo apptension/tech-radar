@@ -34,6 +34,18 @@ export const deleteEntry = (id: string) =>
     .then(() => alert('Entry deleted'))
     .catch((err) => console.debug('Error: ', err));
 
+export const uploadImage = (entryId: string, imageId: string) => {
+  getEnvironment(contentfulConfig)
+    .then((environment) => environment.getEntry(entryId))
+    .then(async (entry) => {
+      entry.fields.icon['en-US'] = prepareIcon(imageId);
+      return await entry.update();
+    })
+    .then(async (entry) => await entry.publish())
+    .then(() => alert(`Entry updated.`))
+    .catch((err) => console.debug(err));
+};
+
 export const prepareAlternativesArray = (alternatives: AlternativesTableType[]) =>
   alternatives?.map(({ id }: AlternativesTableType) => ({
     sys: {
@@ -43,9 +55,9 @@ export const prepareAlternativesArray = (alternatives: AlternativesTableType[]) 
     },
   }));
 
-export const prepareIcon = (icon: IconType) => ({
+export const prepareIcon = (id: string) => ({
   sys: {
-    id: icon.url,
+    id,
     linkType: 'Asset',
     type: 'Link',
   },

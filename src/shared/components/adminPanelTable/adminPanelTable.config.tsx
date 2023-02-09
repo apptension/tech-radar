@@ -1,6 +1,7 @@
 import Select from 'react-select';
 import { AlternativesTableType, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
+import { UploadImage } from '../uploadImage';
 import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable.styles';
 import { deleteEntry, updateEntry } from './adminPanelTable.utils';
 
@@ -117,6 +118,17 @@ export const createTechnologiesColumns = ({
               value: { url },
             } = row;
             return <img src={url} alt="brak zdjęcia" height={HEIGHT} />;
+          },
+        },
+        {
+          Header: 'iconUpload',
+          accessor: 'iconUpload',
+          Cell: (row) => {
+            const {
+              row: { values },
+            } = row;
+
+            return <UploadImage editedEntry={values} />;
           },
         },
         {
