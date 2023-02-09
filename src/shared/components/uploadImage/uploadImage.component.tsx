@@ -14,6 +14,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
   const [error, setError] = useState('');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files?.[0]) return null;
     setImage(event.target.files![0]);
   };
 
@@ -21,9 +22,15 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
     event.preventDefault();
     setLoading(true);
     setError('');
-    const fileName = image!.name;
-    const fileType = image!.type;
-    let imageId;
+
+    if (!image) {
+      alert('File is null!');
+      return;
+    }
+
+    const fileName = image.name;
+    const fileType = image.type;
+    let imageId = null;
 
     try {
       const arrayBuffer: ArrayBuffer = await new Promise((resolve, reject) => {

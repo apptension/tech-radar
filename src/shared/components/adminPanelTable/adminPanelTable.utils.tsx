@@ -1,4 +1,4 @@
-import { AlternativesTableType, EditedEntry, IconType } from '../../../routes/adminPanel/adminPanel.types';
+import { AlternativesTableType, EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
 import { contentfulConfig, ContentfulConfigType, managementClient } from '../../services/api/contentful';
 
 export const getEnvironment = (contentfulConfig: ContentfulConfigType) =>
