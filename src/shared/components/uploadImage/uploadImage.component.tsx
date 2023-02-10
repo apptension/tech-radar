@@ -24,7 +24,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
     setError('');
 
     if (!image) {
-      alert('File is null!');
+      alert('The file is invalid!');
       return;
     }
 
