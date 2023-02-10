@@ -2,12 +2,19 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { color } from '../../theme';
 
+const sharedStyles = `
+    width: 300px;
+    height: 30px;
+`;
+
 export const CenteredWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 1000px;
   width: 100%;
+  padding-top: 10px;
+  margin-bottom: 20px;
 `;
 
 export const StyledForm = styled.form`
@@ -24,21 +31,39 @@ export const StyledLabel = styled.label`
 `;
 
 export const StyledInput = styled.input`
-  width: 300px;
+  ${sharedStyles};
 `;
 
 export const StyledSelect = styled.select`
-  width: 300px;
+  ${sharedStyles};
+  cursor: pointer;
 `;
 
 export const StyledSubmitButton = styled.input.attrs({ type: 'submit' })`
+  ${sharedStyles};
   margin-top: 20px;
-  width: 300px;
+  cursor: pointer;
 `;
 
 export const StyledLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 150px;
-  height: 50px;
+  height: 30px;
   background-color: ${color.white};
   color: ${color.black};
+  text-decoration: none;
+`;
+
+export const SecondHeader = styled.h2`
+  text-align: center;
+`;
+
+export const StyledParagraph = styled.p`
+  text-align: center;
+`;
+
+export const TextError = styled.p`
+  color: ${color.error};
 `;

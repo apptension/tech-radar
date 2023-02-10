@@ -4,6 +4,7 @@ import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/r
 import { UploadImage } from '../uploadImage';
 import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable.styles';
 import { deleteEntry, updateEntry } from './adminPanelTable.utils';
+import { TableButton } from './tableButton.component';
 
 interface CreateTechnologiesColumnsProps {
   radarTechnologies: RadarTechnology[];
@@ -209,7 +210,7 @@ export const createTechnologiesColumns = ({
             const {
               row: { values },
             } = rowData;
-            return <button onClick={() => updateEntry(values)}>Save</button>;
+            return <TableButton label="Save" action={() => updateEntry(values)} />;
           },
         },
         {
@@ -221,7 +222,7 @@ export const createTechnologiesColumns = ({
                 values: { id },
               },
             } = rowData;
-            return <button onClick={() => deleteEntry(id)}>Delete</button>;
+            return <TableButton label="Delete" action={() => deleteEntry(id)} />;
           },
         },
       ],

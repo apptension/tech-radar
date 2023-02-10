@@ -4,39 +4,29 @@ import { contentfulConfig, ContentfulConfigType, managementClient } from '../../
 export const getEnvironment = (contentfulConfig: ContentfulConfigType) =>
   managementClient.getSpace(contentfulConfig.space).then((space) => space.getEnvironment(contentfulConfig.environment));
 
-export const updateEntry = (editedEntry: EditedEntry) =>
-  getEnvironment(contentfulConfig)
+export const updateEntry = async (editedEntry: EditedEntry) =>
+  await getEnvironment(contentfulConfig)
     .then((environment) => environment.getEntry(editedEntry.id!))
     .then(async (entry) => {
-      const {
-        alternatives,
-        description,
-        experts,
-        github,
-        label,
-        icon: { id },
-        quadrant,
-        ring,
-        specification,
-        team,
-      } = editedEntry;
+      const { alternatives, description, experts, github, label, icon, quadrant, ring, specification, team } =
+        editedEntry;
 
-      entry.fields.alternatives['en-US'] = prepareAlternativesArray(alternatives);
-      entry.fields.description['en-US'] = description;
-      entry.fields.experts['en-US'] = experts;
-      entry.fields.github['en-US'] = github;
+      if (alternatives?.length) entry.fields.alternatives['en-US'] = prepareAlternativesArray(alternatives);
+      if (description) entry.fields.description['en-US'] = description;
+      if (experts) entry.fields.experts['en-US'] = experts;
+      if (github) entry.fields.github['en-US'] = github;
       entry.fields.label['en-US'] = label;
-      entry.fields.icon['en-US'] = prepareIcon(id);
       entry.fields.quadrant['en-US'] = prepareReference(quadrant);
       entry.fields.ring['en-US'] = prepareReference(ring);
-      entry.fields.specification['en-US'] = specification;
-      entry.fields.team['en-US'] = prepareReference(team);
+      if (specification) entry.fields.specification['en-US'] = specification;
+      if (team) entry.fields.team['en-US'] = prepareReference(team);
+      if (icon) entry.fields.icon['en-US'] = prepareIcon(icon.id);
 
       return await entry.update();
     })
     .then(async (entry) => await entry.publish())
     .then(() => alert(`Entry updated.`))
-    .catch((err) => console.debug('Error: ', err));
+    .catch((err) => console.log('Error: ', err?.message));
 
 export const deleteEntry = (id: string) =>
   getEnvironment(contentfulConfig)
@@ -67,9 +57,9 @@ export const prepareAlternativesArray = (alternatives: AlternativesTableType[]) 
     },
   }));
 
-export const prepareIcon = (id: string) => ({
+export const prepareIcon = (id?: string) => ({
   sys: {
-    id,
+    id: id ? id : '',
     linkType: 'Asset',
     type: 'Link',
   },

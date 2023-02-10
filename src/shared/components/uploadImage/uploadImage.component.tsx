@@ -15,7 +15,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.[0]) return null;
-    setImage(event.target.files![0]);
+    setImage(event.target.files[0]);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,8 +23,13 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
     setLoading(true);
     setError('');
 
+    if (!image) {
+      alert('The file is invalid!');
+      return;
+    }
+
     try {
-      await uploadImageToContentfulAPI(image!).then((imageId) => uploadImage(editedEntry.id!, imageId!));
+      await uploadImageToContentfulAPI(image).then((imageId) => uploadImage(editedEntry.id!, imageId!));
     } catch (err) {
       console.debug(err);
     } finally {

@@ -8,22 +8,11 @@ import { contentfulConfig, contentTypeId } from '../../shared/services/api/conte
 import { EditedEntry } from '../adminPanel/adminPanel.types';
 import { NewEntryInputs } from './newEntry.component';
 
-export const createEntry = (entry: EditedEntry) => {
-  getEnvironment(contentfulConfig)
+export const createEntry = async (entry: EditedEntry) => {
+  return await getEnvironment(contentfulConfig)
     .then(async (environment) => {
-      const {
-        alternatives,
-        description,
-        experts,
-        github,
-        label,
-        icon: { id },
-        quadrant,
-        ring,
-        specification,
-        team,
-        moved,
-      } = entry;
+      const { alternatives, description, experts, github, label, icon, quadrant, ring, specification, team, moved } =
+        entry;
 
       return await environment.createEntry(contentTypeId.entry, {
         fields: {
@@ -43,7 +32,7 @@ export const createEntry = (entry: EditedEntry) => {
             'en-US': label,
           },
           icon: {
-            'en-US': prepareIcon(id),
+            'en-US': prepareIcon(icon?.id),
           },
           quadrant: {
             'en-US': prepareReference(quadrant),
@@ -64,11 +53,14 @@ export const createEntry = (entry: EditedEntry) => {
       });
     })
     .then((entry) => entry.publish())
-    .then((entry) => console.log('Created with success!', entry))
+    .then(() => {
+      alert('Created entry with success!');
+      return true;
+    })
     .catch(console.error);
 };
 
-export const prepareNewEntry = (data: NewEntryInputs, iconId: string): EditedEntry => {
+export const prepareNewEntry = (data: NewEntryInputs, iconId?: string): EditedEntry => {
   const {
     alternatives,
     description,
@@ -91,12 +83,14 @@ export const prepareNewEntry = (data: NewEntryInputs, iconId: string): EditedEnt
     github,
     projects,
     label,
-    icon: {
-      id: iconId,
-      name: icon[0].name,
-      description: '',
-      url: '',
-    },
+    icon: iconId
+      ? {
+          id: iconId,
+          name: icon![0].name,
+          description: '',
+          url: '',
+        }
+      : undefined,
     quadrant,
     ring,
     specification,

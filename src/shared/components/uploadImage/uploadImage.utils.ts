@@ -1,15 +1,10 @@
 import { contentfulConfig } from '../../services/api/contentful';
-import { getEnvironment, uploadImage } from '../adminPanelTable/adminPanelTable.utils';
+import { getEnvironment } from '../adminPanelTable/adminPanelTable.utils';
 
 export const uploadImageToContentfulAPI = async (file: File) => {
-  if (!file) {
-    alert('File is null!');
-    return;
-  }
-
   const fileName = file.name;
   const fileType = file.type;
-  let fileId = null;
+  let fileId = undefined;
 
   const arrayBuffer: ArrayBuffer = await new Promise((resolve, reject) => {
     const reader = new FileReader();

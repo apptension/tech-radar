@@ -27,6 +27,8 @@ export const sizesOrdered = [
 
 export const maxWidthStyles = css`
   max-width: ${sizes.desktopFull}px;
+  height: 100%;
+  overflow-y: auto;
   margin: 0 auto;
 `;
 
