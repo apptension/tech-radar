@@ -6,15 +6,27 @@ export const getEnvironment = (contentfulConfig: ContentfulConfigType) =>
 
 export const updateEntry = (editedEntry: EditedEntry) =>
   getEnvironment(contentfulConfig)
-    .then((environment) => environment.getEntry(editedEntry.id))
+    .then((environment) => environment.getEntry(editedEntry.id!))
     .then(async (entry) => {
-      const { alternatives, description, experts, github, label, quadrant, ring, specification, team } = editedEntry;
+      const {
+        alternatives,
+        description,
+        experts,
+        github,
+        label,
+        icon: { id },
+        quadrant,
+        ring,
+        specification,
+        team,
+      } = editedEntry;
 
       entry.fields.alternatives['en-US'] = prepareAlternativesArray(alternatives);
       entry.fields.description['en-US'] = description;
       entry.fields.experts['en-US'] = experts;
       entry.fields.github['en-US'] = github;
       entry.fields.label['en-US'] = label;
+      entry.fields.icon['en-US'] = prepareIcon(id);
       entry.fields.quadrant['en-US'] = prepareReference(quadrant);
       entry.fields.ring['en-US'] = prepareReference(ring);
       entry.fields.specification['en-US'] = specification;

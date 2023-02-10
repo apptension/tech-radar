@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { signOutFromAdminPanel } from '../../../routes/adminPanel/auth/firebase';
+import { ROUTES } from '../../../routes/app.constants';
 import { TableRadarTechnology } from '../radar/radar.types';
 import { Table } from '../table';
 import { Styles } from './adminPanelTable.styles';
@@ -20,11 +21,13 @@ export const AdminPanelTable = ({ columns, rows }: AdminPanelTableProps) => {
 
   const handleSignOut = () => signOutFromAdminPanel(history);
   const resetData = () => setData(rows);
+  const goToNewEntryPage = () => history.push(ROUTES.newEntry);
 
   return (
     <Styles>
       <button onClick={handleSignOut}> Sign Out </button>
       <button onClick={resetData}> Reset data </button>
+      <button onClick={goToNewEntryPage}> Add new entry </button>
       <Table columns={columns} data={data} updateMyData={updateMyData} />
     </Styles>
   );

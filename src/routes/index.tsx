@@ -7,6 +7,7 @@ import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
 import { Login } from './login';
+import { NewEntry } from './newEntry';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -37,6 +38,10 @@ export default () => {
 
           <Route exact path={ROUTES.login}>
             <Login />
+          </Route>
+
+          <Route exact path={ROUTES.newEntry}>
+            <NewEntry />
           </Route>
 
           {/* <-- INJECT ROUTE --> */}
