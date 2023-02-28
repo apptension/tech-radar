@@ -1,5 +1,3 @@
-import { RadarTechnology } from '../../shared/components/radar/radar.types';
-
 export type TechnologyColumn = {
   Header: string;
   accessor: string;
@@ -11,8 +9,30 @@ export type TechnologyTable = {
   columns: TechnologyColumn[];
 };
 
-export type ExtendedRadarTechnology = RadarTechnology & {
-  iconDescription: string;
-  iconName: string;
-  iconUrl: string;
+export type IconType = {
+  description: string;
+  name: string;
+  url: string;
+};
+
+export type AlternativesTableType = {
+  description: string;
+  icon: IconType;
+  id: string;
+  lable: string;
+};
+
+export type EditedEntry = {
+  alternatives: AlternativesTableType[];
+  description: string;
+  experts: string;
+  github: string;
+  icon: IconType;
+  id: string;
+  label: string;
+  projects: string;
+  quadrant: string;
+  ring: string;
+  specification: string;
+  team: string;
 };

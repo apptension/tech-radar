@@ -22,9 +22,31 @@ export type RadarTechnology = {
   }[];
   experts: string;
 };
-export type RadarRing = { name: string; position: number; description: string };
-export type RadarQuadrant = { name: string; position: number; description: string };
-export type RadarTeam = { name: string };
+
+export type TableRadarTechnology = {
+  label: string;
+  quadrant: string;
+  ring: string;
+  inactive: boolean;
+  id: string;
+  team: string;
+  description: string;
+  specification: string;
+  github: string;
+  projects: string;
+  icon: { url: string; description: string; name: string };
+  alternatives: {
+    label: string;
+    icon: { url: string; description: string; name: string };
+    id: string;
+    description: string;
+  }[];
+  experts: string;
+};
+
+export type RadarRing = { id: string; name: string; position: number; description: string };
+export type RadarQuadrant = { id: string; name: string; position: number; description: string };
+export type RadarTeam = { id: string; name: string };
 
 export enum QuadrantPositions {
   bottomRight,
@@ -44,7 +66,7 @@ export type ContentfulRing = { fields: { label: string; position: RingPositions 
 
 export type ContentfulTeam = { fields: { label: string } };
 
-export type ContentfulQuadrant = { fields: { label: string; position: QuadrantPositions } };
+export type ContentfulQuadrant = { fields: { id: string; label: string; position: QuadrantPositions } };
 
 export type ContentfulIcon = { fields: { file: { url: string }; description: string; name: string } };
 
@@ -52,20 +74,23 @@ export type ContentfulAlternative = {
   fields: { label: string; icon: ContentfulIcon; id: string; description: string };
 };
 
+export type ContentfulTechnologyFields = {
+  id?: string;
+  label: string;
+  quadrant: ContentfulQuadrant;
+  ring: ContentfulRing;
+  description: string;
+  specification: string;
+  github: string;
+  projects: string;
+  icon: ContentfulIcon;
+  alternatives: ContentfulAlternative[];
+  experts: string;
+};
+
 export type ContentfulTechnology = {
-  fields: {
-    label: string;
-    quadrant: ContentfulQuadrant;
-    ring: ContentfulRing;
-    description: string;
-    specification: string;
-    github: string;
-    projects: string;
-    icon: ContentfulIcon;
-    alternatives: ContentfulAlternative[];
-    experts: string;
-  };
-  sys: { contentType: { id: string } };
+  fields: ContentfulTechnologyFields;
+  sys: { id?: string; contentType: { id: string } };
 };
 
 export type ContentfulData = ContentfulTechnology[] | ContentfulRing[] | ContentfulQuadrant[];

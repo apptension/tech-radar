@@ -10,7 +10,13 @@ import {
   ContentfulData,
   ContentfulTeam,
 } from '../../components/radar/radar.types';
-import { getRadarQuadrants, getRadarRings, getRadarTeams, getRadarTechnologies } from '../../utils/radarUtils';
+import {
+  getRadarQuadrants,
+  getRadarRings,
+  getRadarTeams,
+  getRadarTechnologies,
+  getRadarTechnologiesForTable,
+} from '../../utils/radarUtils';
 
 export const getEntries =
   (content: ContentfulData | undefined) =>
@@ -76,6 +82,7 @@ export const useContentfulData = () => {
   const teams = selectData('team') as ContentfulTeam[];
 
   const radarTechnologies = getRadarTechnologies(technologies);
+  const tableRadarTechnologies = getRadarTechnologiesForTable(technologies);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
@@ -86,5 +93,6 @@ export const useContentfulData = () => {
     radarQuadrants,
     radarRings,
     radarTeams,
+    tableRadarTechnologies,
   };
 };
