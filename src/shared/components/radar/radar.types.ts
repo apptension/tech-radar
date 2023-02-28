@@ -13,7 +13,7 @@ export type RadarTechnology = {
   specification: string;
   github: string;
   projects: string;
-  icon: { url: string; description: string; name: string };
+  icon: { id: string; url: string; description: string; name: string };
   alternatives: {
     label: string;
     icon: { url: string; description: string; name: string };
@@ -34,7 +34,7 @@ export type TableRadarTechnology = {
   specification: string;
   github: string;
   projects: string;
-  icon: { url: string; description: string; name: string };
+  icon: { id: string; url: string; description: string; name: string };
   alternatives: {
     label: string;
     icon: { url: string; description: string; name: string };

@@ -33,3 +33,7 @@ export const cmaURL = `${contentfulConfig.contentManagementApi}spaces/${contentf
 export const managementClient = contentful.createClient({
   accessToken: contentfulConfig.contentManagementToken,
 });
+
+export const contentTypeId = {
+  entry: 'entry',
+};

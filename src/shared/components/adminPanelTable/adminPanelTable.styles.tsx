@@ -48,15 +48,18 @@ export const Styles = styled.div`
 `;
 
 export const InlineSelectContainer = styled.div`
+  width: 100%;
+
   .select__control {
     max-height: 70px;
   }
 
   .react-select__control {
     box-shadow: none;
-    max-width: 475px;
+    max-width: 300px;
     height: ${HEIGHT};
     flex-wrap: nowrap;
+    margin: 0 auto;
 
     &--menu-is-open {
       .react-select__indicator {
@@ -78,12 +81,10 @@ export const InlineSelectContainer = styled.div`
     }
   }
 
-  .react-select__placeholder {
-    margin: 0;
-  }
-
   .react-select__menu {
-    top: 80%;
+    position: unset;
+    width: 300px;
+    margin: 0 auto;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-top: none;

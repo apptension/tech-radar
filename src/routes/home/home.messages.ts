@@ -15,4 +15,8 @@ export default defineMessages({
     id: 'home.backToMainPageButton',
     defaultMessage: 'Back to apptension.com',
   },
+  goToAdminPanel: {
+    id: 'newEntry.goToAdminPanel',
+    defaultMessage: 'Go to AdminPanel',
+  },
 });

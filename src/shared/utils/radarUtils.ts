@@ -219,6 +219,7 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
 };
 
 const getIcon = (item: ContentfulTechnology) => ({
+  id: pathOr('', ['fields', 'icon', 'sys', 'id'], item),
   url: pathOr('', ['fields', 'icon', 'fields', 'file', 'url'], item),
   description: pathOr('', ['fields', 'icon', 'fields', 'description'], item),
   name: pathOr('', ['fields', 'icon', 'fields', 'title'], item),

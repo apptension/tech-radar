@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { contentfulConfig } from '../../services/api/contentful';
-import { getEnvironment, uploadImage } from '../adminPanelTable/adminPanelTable.utils';
+import { uploadImage } from '../adminPanelTable/adminPanelTable.utils';
 import { EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
 import { StyledFileInput } from './uploadImage.styles';
+import { uploadImageToContentfulAPI } from './uploadImage.utils';
 
 interface UploadImageProps {
   editedEntry: EditedEntry;
@@ -15,7 +15,7 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files?.[0]) return null;
-    setImage(event.target.files![0]);
+    setImage(event.target.files[0]);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,49 +28,12 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
       return;
     }
 
-    const fileName = image.name;
-    const fileType = image.type;
-    let imageId = null;
-
     try {
-      const arrayBuffer: ArrayBuffer = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as ArrayBuffer);
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(image!);
-      });
-
-      getEnvironment(contentfulConfig)
-        .then((environment) =>
-          environment.createAssetFromFiles({
-            fields: {
-              title: {
-                'en-US': fileName,
-              },
-              description: {
-                'en-US': fileName,
-              },
-              file: {
-                'en-US': {
-                  contentType: fileType,
-                  fileName: fileName,
-                  file: arrayBuffer,
-                },
-              },
-            },
-          })
-        )
-        .then((asset) => asset.processForAllLocales())
-        .then(async (asset) => {
-          const result = await asset.publish();
-          imageId = result.sys.id;
-          uploadImage(editedEntry.id, imageId);
-          setLoading(false);
-        })
-        .catch(console.error);
+      await uploadImageToContentfulAPI(image).then((imageId) => uploadImage(editedEntry.id!, imageId!));
     } catch (err) {
-      setLoading(false);
       console.debug(err);
+    } finally {
+      setLoading(false);
     }
   };
 

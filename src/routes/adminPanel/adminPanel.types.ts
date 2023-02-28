@@ -10,6 +10,7 @@ export type TechnologyTable = {
 };
 
 export type IconType = {
+  id: string;
   description: string;
   name: string;
   url: string;
@@ -19,7 +20,7 @@ export type AlternativesTableType = {
   description: string;
   icon: IconType;
   id: string;
-  lable: string;
+  label: string;
 };
 
 export type EditedEntry = {
@@ -27,12 +28,13 @@ export type EditedEntry = {
   description: string;
   experts: string;
   github: string;
-  icon: IconType;
-  id: string;
+  icon?: IconType;
+  id?: string;
   label: string;
   projects: string;
   quadrant: string;
   ring: string;
   specification: string;
   team: string;
+  moved?: number;
 };
