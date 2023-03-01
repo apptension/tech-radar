@@ -1,33 +1,22 @@
 import { EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
 import { axiosFunctionsApi } from './axiosInstances';
-import { contentfulConfig } from './contentful';
 
 export const patchEntry = async (editedEntry: EditedEntry) => {
-  return await axiosFunctionsApi.patch('updateEntry', { ...contentfulConfig, editedEntry });
+  return await axiosFunctionsApi.patch('/updateEntry', { editedEntry });
 };
 
 export const deleteEntry = async (id: string) => {
-  return await axiosFunctionsApi.post('deleteEntry', { ...contentfulConfig, id });
-};
-
-export const patchImage = async (entryId: string, imageId: string) => {
-  return await axiosFunctionsApi.patch('uploadImage', { ...contentfulConfig, entryId, imageId });
-};
-
-export const postAsset = async (file: File) => {
-  return await axiosFunctionsApi.post('createAsset', { ...contentfulConfig, file });
+  return await axiosFunctionsApi.post('/deleteEntry', { id });
 };
 
 export const postEntry = async (entry: EditedEntry) => {
-  return await axiosFunctionsApi.post('createEntry', { ...contentfulConfig, entry });
+  return await axiosFunctionsApi.post('/createEntry', { entry });
 };
 
 export const postImage = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('environment', contentfulConfig.environment);
-  formData.append('space', contentfulConfig.space);
-  return await axiosFunctionsApi.post('uploadImage', formData, {
+  return await axiosFunctionsApi.post<{ fileId: string }>('/uploadImage', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -35,11 +24,9 @@ export const postImage = async (file: File) => {
 };
 
 export const postEntryImage = async (entryId: string, imageId: string) => {
-  return await axiosFunctionsApi.post('uploadEntryImage', { ...contentfulConfig, entryId, imageId });
+  return await axiosFunctionsApi.post('uploadEntryImage', { entryId, imageId });
 };
 
 export const getLastUpdate = async () => {
-  return await axiosFunctionsApi.get(
-    `getLastUpdate/?space=${contentfulConfig.space}&environment=${contentfulConfig.environment}`
-  );
+  return await axiosFunctionsApi.get<{ dataUpdatedAt: string }>('/getLastUpdate');
 };
