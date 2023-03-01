@@ -1,41 +1,50 @@
 import * as functions from 'firebase-functions';
 import * as cors from 'cors';
 
-import { getEnvironment, prepareAlternativesArray, prepareIcon, prepareReference } from './utils/contentful';
+import {
+  getEnvironment,
+  getQueryContentfulConfig,
+  prepareAlternativesArray,
+  prepareIcon,
+  prepareReference,
+} from './utils/contentful';
 import { CONTENT_TYPE_ID, DEFAULT_LOCALE } from './constants';
+import { parseFile } from './utils/parseFile';
 
 const corsHandler = cors({ origin: `${process.env.WEBAPP_URL}` });
 
 export const getLastUpdate = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = req.query;
-    getEnvironment({ space: space as string, environment: environment as string })
+    const { space, environment } = getQueryContentfulConfig(req);
+    getEnvironment({ space, environment })
       .then((enviroment) => res.json({ success: true, dataUpdatedAt: enviroment.sys.updatedAt }))
       .catch((err) => {
-        res.status(400).json({ success: false, err, space, environment });
+        res.status(400).json({ success: false });
       });
   });
 });
 
 export const deleteEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment, id } = req.body;
+    const { space, environment } = getQueryContentfulConfig(req);
+    const { id } = req.body;
     getEnvironment({ space, environment })
       .then((enviroment) => enviroment.getEntry(id))
       .then(async (entry) => await entry.unpublish())
       .then((entry) => entry.delete())
       .then((entry) => {
-        res.json({ success: true, entry });
+        res.json({ success: true });
       })
       .catch((err) => {
-        res.status(400).json({ success: false, err });
+        res.status(400).json({ success: false });
       });
   });
 });
 
 export const updateEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment, editedEntry } = req.body;
+    const { space, environment } = getQueryContentfulConfig(req);
+    const { editedEntry } = req.body;
     await getEnvironment({ space, environment })
       .then((environment) => environment.getEntry(editedEntry.id))
       .then(async (entry) => {
@@ -60,14 +69,15 @@ export const updateEntry = functions.https.onRequest(async (req, res) => {
         res.json({ success: true, entry });
       })
       .catch((err) => {
-        res.status(400).json({ success: false, err });
+        res.status(400).json({ success: false });
       });
   });
 });
 
 export const uploadEntryImage = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { entryId, imageId, space, environment } = req.body;
+    const { space, environment } = getQueryContentfulConfig(req);
+    const { entryId, imageId } = req.body;
     getEnvironment({ space, environment })
       .then((environment) => environment.getEntry(entryId))
       .then(async (entry) => {
@@ -79,23 +89,15 @@ export const uploadEntryImage = functions.https.onRequest(async (req, res) => {
         res.json({ success: true });
       })
       .catch((err) => {
-        res.status(400).json({ success: false, err });
+        res.status(400).json({ success: false });
       });
   });
 });
 
 export const uploadImage = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { file, space, environment } = req.body;
-    const fileName = file.name;
-    const fileType = file.type;
-
-    const arrayBuffer: ArrayBuffer = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as ArrayBuffer);
-      reader.onerror = reject;
-      reader.readAsArrayBuffer(file);
-    });
+    const { space, environment } = getQueryContentfulConfig(req);
+    const { file, fileName, fileType } = await parseFile(req.headers, req.body);
 
     await getEnvironment({ space, environment })
       .then((environment) =>
@@ -111,7 +113,7 @@ export const uploadImage = functions.https.onRequest(async (req, res) => {
               [DEFAULT_LOCALE]: {
                 contentType: fileType,
                 fileName: fileName,
-                file: arrayBuffer,
+                file,
               },
             },
           },
@@ -123,14 +125,15 @@ export const uploadImage = functions.https.onRequest(async (req, res) => {
         res.json({ success: true, fileId: result.sys.id });
       })
       .catch((err) => {
-        res.status(400).json({ success: false, err });
+        res.status(400).json({ success: false });
       });
   });
 });
 
 export const createEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment, entry } = req.body;
+    const { space, environment } = getQueryContentfulConfig(req);
+    const { entry } = req.body;
     await getEnvironment({ space, environment })
       .then(async (environment) => {
         const { alternatives, description, experts, github, label, icon, quadrant, ring, specification, team, moved } =
@@ -179,7 +182,7 @@ export const createEntry = functions.https.onRequest(async (req, res) => {
         res.json({ success: true, entry });
       })
       .catch((err) => {
-        res.status(400).json({ success: false, err });
+        res.status(400).json({ success: false });
       });
   });
 });
