@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { uploadImage } from '../adminPanelTable/adminPanelTable.utils';
+import { useState } from 'react';
+
 import { EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
+import { postEntryImage, postImage } from '../../services/api/endpoints';
 import { StyledFileInput } from './uploadImage.styles';
-import { uploadImageToContentfulAPI } from './uploadImage.utils';
 
 interface UploadImageProps {
   editedEntry: EditedEntry;
 }
 
-export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadImageProps) => {
+export const UploadImage = ({ editedEntry }: UploadImageProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,6 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
     setError('');
 
     if (!image) {
@@ -28,13 +27,14 @@ export const UploadImage: React.FC<UploadImageProps> = ({ editedEntry }: UploadI
       return;
     }
 
+    setLoading(true);
     try {
-      await uploadImageToContentfulAPI(image).then((imageId) => uploadImage(editedEntry.id!, imageId!));
+      const { data } = await postImage(image);
+      await postEntryImage(editedEntry.id!, data.fileId);
     } catch (err) {
-      console.debug(err);
-    } finally {
-      setLoading(false);
+      console.error(err);
     }
+    setLoading(false);
   };
 
   return (

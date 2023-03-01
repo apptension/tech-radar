@@ -1,7 +1,6 @@
 import { useQuery } from 'react-query';
 import { pathOr, pickBy } from 'ramda';
-import axios from 'axios';
-import { client, cmaURL, contentfulConfig } from '../../services/api/contentful';
+import { client } from '../../services/api/contentful';
 import { reportError } from '../../utils/reportError';
 import {
   ContentfulQuadrant,
@@ -17,6 +16,7 @@ import {
   getRadarTechnologies,
   getRadarTechnologiesForTable,
 } from '../../utils/radarUtils';
+import { getLastUpdate } from '../../services/api/endpoints';
 
 export const getEntries =
   (content: ContentfulData | undefined) =>
@@ -29,33 +29,10 @@ export const getEntries =
   };
 
 export const useLastContentfulUpdate = () => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${contentfulConfig.contentManagementToken}`,
-    },
-  };
-
-  const dateQuery = useQuery(
-    ['lastUpdate'],
-    async () => {
-      try {
-        const {
-          data: {
-            sys: { updatedAt },
-          },
-        } = await axios.get(cmaURL, config);
-
-        return updatedAt;
-      } catch (error) {
-        reportError(error);
-      }
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  return dateQuery.dataUpdatedAt;
+  const { dataUpdatedAt } = useQuery(['lastUpdate'], getLastUpdate, {
+    refetchOnWindowFocus: false,
+  });
+  return dataUpdatedAt;
 };
 
 export const useContentfulData = () => {
