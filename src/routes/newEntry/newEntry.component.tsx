@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
 import { InlineSelectContainer } from '../../shared/components/adminPanelTable/adminPanelTable.styles';
-import { uploadImageToContentfulAPI } from '../../shared/components/uploadImage/uploadImage.utils';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../app.constants';
 import messages from '../home/home.messages';
+import { postImage } from '../../shared/services/api/endpoints';
 import { createEntry, prepareNewEntry } from './newEntry.utils';
 import {
   CenteredWrapper,
@@ -61,7 +61,8 @@ export const NewEntry = () => {
     let iconId: string | undefined = undefined;
 
     if (icon?.length) {
-      iconId = await uploadImageToContentfulAPI(icon[0]);
+      const { data } = await postImage(icon[0]);
+      iconId = data.fileId;
     }
 
     const entry = prepareNewEntry(data, iconId);
