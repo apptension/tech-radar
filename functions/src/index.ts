@@ -1,188 +1,133 @@
 import * as functions from 'firebase-functions';
 import * as cors from 'cors';
-
 import {
+  changeEntryFields,
+  convertEntryFields,
+  createEntryFields,
   getEnvironment,
   getQueryContentfulConfig,
-  prepareAlternativesArray,
   prepareIcon,
-  prepareReference,
 } from './utils/contentful';
 import { CONTENT_TYPE_ID, DEFAULT_LOCALE } from './constants';
 import { parseFile } from './utils/parseFile';
+import { EntryFieldsData } from './types';
 
 const corsHandler = cors({ origin: `${process.env.WEBAPP_URL}` });
 
 export const getLastUpdate = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    getEnvironment({ space, environment })
-      .then((enviroment) => res.json({ success: true, dataUpdatedAt: enviroment.sys.updatedAt }))
-      .catch((err) => {
-        res.status(400).json({ success: false });
-      });
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const environment = await getEnvironment(contentfulConfg);
+      res.json({ success: true, dataUpdatedAt: environment.sys.updatedAt });
+    } catch (err) {
+      res.status(400).json({ success: false });
+    }
   });
 });
 
 export const deleteEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    const { id } = req.body;
-    getEnvironment({ space, environment })
-      .then((enviroment) => enviroment.getEntry(id))
-      .then(async (entry) => await entry.unpublish())
-      .then((entry) => entry.delete())
-      .then((entry) => {
-        res.json({ success: true });
-      })
-      .catch((err) => {
-        res.status(400).json({ success: false });
-      });
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const { id } = req.body as { id: string };
+      const environment = await getEnvironment(contentfulConfg);
+      const entry = await environment.getEntry(id);
+
+      const unpublishedEntry = await entry.unpublish();
+      unpublishedEntry.delete();
+      res.json({ success: true });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ success: false });
+    }
   });
 });
 
 export const updateEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    const { editedEntry } = req.body;
-    await getEnvironment({ space, environment })
-      .then((environment) => environment.getEntry(editedEntry.id))
-      .then(async (entry) => {
-        const { alternatives, description, experts, github, label, icon, quadrant, ring, specification, team } =
-          editedEntry;
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const { editedEntry, entryId } = req.body as { editedEntry: EntryFieldsData; entryId: string };
+      const environment = await getEnvironment(contentfulConfg);
+      const entry = await environment.getEntry(entryId);
 
-        if (alternatives?.length) entry.fields.alternatives[DEFAULT_LOCALE] = prepareAlternativesArray(alternatives);
-        if (description) entry.fields.description[DEFAULT_LOCALE] = description;
-        if (experts) entry.fields.experts[DEFAULT_LOCALE] = experts;
-        if (github) entry.fields.github[DEFAULT_LOCALE] = github;
-        entry.fields.label[DEFAULT_LOCALE] = label;
-        entry.fields.quadrant[DEFAULT_LOCALE] = prepareReference(quadrant);
-        entry.fields.ring[DEFAULT_LOCALE] = prepareReference(ring);
-        if (specification) entry.fields.specification[DEFAULT_LOCALE] = specification;
-        if (team) entry.fields.team[DEFAULT_LOCALE] = prepareReference(team);
-        if (icon) entry.fields.icon[DEFAULT_LOCALE] = prepareIcon(icon.id);
-
-        return await entry.update();
-      })
-      .then(async (entry) => await entry.publish())
-      .then((entry) => {
-        res.json({ success: true, entry });
-      })
-      .catch((err) => {
-        res.status(400).json({ success: false });
-      });
+      const fields = convertEntryFields(editedEntry);
+      changeEntryFields(entry, fields);
+      const updatedEntry = await entry.update();
+      await updatedEntry.publish();
+      res.json({ success: true, entry });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ success: false });
+    }
   });
 });
 
 export const uploadEntryImage = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    const { entryId, imageId } = req.body;
-    getEnvironment({ space, environment })
-      .then((environment) => environment.getEntry(entryId))
-      .then(async (entry) => {
-        entry.fields.icon[DEFAULT_LOCALE] = prepareIcon(imageId);
-        return await entry.update();
-      })
-      .then(async (entry) => await entry.publish())
-      .then(() => {
-        res.json({ success: true });
-      })
-      .catch((err) => {
-        res.status(400).json({ success: false });
-      });
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const { entryId, imageId } = req.body as { entryId: string; imageId: string };
+      const environment = await getEnvironment(contentfulConfg);
+      const entry = await environment.getEntry(entryId);
+
+      entry.fields.icon[DEFAULT_LOCALE] = prepareIcon(imageId);
+      const updatedEntry = await entry.update();
+      await updatedEntry.publish();
+      res.json({ success: true });
+    } catch (err) {
+      res.status(400).json({ success: false });
+    }
   });
 });
 
 export const uploadImage = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    const { file, fileName, fileType } = await parseFile(req.headers, req.body);
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const { file, fileName, fileType } = await parseFile(req.headers, req.body);
+      const environment = await getEnvironment(contentfulConfg);
 
-    await getEnvironment({ space, environment })
-      .then((environment) =>
-        environment.createAssetFromFiles({
-          fields: {
-            title: {
-              [DEFAULT_LOCALE]: fileName,
-            },
-            description: {
-              [DEFAULT_LOCALE]: fileName,
-            },
-            file: {
-              [DEFAULT_LOCALE]: {
-                contentType: fileType,
-                fileName: fileName,
-                file,
-              },
+      const asset = await environment.createAssetFromFiles({
+        fields: {
+          title: {
+            [DEFAULT_LOCALE]: fileName,
+          },
+          description: {
+            [DEFAULT_LOCALE]: fileName,
+          },
+          file: {
+            [DEFAULT_LOCALE]: {
+              contentType: fileType,
+              fileName,
+              file,
             },
           },
-        })
-      )
-      .then((asset) => asset.processForAllLocales())
-      .then(async (asset) => {
-        const result = await asset.publish();
-        res.json({ success: true, fileId: result.sys.id });
-      })
-      .catch((err) => {
-        res.status(400).json({ success: false });
+        },
       });
+      const localisedAsset = await asset.processForAllLocales();
+      const result = await localisedAsset.publish();
+      res.json({ success: true, fileId: result.sys.id });
+    } catch (err) {
+      res.status(400).json({ success: false });
+    }
   });
 });
 
 export const createEntry = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
-    const { space, environment } = getQueryContentfulConfig(req);
-    const { entry } = req.body;
-    await getEnvironment({ space, environment })
-      .then(async (environment) => {
-        const { alternatives, description, experts, github, label, icon, quadrant, ring, specification, team, moved } =
-          entry;
+    try {
+      const contentfulConfg = getQueryContentfulConfig(req);
+      const { entryData } = req.body as { entryData: EntryFieldsData };
+      const environment = await getEnvironment(contentfulConfg);
 
-        return await environment.createEntry(CONTENT_TYPE_ID.entry, {
-          fields: {
-            alternatives: {
-              [DEFAULT_LOCALE]: prepareAlternativesArray(alternatives),
-            },
-            description: {
-              [DEFAULT_LOCALE]: description,
-            },
-            experts: {
-              [DEFAULT_LOCALE]: experts,
-            },
-            github: {
-              [DEFAULT_LOCALE]: github,
-            },
-            label: {
-              [DEFAULT_LOCALE]: label,
-            },
-            icon: {
-              [DEFAULT_LOCALE]: prepareIcon(icon?.id),
-            },
-            quadrant: {
-              [DEFAULT_LOCALE]: prepareReference(quadrant),
-            },
-            ring: {
-              [DEFAULT_LOCALE]: prepareReference(ring),
-            },
-            specification: {
-              [DEFAULT_LOCALE]: specification,
-            },
-            team: {
-              [DEFAULT_LOCALE]: prepareReference(team),
-            },
-            moved: {
-              [DEFAULT_LOCALE]: moved,
-            },
-          },
-        });
-      })
-      .then((entry) => entry.publish())
-      .then(() => {
-        res.json({ success: true, entry });
-      })
-      .catch((err) => {
-        res.status(400).json({ success: false });
-      });
+      const fields = createEntryFields(convertEntryFields(entryData));
+      const entry = await environment.createEntry(CONTENT_TYPE_ID.entry, { fields });
+      const publishedEntry = await entry.publish();
+      res.json({ success: true, entry: publishedEntry });
+    } catch (err) {
+      res.status(400).json({ success: false });
+    }
   });
 });

@@ -2,15 +2,19 @@ import { useContentfulData } from '../../hooks/useContentfulData/useContentfulDa
 
 interface TableButtonProps {
   label: string;
-  action: () => Promise<void>;
+  action: () => Promise<any>;
 }
 
 export const TableButton = ({ label, action }: TableButtonProps) => {
   const { contentfulQuery } = useContentfulData();
 
   const handleSave = async () => {
-    await action();
-    contentfulQuery.refetch();
+    try {
+      await action();
+      contentfulQuery.refetch();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return <button onClick={handleSave}> {label} </button>;
