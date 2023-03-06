@@ -29,6 +29,7 @@ export type EditedEntry = {
   experts: string;
   github: string;
   icon?: IconType;
+  iconUpload?: File;
   id?: string;
   label: string;
   projects: string;

@@ -10,11 +10,11 @@ export const Container = styled.div`
 
 export const StyledInput = styled.input`
   height: ${FIELD_HEIGHT};
-  border: 1px solid ${color.darkBorder};
   background-color: ${color.mineShaft2};
   padding: 8px 16px;
   color: ${color.white};
+  border: 1px solid ${color.darkBorder} !important;
   &:hover {
-    border: 1px solid ${color.border};
+    border: 1px solid ${color.border} !important;
   }
 `;

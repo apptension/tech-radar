@@ -47,6 +47,10 @@ export const Styles = styled.div`
   }
 `;
 
+export const FileDropContainer = styled.div`
+  min-width: 250px;
+`;
+
 export const InlineSelectContainer = styled.div`
   width: 100%;
 

@@ -1,11 +1,10 @@
 import Select from 'react-select';
 import { AlternativesTableType, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
-import { deleteEntry, patchEntry } from '../../services/api/endpoints';
+import { Button } from '../button';
+import { FileDropField } from '../fields/FileDropField';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
-import { UploadImage } from '../uploadImage';
-import { HEIGHT, InlineSelectContainer, StyledSelect } from './adminPanelTable.styles';
-
-import { TableButton } from './tableButton.component';
+import { HEIGHT, StyledSelect, InlineSelectContainer, FileDropContainer } from './adminPanelTable.styles';
+import { updateEntry, deleteEntry } from './adminPanelTable.utils';
 
 interface CreateTechnologiesColumnsProps {
   radarTechnologies: RadarTechnology[];
@@ -83,7 +82,16 @@ export const createTechnologiesColumns = ({
         {
           Header: 'iconUpload',
           accessor: 'iconUpload',
-          Cell: ({ row: { values } }) => <UploadImage editedEntry={values} />,
+          Cell: ({ value, row: { id }, updateMyData, column: { Header } }) => (
+            <FileDropContainer>
+              <FileDropField
+                label=""
+                infoText="Drag 'n' drop a file here, or click to select file"
+                onChange={(file: File) => updateMyData(parseInt(id), Header, file)}
+                value={value}
+              />
+            </FileDropContainer>
+          ),
         },
         {
           Header: 'alternatives',
@@ -135,7 +143,13 @@ export const createTechnologiesColumns = ({
         {
           Header: 'save',
           accessor: 'save',
-          Cell: ({ row }) => <TableButton label="Save" action={() => patchEntry(row.values)} />,
+          Cell: ({ row }) => {
+            const handleEdit = async () => {
+              await updateEntry(row.values);
+              alert('Entry updated!');
+            };
+            return <Button onClick={handleEdit}>Save</Button>;
+          },
         },
         {
           Header: 'delete',
@@ -144,7 +158,13 @@ export const createTechnologiesColumns = ({
             row: {
               values: { id },
             },
-          }) => <TableButton label="Delete" action={() => deleteEntry(id)} />,
+          }) => {
+            const handleDelete = async () => {
+              await deleteEntry(id);
+              alert('Entry deleted!');
+            };
+            return <Button onClick={handleDelete}>Delete</Button>;
+          },
         },
       ],
     },
