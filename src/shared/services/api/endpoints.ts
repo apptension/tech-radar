@@ -12,10 +12,6 @@ export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: Edite
   return await axiosFunctionsApi.patch('/updateEntry', { editedEntry, icon: iconId, entryId: id });
 };
 
-export const deleteEntry = async (id: string) => {
-  return await axiosFunctionsApi.post('/deleteEntry', { id });
-};
-
 export const postEntry = async (entryData: EditedEntry) => {
   return await axiosFunctionsApi.post('/createEntry', { entryData });
 };

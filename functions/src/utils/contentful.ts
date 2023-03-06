@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import { Entry } from 'contentful-management';
 import { managementClient } from '../services/contentful';
-import { AlternativesTableType, EntryFieldsData, EnvironmentConfig, PreparedEntry } from '../types';
+import { EntryFieldsData, EnvironmentConfig, PreparedEntry } from '../types';
 import { DEFAULT_LOCALE } from '../constants';
 
 export const getQueryContentfulConfig = (req: functions.https.Request) => {
@@ -14,15 +14,6 @@ export const getQueryContentfulConfig = (req: functions.https.Request) => {
 
 export const getEnvironment = (contentfulConfig: EnvironmentConfig) =>
   managementClient.getSpace(contentfulConfig.space).then((space) => space.getEnvironment(contentfulConfig.environment));
-
-export const prepareAlternativesArray = (alternatives: AlternativesTableType[]) =>
-  alternatives?.map(({ id }: AlternativesTableType) => ({
-    sys: {
-      id,
-      linkType: 'Entry',
-      type: 'Link',
-    },
-  }));
 
 export const prepareIcon = (id?: string) => ({
   sys: {
@@ -43,8 +34,6 @@ export const prepareReference = (reference: string) => ({
 export const convertEntryFields = (entry: EntryFieldsData): PreparedEntry => {
   const arrayOfFields = (Object.keys(entry) as Array<keyof typeof entry>).map((key) => {
     switch (key) {
-      case 'alternatives':
-        return { [key]: prepareAlternativesArray(entry[key]) };
       case 'quadrant':
       case 'ring':
       case 'team':

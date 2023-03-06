@@ -1,24 +1,35 @@
-import Select from 'react-select';
-import { AlternativesTableType, TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
-import { Button } from '../button';
-import { FileDropField } from '../fields/FileDropField';
-import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
-import { HEIGHT, StyledSelect, InlineSelectContainer, FileDropContainer } from './adminPanelTable.styles';
-import { updateEntry, deleteEntry } from './adminPanelTable.utils';
+import { useState } from 'react';
+import { patchEntry } from '../../shared/services/api/endpoints';
+import { Button } from '../../shared/components/button';
+import { FileDropField } from '../../shared/components/fields/FileDropField';
+import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
+import {
+  HEIGHT,
+  StyledSelect,
+  FileDropContainer,
+} from '../../shared/components/adminPanelTable/adminPanelTable.styles';
+import { EditedEntry, TechnologyTable } from './adminPanel.types';
 
 interface CreateTechnologiesColumnsProps {
-  radarTechnologies: RadarTechnology[];
   radarTeams: RadarTeam[];
   radarQuadrants: RadarQuadrant[];
   radarRings: RadarRing[];
 }
 
-export const createTechnologiesColumns = ({
-  radarTechnologies,
-  radarTeams,
-  radarQuadrants,
-  radarRings,
-}: CreateTechnologiesColumnsProps) => {
+export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings }: CreateTechnologiesColumnsProps) => {
+  const [loadingIds, setLoadingIds] = useState<string[]>([]);
+
+  const handleEdit = async (values: EditedEntry) => {
+    setLoadingIds((ids) => [...ids, values.id!]);
+    try {
+      await patchEntry(values);
+      alert('Entry updated!');
+    } catch (err) {
+      console.error(err);
+    }
+    setLoadingIds((ids) => ids.filter((id) => id !== values.id));
+  };
+
   const technologiesColumns: TechnologyTable[] = [
     {
       Header: 'Admin Panel',
@@ -75,6 +86,10 @@ export const createTechnologiesColumns = ({
           accessor: 'projects',
         },
         {
+          Header: 'experts',
+          accessor: 'experts',
+        },
+        {
           Header: 'icon',
           accessor: 'icon',
           Cell: ({ value: { url } }) => <img src={url} alt="brak zdjęcia" height={HEIGHT} />,
@@ -94,40 +109,6 @@ export const createTechnologiesColumns = ({
           ),
         },
         {
-          Header: 'alternatives',
-          accessor: 'alternatives',
-          Cell: ({ value, row: { id }, column: { Header }, updateMyData }) => {
-            const defaultValue = value?.map((tech: AlternativesTableType) => ({ value: tech.id, ...tech }));
-            const options = radarTechnologies?.map((tech: RadarTechnology) => ({ value: tech.id, ...tech }));
-
-            return (
-              <InlineSelectContainer>
-                <Select
-                  name="alternatives"
-                  defaultValue={defaultValue}
-                  isMulti
-                  options={options}
-                  onChange={(data) => {
-                    const updatedData = data.map(({ description, icon, id, label }) => ({
-                      description,
-                      icon,
-                      id,
-                      label,
-                    }));
-                    updateMyData(parseInt(id), Header, updatedData);
-                  }}
-                  isSearchable
-                  classNamePrefix="react-select"
-                />
-              </InlineSelectContainer>
-            );
-          },
-        },
-        {
-          Header: 'experts',
-          accessor: 'experts',
-        },
-        {
           Header: 'team',
           accessor: 'team',
           Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
@@ -143,27 +124,12 @@ export const createTechnologiesColumns = ({
         {
           Header: 'save',
           accessor: 'save',
-          Cell: ({ row }) => {
-            const handleEdit = async () => {
-              await updateEntry(row.values);
-              alert('Entry updated!');
-            };
-            return <Button onClick={handleEdit}>Save</Button>;
-          },
-        },
-        {
-          Header: 'delete',
-          accessor: 'delete',
-          Cell: ({
-            row: {
-              values: { id },
-            },
-          }) => {
-            const handleDelete = async () => {
-              await deleteEntry(id);
-              alert('Entry deleted!');
-            };
-            return <Button onClick={handleDelete}>Delete</Button>;
+          Cell: ({ row: { values } }) => {
+            return (
+              <Button isLoading={loadingIds.includes(values.id)} onClick={() => handleEdit(values)}>
+                Save
+              </Button>
+            );
           },
         },
       ],

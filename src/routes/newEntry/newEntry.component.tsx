@@ -12,7 +12,6 @@ import { TextField } from '../../shared/components/fields/TextField';
 import { FileDropField } from '../../shared/components/fields/FileDropField';
 import { SelectField } from '../../shared/components/fields/SelectField';
 import {
-  getAlternativesOptions,
   getMovedOptions,
   getQuadrantOptions,
   getRingsOptions,
@@ -46,7 +45,7 @@ export const NewEntry = () => {
   const history = useHistory();
   const intl = useIntl();
 
-  const { radarTechnologies, radarQuadrants, radarRings, radarTeams } = useContentfulData();
+  const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
 
   const {
     register,
@@ -80,7 +79,6 @@ export const NewEntry = () => {
 
   if (!token) history.push(ROUTES.login);
 
-  const alternativesOptions = getAlternativesOptions(radarTechnologies);
   const quadrantsOptions = getQuadrantOptions(radarQuadrants);
   const ringsOptions = getRingsOptions(radarRings);
   const teamsOptions = getTeamsOptions(radarTeams);
@@ -171,7 +169,7 @@ export const NewEntry = () => {
                 key={selectIndex}
                 options={quadrantsOptions}
                 label="Quadrant"
-                error={errors.ring?.message}
+                error={errors.quadrant?.message}
                 {...field}
                 onChange={(newValue, meta) => {
                   field.onChange((newValue as TOption).value, meta);
@@ -212,22 +210,6 @@ export const NewEntry = () => {
 
           <Controller
             control={control}
-            name="alternatives"
-            defaultValue={[]}
-            render={({ field }) => (
-              <SelectField
-                isMulti
-                options={alternativesOptions}
-                isSearchable
-                label="Alternatives"
-                error={errors.alternatives?.message}
-                {...field}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
             name="team"
             rules={{
               required: {
@@ -253,8 +235,8 @@ export const NewEntry = () => {
             )}
           />
 
-          <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Ładowanie' : 'Utwórz'}
+          <SubmitButton type="submit" isLoading={isLoading}>
+            Utwórz
           </SubmitButton>
         </StyledForm>
       </CenteredWrapper>

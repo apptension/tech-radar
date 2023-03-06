@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { AdminPanelTable } from '../../shared/components/adminPanelTable';
 import { ROUTES } from '../app.constants';
-import { createTechnologiesColumns } from '../../shared/components/adminPanelTable/adminPanelTable.config';
+import { useTechnologiesColumns } from './useTechnologiesColumns';
 
 export const AdminPanel = () => {
   const token = sessionStorage.getItem('accessToken');
@@ -10,8 +10,12 @@ export const AdminPanel = () => {
 
   if (!token) history.push(ROUTES.login);
 
-  const { radarTechnologies, radarTeams, radarQuadrants, radarRings, tableRadarTechnologies } = useContentfulData();
-  const technologiesColumns = createTechnologiesColumns({ radarTechnologies, radarTeams, radarQuadrants, radarRings });
+  const { radarTeams, radarQuadrants, radarRings, tableRadarTechnologies } = useContentfulData();
+  const technologiesColumns = useTechnologiesColumns({
+    radarTeams,
+    radarQuadrants,
+    radarRings,
+  });
 
   if (tableRadarTechnologies.length === 0) return <p>Data not found...</p>;
 

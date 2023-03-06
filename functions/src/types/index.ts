@@ -10,13 +10,6 @@ export interface IconType {
   url: string;
 }
 
-export interface AlternativesTableType {
-  id: string;
-  description: string;
-  icon: IconType;
-  label: string;
-}
-
 interface PreparedSysField {
   sys: {
     id: string;
@@ -36,7 +29,6 @@ interface EntryBasicFields {
 }
 
 export interface EntryFieldsData extends EntryBasicFields {
-  alternatives: AlternativesTableType[];
   icon?: IconType;
   id?: string;
   quadrant: string;

@@ -1,4 +1,4 @@
-import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
+import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
 import { EditedEntry } from '../adminPanel/adminPanel.types';
 import { NewEntryInputs } from './newEntry.component';
 
@@ -9,9 +9,6 @@ export const prepareNewEntry = (data: NewEntryInputs, iconId?: string): Omit<Edi
   icon: iconId && data.icon ? getIcon(iconId, data.icon.name) : undefined,
   moved: +data.moved,
 });
-
-export const getAlternativesOptions = (radarTechnologies: RadarTechnology[]) =>
-  radarTechnologies?.map((tech: RadarTechnology) => ({ value: tech.id, ...tech }));
 
 export const getQuadrantOptions = (radarQuadrants: RadarQuadrant[]) =>
   radarQuadrants.map(({ name, id }) => ({ label: name, value: id }));

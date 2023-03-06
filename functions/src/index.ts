@@ -38,7 +38,6 @@ export const deleteEntry = functions.https.onRequest(async (req, res) => {
       unpublishedEntry.delete();
       res.json({ success: true });
     } catch (err) {
-      console.log(err);
       res.status(400).json({ success: false });
     }
   });
@@ -58,7 +57,6 @@ export const updateEntry = functions.https.onRequest(async (req, res) => {
       await updatedEntry.publish();
       res.json({ success: true, entry });
     } catch (err) {
-      console.log(err);
       res.status(400).json({ success: false });
     }
   });
