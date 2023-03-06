@@ -28,6 +28,11 @@
         "import/no-anonymous-default-export": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "react-hooks/exhaustive-deps": "off"
+      },
+      "settings": {
+        "import/resolver": {
+          "typescript": {}
+        }
       }
     }
   ]
