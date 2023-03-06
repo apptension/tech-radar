@@ -1,6 +1,7 @@
 export const ROUTES = {
   home: '/',
   explore: '/explore',
+  matrixLogin: '/matrix/login',
   notFound: '/404',
 };
 

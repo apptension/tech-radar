@@ -55,6 +55,12 @@ export const H1small = css`
   line-height: 28px;
 `;
 
+export const H1large = css`
+  ${H1};
+  font-size: 48px;
+  line-height: 61px;
+`;
+
 export const Paragraph = styled.p`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.normal};
@@ -67,6 +73,15 @@ export const Paragraph = styled.p`
   ${mediaQuery.desktop} {
     font-size: 20px;
   }
+`;
+
+export const ParagraphLarge = styled.p`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 24px;
+  line-height: 31px;
+  margin: 0;
+  padding: 0;
 `;
 
 export const Paragraph2 = styled.p`

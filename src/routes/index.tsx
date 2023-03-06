@@ -6,6 +6,7 @@ import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
+import { Login } from './matrix/login';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -28,6 +29,10 @@ export default () => {
             <Explore />
           </Route>
           {/* <-- INJECT ROUTE --> */}
+
+          <Route exact path={ROUTES.matrixLogin}>
+            <Login />
+          </Route>
 
           <Route>
             <NotFound />
