@@ -72,7 +72,9 @@ export const uploadEntryImage = functions.https.onRequest(async (req, res) => {
       const environment = await getEnvironment(contentfulConfg);
       const entry = await environment.getEntry(entryId);
 
-      entry.fields.icon[DEFAULT_LOCALE] = prepareIcon(imageId);
+      entry.fields.icon = {
+        [DEFAULT_LOCALE]: prepareIcon(imageId),
+      };
       const updatedEntry = await entry.update();
       await updatedEntry.publish();
       res.json({ success: true });
