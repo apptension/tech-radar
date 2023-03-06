@@ -1,4 +1,4 @@
-import styled, { css, ThemeProps } from 'styled-components';
+import styled, { css, keyframes, ThemeProps } from 'styled-components';
 import theme from 'styled-theming';
 
 import { ReactComponent as OutIconSVG } from '../../../images/icons/out.svg';
@@ -108,7 +108,7 @@ export const Container = styled.button<ContainerProps>`
     transition: opacity 0.25s ease-in-out;
   }
 
-  &:hover {
+  &:hover:enabled {
     color: ${color.black};
     border-color: transparent;
 
@@ -124,4 +124,24 @@ export const Container = styled.button<ContainerProps>`
       stroke: ${({ withMovingArrow }) => (withMovingArrow ? `${color.white}` : `${color.black}`)};
     }
   }
+`;
+
+const rotateAnimation = keyframes`
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+    }
+`;
+
+export const Loader = styled.div`
+  width: 16px;
+  height: 16px;
+  border: 3px solid ${color.silver};
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: ${rotateAnimation} 1s linear infinite;
 `;
