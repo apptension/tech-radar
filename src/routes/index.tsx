@@ -9,6 +9,7 @@ import { AuthContextProvider } from '../modules/auth/auth.context';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
 import { Login } from './matrix/login';
+import { Personal } from './matrix/personal';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -38,7 +39,7 @@ export default () => {
             </Route>
 
             <AuthRoute exact path={ROUTES.matrixPersonal}>
-              <div>aaa</div>
+              <Personal />
             </AuthRoute>
           </AuthContextProvider>
 
