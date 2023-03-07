@@ -18,7 +18,7 @@ export const Button = ({
   children,
   className,
   disabled = false,
-  variant = ButtonVariant.PRIMARY,
+  variant = ButtonVariant.SECONDARY,
   size = ButtonSize.REGULAR,
   onClick = empty,
   withBorder = true,

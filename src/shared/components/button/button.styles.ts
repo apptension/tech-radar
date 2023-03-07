@@ -5,7 +5,7 @@ import { ReactComponent as OutIconSVG } from '../../../images/icons/out.svg';
 import { ReactComponent as ArrowIconSVG } from '../../../images/icons/arrow-right.svg';
 import { border, color } from '../../../theme';
 import { ButtonLargeTypography, ButtonRegularTypography } from '../../../theme/typography';
-import { ButtonSize, ButtonTheme } from './button.types';
+import { ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
 const disabledButtonStyle = css`
   opacity: 0.5;
@@ -20,6 +20,22 @@ const buttonSizeLargeStyles = css`
   ${ButtonLargeTypography};
   border-width: 2px;
   padding: 16px 32px;
+`;
+
+const buttonVariantPrimaryStyles = css`
+  border: none;
+  background: ${color.white};
+  color: ${color.codGray};
+
+  &:hover {
+    background: none;
+  }
+`;
+
+const buttonVariantSecondaryStyles = css`
+  border: ${border.regularWhite};
+  background: none;
+  color: ${color.white};
 `;
 
 const buttonNoBorderStyles = css`
@@ -70,9 +86,6 @@ interface ContainerProps extends ThemeProps<ButtonTheme> {
 
 export const Container = styled.button<ContainerProps>`
   position: relative;
-  border: ${border.regularWhite};
-  background: none;
-  color: ${color.white};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -88,6 +101,11 @@ export const Container = styled.button<ContainerProps>`
     [ButtonSize.REGULAR]: buttonSizeRegularStyles,
     [ButtonSize.LARGE]: buttonSizeLargeStyles,
   })};
+
+  ${theme('variant', {
+    [ButtonVariant.PRIMARY]: buttonVariantPrimaryStyles,
+    [ButtonVariant.SECONDARY]: buttonVariantSecondaryStyles,
+  })}
 
   ${theme('withBorder', {
     false: buttonNoBorderStyles,
