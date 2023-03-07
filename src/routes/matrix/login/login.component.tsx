@@ -14,8 +14,11 @@ import {
   LoginButton,
   InfoSpacer,
 } from './login.styles';
+import { useLogin } from './useLogin.hook';
 
 export const Login = () => {
+  const { signInWithGoogle } = useLogin();
+
   return (
     <main>
       <Header>
@@ -31,7 +34,7 @@ export const Login = () => {
           <InfoSpacer />
           <InfoText>You can help us a lot by filling out this form!</InfoText>
 
-          <LoginButton size={ButtonSize.LARGE} icon={ButtonIcon.ARROW}>
+          <LoginButton size={ButtonSize.LARGE} icon={ButtonIcon.ARROW} onClick={signInWithGoogle}>
             Log in to start
           </LoginButton>
         </ContentContainer>
