@@ -1,5 +1,5 @@
 import { ButtonIcon, ButtonSize } from '../../../shared/components/button/button.types';
-import { MatrixHeader } from '../../../shared/components/matrixHeader';
+import { MatrixHeader } from '../../../shared/components/matrix/matrixHeader';
 import teamPhoto from '../../../images/apptension-team.png';
 import {
   MainContainer,

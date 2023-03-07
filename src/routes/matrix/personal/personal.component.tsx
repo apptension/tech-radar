@@ -1,5 +1,5 @@
 import { PersonalInfoForm } from '../../../shared/components/matrix/personalInfoForm';
-import { MatrixHeader } from '../../../shared/components/matrixHeader';
+import { MatrixHeader } from '../../../shared/components/matrix/matrixHeader';
 import { MainContainer, InfoText, Pattern, PatternContainer, Title, Header } from './personal.styles';
 
 export const Personal = () => {
