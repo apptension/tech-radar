@@ -17,22 +17,6 @@ export const MainContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const Header = styled.header`
-  position: absolute;
-  padding-top: 32px;
-  padding-right: 36px;
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-`;
-
-export const LogoContainer = styled.div`
-  position: fixed;
-  top: 32px;
-  left: 0;
-  right: 0;
-`;
-
 export const ContentContainer = styled.section`
   display: flex;
   flex-direction: column;
