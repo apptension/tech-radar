@@ -4,6 +4,8 @@ import { IntlProvider } from 'react-intl';
 
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
+import { AuthRoute } from '../shared/components/routes/authRoute/authRoute.component';
+import { AuthContextProvider } from '../modules/auth/auth.context';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
 import { Login } from './matrix/login';
@@ -30,9 +32,15 @@ export default () => {
           </Route>
           {/* <-- INJECT ROUTE --> */}
 
-          <Route exact path={ROUTES.matrixLogin}>
-            <Login />
-          </Route>
+          <AuthContextProvider>
+            <Route exact path={ROUTES.matrixLogin}>
+              <Login />
+            </Route>
+
+            <AuthRoute exact path={ROUTES.matrixPersonal}>
+              <div>aaa</div>
+            </AuthRoute>
+          </AuthContextProvider>
 
           <Route>
             <NotFound />
