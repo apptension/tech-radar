@@ -5,7 +5,7 @@ export const border = '#80809B';
 export const disabled = '#DDDDE0';
 export const primary = '#42f272';
 export const secondary = '#2249f9';
-export const error = '#fa7265';
+export const error = '#C01212';
 
 export const codGray = '#111111';
 export const codGray2 = '#181818';
