@@ -15,6 +15,11 @@ export const MainContainer = styled.div`
 
 export const Header = styled.header`
   margin-bottom: 80px;
+  display: flex;
+`;
+
+export const TitleContainer = styled.div`
+  margin-left: 30px;
 `;
 
 export const Title = styled.h1`
