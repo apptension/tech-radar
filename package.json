@@ -78,6 +78,7 @@
     "react-router": "^5",
     "react-router-dom": "^5",
     "react-scripts": "npm:@apptension/react-scripts",
+    "react-select": "^5.7.0",
     "react-test-renderer": "^16.13.1",
     "react-use": "^17.3.2",
     "redux": "^4.0.1",
