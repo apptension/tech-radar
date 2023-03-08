@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
 import { getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
 import { PersonalInfo } from '../types';
@@ -13,13 +13,17 @@ const defaultValues: PersonalInfo = {
 
 export const usePersonalInfoForm = () => {
   const { user } = useAuthContext();
-  const form = useForm({ defaultValues });
+  const form = useForm<PersonalInfo>({ defaultValues });
 
   const initializeValues = ({ email, name, position, slackId }: PersonalInfo) => {
     form.setValue('email', email);
     form.setValue('name', name);
     form.setValue('position', position);
     form.setValue('slackId', slackId);
+  };
+
+  const submit: SubmitHandler<PersonalInfo> = (data) => {
+    console.log(data);
   };
 
   useEffect(() => {
@@ -37,5 +41,5 @@ export const usePersonalInfoForm = () => {
     fetchUserInfo();
   }, []);
 
-  return { form };
+  return { form, submit };
 };

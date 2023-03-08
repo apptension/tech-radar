@@ -90,6 +90,7 @@ export const TextError = styled.p`
   ${LabelMedium};
   color: ${color.error};
   margin-top: 12px;
+  margin-bottom: 0;
 `;
 
 export const InfoTooltipContainer = styled.div`
