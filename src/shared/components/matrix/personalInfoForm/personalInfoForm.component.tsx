@@ -1,6 +1,7 @@
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
 import { ButtonSize, ButtonVariant } from '../../button/button.types';
 import { MatrixTextField } from '../../fields/matrixTextField';
+import { Loader } from '../../loader';
 import { Form, NextButton, FieldContainer } from './personalInfoForm.styles';
 import { usePersonalInfoForm } from './usePersonalInfoForm.hook';
 
@@ -11,8 +12,13 @@ export const PersonalInfoForm = () => {
       handleSubmit,
       formState: { errors },
     },
+    isLoading,
     submit,
   } = usePersonalInfoForm();
+
+  if (isLoading) {
+    return <Loader isFullPage />;
+  }
 
   return (
     <Form onSubmit={handleSubmit(submit)}>

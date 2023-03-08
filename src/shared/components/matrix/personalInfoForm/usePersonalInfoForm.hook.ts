@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
 import { getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
@@ -13,6 +13,7 @@ const defaultValues: PersonalInfo = {
 
 export const usePersonalInfoForm = () => {
   const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(true);
   const form = useForm<PersonalInfo>({ defaultValues });
 
   const initializeValues = ({ email, name, position, slackId }: PersonalInfo) => {
@@ -35,11 +36,12 @@ export const usePersonalInfoForm = () => {
         } catch (err) {
           console.error(err);
         }
+        setIsLoading(false);
       }
     };
 
     fetchUserInfo();
   }, []);
 
-  return { form, submit };
+  return { form, submit, isLoading };
 };
