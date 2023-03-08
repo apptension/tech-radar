@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useIntl } from 'react-intl';
+import { reportError } from '../../shared/utils/reportError';
 import { patchEntry } from '../../shared/services/api/endpoints';
 import { Button } from '../../shared/components/button';
 import { FileDropField } from '../../shared/components/fields/FileDropField';
@@ -9,6 +11,7 @@ import {
   FileDropContainer,
 } from '../../shared/components/adminPanelTable/adminPanelTable.styles';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
+import messages from './adminPanel.messages';
 
 interface CreateTechnologiesColumnsProps {
   radarTeams: RadarTeam[];
@@ -17,6 +20,8 @@ interface CreateTechnologiesColumnsProps {
 }
 
 export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings }: CreateTechnologiesColumnsProps) => {
+  const intl = useIntl();
+
   const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
   const handleEdit = async (values: EditedEntry) => {
@@ -25,7 +30,7 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
       await patchEntry(values);
       alert('Entry updated!');
     } catch (err) {
-      console.error(err);
+      reportError(err);
     }
     setLoadingIds((ids) => ids.filter((id) => id !== values.id));
   };
@@ -35,16 +40,16 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
       Header: 'Admin Panel',
       columns: [
         {
-          Header: 'id',
+          Header: intl.formatMessage(messages.id),
           accessor: 'id',
           Cell: ({ value }) => <p>{value}</p>,
         },
         {
-          Header: 'label',
+          Header: intl.formatMessage(messages.label),
           accessor: 'label',
         },
         {
-          Header: 'quadrant',
+          Header: intl.formatMessage(messages.quadrant),
           accessor: 'quadrant',
           Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
             <StyledSelect value={value} onChange={({ target }) => updateMyData(parseInt(id), Header, target.value)}>
@@ -57,7 +62,7 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
           ),
         },
         {
-          Header: 'ring',
+          Header: intl.formatMessage(messages.ring),
           accessor: 'ring',
           Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
             <StyledSelect value={value} onChange={({ target }) => updateMyData(parseInt(id), Header, target.value)}>
@@ -70,38 +75,38 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
           ),
         },
         {
-          Header: 'description',
+          Header: intl.formatMessage(messages.description),
           accessor: 'description',
         },
         {
-          Header: 'specification',
+          Header: intl.formatMessage(messages.specification),
           accessor: 'specification',
         },
         {
-          Header: 'github',
+          Header: intl.formatMessage(messages.github),
           accessor: 'github',
         },
         {
-          Header: 'projects',
+          Header: intl.formatMessage(messages.projects),
           accessor: 'projects',
         },
         {
-          Header: 'experts',
+          Header: intl.formatMessage(messages.experts),
           accessor: 'experts',
         },
         {
-          Header: 'icon',
+          Header: intl.formatMessage(messages.icon),
           accessor: 'icon',
           Cell: ({ value: { url } }) => <img src={url} alt="brak zdjęcia" height={HEIGHT} />,
         },
         {
-          Header: 'iconUpload',
+          Header: intl.formatMessage(messages.iconUpload),
           accessor: 'iconUpload',
           Cell: ({ value, row: { id }, updateMyData, column: { Header } }) => (
             <FileDropContainer>
               <FileDropField
                 label=""
-                infoText="Drag 'n' drop a file here, or click to select file"
+                infoText={intl.formatMessage(messages.dragIconInfoText)}
                 onChange={(file: File) => updateMyData(parseInt(id), Header, file)}
                 value={value}
               />
@@ -109,7 +114,7 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
           ),
         },
         {
-          Header: 'team',
+          Header: intl.formatMessage(messages.team),
           accessor: 'team',
           Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
             <StyledSelect value={value} onChange={({ target }) => updateMyData(parseInt(id), Header, target.value)}>
@@ -122,12 +127,12 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
           ),
         },
         {
-          Header: 'save',
+          Header: intl.formatMessage(messages.save),
           accessor: 'save',
           Cell: ({ row: { values } }) => {
             return (
               <Button isLoading={loadingIds.includes(values.id)} onClick={() => handleEdit(values)}>
-                Save
+                {intl.formatMessage(messages.save)}
               </Button>
             );
           },

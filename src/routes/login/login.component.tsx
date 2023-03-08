@@ -1,8 +1,11 @@
 import { useHistory } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { signInWithGoogle } from '../adminPanel/auth/firebase';
 import { LoginWrapper } from './login.styles';
+import messages from './login.messages';
 
 export const Login = () => {
+  const intl = useIntl();
   const history = useHistory();
 
   const handleSignIn = () => {
@@ -11,8 +14,8 @@ export const Login = () => {
 
   return (
     <LoginWrapper>
-      <p>You don't have access to AdminPanel. You have to login in.</p>
-      <button onClick={handleSignIn}> Sign In With Google </button>
+      <p>{intl.formatMessage(messages.loginInfo)}</p>
+      <button onClick={handleSignIn}>{intl.formatMessage(messages.signInGoogle)}</button>
     </LoginWrapper>
   );
 };

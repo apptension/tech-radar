@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../app.constants';
-import messages from '../home/home.messages';
+import homeMessages from '../home/home.messages';
 import { postEntry, postImage } from '../../shared/services/api/endpoints';
 import { TOption } from '../../shared/components/fields/SelectField/SelectField.component';
 import { TextField } from '../../shared/components/fields/TextField';
 import { FileDropField } from '../../shared/components/fields/FileDropField';
 import { SelectField } from '../../shared/components/fields/SelectField';
+import adminMessages from '../adminPanel/adminPanel.messages';
+import newEntryMessages from './newEntry.messages';
 import {
   getMovedOptions,
   getQuadrantOptions,
@@ -82,16 +84,16 @@ export const NewEntry = () => {
   const quadrantsOptions = getQuadrantOptions(radarQuadrants);
   const ringsOptions = getRingsOptions(radarRings);
   const teamsOptions = getTeamsOptions(radarTeams);
-  const movedOptions = getMovedOptions();
+  const movedOptions = getMovedOptions(intl);
 
   return (
     <div>
       <CenteredWrapper>
         <StyledLink to={ROUTES.adminPanel}>
-          <FormattedMessage {...messages.goToAdminPanel} />
+          <FormattedMessage {...homeMessages.goToAdminPanel} />
         </StyledLink>
-        <SecondHeader>Add new technology</SecondHeader>
-        {isError && <p>There was an error</p>}
+        <SecondHeader>{intl.formatMessage(newEntryMessages.title)}</SecondHeader>
+        {isError && <p>{intl.formatMessage(newEntryMessages.networkError)}</p>}
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Label"
@@ -106,19 +108,39 @@ export const NewEntry = () => {
               },
             })}
           />
-          <TextField label="Description" error={errors.description?.message} {...register('description')} />
-          <TextField label="Specification" error={errors.specification?.message} {...register('specification')} />
-          <TextField label="Github" error={errors.github?.message} {...register('github')} />
-          <TextField label="Projects" error={errors.projects?.message} {...register('projects')} />
-          <TextField label="Experts" error={errors.experts?.message} {...register('experts')} />
+          <TextField
+            label={intl.formatMessage(adminMessages.description)}
+            error={errors.description?.message}
+            {...register('description')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.specification)}
+            error={errors.specification?.message}
+            {...register('specification')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.github)}
+            error={errors.github?.message}
+            {...register('github')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.projects)}
+            error={errors.projects?.message}
+            {...register('projects')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.experts)}
+            error={errors.experts?.message}
+            {...register('experts')}
+          />
 
           <Controller
             control={control}
             name="icon"
             render={({ field }) => (
               <FileDropField
-                label="Icon"
-                infoText="Drag 'n' drop icon file here, or click to select file"
+                label={intl.formatMessage(adminMessages.icon)}
+                infoText={intl.formatMessage(adminMessages.dragIconInfoText)}
                 onChange={field.onChange}
                 value={field.value}
               />
@@ -141,7 +163,7 @@ export const NewEntry = () => {
               <SelectField
                 key={selectIndex}
                 options={movedOptions}
-                label="Moved"
+                label={intl.formatMessage(newEntryMessages.moved)}
                 error={errors.moved?.message}
                 {...field}
                 onChange={(newValue, meta) => {
@@ -168,7 +190,7 @@ export const NewEntry = () => {
               <SelectField
                 key={selectIndex}
                 options={quadrantsOptions}
-                label="Quadrant"
+                label={intl.formatMessage(adminMessages.quadrant)}
                 error={errors.quadrant?.message}
                 {...field}
                 onChange={(newValue, meta) => {
@@ -195,7 +217,7 @@ export const NewEntry = () => {
             render={({ field }) => (
               <SelectField
                 options={ringsOptions}
-                label="Ring"
+                label={intl.formatMessage(adminMessages.ring)}
                 key={selectIndex}
                 error={errors.ring?.message}
                 {...field}
@@ -223,7 +245,7 @@ export const NewEntry = () => {
             render={({ field }) => (
               <SelectField
                 options={teamsOptions}
-                label="Team"
+                label={intl.formatMessage(adminMessages.team)}
                 key={selectIndex}
                 error={errors.team?.message}
                 {...field}
@@ -236,7 +258,7 @@ export const NewEntry = () => {
           />
 
           <SubmitButton type="submit" isLoading={isLoading}>
-            Utwórz
+            {intl.formatMessage(newEntryMessages.create)}
           </SubmitButton>
         </StyledForm>
       </CenteredWrapper>

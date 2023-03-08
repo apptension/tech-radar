@@ -1,6 +1,8 @@
+import { IntlShape } from 'react-intl';
 import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
 import { EditedEntry } from '../adminPanel/adminPanel.types';
 import { NewEntryInputs } from './newEntry.component';
+import messages from './newEntry.messages';
 
 const getIcon = (id: string, name: string) => ({ id, name, description: '', url: '' });
 
@@ -19,8 +21,8 @@ export const getRingsOptions = (radarRings: RadarRing[]) =>
 export const getTeamsOptions = (radarTeams: RadarTeam[]) =>
   radarTeams.map(({ name, id }) => ({ label: name, value: id }));
 
-export const getMovedOptions = () => [
-  { value: 0, label: 'Circle' },
-  { value: 1, label: 'Arrow up' },
-  { value: -1, label: 'Arrow down' },
+export const getMovedOptions = (intl: IntlShape) => [
+  { value: 0, label: intl.formatMessage(messages.movedCircle) },
+  { value: 1, label: intl.formatMessage(messages.movedArrowUp) },
+  { value: -1, label: intl.formatMessage(messages.movedArrowDown) },
 ];
