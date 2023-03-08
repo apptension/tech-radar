@@ -1,18 +1,27 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
-import { Container, StyledInput, StyledLabel, TextError } from './matrixTextField.styles';
+import { InfoTooltip } from '../../infoTooltip';
+import { Container, InfoIcon, LabelWrapper, StyledInput, StyledLabel, TextError } from './matrixTextField.styles';
 
 interface MatrixTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   isDisabled?: boolean;
   isRequired?: boolean;
+  infoContent?: string;
 }
 
 export const MatrixTextField = forwardRef<HTMLInputElement, MatrixTextFieldProps>(
-  ({ label, error, isDisabled = false, isRequired = false, ...props }, ref) => {
+  ({ label, error, isDisabled = false, isRequired = false, infoContent, ...props }, ref) => {
     return (
       <Container>
-        <StyledLabel isRequired={isRequired}>{label}</StyledLabel>
+        <LabelWrapper>
+          <StyledLabel isRequired={isRequired}>{label}</StyledLabel>
+          {infoContent && (
+            <InfoTooltip content={infoContent}>
+              <InfoIcon />
+            </InfoTooltip>
+          )}
+        </LabelWrapper>
         <StyledInput
           ref={ref}
           placeholder=" "

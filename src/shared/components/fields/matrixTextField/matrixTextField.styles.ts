@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { ReactComponent as InfoSVG } from '../../../../images/icons/info-circle.svg';
 import { color, fontWeight } from '../../../../theme';
 import { H1small, LabelMedium } from '../../../../theme/typography';
 
@@ -14,6 +15,7 @@ interface LabelProps {
 const FIELD_HEIGHT = '60px';
 
 export const Container = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -64,7 +66,6 @@ export const StyledInput = styled.input<InputProps>`
 export const StyledLabel = styled.label<LabelProps>`
   ${LabelMedium};
   font-weight: ${fontWeight.bold};
-  margin-bottom: 12px;
   color: ${color.silver};
   ${({ isRequired }) =>
     isRequired &&
@@ -76,8 +77,22 @@ export const StyledLabel = styled.label<LabelProps>`
     `}
 `;
 
+export const LabelWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  gap: 10px;
+`;
+
+export const InfoIcon = styled(InfoSVG)``;
+
 export const TextError = styled.p`
   ${LabelMedium};
   color: ${color.error};
   margin-top: 12px;
+`;
+
+export const InfoTooltipContainer = styled.div`
+  position: relative;
+  width: 520px;
 `;
