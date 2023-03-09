@@ -11,6 +11,9 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 `;
 
 export const Header = styled(HeaderComponent)`

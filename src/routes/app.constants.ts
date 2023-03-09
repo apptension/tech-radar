@@ -3,6 +3,7 @@ export const ROUTES = {
   explore: '/explore',
   matrixLogin: '/matrix/login',
   matrixPersonal: '/matrix/personal',
+  matrixKnowledge: '/matrix/knowledge',
   notFound: '/404',
 };
 
