@@ -3,6 +3,6 @@ export const fontFamily = {
 };
 
 export const fontWeight = {
-  normal: 'normal',
-  bold: 'bold',
+  normal: '500',
+  bold: '600',
 };
