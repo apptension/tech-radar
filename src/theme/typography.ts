@@ -42,6 +42,13 @@ export const Title = css`
   }
 `;
 
+export const H2 = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 32px;
+  line-height: 48px;
+`;
+
 export const H1 = styled.h1`
   ${Title};
   font-weight: ${fontWeight.bold};
