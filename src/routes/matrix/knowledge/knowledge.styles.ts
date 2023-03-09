@@ -4,12 +4,11 @@ import { ReactComponent as PatternSVG } from '../../../images/matrix-form-patter
 
 export const MainContainer = styled.div`
   background-color: ${color};
-  padding: 120px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 129px;
+  padding: 120px;
 `;
 
 export const PatternContainer = styled.div`
