@@ -12,3 +12,5 @@ export interface SelectOption {
 }
 
 export type Seniority = SelectOption;
+
+export type Position = SelectOption;

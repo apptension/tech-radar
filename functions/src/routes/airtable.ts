@@ -18,11 +18,11 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
         }
 
         const userInfo = records.map((record: any) => ({
-          position: record.get(USER_FIELDS.POSITION),
           email: record.get(USER_FIELDS.EMAIL),
           name: record.get(USER_FIELDS.NAME),
           slackId: record.get(USER_FIELDS.SLACK_ID),
           seniority: record.get(USER_FIELDS.SENIORITY)?.[0] || '',
+          position: record.get(USER_FIELDS.POSITION)?.[0] || '',
         }));
 
         return res.json({ userInfo: userInfo[0] });
@@ -46,6 +46,26 @@ export const getSeniorities = functions.https.onRequest(async (req, res) => {
         }));
 
         return res.json({ seniorities });
+      });
+  });
+});
+
+export const getPositions = functions.https.onRequest(async (req, res) => {
+  corsHandler(req, res, async () => {
+    airtable(BASE.POSITIONS)
+      .select({ view: BASE_VIEWS.GRID_VIEW })
+      .firstPage((err: any, records: any) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ success: false });
+        }
+
+        const positions = records.map((record: any) => ({
+          value: record.id,
+          label: record.get(SENIORITY_FIELDS.NAME),
+        }));
+
+        return res.json({ positions });
       });
   });
 });
