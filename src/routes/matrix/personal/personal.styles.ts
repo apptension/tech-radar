@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { color } from '../../../theme';
-import { H1large, ParagraphLarge } from '../../../theme/typography';
 import { ReactComponent as PatternSVG } from '../../../images/matrix-form-pattern.svg';
 
 export const MainContainer = styled.div`
@@ -11,24 +10,6 @@ export const MainContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-left: 129px;
-`;
-
-export const Header = styled.header`
-  margin-bottom: 80px;
-  display: flex;
-`;
-
-export const TitleContainer = styled.div`
-  margin-left: 30px;
-`;
-
-export const Title = styled.h1`
-  ${H1large};
-  margin: 0 0 16px 0;
-`;
-
-export const InfoText = styled(ParagraphLarge)`
-  color: ${color.boulder};
 `;
 
 export const PatternContainer = styled.div`
