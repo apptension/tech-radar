@@ -1,10 +1,9 @@
 import { ButtonIcon, ButtonSize } from '../../../shared/components/button/button.types';
-import matrixLogo from '../../../images/matrix-logo.png';
+import { MatrixHeader } from '../../../shared/components/matrix/matrixHeader';
 import teamPhoto from '../../../images/apptension-team.png';
 import {
   MainContainer,
   ContentContainer,
-  Header,
   PatternContainer,
   Photo,
   PhotoContainer,
@@ -21,9 +20,7 @@ export const Login = () => {
 
   return (
     <main>
-      <Header>
-        <Photo src={matrixLogo} />
-      </Header>
+      <MatrixHeader />
       <MainContainer>
         <ContentContainer>
           <Title>Share your expertise with us!</Title>
