@@ -3,55 +3,55 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   id: {
     id: 'adminPanel.idLabel',
-    defaultMessage: 'ID',
+    defaultMessage: 'id',
   },
   label: {
     id: 'adminPanel.labelLabel',
-    defaultMessage: 'Label',
+    defaultMessage: 'label',
   },
   description: {
     id: 'adminPanel.descriptionLabel',
-    defaultMessage: 'Description',
+    defaultMessage: 'description',
   },
   ring: {
     id: 'adminPanel.ringLabel',
-    defaultMessage: 'Ring',
+    defaultMessage: 'ring',
   },
   quadrant: {
     id: 'adminPanel.quadrantLabel',
-    defaultMessage: 'Quadrant',
+    defaultMessage: 'quadrant',
   },
   team: {
     id: 'adminPanel.teamLabel',
-    defaultMessage: 'Team',
+    defaultMessage: 'team',
   },
   github: {
     id: 'adminPanel.githubLabel',
-    defaultMessage: 'Github',
+    defaultMessage: 'github',
   },
   specification: {
     id: 'adminPanel.specificationLabel',
-    defaultMessage: 'Specification',
+    defaultMessage: 'specification',
   },
   projects: {
     id: 'adminPanel.projectsLabel',
-    defaultMessage: 'Projects',
+    defaultMessage: 'projects',
   },
   experts: {
     id: 'adminPanel.expertsLabel',
-    defaultMessage: 'Experts',
+    defaultMessage: 'experts',
   },
   icon: {
     id: 'adminPanel.iconLabel',
-    defaultMessage: 'Icon',
+    defaultMessage: 'icon',
   },
   iconUpload: {
     id: 'adminPanel.iconUploadLabel',
-    defaultMessage: 'Upload icon',
+    defaultMessage: 'iconUpload',
   },
   save: {
     id: 'adminPanel.saveLabel',
-    defaultMessage: 'Save',
+    defaultMessage: 'save',
   },
   dragIconInfoText: {
     id: 'adminPanel.dragIconInfoText',
