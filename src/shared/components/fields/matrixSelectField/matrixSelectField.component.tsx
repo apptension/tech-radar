@@ -1,4 +1,4 @@
-import Select, { Props, components } from 'react-select';
+import Select, { Props, components as selectComponents } from 'react-select';
 import dropdownDown from '../../../../images/icons/dropdown-down.svg';
 import { Container, selectStyles, StyledLabel, TextError } from './matrixSelectField.styles';
 
@@ -6,10 +6,17 @@ interface SelectFieldProps extends Props {
   label: string;
   error?: string;
   isRequired?: boolean;
-  inputRef: any;
+  inputRef?: any;
 }
 
-export const MatrixSelectField = ({ label, isRequired = false, error, inputRef, ...props }: SelectFieldProps) => {
+export const MatrixSelectField = ({
+  label,
+  isRequired = false,
+  error,
+  components,
+  inputRef,
+  ...props
+}: SelectFieldProps) => {
   return (
     <Container>
       <StyledLabel isRequired={isRequired}>{label}</StyledLabel>
@@ -19,10 +26,11 @@ export const MatrixSelectField = ({ label, isRequired = false, error, inputRef, 
         styles={selectStyles}
         components={{
           DropdownIndicator: (props) => (
-            <components.DropdownIndicator {...props}>
+            <selectComponents.DropdownIndicator {...props}>
               <img src={dropdownDown} alt="dropdown arrow" />
-            </components.DropdownIndicator>
+            </selectComponents.DropdownIndicator>
           ),
+          ...components,
         }}
         {...props}
       />

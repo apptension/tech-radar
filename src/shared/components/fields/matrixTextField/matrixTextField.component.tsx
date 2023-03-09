@@ -1,6 +1,16 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode } from 'react';
 import { InfoTooltip } from '../../infoTooltip';
-import { Container, InfoIcon, LabelWrapper, StyledInput, StyledLabel, TextError } from './matrixTextField.styles';
+import { ReactComponent as SearchSVG } from '../../../../images/icons/search.svg';
+import {
+  Container,
+  IconContainer,
+  InfoIcon,
+  LabelWrapper,
+  StyledInput,
+  InputWrapper,
+  StyledLabel,
+  TextError,
+} from './matrixTextField.styles';
 
 interface MatrixTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -8,10 +18,19 @@ interface MatrixTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   isDisabled?: boolean;
   isRequired?: boolean;
   infoContent?: string;
+  icon?: MatrixTextFieldIcon;
 }
 
+type MatrixTextFieldIcon = 'search';
+
+const iconTypes: { [key in MatrixTextFieldIcon]: ReactNode } = {
+  search: <SearchSVG width={24} height={24} />,
+};
+
 export const MatrixTextField = forwardRef<HTMLInputElement, MatrixTextFieldProps>(
-  ({ label, error, isDisabled = false, isRequired = false, infoContent, ...props }, ref) => {
+  ({ label, error, isDisabled = false, isRequired = false, infoContent, icon, ...props }, ref) => {
+    const getIcon = () => icon && iconTypes[icon];
+
     return (
       <Container>
         <LabelWrapper>
@@ -22,14 +41,17 @@ export const MatrixTextField = forwardRef<HTMLInputElement, MatrixTextFieldProps
             </InfoTooltip>
           )}
         </LabelWrapper>
-        <StyledInput
-          ref={ref}
-          placeholder=" "
-          isError={Boolean(error)}
-          isDisabled={isDisabled}
-          disabled={isDisabled}
-          {...props}
-        />
+        <InputWrapper>
+          <StyledInput
+            ref={ref}
+            placeholder=" "
+            isError={Boolean(error)}
+            isDisabled={isDisabled}
+            disabled={isDisabled}
+            {...props}
+          />
+          {icon && <IconContainer>{getIcon()}</IconContainer>}
+        </InputWrapper>
         {error && <TextError>{error}</TextError>}
       </Container>
     );

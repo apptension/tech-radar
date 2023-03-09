@@ -7,6 +7,10 @@ interface LabelProps {
   isRequired: boolean;
 }
 
+interface ColorDotProps {
+  color: string;
+}
+
 const FIELD_HEIGHT = '60px';
 
 export const Container = styled.div`
@@ -36,6 +40,19 @@ export const TextError = styled.p`
   color: ${color.error};
   margin-top: 12px;
   margin-bottom: 0;
+`;
+
+export const ColorDot = styled.div<ColorDotProps>`
+  width: 16px;
+  height: 16px;
+  margin-left: 18px;
+  border-radius: 50%;
+  background-color: ${({ color }) => color};
+`;
+
+export const ContainerWithColor = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const getBorderColor = (isFocused: boolean, hasValue: boolean, isError: boolean) =>
