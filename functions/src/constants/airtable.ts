@@ -4,15 +4,15 @@ export enum BASE {
 }
 
 export enum USER_FIELDS {
-  NAME = 'fldli9mH54swE4ab5',
-  POSITION = 'fldbeL1sB2u6dlpkg',
-  EMAIL = 'fldMhFOhU52Q22ZVP',
-  SLACK_ID = 'fld4PbyPSH1T4hDWF',
-  SENIORITY = 'fldJdSiQZPUgQjX1a',
+  NAME = 'Name',
+  POSITION = 'Position',
+  EMAIL = 'Email',
+  SLACK_ID = 'SlackID',
+  SENIORITY = 'Seniority',
 }
 
 export enum SENIORITY_FIELDS {
-  NAME = 'fldUoF3GFNOe2scCz',
+  NAME = 'Name',
 }
 
 export enum BASE_VIEWS {
