@@ -26,6 +26,7 @@ export enum CATEGORY_FIELDS {
 export enum SKILL_FIELDS {
   NAME = 'Name',
   COLOR = 'Color (from Categories copy)',
+  CATEGORY_ID = 'RecordID (from Categories copy)',
 }
 
 export enum BASE_VIEWS {
