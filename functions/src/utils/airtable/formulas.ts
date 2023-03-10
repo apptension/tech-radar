@@ -5,7 +5,7 @@ export const filterUserByEmailFormula = (email: string) => {
 };
 
 export const filterSkilsByCategoryId = (categoryId: string) => {
-  return `IF({${SKILL_FIELDS.CATEGORY_ID}} & "" = "${categoryId}", 'TRUE', 'FALSE')`;
+  return `{${SKILL_FIELDS.CATEGORY_ID}} & "" = "${categoryId}"`;
 };
 
 export const filterSkillsBySearch = (search: string) => {

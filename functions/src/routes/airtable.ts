@@ -99,9 +99,9 @@ export const getSkills = functions.https.onRequest(async (req, res) => {
       .select({
         view: BASE_VIEWS.ALL,
         fields: [SKILL_FIELDS.NAME, SKILL_FIELDS.COLOR, SKILL_FIELDS.CATEGORY_ID],
-        filterByFormula: `AND(${filterSkilsByCategoryId(category as string)}, ${filterSkillsBySearch(
-          search as string
-        )})`,
+        filterByFormula: category
+          ? `AND(${filterSkilsByCategoryId(category as string)}, ${filterSkillsBySearch(search as string)})`
+          : filterSkillsBySearch(search as string),
       })
       .eachPage(
         function page(records: any, fetchNextPage: any) {

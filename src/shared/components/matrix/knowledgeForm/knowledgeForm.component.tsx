@@ -19,8 +19,17 @@ import {
 import { useKnowledgeForm } from './useKnowledgeForm.hook';
 
 export const KnowledgeForm = () => {
-  const { skills, categoryOptions, isLoading, search, selectedCategory, setSearch, setSelectedCategory, handleBack } =
-    useKnowledgeForm();
+  const {
+    skills,
+    categoryOptions,
+    isLoading,
+    isSearching,
+    search,
+    selectedCategory,
+    handleCategoryChange,
+    handleBack,
+    handleSearchChange,
+  } = useKnowledgeForm();
 
   if (isLoading) {
     return <Loader isFullPage />;
@@ -35,20 +44,15 @@ export const KnowledgeForm = () => {
             options={categoryOptions}
             value={categoryOptions.find((option) => option.value === selectedCategory)}
             components={{ Option: OptionWithColor, SingleValue: SingleValueWithColor }}
-            onChange={(val: any) => setSelectedCategory(val.value)}
+            onChange={handleCategoryChange}
           />
         </FieldContainer>
         <FieldContainer>
-          <MatrixTextField
-            label=""
-            icon="search"
-            placeholder="Search"
-            value={search}
-            onChange={({ target }) => setSearch(target.value)}
-          />
+          <MatrixTextField label="" icon="search" placeholder="Search" value={search} onChange={handleSearchChange} />
         </FieldContainer>
       </FieldsRow>
       <ValueBox
+        isLoading={isSearching}
         label="Skills to choose from"
         infoContent="Choose any tag with technology and move it to the Expertise level you feel it can be referred to.
         You can also move all tags from one level to another. 
