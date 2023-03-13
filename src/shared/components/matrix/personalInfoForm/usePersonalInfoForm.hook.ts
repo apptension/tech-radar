@@ -1,26 +1,31 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
-import { getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
-import { PersonalInfo } from '../types';
+import { getSeniorities, getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
+import { reportError } from '../../../utils/reportError';
+import { PersonalInfo, Seniority } from '../types';
 
 const defaultValues: PersonalInfo = {
   position: '',
   slackId: '',
   email: '',
   name: '',
+  seniority: '',
 };
 
 export const usePersonalInfoForm = () => {
-  const { user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [seniorityOptions, setSeniorityOptions] = useState<Seniority[]>([]);
+
+  const { user } = useAuthContext();
   const form = useForm<PersonalInfo>({ defaultValues });
 
-  const initializeValues = ({ email, name, position, slackId }: PersonalInfo) => {
+  const initializeValues = ({ email, name, position, slackId, seniority }: PersonalInfo) => {
     form.setValue('email', email);
     form.setValue('name', name);
     form.setValue('position', position);
     form.setValue('slackId', slackId);
+    form.setValue('seniority', seniority);
   };
 
   const submit: SubmitHandler<PersonalInfo> = (data) => {
@@ -30,18 +35,27 @@ export const usePersonalInfoForm = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (user) {
-        try {
-          const { data } = await getUserPersonalInfo(user.email);
-          initializeValues(data.userInfo);
-        } catch (err) {
-          console.error(err);
-        }
-        setIsLoading(false);
+        const { data } = await getUserPersonalInfo(user.email);
+        initializeValues(data.userInfo);
       }
     };
 
-    fetchUserInfo();
+    const fetchSeniorities = async () => {
+      const { data } = await getSeniorities();
+      setSeniorityOptions(data.seniorities);
+    };
+
+    const getFormData = async () => {
+      try {
+        await Promise.all([fetchUserInfo(), fetchSeniorities()]);
+        setIsLoading(false);
+      } catch (err) {
+        reportError(err);
+      }
+    };
+
+    getFormData();
   }, []);
 
-  return { form, submit, isLoading };
+  return { form, submit, isLoading, seniorityOptions };
 };

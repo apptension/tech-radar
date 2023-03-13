@@ -1,5 +1,7 @@
+import { Controller } from 'react-hook-form';
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
 import { ButtonSize, ButtonVariant } from '../../button/button.types';
+import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
 import { Form, NextButton, FieldContainer } from './personalInfoForm.styles';
@@ -8,10 +10,12 @@ import { usePersonalInfoForm } from './usePersonalInfoForm.hook';
 export const PersonalInfoForm = () => {
   const {
     form: {
+      control,
       register,
       handleSubmit,
       formState: { errors },
     },
+    seniorityOptions,
     isLoading,
     submit,
   } = usePersonalInfoForm();
@@ -52,6 +56,25 @@ export const PersonalInfoForm = () => {
           error={errors.position?.message}
           {...register('position', { required: VALIDATION_MESSAGES.required })}
           isRequired
+        />
+      </FieldContainer>
+      <FieldContainer>
+        <Controller
+          control={control}
+          name="seniority"
+          rules={{ required: VALIDATION_MESSAGES.required }}
+          render={({ field: { onChange, value, ref } }) => (
+            <MatrixSelectField
+              inputRef={ref}
+              placeholder="Select your seniority level"
+              label="Seniority level"
+              isRequired
+              options={seniorityOptions}
+              error={errors.seniority?.message}
+              value={seniorityOptions.find((option) => option.value === value)}
+              onChange={(val: any) => onChange(val.value)}
+            />
+          )}
         />
       </FieldContainer>
       <NextButton type="submit" size={ButtonSize.LARGE} variant={ButtonVariant.PRIMARY}>
