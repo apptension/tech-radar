@@ -50,13 +50,16 @@ export const H1 = styled.h1`
 `;
 
 export const H1small = css`
-  ${H1};
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
   font-size: 20px;
   line-height: 28px;
+  margin: 0;
 `;
 
 export const H1large = css`
-  ${H1};
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.bold};
   font-size: 48px;
   line-height: 61px;
 `;
