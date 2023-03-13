@@ -1,7 +1,8 @@
 import { PersonalInfoForm } from '../../../shared/components/matrix/personalInfoForm';
 import { MatrixHeader } from '../../../shared/components/matrix/matrixHeader';
 import { StepInfo } from '../../../shared/components/matrix/stepInfo';
-import { MainContainer, Pattern, PatternContainer } from './personal.styles';
+import { MainContainer } from '../matrix.styles';
+import { PersonalPattern, PersonalPatternContainer } from './personal.styles';
 
 export const Personal = () => {
   return (
@@ -12,9 +13,9 @@ export const Personal = () => {
 
         <PersonalInfoForm />
 
-        <PatternContainer>
-          <Pattern />
-        </PatternContainer>
+        <PersonalPatternContainer>
+          <PersonalPattern />
+        </PersonalPatternContainer>
       </MainContainer>
     </main>
   );
