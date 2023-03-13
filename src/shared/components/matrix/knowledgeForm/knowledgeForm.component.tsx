@@ -3,19 +3,10 @@ import { ButtonSize, ButtonVariant } from '../../button/button.types';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { OptionWithColor } from '../../fields/matrixSelectField/OptionWithColor';
 import { SingleValueWithColor } from '../../fields/matrixSelectField/SingleValueWithColor';
-
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
-import { SkillTag } from '../skillTag';
-import { ValueBox } from '../valueBox';
-import {
-  Form,
-  NextButton,
-  FieldContainer,
-  FieldsRow,
-  DraggableContainer,
-  ActionsContainer,
-} from './knowledgeForm.styles';
+import { FieldsRow, FieldContainer, Form, ActionsContainer, NextButton } from './knowledgeForm.styles';
+import { SkillsDnd } from './skillsDnD/skillsDnD.component';
 import { useKnowledgeForm } from './useKnowledgeForm.hook';
 
 export const KnowledgeForm = () => {
@@ -24,6 +15,7 @@ export const KnowledgeForm = () => {
     categoryOptions,
     isLoading,
     isSearching,
+    setSkills,
     search,
     selectedCategory,
     handleCategoryChange,
@@ -51,19 +43,8 @@ export const KnowledgeForm = () => {
           <MatrixTextField label="" icon="search" placeholder="Search" value={search} onChange={handleSearchChange} />
         </FieldContainer>
       </FieldsRow>
-      <ValueBox
-        isLoading={isSearching}
-        label="Skills to choose from"
-        infoContent="Choose any tag with technology and move it to the Expertise level you feel it can be referred to.
-        You can also move all tags from one level to another. 
-        Don't worry, if there's something you don't find in the list, you can add it in the next “Step 3” under “Additional skills”."
-      >
-        <DraggableContainer>
-          {skills.map(({ label, value, color }) => (
-            <SkillTag key={value} name={label} color={color} />
-          ))}
-        </DraggableContainer>
-      </ValueBox>
+
+      <SkillsDnd isLoading={isSearching} skills={skills} setSkills={setSkills} />
 
       <ActionsContainer>
         <Button type="button" size={ButtonSize.LARGE} onClick={handleBack}>

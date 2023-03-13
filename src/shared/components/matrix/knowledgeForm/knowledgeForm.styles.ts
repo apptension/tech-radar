@@ -34,9 +34,3 @@ export const FieldsRow = styled.div`
   gap: 31px;
   width: 100%;
 `;
-
-export const DraggableContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-`;

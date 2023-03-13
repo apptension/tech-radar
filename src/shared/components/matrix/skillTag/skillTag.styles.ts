@@ -24,4 +24,6 @@ export const Text = styled.span`
 export const CloseButton = styled.button`
   display: flex;
   align-items: center;
+  border: none;
+  background-color: transparent;
 `;

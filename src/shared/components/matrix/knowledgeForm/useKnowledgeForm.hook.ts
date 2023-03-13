@@ -7,6 +7,12 @@ import { getCategories, getSkills } from '../../../services/api/endpoints/airtab
 import { reportError } from '../../../utils/reportError';
 import { Category, Seniority, Skill } from '../types';
 
+export interface Skills {
+  root: Skill[];
+  expert: Skill[];
+  intermediate: Skill[];
+  shallow: Skill[];
+}
 interface SkillsSearch {
   search: string;
   category: string;
@@ -18,7 +24,7 @@ export const useKnowledgeForm = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categoryOptions, setCategoryOptions] = useState<Seniority[]>([]);
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
 
   const { user } = useAuthContext();
   const history = useHistory();
@@ -32,7 +38,20 @@ export const useKnowledgeForm = () => {
   const fetchSkills = async ({ search, category }: SkillsSearch) => {
     setIsSearching(true);
     const { data } = await getSkills(search, category);
-    setSkills(data.skills);
+
+    // IN CASE FETCHED SKILL IS ALREADY ADDED TO SOME CATEGORY WE'RE NOT DISPLAYING IT
+    const checkIfSkillIsAdded = (skills: Skill[], skillValue: string) =>
+      skillValue !== skills.find((item) => item.value === skillValue)?.value;
+
+    setSkills((skills) => ({
+      ...skills,
+      root: data.skills.filter(
+        (skill) =>
+          checkIfSkillIsAdded(skills.expert, skill.value) &&
+          checkIfSkillIsAdded(skills.intermediate, skill.value) &&
+          checkIfSkillIsAdded(skills.shallow, skill.value)
+      ),
+    }));
     setIsSearching(false);
   };
 
@@ -82,6 +101,7 @@ export const useKnowledgeForm = () => {
     skills,
     categoryOptions,
     search,
+    setSkills,
     selectedCategory,
     isSearching,
     handleCategoryChange,
