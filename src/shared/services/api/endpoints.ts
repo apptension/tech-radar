@@ -1,16 +1,19 @@
 import { EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
 import { axiosFunctionsApi } from './axiosInstances';
 
-export const patchEntry = async (editedEntry: EditedEntry) => {
-  return await axiosFunctionsApi.patch('/updateEntry', { editedEntry });
+export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: EditedEntry) => {
+  let iconId = '';
+
+  if (iconUpload) {
+    const { data } = await postImage(iconUpload);
+    iconId = data.fileId;
+    await postEntryImage(id!, data.fileId);
+  }
+  return await axiosFunctionsApi.patch('/updateEntry', { editedEntry, icon: iconId, entryId: id });
 };
 
-export const deleteEntry = async (id: string) => {
-  return await axiosFunctionsApi.post('/deleteEntry', { id });
-};
-
-export const postEntry = async (entry: EditedEntry) => {
-  return await axiosFunctionsApi.post('/createEntry', { entry });
+export const postEntry = async (entryData: EditedEntry) => {
+  return await axiosFunctionsApi.post('/createEntry', { entryData });
 };
 
 export const postImage = async (file: File) => {

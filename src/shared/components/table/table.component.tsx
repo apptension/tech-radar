@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { TextField } from '../fields/TextField';
 import { TablePagination } from '../pagination';
 import { TableRadarTechnology } from '../radar/radar.types';
 
@@ -29,7 +30,7 @@ export function Table({ columns, data, updateMyData }: TableProps) {
       updateMyData(index, id, value);
     };
 
-    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    return <TextField label="" value={value} onChange={onChange} onBlur={onBlur} />;
   };
 
   const defaultColumn = {

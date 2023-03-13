@@ -1,28 +1,26 @@
 import { useHistory } from 'react-router';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import Select from 'react-select';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useState } from 'react';
 import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
-import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../../shared/components/radar/radar.types';
-import { InlineSelectContainer } from '../../shared/components/adminPanelTable/adminPanelTable.styles';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../app.constants';
-import messages from '../home/home.messages';
-import { postImage } from '../../shared/services/api/endpoints';
-import { createEntry, prepareNewEntry } from './newEntry.utils';
+import homeMessages from '../home/home.messages';
+import { postEntry, postImage } from '../../shared/services/api/endpoints';
+import { TOption } from '../../shared/components/fields/SelectField/SelectField.component';
+import { TextField } from '../../shared/components/fields/TextField';
+import { FileDropField } from '../../shared/components/fields/FileDropField';
+import { SelectField } from '../../shared/components/fields/SelectField';
+import adminMessages from '../adminPanel/adminPanel.messages';
+import newEntryMessages from './newEntry.messages';
 import {
-  CenteredWrapper,
-  SecondHeader,
-  StyledForm,
-  StyledInput,
-  StyledLabel,
-  StyledLink,
-  StyledParagraph,
-  StyledSelect,
-  StyledSubmitButton,
-  TextError,
-} from './newEntry.styles';
+  getMovedOptions,
+  getQuadrantOptions,
+  getRingsOptions,
+  getTeamsOptions,
+  prepareNewEntry,
+} from './newEntry.utils';
+import { CenteredWrapper, SecondHeader, StyledForm, StyledLink, SubmitButton } from './newEntry.styles';
 
 export type NewEntryInputs = {
   label: string;
@@ -32,7 +30,7 @@ export type NewEntryInputs = {
   specification: string;
   github: string;
   projects: string;
-  icon?: FileList;
+  icon?: File;
   alternatives: AlternativesTableType[];
   experts: string;
   team: string;
@@ -42,10 +40,14 @@ export type NewEntryInputs = {
 export const NewEntry = () => {
   const token = sessionStorage.getItem('accessToken');
   const [isLoading, setLoading] = useState(false);
-  const intl = useIntl();
+  const [isError, setIsError] = useState(false);
+  // Index needed for react-select components to reset to defaultValue
+  const [selectIndex, setSelectIndex] = useState(0);
+
   const history = useHistory();
-  const { radarTechnologies, radarQuadrants, radarRings, radarTeams } = useContentfulData();
-  const options = radarTechnologies?.map((tech: RadarTechnology) => ({ value: tech.id, ...tech }));
+  const intl = useIntl();
+
+  const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
 
   const {
     register,
@@ -54,133 +56,211 @@ export const NewEntry = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<NewEntryInputs>();
-
   const onSubmit: SubmitHandler<NewEntryInputs> = async (data) => {
     setLoading(true);
-    const { icon } = data;
-    let iconId: string | undefined = undefined;
+    setIsError(false);
+    try {
+      const postIcon = async (icon: NewEntryInputs['icon']) => {
+        if (icon) {
+          const { data } = await postImage(icon);
+          return data.fileId;
+        }
+      };
+      const iconId = await postIcon(data.icon);
+      const entry = prepareNewEntry(data, iconId);
 
-    if (icon?.length) {
-      const { data } = await postImage(icon[0]);
-      iconId = data.fileId;
+      await postEntry(entry);
+      alert('Entry created!');
+      reset();
+      setSelectIndex((index) => index + 1);
+    } catch (err) {
+      setIsError(true);
     }
-
-    const entry = prepareNewEntry(data, iconId);
-
-    const result = await createEntry(entry);
-    if (result) reset();
     setLoading(false);
   };
 
   if (!token) history.push(ROUTES.login);
 
+  const quadrantsOptions = getQuadrantOptions(radarQuadrants);
+  const ringsOptions = getRingsOptions(radarRings);
+  const teamsOptions = getTeamsOptions(radarTeams);
+  const movedOptions = getMovedOptions(intl);
+
   return (
     <div>
       <CenteredWrapper>
         <StyledLink to={ROUTES.adminPanel}>
-          <FormattedMessage {...messages.goToAdminPanel} />
+          <FormattedMessage {...homeMessages.goToAdminPanel} />
         </StyledLink>
-        <SecondHeader>Add new entry to conentful</SecondHeader>
+        <SecondHeader>{intl.formatMessage(newEntryMessages.title)}</SecondHeader>
+        {isError && <p>{intl.formatMessage(newEntryMessages.networkError)}</p>}
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <StyledLabel>Label</StyledLabel>
-          <StyledInput
+          <TextField
+            label="Label"
+            error={errors.label?.message}
             {...register('label', {
               required: {
                 value: true,
                 message: intl.formatMessage({
-                  defaultMessage: 'Label is required',
-                  id: 'NewEntry / Form / Label required',
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
                 }),
               },
             })}
           />
-          {errors.label && <TextError>{errors.label?.message}</TextError>}
-          <StyledLabel>Quadrant</StyledLabel>
-          <StyledSelect
-            defaultValue=""
-            {...register('quadrant', {
-              required: {
-                value: true,
-                message: intl.formatMessage({
-                  defaultMessage: 'Quadrant is required',
-                  id: 'NewEntry / Form / Quadrant required',
-                }),
-              },
-            })}
-          >
-            {radarQuadrants?.map(({ id, name }: RadarQuadrant) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </StyledSelect>
-          {errors.quadrant && <TextError>{errors.quadrant?.message}</TextError>}
-          <StyledLabel>Ring</StyledLabel>
-          <StyledSelect
-            defaultValue=""
-            {...register('ring', {
-              required: {
-                value: true,
-                message: intl.formatMessage({
-                  defaultMessage: 'Ring is required',
-                  id: 'NewEntry / Form / Ring required',
-                }),
-              },
-            })}
-          >
-            {radarRings?.map(({ id, name }: RadarRing) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </StyledSelect>
-          {errors.ring && <TextError>{errors.ring?.message}</TextError>}
-          <StyledLabel>Moved (0 = circle, 1 = arrow up, -1 = arrow down)</StyledLabel>
-          <StyledInput
-            {...register('moved', {
-              required: {
-                value: true,
-                message: intl.formatMessage({
-                  defaultMessage: 'Moved is required',
-                  id: 'NewEntry / Form / Moved required',
-                }),
-              },
-            })}
+          <TextField
+            label={intl.formatMessage(adminMessages.description)}
+            error={errors.description?.message}
+            {...register('description')}
           />
-          {errors.moved && <TextError>{errors.moved?.message}</TextError>}
-          <StyledLabel>Description</StyledLabel>
-          <StyledInput {...register('description')} />
-          <StyledLabel>Specification</StyledLabel>
-          <StyledInput {...register('specification')} />
-          <StyledLabel>Github</StyledLabel>
-          <StyledInput {...register('github')} />
-          <StyledLabel>Projects</StyledLabel>
-          <StyledInput {...register('projects')} />
-          <StyledLabel>Icon</StyledLabel>
-          <StyledInput type="file" {...register('icon')} />
-          <StyledLabel>Alternatives</StyledLabel>
+          <TextField
+            label={intl.formatMessage(adminMessages.specification)}
+            error={errors.specification?.message}
+            {...register('specification')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.github)}
+            error={errors.github?.message}
+            {...register('github')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.projects)}
+            error={errors.projects?.message}
+            {...register('projects')}
+          />
+          <TextField
+            label={intl.formatMessage(adminMessages.experts)}
+            error={errors.experts?.message}
+            {...register('experts')}
+          />
+
           <Controller
             control={control}
-            name="alternatives"
+            name="icon"
             render={({ field }) => (
-              <InlineSelectContainer>
-                <Select isMulti options={options} {...field} isSearchable classNamePrefix="react-select" />
-              </InlineSelectContainer>
+              <FileDropField
+                label={intl.formatMessage(adminMessages.icon)}
+                infoText={intl.formatMessage(adminMessages.dragIconInfoText)}
+                onChange={field.onChange}
+                value={field.value}
+              />
             )}
           />
-          <StyledLabel>Experts</StyledLabel>
-          <StyledInput {...register('experts')} />
-          <StyledLabel>Team</StyledLabel>
-          <StyledSelect defaultValue="" {...register('team')}>
-            {radarTeams?.map(({ id, name }: RadarTeam) => (
-              <option key={name} value={id}>
-                {name}
-              </option>
-            ))}
-          </StyledSelect>
-          <StyledSubmitButton type="submit" />
+
+          <Controller
+            control={control}
+            name="moved"
+            rules={{
+              required: {
+                value: true,
+                message: intl.formatMessage({
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
+                }),
+              },
+            }}
+            render={({ field }) => (
+              <SelectField
+                key={selectIndex}
+                options={movedOptions}
+                label={intl.formatMessage(newEntryMessages.moved)}
+                error={errors.moved?.message}
+                {...field}
+                onChange={(newValue, meta) => {
+                  field.onChange((newValue as TOption).value, meta);
+                }}
+                value={movedOptions.find(({ value }) => value === +field.value)}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="quadrant"
+            rules={{
+              required: {
+                value: true,
+                message: intl.formatMessage({
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
+                }),
+              },
+            }}
+            render={({ field }) => (
+              <SelectField
+                key={selectIndex}
+                options={quadrantsOptions}
+                label={intl.formatMessage(adminMessages.quadrant)}
+                error={errors.quadrant?.message}
+                {...field}
+                onChange={(newValue, meta) => {
+                  field.onChange((newValue as TOption).value, meta);
+                }}
+                value={quadrantsOptions.find(({ value }) => value === field.value)}
+                defaultValue={quadrantsOptions.find(({ value }) => value === field.value)}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="ring"
+            rules={{
+              required: {
+                value: true,
+                message: intl.formatMessage({
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
+                }),
+              },
+            }}
+            render={({ field }) => (
+              <SelectField
+                options={ringsOptions}
+                label={intl.formatMessage(adminMessages.ring)}
+                key={selectIndex}
+                error={errors.ring?.message}
+                {...field}
+                onChange={(newValue, meta) => {
+                  field.onChange((newValue as TOption).value, meta);
+                }}
+                value={ringsOptions.find(({ value }) => value === field.value)}
+                defaultValue={ringsOptions.find(({ value }) => value === field.value)}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="team"
+            rules={{
+              required: {
+                value: true,
+                message: intl.formatMessage({
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
+                }),
+              },
+            }}
+            render={({ field }) => (
+              <SelectField
+                options={teamsOptions}
+                label={intl.formatMessage(adminMessages.team)}
+                key={selectIndex}
+                error={errors.team?.message}
+                {...field}
+                onChange={(newValue, meta) => {
+                  field.onChange((newValue as TOption).value, meta);
+                }}
+                value={teamsOptions.find(({ value }) => value === field.value)}
+              />
+            )}
+          />
+
+          <SubmitButton type="submit" isLoading={isLoading}>
+            {intl.formatMessage(newEntryMessages.create)}
+          </SubmitButton>
         </StyledForm>
-        {isLoading && <StyledParagraph> Entry is uploading. Please wait, it takes a few moment... </StyledParagraph>}
       </CenteredWrapper>
     </div>
   );

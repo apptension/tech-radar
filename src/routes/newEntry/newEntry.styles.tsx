@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from '../../shared/components/button';
 import { color } from '../../theme';
-
-const sharedStyles = `
-    width: 300px;
-    height: 30px;
-`;
 
 export const CenteredWrapper = styled.div`
   display: flex;
@@ -13,8 +9,9 @@ export const CenteredWrapper = styled.div`
   justify-content: center;
   max-width: 1000px;
   width: 100%;
-  padding-top: 10px;
+  padding: 24px 0;
   margin-bottom: 20px;
+  margin: 0 auto;
 `;
 
 export const StyledForm = styled.form`
@@ -22,27 +19,15 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   max-width: 760px;
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
+  gap: 16px;
 `;
 
-export const StyledLabel = styled.label`
-  margin: 10px 0;
-`;
-
-export const StyledInput = styled.input`
-  ${sharedStyles};
-`;
-
-export const StyledSelect = styled.select`
-  ${sharedStyles};
-  cursor: pointer;
-`;
-
-export const StyledSubmitButton = styled.input.attrs({ type: 'submit' })`
-  ${sharedStyles};
-  margin-top: 20px;
-  cursor: pointer;
+export const SubmitButton = styled(Button)`
+  margin-top: 16px;
+  width: 100%;
+  justify-content: center;
 `;
 
 export const StyledLink = styled(Link)`
@@ -62,8 +47,4 @@ export const SecondHeader = styled.h2`
 
 export const StyledParagraph = styled.p`
   text-align: center;
-`;
-
-export const TextError = styled.p`
-  color: ${color.error};
 `;
