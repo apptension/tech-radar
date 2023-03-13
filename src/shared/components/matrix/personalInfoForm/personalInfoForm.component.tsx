@@ -16,6 +16,7 @@ export const PersonalInfoForm = () => {
       formState: { errors },
     },
     seniorityOptions,
+    positionOptions,
     isLoading,
     submit,
   } = usePersonalInfoForm();
@@ -51,11 +52,22 @@ export const PersonalInfoForm = () => {
         />
       </FieldContainer>
       <FieldContainer>
-        <MatrixTextField
-          label="Position"
-          error={errors.position?.message}
-          {...register('position', { required: VALIDATION_MESSAGES.required })}
-          isRequired
+        <Controller
+          control={control}
+          name="position"
+          rules={{ required: VALIDATION_MESSAGES.required }}
+          render={({ field: { onChange, value, ref } }) => (
+            <MatrixSelectField
+              inputRef={ref}
+              placeholder="Select your position"
+              label="Position"
+              isRequired
+              options={positionOptions}
+              error={errors.position?.message}
+              value={positionOptions.find((option) => option.value === value)}
+              onChange={(val: any) => onChange(val.value)}
+            />
+          )}
         />
       </FieldContainer>
       <FieldContainer>

@@ -1,11 +1,12 @@
 export enum BASE {
   USERS = 'tblljrHCnb1MCdaOh',
   SENIORITIES = 'tblazoEO9BXeMbQXj',
+  POSITIONS = 'tblsP5T9GCsA1TLa9',
 }
 
 export enum USER_FIELDS {
   NAME = 'Name',
-  POSITION = 'Position',
+  POSITION = 'Position1',
   EMAIL = 'Email',
   SLACK_ID = 'SlackID',
   SENIORITY = 'Seniority',

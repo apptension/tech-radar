@@ -1,4 +1,4 @@
-import { PersonalInfo, Seniority } from '../../../components/matrix/types';
+import { PersonalInfo, Position, Seniority } from '../../../components/matrix/types';
 import { axiosAirtableApi } from '../axiosInstances';
 
 export const getUserPersonalInfo = async (userEmail: string) => {
@@ -7,4 +7,8 @@ export const getUserPersonalInfo = async (userEmail: string) => {
 
 export const getSeniorities = async () => {
   return await axiosAirtableApi.get<{ seniorities: Seniority[] }>('/getSeniorities');
+};
+
+export const getPostions = async () => {
+  return await axiosAirtableApi.get<{ positions: Position[] }>('/getPositions');
 };

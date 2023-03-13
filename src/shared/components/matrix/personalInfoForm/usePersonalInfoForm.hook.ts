@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
-import { getSeniorities, getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
+import { getPostions, getSeniorities, getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
 import { reportError } from '../../../utils/reportError';
-import { PersonalInfo, Seniority } from '../types';
+import { PersonalInfo, Position, Seniority } from '../types';
 
 const defaultValues: PersonalInfo = {
   position: '',
@@ -16,6 +16,7 @@ const defaultValues: PersonalInfo = {
 export const usePersonalInfoForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [seniorityOptions, setSeniorityOptions] = useState<Seniority[]>([]);
+  const [positionOptions, setPositionOptions] = useState<Position[]>([]);
 
   const { user } = useAuthContext();
   const form = useForm<PersonalInfo>({ defaultValues });
@@ -45,9 +46,16 @@ export const usePersonalInfoForm = () => {
       setSeniorityOptions(data.seniorities);
     };
 
+    const fetchPositions = async () => {
+      if (user) {
+        const { data } = await getPostions();
+        setPositionOptions(data.positions);
+      }
+    };
+
     const getFormData = async () => {
       try {
-        await Promise.all([fetchUserInfo(), fetchSeniorities()]);
+        await Promise.all([fetchUserInfo(), fetchSeniorities(), fetchPositions()]);
         setIsLoading(false);
       } catch (err) {
         reportError(err);
@@ -57,5 +65,5 @@ export const usePersonalInfoForm = () => {
     getFormData();
   }, []);
 
-  return { form, submit, isLoading, seniorityOptions };
+  return { form, submit, isLoading, seniorityOptions, positionOptions };
 };

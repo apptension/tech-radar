@@ -1,1 +1,1 @@
-export { getUserPersonalInfo, getSeniorities } from './routes/airtable';
+export { getUserPersonalInfo, getSeniorities, getPositions } from './routes/airtable';
