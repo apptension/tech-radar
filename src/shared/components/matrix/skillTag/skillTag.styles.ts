@@ -13,6 +13,7 @@ export const Container = styled.div<ContainerProps>`
   align-items: center;
   gap: 8px;
   background-color: ${({ color }) => color};
+  cursor: pointer;
 `;
 
 export const Text = styled.span`

@@ -1,5 +1,4 @@
 import { useDraggable, UseDraggableArguments } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import { ReactNode } from 'react';
 
 interface DraggableProps extends UseDraggableArguments {
@@ -7,14 +6,10 @@ interface DraggableProps extends UseDraggableArguments {
 }
 
 export const Draggable = ({ children, ...props }: DraggableProps) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable(props);
-
-  const style = {
-    transform: CSS.Translate.toString(transform),
-  };
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable(props);
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div ref={setNodeRef} style={isDragging ? { visibility: 'hidden' } : {}} {...listeners} {...attributes}>
       {children}
     </div>
   );
