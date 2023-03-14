@@ -11,6 +11,7 @@ import { ROUTES } from './app.constants';
 import { Login } from './matrix/login';
 import { Personal } from './matrix/personal';
 import { Knowledge } from './matrix/knowledge';
+import { AdditionalInfo } from './matrix/additionalInfo';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -45,6 +46,10 @@ export default () => {
 
             <AuthRoute exact path={ROUTES.matrixKnowledge}>
               <Knowledge />
+            </AuthRoute>
+
+            <AuthRoute exact path={ROUTES.matrixAdditionalInfo}>
+              <AdditionalInfo />
             </AuthRoute>
           </AuthContextProvider>
 
