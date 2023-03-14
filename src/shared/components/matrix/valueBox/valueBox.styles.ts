@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
-import { color } from '../../../../theme';
+import { color, scrollbar } from '../../../../theme';
 
 interface ScrollableContainerProps {
   maxHeight: string;
@@ -21,6 +21,7 @@ export const ContentContainer = styled.div`
 `;
 
 export const ScrollableContainer = styled.div<ScrollableContainerProps>`
+  ${scrollbar.customScrollbar};
   position: relative;
   overflow: auto;
   padding-right: 16px;
@@ -29,17 +30,6 @@ export const ScrollableContainer = styled.div<ScrollableContainerProps>`
   flex-wrap: wrap;
   gap: 20px;
   align-content: flex-start;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  &::-webkit-scrollbar-track {
-    background: ${color.mineShaft};
-  }
-  &::-webkit-scrollbar-thumb {
-    background: ${color.silver};
-    border-radius: 100px;
-  }
 
   ${({ maxHeight }) =>
     maxHeight &&
