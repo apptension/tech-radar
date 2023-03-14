@@ -1,6 +1,6 @@
 import { DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Skill } from '../../types';
+import { SkillWithVisibility } from '../../types';
 import { Skills } from '../useKnowledgeForm.hook';
 import { findActiveItemContainer, findOverContainer, sortSkillsAlph } from './skillsDnd.utils';
 
@@ -10,27 +10,30 @@ interface UseSkillsDndProps {
 }
 
 export const useSkillsDnd = ({ setSkills, skills }: UseSkillsDndProps) => {
-  const [activeItem, setActiveItem] = useState<Skill | null>(null);
+  const [activeItem, setActiveItem] = useState<SkillWithVisibility | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
+        // NEEDED IN ORDER TO CLOSE BUTTON IN SKILL TAG TO WORK
         distance: 4,
       },
     })
   );
 
   const handleDragStart = (event: DragStartEvent) => {
-    // event.active.data.current contains Skill data that we're passing to activeItem state
+    // EVENT.ACTIVE.DATA.CURRENT CONTAINS SKILL DATA THAT WE'RE PASSING TO ACTIVEITEM STATE
     if (event.active.data.current) {
-      const { color, label, value } = event.active.data.current;
-      setActiveItem({ color, label, value });
+      const { color, label, value, categoryId } = event.active.data.current;
+      setActiveItem({ color, label, value, categoryId, isVisible: true });
     }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const oldContainerName = findActiveItemContainer(event.active.id, skills);
     const newContainerName = findOverContainer(event.over?.id || '', skills);
+
+    setActiveItem(null);
 
     if (!oldContainerName || !newContainerName || oldContainerName === newContainerName) {
       return;
@@ -48,7 +51,6 @@ export const useSkillsDnd = ({ setSkills, skills }: UseSkillsDndProps) => {
         [newContainerName]: [...sortSkillsAlph(updatedNewCategory)],
       }));
     }
-    setActiveItem(null);
   };
 
   const handleRemoveSkill = (type: keyof Skills, skillToRemoveId: string) => {

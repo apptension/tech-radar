@@ -17,4 +17,8 @@ export type Position = SelectOption;
 
 export type Category = SelectOption & { color: string };
 
-export type Skill = SelectOption & { color: string };
+export type Skill = SelectOption & { color: string; categoryId: string };
+
+export type SkillWithVisibility = Skill & {
+  isVisible?: boolean;
+};

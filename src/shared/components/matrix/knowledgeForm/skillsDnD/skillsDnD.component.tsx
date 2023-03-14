@@ -33,39 +33,50 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
   });
 
   const renderSkills = (type: keyof Skills) =>
-    skills[type].map(({ color, label, value }) => (
-      <Draggable key={value} id={value} data={{ color, label, value }}>
-        <SkillTag
-          color={color}
-          name={label}
-          {...(type !== 'root' && { onRemove: () => handleRemoveSkill(type, value) })}
-        />
-      </Draggable>
-    ));
+    skills[type]
+      .filter((skill) => skill.isVisible)
+      .map(({ color, label, value }) => (
+        <Draggable key={value} id={value} data={{ color, label, value }}>
+          <SkillTag
+            color={color}
+            name={label}
+            {...(type !== 'root' && { onRemove: () => handleRemoveSkill(type, value) })}
+          />
+        </Draggable>
+      ));
 
   return (
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} sensors={sensors}>
       <Droppable id={DND_CONTAINER_ID.ROOT}>
-        <ValueBox label="Skills to choose from" isLoading={isLoading} infoContent={AVAILABLE_SKILLS_INFO_TEXT}>
-          {renderSkills('root')}
+        <ValueBox
+          label="Skills to choose from"
+          isLoading={isLoading}
+          infoContent={AVAILABLE_SKILLS_INFO_TEXT}
+          withoutOverflow={Boolean(activeItem)}
+        >
+          {skills.root.map(({ color, label, value }) => (
+            <Draggable key={value} id={value} data={{ color, label, value }}>
+              <SkillTag color={color} name={label} />
+            </Draggable>
+          ))}
         </ValueBox>
       </Droppable>
 
       <BoxesContainer>
         <Droppable id={DND_CONTAINER_ID.EXPERT}>
-          <ValueBox label="Expert" infoContent={EXPERT_INFO_TEXT}>
+          <ValueBox label="Expert" isLoading={isLoading} infoContent={EXPERT_INFO_TEXT}>
             {renderSkills('expert')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.INTERMEDIATE}>
-          <ValueBox label="Intermediate" infoContent={INTERMEDIATE_INFO_TEXT}>
+          <ValueBox label="Intermediate" isLoading={isLoading} infoContent={INTERMEDIATE_INFO_TEXT}>
             {renderSkills('intermediate')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.SHALLOW}>
-          <ValueBox label="Shallow" infoContent={SHALLOW_INFO_TEXT}>
+          <ValueBox label="Shallow" isLoading={isLoading} infoContent={SHALLOW_INFO_TEXT}>
             {renderSkills('shallow')}
           </ValueBox>
         </Droppable>

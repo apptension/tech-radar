@@ -3,6 +3,7 @@ import { color } from '../../../../theme';
 
 interface ScrollableContainerProps {
   maxHeight: string;
+  withoutOverflow: boolean;
 }
 
 export const Container = styled.div`
@@ -44,6 +45,12 @@ export const ScrollableContainer = styled.div<ScrollableContainerProps>`
     maxHeight &&
     css`
       height: ${maxHeight};
+    `}
+
+  ${({ withoutOverflow }) =>
+    withoutOverflow &&
+    css`
+      overflow: hidden;
     `}
 `;
 

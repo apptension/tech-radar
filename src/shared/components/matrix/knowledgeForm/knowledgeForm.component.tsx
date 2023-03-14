@@ -18,6 +18,7 @@ export const KnowledgeForm = () => {
     setSkills,
     search,
     selectedCategory,
+    submit,
     handleCategoryChange,
     handleBack,
     handleSearchChange,
@@ -28,7 +29,7 @@ export const KnowledgeForm = () => {
   }
 
   return (
-    <Form>
+    <Form onSubmit={submit}>
       <FieldsRow>
         <FieldContainer>
           <MatrixSelectField

@@ -27,4 +27,5 @@ export const CloseButton = styled.button`
   align-items: center;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 `;
