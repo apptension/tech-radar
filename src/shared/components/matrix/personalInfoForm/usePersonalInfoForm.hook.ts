@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
+import { ROUTES } from '../../../../routes/app.constants';
 import { getPostions, getSeniorities, getUserPersonalInfo } from '../../../services/api/endpoints/airtable';
 import { reportError } from '../../../utils/reportError';
 import { PersonalInfo, Position, Seniority } from '../types';
@@ -18,6 +20,7 @@ export const usePersonalInfoForm = () => {
   const [seniorityOptions, setSeniorityOptions] = useState<Seniority[]>([]);
   const [positionOptions, setPositionOptions] = useState<Position[]>([]);
 
+  const history = useHistory();
   const { user } = useAuthContext();
   const form = useForm<PersonalInfo>({ defaultValues });
 
@@ -31,6 +34,7 @@ export const usePersonalInfoForm = () => {
 
   const submit: SubmitHandler<PersonalInfo> = (data) => {
     console.log(data);
+    history.push(ROUTES.matrixKnowledge);
   };
 
   useEffect(() => {

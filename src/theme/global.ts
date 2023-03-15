@@ -19,9 +19,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   #app {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+
 
     & > div:first-of-type {
       ${maxWidthStyles};

@@ -23,6 +23,7 @@ export const Container = styled.div`
 
 export const StyledInput = styled.input<InputProps>`
   ${H1small};
+  width: 100%;
   height: ${FIELD_HEIGHT};
   background-color: ${color.codGray};
   padding: 16px 24px;
@@ -84,7 +85,10 @@ export const LabelWrapper = styled.div`
   gap: 10px;
 `;
 
-export const InfoIcon = styled(InfoSVG)``;
+export const InfoIcon = styled(InfoSVG)`
+  width: 18px;
+  height: 18px;
+`;
 
 export const TextError = styled.p`
   ${LabelMedium};
@@ -93,7 +97,18 @@ export const TextError = styled.p`
   margin-bottom: 0;
 `;
 
-export const InfoTooltipContainer = styled.div`
+export const InputWrapper = styled.div`
   position: relative;
-  width: 520px;
+`;
+
+export const IconContainer = styled.div`
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

@@ -14,3 +14,7 @@ export interface SelectOption {
 export type Seniority = SelectOption;
 
 export type Position = SelectOption;
+
+export type Category = SelectOption & { color: string };
+
+export type Skill = SelectOption & { color: string };
