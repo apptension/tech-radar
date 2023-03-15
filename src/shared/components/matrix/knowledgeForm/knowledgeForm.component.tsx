@@ -1,11 +1,10 @@
-import { Button } from '../../button';
-import { ButtonSize, ButtonVariant } from '../../button/button.types';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { OptionWithColor } from '../../fields/matrixSelectField/OptionWithColor';
 import { SingleValueWithColor } from '../../fields/matrixSelectField/SingleValueWithColor';
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
-import { FieldsRow, FieldContainer, Form, ActionsContainer, NextButton } from './knowledgeForm.styles';
+import { FormActions } from '../formActions';
+import { FieldsRow, FieldContainer, Form } from './knowledgeForm.styles';
 import { SkillsDnd } from './skillsDnD/skillsDnD.component';
 import { useKnowledgeForm } from './useKnowledgeForm.hook';
 
@@ -20,7 +19,7 @@ export const KnowledgeForm = () => {
     selectedCategory,
     submit,
     handleCategoryChange,
-    handleBack,
+    goBack,
     handleSearchChange,
   } = useKnowledgeForm();
 
@@ -47,14 +46,7 @@ export const KnowledgeForm = () => {
 
       <SkillsDnd isLoading={isSearching} skills={skills} setSkills={setSkills} />
 
-      <ActionsContainer>
-        <Button type="button" size={ButtonSize.LARGE} onClick={handleBack}>
-          Back
-        </Button>
-        <NextButton type="submit" size={ButtonSize.LARGE} variant={ButtonVariant.PRIMARY}>
-          Next
-        </NextButton>
-      </ActionsContainer>
+      <FormActions handleGoBack={goBack} />
     </Form>
   );
 };

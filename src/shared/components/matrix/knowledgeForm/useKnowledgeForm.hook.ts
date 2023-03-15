@@ -33,9 +33,10 @@ export const useKnowledgeForm = () => {
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    history.push(ROUTES.matrixAdditionalInfo);
   };
 
-  const handleBack = () => {
+  const goBack = () => {
     history.push(ROUTES.matrixPersonal);
   };
 
@@ -117,7 +118,7 @@ export const useKnowledgeForm = () => {
     isSearching,
     submit,
     handleCategoryChange,
-    handleBack,
+    goBack,
     handleSearchChange,
   };
 };
