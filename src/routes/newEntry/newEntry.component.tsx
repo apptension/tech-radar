@@ -1,4 +1,3 @@
-import { useHistory } from 'react-router';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../app.constants';
 import homeMessages from '../home/home.messages';
 import { postEntry, postImage } from '../../shared/services/api/endpoints';
+import { useAdminPanelContext } from '../../shared/components/adminPanel/adminPanelContext';
 import { TOption } from '../../shared/components/fields/SelectField/SelectField.component';
 import { TextField } from '../../shared/components/fields/TextField';
 import { FileDropField } from '../../shared/components/fields/FileDropField';
@@ -38,16 +38,16 @@ export type NewEntryInputs = {
 };
 
 export const NewEntry = () => {
-  const token = sessionStorage.getItem('accessToken');
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const { user } = useAdminPanelContext();
+  const intl = useIntl();
+  const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
+
   // Index needed for react-select components to reset to defaultValue
   const [selectIndex, setSelectIndex] = useState(0);
+  const [isLoading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  const history = useHistory();
-  const intl = useIntl();
-
-  const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
+  const userEmail = user?.email || '';
 
   const {
     register,
@@ -62,14 +62,14 @@ export const NewEntry = () => {
     try {
       const postIcon = async (icon: NewEntryInputs['icon']) => {
         if (icon) {
-          const { data } = await postImage(icon);
+          const { data } = await postImage(icon, userEmail);
           return data.fileId;
         }
       };
       const iconId = await postIcon(data.icon);
       const entry = prepareNewEntry(data, iconId);
 
-      await postEntry(entry);
+      await postEntry(entry, userEmail);
       alert('Entry created!');
       reset();
       setSelectIndex((index) => index + 1);
@@ -78,8 +78,6 @@ export const NewEntry = () => {
     }
     setLoading(false);
   };
-
-  if (!token) history.push(ROUTES.login);
 
   const quadrantsOptions = getQuadrantOptions(radarQuadrants);
   const ringsOptions = getRingsOptions(radarRings);

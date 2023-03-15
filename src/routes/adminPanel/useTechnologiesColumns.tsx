@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { reportError } from '../../shared/utils/reportError';
 import { patchEntry } from '../../shared/services/api/endpoints';
+import { useAdminPanelContext } from '../../shared/components/adminPanel/adminPanelContext';
 import { Button } from '../../shared/components/button';
 import { FileDropField } from '../../shared/components/fields/FileDropField';
 import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
@@ -9,7 +10,7 @@ import {
   HEIGHT,
   StyledSelect,
   FileDropContainer,
-} from '../../shared/components/adminPanelTable/adminPanelTable.styles';
+} from '../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
 import messages from './adminPanel.messages';
 
@@ -21,13 +22,14 @@ interface CreateTechnologiesColumnsProps {
 
 export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings }: CreateTechnologiesColumnsProps) => {
   const intl = useIntl();
+  const { user } = useAdminPanelContext();
 
   const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
   const handleEdit = async (values: EditedEntry) => {
     setLoadingIds((ids) => [...ids, values.id!]);
     try {
-      await patchEntry(values);
+      await patchEntry(values, user?.email || '');
       alert('Entry updated!');
     } catch (err) {
       reportError(err);

@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 
+import { AdminPanelContextProvider } from '../shared/components/adminPanel/adminPanelContext';
+import { AdminRoute } from '../shared/components/routes/adminRoute';
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AppComponent as App } from './app.component';
@@ -32,17 +34,19 @@ export default () => {
             <Explore />
           </Route>
 
-          <Route exact path={ROUTES.adminPanel}>
-            <AdminPanel />
-          </Route>
+          <AdminPanelContextProvider>
+            <Route exact path={ROUTES.adminLogin}>
+              <Login />
+            </Route>
 
-          <Route exact path={ROUTES.login}>
-            <Login />
-          </Route>
+            <AdminRoute exact path={ROUTES.adminPanel}>
+              <AdminPanel />
+            </AdminRoute>
 
-          <Route exact path={ROUTES.newEntry}>
-            <NewEntry />
-          </Route>
+            <AdminRoute exact path={ROUTES.adminNewEntry}>
+              <NewEntry />
+            </AdminRoute>
+          </AdminPanelContextProvider>
 
           {/* <-- INJECT ROUTE --> */}
 

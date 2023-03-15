@@ -1,7 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
-import { History } from 'history';
-import { ROUTES } from '../../app.constants';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAMKm7Zv0ZZoiONMfScv8RMZjn4Hy7wTzE',
@@ -15,28 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
   hd: 'apptension.com',
 });
-
-export const signInWithGoogle = (history: History) => {
-  signInWithPopup(auth, provider)
-    .then(async (result) => {
-      const { user } = result;
-      const token = await user.getIdToken();
-      if (token) {
-        sessionStorage.setItem('accessToken', token);
-        history.push(ROUTES.adminPanel);
-      }
-    })
-    .catch((err) => {
-      console.debug(err);
-    });
-};
-
-export const signOutFromAdminPanel = (history: History) => {
-  sessionStorage.removeItem('accessToken');
-  signOut(auth);
-  history.push(ROUTES.login);
-};

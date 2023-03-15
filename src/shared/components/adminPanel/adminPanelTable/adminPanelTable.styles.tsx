@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { color, border } from '../../../theme/index';
+import { color, border } from '../../../../theme/index';
 
 export const HEIGHT = '40px';
 

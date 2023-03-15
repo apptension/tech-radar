@@ -2,9 +2,9 @@ export const ROUTES = {
   home: '/',
   explore: '/explore',
   notFound: '/404',
-  adminPanel: '/admin-panel',
-  login: '/login',
-  newEntry: '/newEntry',
+  adminLogin: '/admin/login',
+  adminPanel: '/admin/panel',
+  adminNewEntry: '/admin/new-entry',
 };
 
 export const INITIAL_ACTIVE_QUADRANT = 2;

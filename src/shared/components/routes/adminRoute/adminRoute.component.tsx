@@ -9,7 +9,11 @@ export const AdminRoute = ({ children, ...props }: RouteProps) => {
     <Route
       {...props}
       render={({ location }) =>
-        isLoading ? null : user ? children : <Redirect to={{ pathname: ROUTES.login, state: { from: location } }} />
+        isLoading ? null : user ? (
+          children
+        ) : (
+          <Redirect to={{ pathname: ROUTES.adminLogin, state: { from: location } }} />
+        )
       }
     />
   );
