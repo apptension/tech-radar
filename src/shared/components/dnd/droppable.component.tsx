@@ -1,5 +1,6 @@
 import { useDroppable, UseDroppableArguments } from '@dnd-kit/core';
 import { ReactNode } from 'react';
+import { DroppableContainer } from './dnd.styles';
 
 interface DroppableProps extends UseDroppableArguments {
   children: ReactNode;
@@ -8,9 +9,5 @@ interface DroppableProps extends UseDroppableArguments {
 export const Droppable = ({ children, ...props }: DroppableProps) => {
   const { setNodeRef } = useDroppable(props);
 
-  return (
-    <div ref={setNodeRef} style={{ width: '100%' }}>
-      {children}
-    </div>
-  );
+  return <DroppableContainer ref={setNodeRef}>{children}</DroppableContainer>;
 };
