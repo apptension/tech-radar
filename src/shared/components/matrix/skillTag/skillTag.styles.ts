@@ -11,13 +11,21 @@ export const Container = styled.div<ContainerProps>`
   border-radius: 28px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
   gap: 8px;
   background-color: ${({ color }) => color};
+  cursor: pointer;
 `;
 
 export const Text = styled.span`
   ${TagSmall};
   text-transform: uppercase;
   color: ${color.mineShaft};
+`;
+
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;

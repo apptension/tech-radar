@@ -33,7 +33,6 @@ export const usePersonalInfoForm = () => {
   };
 
   const submit: SubmitHandler<PersonalInfo> = (data) => {
-    console.log(data);
     history.push(ROUTES.matrixKnowledge);
   };
 

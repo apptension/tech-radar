@@ -15,4 +15,6 @@ export const TooltipContainer = styled.div`
   z-index: ${zIndex.overlay};
   margin-top: 28px;
   max-width: 515px;
+  white-space: pre-wrap;
+  text-align: left;
 `;

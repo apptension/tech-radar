@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { color } from '../../../theme';
-import { ReactComponent as PatternSVG } from '../../../images/matrix-form-pattern-2.svg';
+import { color } from '../../theme';
+import { ReactComponent as PatternSVG } from '../../images/matrix-form-pattern-2.svg';
 
 export const MainContainer = styled.div`
   background-color: ${color};

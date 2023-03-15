@@ -5,6 +5,7 @@
   "dependencies": {
     "@apptension/eslint-config-react": "^1.0.0",
     "@contentful/rich-text-html-renderer": "^15.4.0",
+    "@dnd-kit/core": "^6.0.8",
     "@formatjs/cli": "^2.13.5",
     "@formatjs/intl-getcanonicallocales": "^1.5.1",
     "@formatjs/intl-pluralrules": "^3.5.1",

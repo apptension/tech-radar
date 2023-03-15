@@ -3,12 +3,15 @@ import { color } from '../../../../theme';
 
 interface ScrollableContainerProps {
   maxHeight: string;
+  withoutOverflow: boolean;
 }
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
+  overflow: visible;
 `;
 
 export const ContentContainer = styled.div`
@@ -21,6 +24,11 @@ export const ScrollableContainer = styled.div<ScrollableContainerProps>`
   position: relative;
   overflow: auto;
   padding-right: 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-content: flex-start;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -37,6 +45,12 @@ export const ScrollableContainer = styled.div<ScrollableContainerProps>`
     maxHeight &&
     css`
       height: ${maxHeight};
+    `}
+
+  ${({ withoutOverflow }) =>
+    withoutOverflow &&
+    css`
+      overflow: hidden;
     `}
 `;
 
