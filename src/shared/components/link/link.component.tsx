@@ -4,7 +4,7 @@ import { Button } from '../button';
 import { ButtonProps } from '../button/button.component';
 import { OuterLink, InnerLink } from './link.styles';
 
-export interface LinkProps extends Pick<ButtonProps, 'size' | 'icon' | 'withBorder'> {
+export interface LinkProps extends Pick<ButtonProps, 'size' | 'icon' | 'withBorder' | 'variant'> {
   to: string;
   withoutHoverEffects?: boolean;
   children?: ReactNode;

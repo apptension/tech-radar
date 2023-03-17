@@ -40,8 +40,8 @@ export const Button = ({
   const renderIcon = renderWhenTrue(() => (
     <IconContainer>
       <IconContainerInner>
-        <Icon>{getIcon()}</Icon>
-        <Icon>{getIcon()}</Icon>
+        <Icon variant={variant}>{getIcon()}</Icon>
+        <Icon variant={variant}>{getIcon()}</Icon>
       </IconContainerInner>
     </IconContainer>
   ));

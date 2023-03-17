@@ -59,12 +59,13 @@ export const IconContainerInner = styled.span`
   transition: transform 0.25s ease-in-out;
 `;
 
-export const Icon = styled.span`
+export const Icon = styled.span<{ variant: ButtonVariant }>`
   display: flex;
   align-items: center;
   margin-right: 10px;
 
   path {
+    ${({ variant }) => variant === ButtonVariant.PRIMARY && `stroke: ${color.black}`};
     transition: stroke 0.25s ease-in-out;
   }
 
