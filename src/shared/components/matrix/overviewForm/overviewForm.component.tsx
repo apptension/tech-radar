@@ -20,7 +20,8 @@ import {
 import { useOverviewForm } from './useOverviewForm.hook';
 
 export const OverviewForm = () => {
-  const { skills, additionalInfoData, goBack, editAdditionalInfoStep, editKnowledgeStep, submit } = useOverviewForm();
+  const { skills, additionalInfoData, isLoading, goBack, editAdditionalInfoStep, editKnowledgeStep, submit } =
+    useOverviewForm();
 
   return (
     <Form onSubmit={submit}>
@@ -82,7 +83,7 @@ export const OverviewForm = () => {
         </BoxesContainer>
       </SectionContainer>
 
-      <FormActions handleGoBack={goBack} nextLabel="Submit" />
+      <FormActions handleGoBack={goBack} nextLabel="Submit" isLoading={isLoading} />
     </Form>
   );
 };
