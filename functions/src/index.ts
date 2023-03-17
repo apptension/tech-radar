@@ -14,10 +14,7 @@ import { parseFile } from './utils/parseFile';
 import { EntryFieldsData } from './types';
 
 const corsHandler = cors({
-  origin: [
-    'https://deploy-preview-127--tech-radar-2021.netlify.app/admin/login',
-    'https://feature-tra-220-skills-matrix--tech-radar-2021.netlify.app',
-  ],
+  origin: [functions.config().config.test_webapp_url, functions.config().config.test_webapp_url2],
 });
 
 export const getLastUpdate = functions.https.onRequest(async (req, res) => {
