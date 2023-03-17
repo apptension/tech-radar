@@ -51,6 +51,7 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
         <ValueBox
           label="Skills to choose from"
           isLoading={isLoading}
+          maxContentHeight="250px"
           infoContent={AVAILABLE_SKILLS_INFO_TEXT}
           withoutOverflow={Boolean(activeItem)}
         >
