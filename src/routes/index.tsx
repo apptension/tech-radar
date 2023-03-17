@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AuthRoute } from '../shared/components/routes/authRoute/authRoute.component';
-import { MatrixContextProvider } from '../modules/matrix/matrixContext';
+import { MatrixContextProvider } from '../modules/matrix/matrix.context';
 import { AuthContextProvider } from '../modules/auth/auth.context';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
@@ -14,6 +14,7 @@ import { Personal } from './matrix/personal';
 import { Knowledge } from './matrix/knowledge';
 import { AdditionalInfo } from './matrix/additionalInfo';
 import { Overview } from './matrix/overview';
+import { FinalStep } from './matrix/finalStep';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -57,6 +58,10 @@ export default () => {
 
               <AuthRoute exact path={ROUTES.matrixOverview}>
                 <Overview />
+              </AuthRoute>
+
+              <AuthRoute exact path={ROUTES.matrixFinal}>
+                <FinalStep />
               </AuthRoute>
             </MatrixContextProvider>
           </AuthContextProvider>
