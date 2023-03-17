@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import { ROUTES } from '../../../../routes/app.constants';
-import { useMatrixContext } from '../../../../modules/matrix/matrixContext';
+import { useMatrixContext } from '../../../../modules/matrix/matrix.context';
 import { PersonalInfo } from '../types';
 
 export const usePersonalInfoForm = () => {

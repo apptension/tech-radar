@@ -10,16 +10,15 @@ import {
   getUserPersonalInfo,
 } from '../../shared/services/api/endpoints/airtable';
 import { reportError } from '../../shared/utils/reportError';
-import { AdditionalInfoFormValues } from '../../shared/components/matrix/additionalInfoForm/useAdditionalInfoForm.hook';
 import { Skills } from '../../shared/components/matrix/knowledgeForm/useKnowledgeForm.hook';
-import { Category, PersonalInfo, Position, Seniority } from '../../shared/components/matrix/types';
+import { AdditionalInfo, Category, PersonalInfo, Position, Seniority } from '../../shared/components/matrix/types';
 import { checkIfSkillIsAdded, getUserSkillsFromIds } from '../../shared/components/matrix/utils';
 
 interface State {
-  skills: Skills;
-  personalInfoData: PersonalInfo;
   userId: string;
-  additionalInfoData: { additionalSkills: string; likeToLearn: string };
+  personalInfoData: PersonalInfo;
+  additionalInfoData: AdditionalInfo;
+  skills: Skills;
   isEditMode: boolean;
   isLoading: boolean;
   categoryOptions: Seniority[];
@@ -29,7 +28,7 @@ interface State {
   cancelEdit: () => void;
   saveSkills: (skills: Omit<Skills, 'root'>) => void;
   savePersonalInfoData: (data: PersonalInfo) => void;
-  saveAdditionalInfoData: (data: AdditionalInfoFormValues) => void;
+  saveAdditionalInfoData: (data: AdditionalInfo) => void;
 }
 
 export const MatrixContext = createContext<State | undefined>(undefined);
@@ -49,14 +48,16 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     name: '',
     seniority: '',
   });
-  const [additionalInfoData, setAdditionalInfoData] = useState<AdditionalInfoFormValues>({
+  const [additionalInfoData, setAdditionalInfoData] = useState<AdditionalInfo>({
     additionalSkills: '',
     likeToLearn: '',
   });
   const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
+
   const [seniorityOptions, setSeniorityOptions] = useState<Seniority[]>([]);
   const [positionOptions, setPositionOptions] = useState<Position[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
+
   const [step1Answered, setStep1Answered] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -141,7 +142,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     setStep1Answered(true);
   };
 
-  const saveAdditionalInfoData: State['saveAdditionalInfoData'] = (data: AdditionalInfoFormValues) => {
+  const saveAdditionalInfoData: State['saveAdditionalInfoData'] = (data) => {
     setAdditionalInfoData(data);
   };
 

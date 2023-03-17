@@ -1,11 +1,10 @@
-import { AdditionalInfoFormValues } from '../../../components/matrix/additionalInfoForm/useAdditionalInfoForm.hook';
-import { Category, PersonalInfo, Position, Seniority, Skill } from '../../../components/matrix/types';
+import { AdditionalInfo, Category, PersonalInfo, Position, Seniority, Skill } from '../../../components/matrix/types';
 import { axiosAirtableApi } from '../axiosInstances';
 
 interface UserInfoResponse {
   id: string;
   personalInfo: PersonalInfo;
-  additionalInfo: AdditionalInfoFormValues;
+  additionalInfo: AdditionalInfo;
   skills: { expert: string[]; intermediate: string[]; shallow: string[] };
 }
 

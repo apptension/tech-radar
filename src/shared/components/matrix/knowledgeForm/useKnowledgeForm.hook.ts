@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce';
 import { ROUTES } from '../../../../routes/app.constants';
 import { getSkills } from '../../../services/api/endpoints/airtable';
 import { Skill, SkillWithVisibility } from '../types';
-import { useMatrixContext } from '../../../../modules/matrix/matrixContext';
+import { useMatrixContext } from '../../../../modules/matrix/matrix.context';
 import { checkIfSkillIsAdded, findSkill } from '../utils';
 
 export interface Skills {

@@ -6,6 +6,11 @@ export interface PersonalInfo {
   seniority: string;
 }
 
+export interface AdditionalInfo {
+  additionalSkills: '';
+  likeToLearn: '';
+}
+
 export interface SelectOption {
   value: string;
   label: string;

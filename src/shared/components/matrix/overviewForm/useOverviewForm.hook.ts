@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { ROUTES } from '../../../../routes/app.constants';
 import { patchUser } from '../../../services/api/endpoints/airtable';
 import { reportError } from '../../../utils/reportError';
-import { useMatrixContext } from '../../../../modules/matrix/matrixContext';
+import { useMatrixContext } from '../../../../modules/matrix/matrix.context';
 import { mapSkillsToValues } from '../utils';
 
 export const useOverviewForm = () => {
