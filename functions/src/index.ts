@@ -13,7 +13,12 @@ import { CONTENT_TYPE_ID, DEFAULT_LOCALE } from './constants';
 import { parseFile } from './utils/parseFile';
 import { EntryFieldsData } from './types';
 
-const corsHandler = cors({ origin: `${process.env.WEBAPP_URL}` });
+const corsHandler = cors({
+  origin: [
+    'https://deploy-preview-127--tech-radar-2021.netlify.app/admin/login',
+    'https://feature-tra-220-skills-matrix--tech-radar-2021.netlify.app',
+  ],
+});
 
 export const getLastUpdate = functions.https.onRequest(async (req, res) => {
   corsHandler(req, res, async () => {
