@@ -43,7 +43,7 @@ export const useSkillsDnd = ({ setSkills, skills }: UseSkillsDndProps) => {
 
     if (activeItem) {
       const updatedOldCategory = skills[oldContainerName].filter((item) => item.value !== event.active.id);
-      const updatedNewCategory = [...skills[newContainerName], activeItem];
+      const updatedNewCategory = [...skills[newContainerName], { ...activeItem, isVisible: true }];
 
       setSkills((skills) => ({
         ...skills,
