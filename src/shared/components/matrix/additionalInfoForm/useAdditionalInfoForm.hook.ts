@@ -1,25 +1,28 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import { ROUTES } from '../../../../routes/app.constants';
+import { useMatrixContext } from '../../../../modules/matrix/matrixContext';
 
-interface AdditionalInfoFormValues {
+export interface AdditionalInfoFormValues {
   additionalSkills: string;
   likeToLearn: string;
 }
 
-const defaultValues: AdditionalInfoFormValues = { additionalSkills: '', likeToLearn: '' };
-
 export const useAdditionalInfoForm = () => {
+  const { additionalInfoData, saveAdditionalInfoData, isEditMode, cancelEdit } = useMatrixContext();
+  const form = useForm<AdditionalInfoFormValues>({ defaultValues: additionalInfoData });
   const history = useHistory();
-  const form = useForm<AdditionalInfoFormValues>({ defaultValues });
+
+  const isDisabled = isEditMode && !form.formState.isDirty;
 
   const goBack = () => {
     history.push(ROUTES.matrixKnowledge);
   };
 
   const submit: SubmitHandler<AdditionalInfoFormValues> = (data) => {
-    // ADD SUBMIT LOGIC
+    saveAdditionalInfoData(data);
+    history.push(ROUTES.matrixOverview);
   };
 
-  return { form, submit, goBack };
+  return { form, isEditMode, isDisabled, submit, goBack, cancelEdit };
 };
