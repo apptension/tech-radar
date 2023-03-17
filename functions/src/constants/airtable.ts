@@ -12,6 +12,11 @@ export enum USER_FIELDS {
   EMAIL = 'Email',
   SLACK_ID = 'SlackID',
   SENIORITY = 'Seniority',
+  ADDITIONAL_SKILLS = 'Not recorded',
+  LIKE_TO_LEARN = 'Willing to learn',
+  SKILLS_EXPERT = 'Expert knowledge',
+  SKILLS_INTERMEDIATE = 'Intermediate knowledge',
+  SKILLS_SHALLOW = 'Shallow knowledge',
 }
 
 export enum SENIORITY_FIELDS {

@@ -18,14 +18,27 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
         }
 
         const userInfo = records.map((record: any) => ({
-          email: record.get(USER_FIELDS.EMAIL),
-          name: record.get(USER_FIELDS.NAME),
-          slackId: record.get(USER_FIELDS.SLACK_ID),
-          seniority: record.get(USER_FIELDS.SENIORITY)?.[0] || '',
-          position: record.get(USER_FIELDS.POSITION)?.[0] || '',
+          id: record.id,
+          personalInfo: {
+            email: record.get(USER_FIELDS.EMAIL),
+            name: record.get(USER_FIELDS.NAME),
+            slackId: record.get(USER_FIELDS.SLACK_ID),
+            seniority: record.get(USER_FIELDS.SENIORITY)?.[0] || '',
+            position: record.get(USER_FIELDS.POSITION)?.[0] || '',
+          },
+          additionalInfo: {
+            additionalSkills: record.get(USER_FIELDS.ADDITIONAL_SKILLS),
+            likeToLearn: record.get(USER_FIELDS.LIKE_TO_LEARN),
+          },
+          skills: {
+            expert: record.get(USER_FIELDS.SKILLS_EXPERT),
+            intermediate: record.get(USER_FIELDS.SKILLS_INTERMEDIATE),
+            shallow: record.get(USER_FIELDS.SKILLS_SHALLOW),
+          },
         }));
 
-        return res.json({ userInfo: userInfo[0] });
+        const { personalInfo, additionalInfo, skills, id } = userInfo[0];
+        return res.json({ id, personalInfo, skills, additionalInfo });
       });
   });
 });
@@ -124,5 +137,41 @@ export const getSkills = functions.https.onRequest(async (req, res) => {
           return res.json({ skills: allSkills });
         }
       );
+  });
+});
+
+export const updateUser = functions.https.onRequest(async (req, res) => {
+  corsHandler(req, res, async () => {
+    const { userId, skills, additionalData, personalData } = req.body;
+    const { position, slackId, email, name, seniority } = personalData;
+    const { expert, intermediate, shallow } = skills;
+    const { additionalSkills, likeToLearn } = additionalData;
+
+    airtable(BASE.USERS).update(
+      [
+        {
+          id: userId,
+          fields: {
+            [USER_FIELDS.NAME]: name,
+            [USER_FIELDS.EMAIL]: email,
+            [USER_FIELDS.POSITION]: [position],
+            [USER_FIELDS.ADDITIONAL_SKILLS]: additionalSkills,
+            [USER_FIELDS.LIKE_TO_LEARN]: likeToLearn,
+            [USER_FIELDS.SLACK_ID]: slackId,
+            [USER_FIELDS.SENIORITY]: [seniority],
+            [USER_FIELDS.SKILLS_EXPERT]: expert,
+            [USER_FIELDS.SKILLS_INTERMEDIATE]: intermediate,
+            [USER_FIELDS.SKILLS_SHALLOW]: shallow,
+          },
+        },
+      ],
+      (err: any) => {
+        if (err) {
+          console.error(err);
+          return res.status(400).json({ success: false });
+        }
+        return res.json({ success: true });
+      }
+    );
   });
 });

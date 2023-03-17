@@ -5,6 +5,7 @@ import { Container, ContentContainer, Loader, ScrollableContainer } from './valu
 interface ValueBoxProps extends ComponentProps<typeof LabelBar>, HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   maxContentHeight?: string;
+  maxWidth?: string;
   isLoading?: boolean;
   withoutOverflow?: boolean;
 }
@@ -12,6 +13,7 @@ interface ValueBoxProps extends ComponentProps<typeof LabelBar>, HTMLAttributes<
 export const ValueBox = ({
   children,
   maxContentHeight = '250px',
+  maxWidth,
   withoutOverflow = false,
   isLoading = false,
   label,
@@ -19,12 +21,10 @@ export const ValueBox = ({
   ...props
 }: ValueBoxProps) => {
   return (
-    <Container>
+    <Container maxWidth={maxWidth}>
       <LabelBar label={label} infoContent={infoContent} />
-      <ContentContainer {...props}>
-        <ScrollableContainer maxHeight={maxContentHeight} withoutOverflow={withoutOverflow}>
-          {isLoading ? <Loader /> : children}
-        </ScrollableContainer>
+      <ContentContainer maxHeight={maxContentHeight} {...props}>
+        <ScrollableContainer withoutOverflow={withoutOverflow}>{isLoading ? <Loader /> : children}</ScrollableContainer>
       </ContentContainer>
     </Container>
   );
