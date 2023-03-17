@@ -51,7 +51,7 @@ export const Button = ({
       <Container
         onClick={onClick}
         className={className}
-        disabled={disabled}
+        disabled={disabled || isLoading}
         withoutHoverEffects={withoutHoverEffects}
         withMovingArrow={icon === 'arrow'}
         {...other}

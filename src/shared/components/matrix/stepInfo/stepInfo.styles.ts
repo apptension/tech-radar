@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { color } from '../../../../theme';
+import { color, fontFamily } from '../../../../theme';
 import { H1large, ParagraphLarge } from '../../../../theme/typography';
 
 export const Header = styled.header`
@@ -34,6 +34,7 @@ export const FinalStepTitle = styled(Title)`
 `;
 
 export const InfoText = styled(ParagraphLarge)<{ limitedWidth?: boolean }>`
+  font-family: ${fontFamily.secondary};
   color: ${color.boulder};
   white-space: pre-wrap;
   ${({ limitedWidth }) =>

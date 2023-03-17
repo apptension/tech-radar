@@ -2855,6 +2855,11 @@
   dependencies:
     "@floating-ui/core" "^1.2.2"
 
+"@fontsource/space-grotesk@^4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/space-grotesk/-/space-grotesk-4.5.13.tgz#12df2d9a7f9537ef2285c605371230521ed0734a"
+  integrity sha512-HYjs3C/ME3N55+9la5FGH3NebpBqyCP03DJzDLYlQ/fpnYOoQcEEoojtMyqDr8kBlQtrB6FSoa3vy84Wh0ZFqw==
+
 "@formatjs/cli@^2.13.5":
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/@formatjs/cli/-/cli-2.15.0.tgz#5546ff3aad643f186298b7e08ac16c07b848d934"

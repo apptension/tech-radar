@@ -1,5 +1,6 @@
 export const fontFamily = {
   primary: 'Hellix',
+  secondary: 'Space Grotesk',
 };
 
 export const fontWeight = {

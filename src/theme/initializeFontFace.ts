@@ -3,6 +3,8 @@ import hellixMediumOtf from './fonts/Hellix-Medium.otf';
 // @ts-ignore
 import hellixSemiBoldOtf from './fonts/Hellix-SemiBold.otf';
 
+import '@fontsource/space-grotesk/500.css';
+
 const fontFace = `
   @font-face{
       font-family: 'Hellix';
