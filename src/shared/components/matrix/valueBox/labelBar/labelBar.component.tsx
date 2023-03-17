@@ -1,10 +1,11 @@
+import { ReactNode } from 'react';
 import { InfoTooltip } from '../../../infoTooltip';
 
 import { Container, InfoIcon, InfoIconContainer, LabelText } from './labelBar.styles';
 
 interface LabelBarProps {
   label: string;
-  infoContent?: string;
+  infoContent?: ReactNode;
 }
 
 export const LabelBar = ({ label, infoContent }: LabelBarProps) => {
@@ -13,9 +14,7 @@ export const LabelBar = ({ label, infoContent }: LabelBarProps) => {
       <LabelText>{label}</LabelText>
       {infoContent && (
         <InfoIconContainer>
-          <InfoTooltip content={infoContent}>
-            <InfoIcon />
-          </InfoTooltip>
+          <InfoTooltip activator={<InfoIcon />}>{infoContent}</InfoTooltip>
         </InfoIconContainer>
       )}
     </Container>

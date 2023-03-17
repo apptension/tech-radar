@@ -3,11 +3,11 @@ import { Textarea } from '../additionalInfoForm/additionalInfoForm.styles';
 import { ReactComponent as EditSVG } from '../../../../images/icons/edit.svg';
 import { ValueBox } from '../valueBox';
 import { SkillTag } from '../skillTag';
-import { EXPERT_INFO_TEXT, INTERMEDIATE_INFO_TEXT, SHALLOW_INFO_TEXT } from '../knowledgeForm/knowledgeForm.constants';
 import {
   ADDITIONAL_SKILLS_INFO_TEXT,
   LIKE_TO_LEARN_INFO_TEXT,
 } from '../additionalInfoForm/additionalInfoForm.constants';
+import { DnDInfoContent } from '../dndInfoContent';
 import {
   BoxesContainer,
   EditButton,
@@ -34,19 +34,19 @@ export const OverviewForm = () => {
         </SectionHeader>
 
         <BoxesContainer>
-          <ValueBox maxContentHeight="300px" label="Expert" infoContent={EXPERT_INFO_TEXT}>
+          <ValueBox maxContentHeight="300px" label="Expert" infoContent={<DnDInfoContent type="expert" />}>
             {skills.expert.map(({ color, label, value }) => (
               <SkillTag key={value} color={color} name={label} />
             ))}
           </ValueBox>
 
-          <ValueBox maxContentHeight="300px" label="Intermediate" infoContent={INTERMEDIATE_INFO_TEXT}>
+          <ValueBox maxContentHeight="300px" label="Intermediate" infoContent={<DnDInfoContent type="intermediate" />}>
             {skills.intermediate.map(({ color, label, value }) => (
               <SkillTag key={value} color={color} name={label} />
             ))}
           </ValueBox>
 
-          <ValueBox maxContentHeight="300px" label="Shallow" infoContent={SHALLOW_INFO_TEXT}>
+          <ValueBox maxContentHeight="300px" label="Shallow" infoContent={<DnDInfoContent type="shallow" />}>
             {skills.shallow.map(({ color, label, value }) => (
               <SkillTag key={value} color={color} name={label} />
             ))}

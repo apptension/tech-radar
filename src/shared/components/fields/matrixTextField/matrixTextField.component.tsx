@@ -35,11 +35,7 @@ export const MatrixTextField = forwardRef<HTMLInputElement, MatrixTextFieldProps
       <Container>
         <LabelWrapper>
           <StyledLabel isRequired={isRequired}>{label}</StyledLabel>
-          {infoContent && (
-            <InfoTooltip content={infoContent}>
-              <InfoIcon />
-            </InfoTooltip>
-          )}
+          {infoContent && <InfoTooltip activator={<InfoIcon />}>{infoContent}</InfoTooltip>}
         </LabelWrapper>
         <InputWrapper>
           <StyledInput
