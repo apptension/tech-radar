@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AuthRoute } from '../shared/components/routes/authRoute/authRoute.component';
-import { MatrixContextProvider } from '../shared/components/matrix/matrixContext';
+import { MatrixContextProvider } from '../modules/matrix/matrixContext';
 import { AuthContextProvider } from '../modules/auth/auth.context';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
