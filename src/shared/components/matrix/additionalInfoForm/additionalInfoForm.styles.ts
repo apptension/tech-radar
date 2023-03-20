@@ -31,6 +31,6 @@ export const TextAreasContainer = styled.div`
 `;
 
 export const StyledValueBox = styled(ValueBox)`
-  padding-right: 0;
-  padding-bottom: 10px;
+  padding-right: 0 !important;
+  padding-bottom: 10px !important;
 `;

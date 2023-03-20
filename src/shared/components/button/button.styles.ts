@@ -1,4 +1,4 @@
-import styled, { css, ThemeProps } from 'styled-components';
+import styled, { css, keyframes, ThemeProps } from 'styled-components';
 import theme from 'styled-theming';
 
 import { ReactComponent as OutIconSVG } from '../../../images/icons/out.svg';
@@ -8,7 +8,7 @@ import { ButtonLargeTypography, ButtonRegularTypography } from '../../../theme/t
 import { ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
 const disabledButtonStyle = css`
-  opacity: 0.5;
+  background: ${color.scorpion};
 `;
 
 const buttonSizeRegularStyles = css`
@@ -20,6 +20,7 @@ const buttonSizeLargeStyles = css`
   ${ButtonLargeTypography};
   border-width: 2px;
   padding: 16px 32px;
+  min-height: 60px;
 `;
 
 const buttonVariantPrimaryStyles = css`
@@ -93,10 +94,6 @@ export const Container = styled.button<ContainerProps>`
   transition: 0.25s ease-in-out;
   transition-property: background, color;
 
-  ${theme('isDisabled', {
-    true: disabledButtonStyle,
-  })};
-
   ${theme('size', {
     [ButtonSize.REGULAR]: buttonSizeRegularStyles,
     [ButtonSize.LARGE]: buttonSizeLargeStyles,
@@ -111,6 +108,14 @@ export const Container = styled.button<ContainerProps>`
     false: buttonNoBorderStyles,
   })}
 
+${theme('isDisabled', {
+    true: disabledButtonStyle,
+  })};
+
+  &:disabled {
+    transition: none;
+  }
+
   &::before {
     content: '';
     display: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'none' : 'block')};
@@ -124,6 +129,13 @@ export const Container = styled.button<ContainerProps>`
     background: ${color.gradient};
     opacity: 0;
     transition: opacity 0.25s ease-in-out;
+  }
+
+  &:disabled {
+    &::before {
+      background: ${color.scorpion};
+      transition: none;
+    }
   }
 
   &:hover {
@@ -142,4 +154,24 @@ export const Container = styled.button<ContainerProps>`
       stroke: ${({ withMovingArrow }) => (withMovingArrow ? `${color.white}` : `${color.black}`)};
     }
   }
+`;
+
+const rotateAnimation = keyframes`
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+    }
+`;
+
+export const Loader = styled.div`
+  width: 16px;
+  height: 16px;
+  border: 3px solid ${color.silver};
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: ${rotateAnimation} 1s linear infinite;
 `;

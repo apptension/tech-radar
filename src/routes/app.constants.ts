@@ -5,6 +5,7 @@ export const ROUTES = {
   matrixPersonal: '/matrix/personal',
   matrixKnowledge: '/matrix/knowledge',
   matrixAdditionalInfo: '/matrix/additional-information',
+  matrixOverview: '/matrix/overview',
   notFound: '/404',
 };
 

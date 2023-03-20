@@ -1,15 +1,10 @@
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { Dispatch, SetStateAction } from 'react';
 import { Draggable, Droppable } from '../../../dnd';
-import {
-  AVAILABLE_SKILLS_INFO_TEXT,
-  EXPERT_INFO_TEXT,
-  INTERMEDIATE_INFO_TEXT,
-  SHALLOW_INFO_TEXT,
-} from '../../knowledgeForm/knowledgeForm.constants';
 import { Skills } from '../../knowledgeForm/useKnowledgeForm.hook';
 import { SkillTag } from '../../skillTag';
 import { ValueBox } from '../../valueBox';
+import { DnDInfoContent } from '../../dndInfoContent/dndInfoContent.component';
 import { BoxesContainer } from './skillsDnD.styles';
 import { useSkillsDnd } from './useSkillsDnd.hook';
 
@@ -51,7 +46,8 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
         <ValueBox
           label="Skills to choose from"
           isLoading={isLoading}
-          infoContent={AVAILABLE_SKILLS_INFO_TEXT}
+          maxContentHeight="250px"
+          infoContent={<DnDInfoContent type="root" />}
           withoutOverflow={Boolean(activeItem)}
         >
           {skills.root.map(({ color, label, value }) => (
@@ -64,19 +60,19 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
 
       <BoxesContainer>
         <Droppable id={DND_CONTAINER_ID.EXPERT}>
-          <ValueBox label="Expert" isLoading={isLoading} infoContent={EXPERT_INFO_TEXT}>
+          <ValueBox label="Expert" isLoading={isLoading} infoContent={<DnDInfoContent type="expert" />}>
             {renderSkills('expert')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.INTERMEDIATE}>
-          <ValueBox label="Intermediate" isLoading={isLoading} infoContent={INTERMEDIATE_INFO_TEXT}>
+          <ValueBox label="Intermediate" isLoading={isLoading} infoContent={<DnDInfoContent type="intermediate" />}>
             {renderSkills('intermediate')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.SHALLOW}>
-          <ValueBox label="Shallow" isLoading={isLoading} infoContent={SHALLOW_INFO_TEXT}>
+          <ValueBox label="Shallow" isLoading={isLoading} infoContent={<DnDInfoContent type="shallow" />}>
             {renderSkills('shallow')}
           </ValueBox>
         </Droppable>

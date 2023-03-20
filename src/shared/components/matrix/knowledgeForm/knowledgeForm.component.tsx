@@ -2,7 +2,6 @@ import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { OptionWithColor } from '../../fields/matrixSelectField/OptionWithColor';
 import { SingleValueWithColor } from '../../fields/matrixSelectField/SingleValueWithColor';
 import { MatrixTextField } from '../../fields/matrixTextField';
-import { Loader } from '../../loader';
 import { FormActions } from '../formActions';
 import { FieldsRow, FieldContainer, Form } from './knowledgeForm.styles';
 import { SkillsDnd } from './skillsDnD/skillsDnD.component';
@@ -12,20 +11,18 @@ export const KnowledgeForm = () => {
   const {
     skills,
     categoryOptions,
-    isLoading,
     isSearching,
+    isDisabled,
     setSkills,
     search,
     selectedCategory,
+    isEditMode,
+    cancelEdit,
     submit,
     handleCategoryChange,
     goBack,
     handleSearchChange,
   } = useKnowledgeForm();
-
-  if (isLoading) {
-    return <Loader isFullPage />;
-  }
 
   return (
     <Form onSubmit={submit}>
@@ -46,7 +43,7 @@ export const KnowledgeForm = () => {
 
       <SkillsDnd isLoading={isSearching} skills={skills} setSkills={setSkills} />
 
-      <FormActions handleGoBack={goBack} />
+      <FormActions handleGoBack={isEditMode ? cancelEdit : goBack} isEditMode={isEditMode} isDisabled={isDisabled} />
     </Form>
   );
 };

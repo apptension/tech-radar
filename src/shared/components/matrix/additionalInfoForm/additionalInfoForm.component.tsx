@@ -4,8 +4,7 @@ import { Form, StyledValueBox, Textarea, TextAreasContainer } from './additional
 import { useAdditionalInfoForm } from './useAdditionalInfoForm.hook';
 
 export const AdditionalInfoForm = () => {
-  const { form, submit, goBack } = useAdditionalInfoForm();
-
+  const { form, isEditMode, isDisabled, submit, goBack, cancelEdit } = useAdditionalInfoForm();
   const { handleSubmit, register } = form;
 
   return (
@@ -20,7 +19,7 @@ export const AdditionalInfoForm = () => {
         </StyledValueBox>
       </TextAreasContainer>
 
-      <FormActions handleGoBack={goBack} />
+      <FormActions handleGoBack={isEditMode ? cancelEdit : goBack} isEditMode={isEditMode} isDisabled={isDisabled} />
     </Form>
   );
 };

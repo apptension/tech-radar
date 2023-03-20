@@ -1,11 +1,12 @@
+import _ from 'lodash';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import debounce from 'lodash.debounce';
-import { useAuthContext } from '../../../../modules/auth/auth.context';
 import { ROUTES } from '../../../../routes/app.constants';
-import { getCategories, getSkills } from '../../../services/api/endpoints/airtable';
-import { reportError } from '../../../utils/reportError';
-import { Category, Seniority, Skill, SkillWithVisibility } from '../types';
+import { getSkills } from '../../../services/api/endpoints/airtable';
+import { Skill, SkillWithVisibility } from '../types';
+import { useMatrixContext } from '../../../../modules/matrix/matrix.context';
+import { checkIfSkillIsAdded, findSkill } from '../utils';
 
 export interface Skills {
   root: SkillWithVisibility[];
@@ -19,21 +20,34 @@ interface SkillsSearch {
 }
 
 export const useKnowledgeForm = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSearching, setIsSearching] = useState(false);
-  const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [categoryOptions, setCategoryOptions] = useState<Seniority[]>([]);
-  const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
-
-  const { user } = useAuthContext();
+  const { skills: savedSkills, saveSkills, isEditMode, categoryOptions, cancelEdit } = useMatrixContext();
   const history = useHistory();
 
-  const allCategoriesOption: Category = { label: 'All areas', value: '', color: '' };
+  const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [skills, setSkills] = useState<Skills>(savedSkills);
+
+  const checkIfIsDisabled = () => {
+    const { root: savedRoot, ...assignedSavedSkills } = savedSkills;
+    const { root, ...assignedSkills } = skills;
+    return isEditMode && _.isEqual(assignedSkills, assignedSavedSkills);
+  };
+
+  const isDisabled = checkIfIsDisabled();
+
+  useEffect(() => {
+    setSkills(savedSkills);
+  }, [savedSkills]);
+
+  useEffect(() => {
+    fetchSkills({ search, category: selectedCategory });
+  }, []);
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    history.push(ROUTES.matrixAdditionalInfo);
+    saveSkills(skills);
+    history.push(isEditMode ? ROUTES.matrixOverview : ROUTES.matrixAdditionalInfo);
   };
 
   const goBack = () => {
@@ -44,22 +58,15 @@ export const useKnowledgeForm = () => {
     setIsSearching(true);
     const { data } = await getSkills(search, category);
 
-    // IN CASE FETCHED SKILL IS ALREADY ADDED TO SOME CATEGORY WE'RE NOT DISPLAYING IT
-    const checkIfSkillIsAdded = (skills: Skill[], skillValue: string) =>
-      skillValue !== skills.find((item) => item.value === skillValue)?.value;
-
     const updateSkillsWithIsVisible = (skills: Skill[]) =>
-      skills.map((skill) => ({ ...skill, isVisible: Boolean(data.skills.find(({ value }) => value === skill.value)) }));
+      skills.map((skill) => ({ ...skill, isVisible: Boolean(findSkill(skill.value, data.skills)) }));
 
     setSkills((skills) => ({
       root: data.skills
-        .filter(
-          ({ value }) =>
-            checkIfSkillIsAdded(skills.expert, value) &&
-            checkIfSkillIsAdded(skills.intermediate, value) &&
-            checkIfSkillIsAdded(skills.shallow, value)
-        )
-        .map((skill) => ({ ...skill, isVisible: true })),
+        // IN CASE FETCHED SKILL IS ALREADY ADDED TO SOME CATEGORY WE'RE NOT DISPLAYING IT
+        .filter(({ value }) =>
+          checkIfSkillIsAdded([...skills.expert, ...skills.intermediate, ...skills.shallow], value)
+        ),
       expert: updateSkillsWithIsVisible(skills.expert),
       intermediate: updateSkillsWithIsVisible(skills.intermediate),
       shallow: updateSkillsWithIsVisible(skills.shallow),
@@ -68,15 +75,15 @@ export const useKnowledgeForm = () => {
   };
 
   const debouncedSearch = useCallback(
-    debounce(async ({ search, category }: SkillsSearch) => {
-      await fetchSkills({ search, category });
+    debounce(async (filters: SkillsSearch) => {
+      await fetchSkills(filters);
     }, 1000),
     []
   );
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    debouncedSearch({ search: e.target.value, category: selectedCategory });
+  const handleSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(target.value);
+    debouncedSearch({ search: target.value, category: selectedCategory });
   };
 
   const handleCategoryChange = async ({ value }: any) => {
@@ -84,38 +91,16 @@ export const useKnowledgeForm = () => {
     await fetchSkills({ search, category: value });
   };
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      if (user) {
-        const { data } = await getCategories();
-        setCategoryOptions([allCategoriesOption, ...data.categories]);
-      }
-    };
-
-    const getData = async () => {
-      try {
-        await Promise.all([fetchCategories(), fetchSkills({ search, category: selectedCategory })]);
-        setIsLoading(false);
-      } catch (err) {
-        reportError(err);
-      }
-    };
-
-    getData();
-
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, []);
-
   return {
-    isLoading,
     skills,
     categoryOptions,
     search,
     setSkills,
     selectedCategory,
     isSearching,
+    isEditMode,
+    isDisabled,
+    cancelEdit,
     submit,
     handleCategoryChange,
     goBack,

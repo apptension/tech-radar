@@ -1,23 +1,37 @@
 import styled, { css, keyframes } from 'styled-components';
 import { color, scrollbar } from '../../../../theme';
 
-interface ScrollableContainerProps {
+interface ContentContainerProps {
   maxHeight: string;
+}
+interface ScrollableContainerProps {
   withoutOverflow: boolean;
 }
 
-export const Container = styled.div`
+export const Container = styled.div<{ maxWidth?: string }>`
   display: flex;
   flex-direction: column;
   gap: 20px;
   flex: 1;
   overflow: visible;
+
+  ${({ maxWidth }) =>
+    maxWidth &&
+    css`
+      max-width: ${maxWidth};
+    `}
 `;
 
-export const ContentContainer = styled.div`
+export const ContentContainer = styled.div<ContentContainerProps>`
   border: 1px solid ${color.white};
   background-color: ${color.codGray};
   padding: 20px;
+
+  ${({ maxHeight }) =>
+    maxHeight &&
+    css`
+      height: ${maxHeight};
+    `}
 `;
 
 export const ScrollableContainer = styled.div<ScrollableContainerProps>`
@@ -30,12 +44,7 @@ export const ScrollableContainer = styled.div<ScrollableContainerProps>`
   flex-wrap: wrap;
   gap: 20px;
   align-content: flex-start;
-
-  ${({ maxHeight }) =>
-    maxHeight &&
-    css`
-      height: ${maxHeight};
-    `}
+  height: 100%;
 
   ${({ withoutOverflow }) =>
     withoutOverflow &&
