@@ -15,6 +15,22 @@ export const getQueryContentfulConfig = (req: functions.https.Request) => {
 export const getEnvironment = (contentfulConfig: EnvironmentConfig) =>
   managementClient.getSpace(contentfulConfig.space).then((space) => space.getEnvironment(contentfulConfig.environment));
 
+export const getOrganization = (space: string) => managementClient.getSpace(space);
+
+export const checkUser = async (req: functions.https.Request) => {
+  try {
+    const contentfulConfg = getQueryContentfulConfig(req);
+    const { email } = req.query;
+    const organistaion = await getOrganization(contentfulConfg.space);
+    const users = await organistaion.getSpaceUsers();
+    const isSpaceUser = users.items.find((user) => user.email === email);
+
+    return Boolean(isSpaceUser);
+  } catch (err) {
+    return false;
+  }
+};
+
 export const prepareIcon = (id?: string) => ({
   sys: {
     id: id ? id : '',
