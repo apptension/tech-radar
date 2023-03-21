@@ -1,4 +1,5 @@
-import { Skill } from '../types';
+import { UseFormReturn } from 'react-hook-form';
+import { PersonalInfo, Skill } from '../types';
 
 export const checkIfSkillIsAdded = (skills: Skill[], skillValue: string) =>
   skillValue !== skills.find((item) => item.value === skillValue)?.value;
@@ -16,3 +17,14 @@ export const getUserSkillsFromIds = (skillIds: string[], skills: Skill[]) =>
   });
 
 export const mapSkillsToValues = (skills: Skill[]) => skills.map(({ value }) => value);
+
+export const initializePersonalValues = (
+  form: UseFormReturn<PersonalInfo>,
+  { email, name, position, seniority, slackId }: PersonalInfo
+) => {
+  form.setValue('email', email);
+  form.setValue('name', name);
+  form.setValue('position', position);
+  form.setValue('slackId', slackId);
+  form.setValue('seniority', seniority);
+};

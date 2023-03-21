@@ -2,21 +2,16 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffe
 import { useHistory } from 'react-router';
 import { useAuthContext } from '../auth/auth.context';
 import { ROUTES } from '../../routes/app.constants';
-import {
-  getCategories,
-  getPostions,
-  getSeniorities,
-  getSkills,
-  getUserPersonalInfo,
-} from '../../shared/services/api/endpoints/airtable';
+import { getCategories, getSkills, getUserSkills } from '../../shared/services/api/endpoints/airtable';
 import { reportError } from '../../shared/utils/reportError';
 import { Skills } from '../../shared/components/matrix/knowledgeForm/useKnowledgeForm.hook';
 import { AdditionalInfo, Category, PersonalInfo, Position, Seniority } from '../../shared/components/matrix/types';
 import { checkIfSkillIsAdded, getUserSkillsFromIds } from '../../shared/components/matrix/utils';
+import { usePersonalInfo } from '../../shared/components/matrix/hooks/usePersonInfo.hook';
 
 interface State {
   userId: string;
-  personalInfoData: PersonalInfo;
+  personalInfoData: PersonalInfo | null;
   additionalInfoData: AdditionalInfo;
   skills: Skills;
   isEditMode: boolean;
@@ -40,22 +35,18 @@ interface MatrixContextProviderProps {
 export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) => {
   const { user } = useAuthContext();
   const history = useHistory();
-  const [userId, setUserId] = useState('');
-  const [personalInfoData, setPersonalInfoData] = useState<PersonalInfo>({
-    position: '',
-    slackId: '',
-    email: '',
-    name: '',
-    seniority: '',
-  });
-  const [additionalInfoData, setAdditionalInfoData] = useState<AdditionalInfo>({
-    additionalSkills: '',
-    likeToLearn: '',
-  });
-  const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
+  const {
+    seniorityOptions,
+    positionOptions,
+    additionalInfoData,
+    userId,
+    personalInfoData,
+    isLoading: isUserInfoLoading,
+    setPersonalInfoData,
+    setAdditionalInfoData,
+  } = usePersonalInfo();
 
-  const [seniorityOptions, setSeniorityOptions] = useState<Seniority[]>([]);
-  const [positionOptions, setPositionOptions] = useState<Position[]>([]);
+  const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
 
   const [step1Answered, setStep1Answered] = useState(false);
@@ -65,17 +56,14 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
   const ALL_AREAS_CATEGORY_OPTION: Category = { label: 'All areas', value: '', color: '' };
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchSkills = async () => {
       const {
         data: { skills },
       } = await getSkills();
 
       const {
-        data: { id, additionalInfo, personalInfo, skills: userSkills },
-      } = await getUserPersonalInfo(user?.email || '');
-
-      setPersonalInfoData(personalInfo);
-      setAdditionalInfoData(additionalInfo);
+        data: { skills: userSkills },
+      } = await getUserSkills(user?.email || '');
 
       const expertSkills = getUserSkillsFromIds(userSkills.expert, skills);
       const intermediateSkills = getUserSkillsFromIds(userSkills.intermediate, skills);
@@ -89,7 +77,6 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
         intermediate: intermediateSkills,
         shallow: shallowSkills,
       });
-      setUserId(id);
     };
 
     const fetchSkillCategories = async () => {
@@ -97,19 +84,9 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
       setCategoryOptions([ALL_AREAS_CATEGORY_OPTION, ...data.categories]);
     };
 
-    const fetchSeniorities = async () => {
-      const { data } = await getSeniorities();
-      setSeniorityOptions(data.seniorities);
-    };
-
-    const fetchPositions = async () => {
-      const { data } = await getPostions();
-      setPositionOptions(data.positions);
-    };
-
     const getAllData = async () => {
       try {
-        await Promise.all([fetchSkillCategories(), fetchUserInfo(), fetchSeniorities(), fetchPositions()]);
+        await Promise.all([fetchSkillCategories(), fetchSkills()]);
         setIsLoading(false);
       } catch (err) {
         reportError(err);
@@ -160,7 +137,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     skills,
     additionalInfoData,
     isEditMode,
-    isLoading,
+    isLoading: isUserInfoLoading || isLoading,
     categoryOptions,
     seniorityOptions,
     positionOptions,
