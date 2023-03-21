@@ -4,5 +4,7 @@ export {
   getPositions,
   getCategories,
   getSkills,
+  getUserSkills,
   updateUser,
+  updateUserProfile,
 } from './routes/airtable';

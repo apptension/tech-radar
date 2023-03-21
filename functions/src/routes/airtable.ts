@@ -30,6 +30,27 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
             additionalSkills: record.get(USER_FIELDS.ADDITIONAL_SKILLS),
             likeToLearn: record.get(USER_FIELDS.LIKE_TO_LEARN),
           },
+        }));
+
+        const { personalInfo, additionalInfo, skills, id } = userInfo[0];
+        return res.json({ id, personalInfo, skills, additionalInfo });
+      });
+  });
+});
+
+export const getUserSkills = functions.https.onRequest(async (req, res) => {
+  corsHandler(req, res, async () => {
+    const { email } = req.query;
+    airtable(BASE.USERS)
+      .select({ view: BASE_VIEWS.RESULTS, filterByFormula: filterUserByEmailFormula(email as string) })
+      .firstPage((err: any, records: any) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ success: false });
+        }
+
+        const userInfo = records.map((record: any) => ({
+          id: record.id,
           skills: {
             expert: record.get(USER_FIELDS.SKILLS_EXPERT) || [],
             intermediate: record.get(USER_FIELDS.SKILLS_INTERMEDIATE) || [],
@@ -37,8 +58,8 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
           },
         }));
 
-        const { personalInfo, additionalInfo, skills, id } = userInfo[0];
-        return res.json({ id, personalInfo, skills, additionalInfo });
+        const { skills, id } = userInfo[0];
+        return res.json({ id, skills });
       });
   });
 });
@@ -162,6 +183,34 @@ export const updateUser = functions.https.onRequest(async (req, res) => {
             [USER_FIELDS.SKILLS_EXPERT]: expert,
             [USER_FIELDS.SKILLS_INTERMEDIATE]: intermediate,
             [USER_FIELDS.SKILLS_SHALLOW]: shallow,
+          },
+        },
+      ],
+      (err: any) => {
+        if (err) {
+          console.error(err);
+          return res.status(400).json({ success: false });
+        }
+        return res.json({ success: true });
+      }
+    );
+  });
+});
+
+export const updateUserProfile = functions.https.onRequest(async (req, res) => {
+  corsHandler(req, res, async () => {
+    const { userId, position, slackId, email, name, seniority } = req.body;
+
+    airtable(BASE.USERS).update(
+      [
+        {
+          id: userId,
+          fields: {
+            [USER_FIELDS.NAME]: name,
+            [USER_FIELDS.EMAIL]: email,
+            [USER_FIELDS.POSITION]: [position],
+            [USER_FIELDS.SLACK_ID]: slackId,
+            [USER_FIELDS.SENIORITY]: [seniority],
           },
         },
       ],

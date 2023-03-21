@@ -5,11 +5,16 @@ interface UserInfoResponse {
   id: string;
   personalInfo: PersonalInfo;
   additionalInfo: AdditionalInfo;
-  skills: { expert: string[]; intermediate: string[]; shallow: string[] };
 }
 
-export const getUserPersonalInfo = async (userEmail: string) => {
+export const getUserInfo = async (userEmail: string) => {
   return await axiosAirtableApi.get<UserInfoResponse>(`/getUserPersonalInfo/?email=${userEmail}`);
+};
+
+export const getUserSkills = async (userEmail: string) => {
+  return await axiosAirtableApi.get<{ skills: { expert: string[]; intermediate: string[]; shallow: string[] } }>(
+    `/getUserSkills/?email=${userEmail}`
+  );
 };
 
 export const getSeniorities = async () => {
@@ -30,4 +35,8 @@ export const getSkills = async (search = '', category = '') => {
 
 export const patchUser = async (data: any) => {
   return await axiosAirtableApi.patch<{ skills: Skill[] }>(`/updateUser`, data);
+};
+
+export const patchUserProfile = async (data: any) => {
+  return await axiosAirtableApi.patch(`/updateUserProfile`, data);
 };
