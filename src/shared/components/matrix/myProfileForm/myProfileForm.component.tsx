@@ -1,10 +1,10 @@
 import { Controller } from 'react-hook-form';
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
-import { ButtonSize, ButtonVariant } from '../../button/button.types';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
-import { FieldContainer, Form, NextButton } from '../personalInfoForm/personalInfoForm.styles';
+import { FormActions } from '../formActions';
+import { FieldContainer, Form } from '../personalInfoForm/personalInfoForm.styles';
 import { useMyProfileForm } from './useMyProfileForm.hook';
 
 export const MyProfileForm = () => {
@@ -13,7 +13,7 @@ export const MyProfileForm = () => {
       control,
       register,
       handleSubmit,
-      formState: { errors },
+      formState: { errors, isDirty },
     },
     positionOptions,
     seniorityOptions,
@@ -90,9 +90,7 @@ export const MyProfileForm = () => {
           )}
         />
       </FieldContainer>
-      <NextButton type="submit" isLoading={isSubmitting} size={ButtonSize.LARGE} variant={ButtonVariant.PRIMARY}>
-        Next
-      </NextButton>
+      <FormActions withoutBackButton nextLabel="Save" isDisabled={!isDirty} isLoading={isSubmitting} />
     </Form>
   );
 };

@@ -22,9 +22,5 @@ export const initializePersonalValues = (
   form: UseFormReturn<PersonalInfo>,
   { email, name, position, seniority, slackId }: PersonalInfo
 ) => {
-  form.setValue('email', email);
-  form.setValue('name', name);
-  form.setValue('position', position);
-  form.setValue('slackId', slackId);
-  form.setValue('seniority', seniority);
+  form.reset({ email, name, position, seniority, slackId });
 };

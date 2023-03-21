@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { auth } from '../../shared/services/firebase';
 
@@ -6,11 +6,13 @@ interface User {
   email: string;
   displayName: string;
   uid: string;
+  avatar: string;
 }
 
 interface State {
   user: User | null;
   isLoading: boolean;
+  logout: () => void;
 }
 
 export const AuthContext = createContext<State | undefined>(undefined);
@@ -27,11 +29,15 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     setUser(user);
   };
 
+  const logout = () => {
+    signOut(auth);
+  };
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { email, uid, displayName } = user;
-        initializeUser({ email: email || '', uid, displayName: displayName || '' });
+        const { email, uid, displayName, photoURL } = user;
+        initializeUser({ email: email || '', uid, displayName: displayName || '', avatar: photoURL || '' });
       } else {
         setUser(null);
       }
@@ -39,7 +45,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     });
   }, []);
 
-  const value = { user, isLoading };
+  const value = { user, isLoading, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
