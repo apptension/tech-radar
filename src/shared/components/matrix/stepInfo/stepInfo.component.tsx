@@ -1,14 +1,13 @@
 import { ComponentProps } from 'react';
 import { FormProgress } from '../formProgress';
+import { TitleHeader } from '../titleHeader';
 import {
   FinalStepHeader,
   FinalStepProgressContainer,
   FinalStepTitle,
   FormProgressWrapper,
   Header,
-  InfoText,
-  Title,
-  TitleContainer,
+  HeaderInfoText,
 } from './stepInfo.styles';
 import { getStepContent, getStepTitle } from './stepInfo.utils';
 
@@ -30,7 +29,7 @@ export const StepInfo = ({ step }: StepInfoProps) => {
           </FormProgressWrapper>
           <FinalStepTitle>{title}</FinalStepTitle>
         </FinalStepProgressContainer>
-        <InfoText limitedWidth={isFinalStep}>{content}</InfoText>
+        <HeaderInfoText limitedWidth={isFinalStep}>{content}</HeaderInfoText>
       </FinalStepHeader>
     );
   }
@@ -41,10 +40,7 @@ export const StepInfo = ({ step }: StepInfoProps) => {
         <FormProgress step={step} />
       </FormProgressWrapper>
 
-      <TitleContainer>
-        <Title>{title}</Title>
-        <InfoText>{content}</InfoText>
-      </TitleContainer>
+      <TitleHeader title={title} content={content} />
     </Header>
   );
 };
