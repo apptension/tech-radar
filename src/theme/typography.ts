@@ -64,6 +64,13 @@ export const H1small = css`
   margin: 0;
 `;
 
+export const BoldRegularText = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.bold};
+  font-size: 16px;
+  line-height: 16px;
+`;
+
 export const H1large = css`
   font-family: ${fontFamily.primary};
   font-weight: ${fontWeight.bold};

@@ -8,12 +8,11 @@ export const ListWrapper = styled.div`
   flex: 1;
   width: 100%;
   position: relative;
-  overflow: hidden;
 `;
 
 export const List = styled.ul`
   position: absolute;
-  height: calc(100% - 16px);
+  height: calc(100% - 250px);
   width: 100%;
   top: 0;
   left: 0;
@@ -85,7 +84,7 @@ const shadowStyles = css`
 
 export const ShadowBottom = styled.div<{ visible: boolean }>`
   ${shadowStyles};
-  bottom: -1px;
+  bottom: calc(0px + 200px);
   background: ${color.shadowGradientBottom};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;
