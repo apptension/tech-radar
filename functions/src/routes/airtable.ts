@@ -3,6 +3,7 @@ import { BASE, BASE_VIEWS, CATEGORY_FIELDS, SENIORITY_FIELDS, SKILL_FIELDS, USER
 import { airtable } from '../services/airtable';
 import { filterSkillsBySearch, filterSkilsByCategoryId, filterUserByEmailFormula } from '../utils/airtable/formulas';
 import { corsHandler } from '../utils/corsHandler';
+import { getIsoDateWithoutTime } from '../utils/time';
 
 // * TYPES FOR AIRTABLE OBJECTS ARE SET TO ANY AS AIRTABLE LACKS TYPE DECLARATIONS FOR THEM
 
@@ -176,6 +177,7 @@ export const updateUser = functions.https.onRequest(async (req, res) => {
             [USER_FIELDS.NAME]: name,
             [USER_FIELDS.EMAIL]: email,
             [USER_FIELDS.POSITION]: [position],
+            [USER_FIELDS.LAST_SUBMIT]: getIsoDateWithoutTime(),
             [USER_FIELDS.ADDITIONAL_SKILLS]: additionalSkills,
             [USER_FIELDS.LIKE_TO_LEARN]: likeToLearn,
             [USER_FIELDS.SLACK_ID]: slackId,
