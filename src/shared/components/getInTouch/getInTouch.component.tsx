@@ -8,16 +8,13 @@ interface GetInTouchProps {
   asPopup?: boolean;
 }
 
+const GET_IN_TOUCH_URL = 'https://www.apptension.com/get-in-touch';
+
 export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
   if (asPopup) {
     return (
       <Container>
-        <LeftSideContainer>
-          <Text>Interested in working with Apptension?</Text>
-          <Link to="https://www.apptension.com/get-in-touch" variant={ButtonVariant.PRIMARY}>
-            Get in touch
-          </Link>
-        </LeftSideContainer>
+        <LeftSideInfo />
         <ContactsContainer>
           <ContactOption>
             <EnvelopeSVG />
@@ -32,12 +29,14 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
     );
   }
 
-  return (
-    <LeftSideContainer>
-      <Text>Interested in working with Apptension?</Text>
-      <Link to="https://www.apptension.com/get-in-touch" variant={ButtonVariant.PRIMARY}>
-        Get in touch
-      </Link>
-    </LeftSideContainer>
-  );
+  return <LeftSideInfo />;
 };
+
+const LeftSideInfo = () => (
+  <LeftSideContainer>
+    <Text>Interested in working with Apptension?</Text>
+    <Link to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY}>
+      Get in touch
+    </Link>
+  </LeftSideContainer>
+);
