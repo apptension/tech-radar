@@ -26,6 +26,7 @@ export const useOverviewForm = () => {
         personalData: personalInfoData,
         additionalData: additionalInfoData,
       });
+      history.push(ROUTES.matrixFinal);
     } catch (err) {
       reportError(err);
     }

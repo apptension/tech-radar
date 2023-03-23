@@ -6,6 +6,7 @@ export const ROUTES = {
   matrixKnowledge: '/matrix/knowledge',
   matrixAdditionalInfo: '/matrix/additional-information',
   matrixOverview: '/matrix/overview',
+  matrixFinal: '/matrix/ready',
   notFound: '/404',
 };
 

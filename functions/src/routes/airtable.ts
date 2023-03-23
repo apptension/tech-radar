@@ -31,9 +31,9 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
             likeToLearn: record.get(USER_FIELDS.LIKE_TO_LEARN),
           },
           skills: {
-            expert: record.get(USER_FIELDS.SKILLS_EXPERT),
-            intermediate: record.get(USER_FIELDS.SKILLS_INTERMEDIATE),
-            shallow: record.get(USER_FIELDS.SKILLS_SHALLOW),
+            expert: record.get(USER_FIELDS.SKILLS_EXPERT) || [],
+            intermediate: record.get(USER_FIELDS.SKILLS_INTERMEDIATE) || [],
+            shallow: record.get(USER_FIELDS.SKILLS_SHALLOW) || [],
           },
         }));
 

@@ -13,7 +13,7 @@ export const MainContainer = styled.div`
 
 export const PatternContainer = styled.div`
   position: fixed;
-  bottom: 117px;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: -1;
