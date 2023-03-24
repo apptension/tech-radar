@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -158,7 +159,7 @@ export const Radar = ({
         radar.classed('not-hovered', false);
         ringLabelsContainer.classed('not-hovered', false);
       });
-
+    console.log('ABL', renderedRingLabels);
     renderedRingLabels
       .on('click', (event, d) => {
         quadrants.map((el) => toggleQuadrant(el.position, false));
@@ -170,6 +171,7 @@ export const Radar = ({
           return;
         }
         const target = event.target as Element;
+        console.log(target);
 
         if (target) {
           showTooltip(target, d.description, -1, 0);
