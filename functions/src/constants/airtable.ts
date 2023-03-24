@@ -9,6 +9,7 @@ export enum BASE {
 export enum USER_FIELDS {
   NAME = 'Name',
   POSITION = 'Position1',
+  LAST_SUBMIT = 'Submit Date',
   EMAIL = 'Email',
   SLACK_ID = 'SlackID',
   SENIORITY = 'Seniority',
