@@ -7,7 +7,7 @@ import RadarMobileImg from '../../images/radar-mobile.png';
 import { Background } from '../../shared/components/background';
 import { RadarHomeAnimation } from '../../shared/components/radarHomeAnimation';
 import { ROUTES } from '../app.constants';
-import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.types';
+import { ButtonIcon, ButtonSize, ButtonVariant } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
 import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
@@ -27,6 +27,7 @@ import {
   RadarAnimationContainer,
   TextContent,
   TitleTag,
+  ButtonsContainer,
 } from './home.styles';
 
 export const Home = () => {
@@ -68,9 +69,14 @@ export const Home = () => {
           )}
         </LogoWrapper>
         {isDesktop && (
-          <Link to="https://apptension.com" icon={ButtonIcon.OUT}>
-            <FormattedMessage {...messages.backToMainPageButton} />
-          </Link>
+          <ButtonsContainer>
+            <Link to="https://apptension.com/get-in-touch" variant={ButtonVariant.PRIMARY}>
+              <FormattedMessage {...messages.getInTouchButton} />
+            </Link>
+            <Link to="https://apptension.com" icon={ButtonIcon.OUT}>
+              <FormattedMessage {...messages.goToMainPageButton} />
+            </Link>
+          </ButtonsContainer>
         )}
       </Header>
       <Content>

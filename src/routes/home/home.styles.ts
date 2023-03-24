@@ -130,3 +130,9 @@ export const LastUpdateInfo = styled(LastUpdateInfoComponent)`
   bottom: 24px;
   right: 35px;
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
