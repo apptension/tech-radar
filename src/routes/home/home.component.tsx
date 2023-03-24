@@ -9,7 +9,6 @@ import { RadarHomeAnimation } from '../../shared/components/radarHomeAnimation';
 import { ROUTES } from '../app.constants';
 import { ButtonIcon, ButtonSize, ButtonVariant } from '../../shared/components/button/button.types';
 import { Link } from '../../shared/components/link';
-import { useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
 import messages from './home.messages';
@@ -20,7 +19,6 @@ import {
   ExploreLinkContainer,
   Header,
   Image,
-  LastUpdateInfo,
   LogoWrapper,
   RadarContent,
   MobileRadarContent,
@@ -33,7 +31,6 @@ import {
 export const Home = () => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const { matches: isTablet } = useMediaQuery({ above: Breakpoint.TABLET });
-  const lastContentfulUpdate = useLastContentfulUpdate();
 
   const renderRadarContent = () => {
     if (isDesktop)
@@ -93,7 +90,6 @@ export const Home = () => {
         </TextContent>
         {renderRadarContent()}
       </Content>
-      {!!lastContentfulUpdate && isDesktop && <LastUpdateInfo date={lastContentfulUpdate} />}
     </Container>
   );
 };

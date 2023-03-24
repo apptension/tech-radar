@@ -7,8 +7,18 @@ import { Loader as LoaderComponent } from '../../shared/components/loader';
 import { SIDEBAR_WIDTH } from '../../shared/components/radar/radar.constants';
 import { mediaQuery } from '../../theme/media';
 import { tooltipDelay, transition } from '../../shared/utils/constants';
+import { LastUpdateInfo } from '../../shared/components/lastUpdateInfo';
+import { TagSmall } from '../../theme/typography';
 
 export const LOADING_ANIMATION_MS = 500;
+
+export const StyledLastUpdate = styled(LastUpdateInfo)`
+  ${TagSmall};
+  position: absolute;
+  bottom: 24px;
+  right: 0;
+  letter-spacing: 0.2em;
+`;
 
 export const Container = styled.div`
   width: 100%;
