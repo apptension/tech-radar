@@ -16,6 +16,7 @@ import { Knowledge } from './matrix/knowledge';
 import { AdditionalInfo } from './matrix/additionalInfo';
 import { Overview } from './matrix/overview';
 import { FinalStep } from './matrix/finalStep';
+import { MyProfile } from './matrix/myProfile/myProfile.component';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
@@ -40,33 +41,38 @@ export default () => {
           {/* <-- INJECT ROUTE --> */}
 
           <AuthContextProvider>
-            <MatrixContextProvider>
-              <ScrollToTop>
-                <Route exact path={ROUTES.matrixLogin}>
-                  <Login />
-                </Route>
+            <AuthRoute exact path={ROUTES.myProfile}>
+              <MyProfile />
+            </AuthRoute>
+            <Route path={'/matrix'}>
+              <MatrixContextProvider>
+                <ScrollToTop>
+                  <Route exact path={ROUTES.matrixLogin}>
+                    <Login />
+                  </Route>
 
-                <AuthRoute exact path={ROUTES.matrixPersonal}>
-                  <Personal />
-                </AuthRoute>
+                  <AuthRoute exact path={ROUTES.matrixPersonal}>
+                    <Personal />
+                  </AuthRoute>
 
-                <AuthRoute exact path={ROUTES.matrixKnowledge}>
-                  <Knowledge />
-                </AuthRoute>
+                  <AuthRoute exact path={ROUTES.matrixKnowledge}>
+                    <Knowledge />
+                  </AuthRoute>
 
-                <AuthRoute exact path={ROUTES.matrixAdditionalInfo}>
-                  <AdditionalInfo />
-                </AuthRoute>
+                  <AuthRoute exact path={ROUTES.matrixAdditionalInfo}>
+                    <AdditionalInfo />
+                  </AuthRoute>
 
-                <AuthRoute exact path={ROUTES.matrixOverview}>
-                  <Overview />
-                </AuthRoute>
+                  <AuthRoute exact path={ROUTES.matrixOverview}>
+                    <Overview />
+                  </AuthRoute>
 
-                <AuthRoute exact path={ROUTES.matrixFinal}>
-                  <FinalStep />
-                </AuthRoute>
-              </ScrollToTop>
-            </MatrixContextProvider>
+                  <AuthRoute exact path={ROUTES.matrixFinal}>
+                    <FinalStep />
+                  </AuthRoute>
+                </ScrollToTop>
+              </MatrixContextProvider>
+            </Route>
           </AuthContextProvider>
 
           <Route>
