@@ -11,8 +11,12 @@ export default defineMessages({
     id: 'home.exploreButton',
     defaultMessage: 'Explore',
   },
-  backToMainPageButton: {
-    id: 'home.backToMainPageButton',
-    defaultMessage: 'Back to apptension.com',
+  getInTouchButton: {
+    id: 'home.getInTouchButton',
+    defaultMessage: 'Get in touch',
+  },
+  goToMainPageButton: {
+    id: 'home.goToMainPageButton',
+    defaultMessage: 'Go to apptension.com',
   },
 });

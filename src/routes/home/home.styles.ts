@@ -3,7 +3,6 @@ import styled, { css, keyframes } from 'styled-components';
 import { Paragraph } from '../../theme/typography';
 import { Header as HeaderComponent } from '../../shared/components/header';
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
-import { LastUpdateInfo as LastUpdateInfoComponent } from '../../shared/components/lastUpdateInfo';
 import { mediaQuery } from '../../theme/media';
 import { zIndex } from '../../theme';
 
@@ -125,8 +124,8 @@ export const Image = styled.img`
   }
 `;
 
-export const LastUpdateInfo = styled(LastUpdateInfoComponent)`
-  position: absolute;
-  bottom: 24px;
-  right: 35px;
+export const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
