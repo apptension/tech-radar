@@ -4,6 +4,7 @@ import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
 import { TextField } from '../fields/TextField';
 import { TablePagination } from '../pagination';
 import { TableRadarTechnology } from '../radar/radar.types';
+import { StyledTable, TableBodyRow, TableSaveCell } from './table.styles';
 
 interface EditableCellProps {
   value: string | number;
@@ -58,13 +59,14 @@ export function Table({ columns, data, updateMyData }: TableProps) {
       data,
       defaultColumn,
       updateMyData,
+      autoResetPage: false,
     },
     usePagination
   );
 
   return (
     <>
-      <table {...getTableProps()}>
+      <StyledTable {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -78,15 +80,18 @@ export function Table({ columns, data, updateMyData }: TableProps) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                ))}
-              </tr>
+              <TableBodyRow {...row.getRowProps()} style={{ position: 'relative' }}>
+                {row.cells.map((cell) => {
+                  if (cell.column.id === 'save') {
+                    return <TableSaveCell {...cell.getCellProps()}>{cell.render('Cell')}</TableSaveCell>;
+                  }
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                })}
+              </TableBodyRow>
             );
           })}
         </tbody>
-      </table>
+      </StyledTable>
       <TablePagination
         gotoPage={gotoPage}
         previousPage={previousPage}
