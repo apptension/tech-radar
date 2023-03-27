@@ -193,11 +193,14 @@ type RenderRinkLabels = {
 
 export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels) => {
   const labels = ringLabelsContainer.append('g').attr('id', 'ring-labels');
+  const getDashedLabelName = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
 
   labels
     .selectAll('.ring-label')
     .data(rings)
     .enter()
+    .append('g')
+    .attr('class', (d) => `ring-label-container ring-label-container-${getDashedLabelName(d.name)}`)
     .append('text')
     .attr('class', 'ring-label')
     .text((d, i) => radarRings[i]?.name)
@@ -208,15 +211,17 @@ export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: Ren
     .style('font-size', 14)
     .selectAll('.ring-label');
 
-  const svg = labels.selectAll('.ring-label').each((d, i, nodes) => {
+  labels.selectAll('.ring-label').each((d, i, nodes) => {
     //@ts-ignore
     const bbox = select(nodes[i]).node().getBBox();
     const centreX = bbox.x + bbox.width;
     const centreY = bbox.y + bbox.height / 2;
 
     labels
+      //@ts-ignore
+      .select(`.ring-label-container-${getDashedLabelName(d.name)}`)
       .append('svg')
-      .attr('class', 'ring-label active')
+      .attr('class', 'ring-label-icon')
       .attr('width', 16)
       .attr('height', 16)
       .attr('y', centreY - 4)
@@ -229,8 +234,8 @@ export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: Ren
       )
       .attr('fill', '#C2C2C2');
   });
-  console.log('SVG', svg);
-  return svg;
+
+  return labels.selectAll('.ring-label-container');
 };
 
 type RenderTechnologies = {
