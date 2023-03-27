@@ -31,7 +31,7 @@ import {
   random_between,
   translate,
 } from '../../utils/radarUtils';
-import { RadarQuadrant, RadarRing, RadarTechnology, Rings } from './radar.types';
+import { RadarQuadrant, RadarRing, RadarTechnology, RingLabels, Rings } from './radar.types';
 
 const quadrantsData = [
   { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1, position: -90, quadrant: 0 },
@@ -191,7 +191,7 @@ type RenderRinkLabels = {
   radarRings: RadarRing[];
 };
 
-export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels) => {
+export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels): RingLabels => {
   const labels = ringLabelsContainer.append('g').attr('id', 'ring-labels');
   const getDashedLabelName = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
 
@@ -212,14 +212,14 @@ export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: Ren
     .selectAll('.ring-label');
 
   labels.selectAll('.ring-label').each((d, i, nodes) => {
+    const { name } = d as { radius: number; description: string; name: string };
     //@ts-ignore
     const bbox = select(nodes[i]).node().getBBox();
     const centreX = bbox.x + bbox.width;
     const centreY = bbox.y + bbox.height / 2;
 
     labels
-      //@ts-ignore
-      .select(`.ring-label-container-${getDashedLabelName(d.name)}`)
+      .select(`.ring-label-container-${getDashedLabelName(name)}`)
       .append('svg')
       .attr('class', 'ring-label-icon')
       .attr('width', 16)

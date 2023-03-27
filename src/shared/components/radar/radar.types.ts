@@ -1,3 +1,4 @@
+import { BaseType, Selection } from 'd3';
 import { FilterType } from '../../../modules/filters/filters.types';
 
 export type RadarTechnology = {
@@ -106,3 +107,5 @@ export interface RotateDataProps {
 export type UpdateTechnologiesProps = Omit<RotateDataProps, 'newQuadrant' | 'quadrants'>;
 
 export type Rings = { radius: number; description: string; name: string }[];
+
+export type RingLabels = Selection<BaseType, { radius: number; description: string; name: string }, any, unknown>;
