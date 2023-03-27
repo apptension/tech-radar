@@ -23,7 +23,6 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
 export const Container = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
   display: flex;
   height: 100vh;
   width: 100vw;

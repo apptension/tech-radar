@@ -2,8 +2,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Logo } from '../../shared/components/logo';
-import RadarImg from '../../images/radar.png';
-import RadarMobileImg from '../../images/radar-mobile.png';
+import RadarImg from '../../images/Radar_tablet.svg';
+import RadarMobileImg from '../../images/Radar_mobile.svg';
 import { Background } from '../../shared/components/background';
 import { SocialMediaBar } from '../../shared/components/socialMediaBar';
 import { RadarHomeAnimation } from '../../shared/components/radarHomeAnimation';

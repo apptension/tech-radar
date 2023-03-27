@@ -20,6 +20,10 @@ export const SVG = styled.svg`
     transition: opacity ${transition} ${tooltipDelay};
   }
 
+  .ring-label-container {
+    cursor: pointer;
+  }
+
   .ring-label {
     cursor: pointer;
   }
@@ -122,18 +126,42 @@ export const SVG = styled.svg`
     pointer-events: none;
   }
 
+  .ring-label-container {
+    pointer-events: bounding-box;
+    &:hover {
+      & > .ring-label {
+        fill: ${color.white};
+      }
+      & > .ring-label-icon path {
+        fill: ${color.white};
+      }
+    }
+  }
+
   .ring-label {
-    fill: ${color.boulder};
+    fill: ${color.white};
     opacity: 1;
     transition: opacity ${transition} ${tooltipDelay}, fill ${transition} ${tooltipDelay};
-
+    pointer-events: none;
     &.active:not(.not-hovered) {
       fill: ${color.white};
       transition: opacity ${transition}, fill ${transition};
     }
+  }
 
-    &:hover {
+  .ring-label-icon {
+    & > path {
       fill: ${color.white};
+    }
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity ${transition} ${tooltipDelay}, stroke ${transition} ${tooltipDelay};
+
+    &.active:not(.not-hovered) {
+      & > path {
+        fill: ${color.white};
+      }
+      transition: opacity ${transition}, stroke ${transition};
     }
   }
 `;
