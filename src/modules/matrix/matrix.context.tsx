@@ -1,13 +1,16 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
+import { useLocalStorage } from 'react-use';
 import { useHistory } from 'react-router';
-import { useAuthContext } from '../auth/auth.context';
 import { ROUTES } from '../../routes/app.constants';
-import { getCategories, getSkills, getUserSkills } from '../../shared/services/api/endpoints/airtable';
-import { reportError } from '../../shared/utils/reportError';
 import { Skills } from '../../shared/components/matrix/knowledgeForm/useKnowledgeForm.hook';
-import { AdditionalInfo, Category, PersonalInfo, Position, Seniority } from '../../shared/components/matrix/types';
-import { checkIfSkillIsAdded, getUserSkillsFromIds } from '../../shared/components/matrix/utils';
-import { usePersonalInfo } from '../../shared/components/matrix/hooks/usePersonInfo.hook';
+import { AdditionalInfo, PersonalInfo, Position, Seniority } from '../../shared/components/matrix/types';
+import { MATRIX_LS_ITEM } from '../../shared/components/matrix/constants/matrix.constants';
+import { reportError } from '../../shared/utils/reportError';
+import { mapSkillsToValues } from '../../shared/components/matrix/utils';
+import { patchUser } from '../../shared/services/api/endpoints/airtable';
+import { Loader } from '../../shared/components/loader';
+import { usePersonalInfo } from './usePersonInfo.hook';
+import { useSkills } from './useSkills.hook';
 
 interface State {
   userId: string;
@@ -19,6 +22,7 @@ interface State {
   categoryOptions: Seniority[];
   seniorityOptions: Seniority[];
   positionOptions: Position[];
+  sendForm: () => Promise<void>;
   setIsEditMode: Dispatch<SetStateAction<boolean>>;
   cancelEdit: () => void;
   saveSkills: (skills: Omit<Skills, 'root'>) => void;
@@ -33,8 +37,17 @@ interface MatrixContextProviderProps {
 }
 
 export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) => {
-  const { user } = useAuthContext();
   const history = useHistory();
+  const [, setLocalPersonal, removeLocalPersonal] = useLocalStorage(MATRIX_LS_ITEM.PERSONAL);
+  const [, setLocalAdditional, removeLocalAdditional] = useLocalStorage(MATRIX_LS_ITEM.ADDITIONAL);
+  const [, setLocalSkills, removeLocalSkills] = useLocalStorage(MATRIX_LS_ITEM.SKILLS);
+  const {
+    categoryOptions,
+    skills,
+    updateSkills,
+    isFilledIn: isStep2Answered,
+    isLoading: isSkillsLoading,
+  } = useSkills();
   const {
     seniorityOptions,
     positionOptions,
@@ -42,65 +55,25 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     userId,
     personalInfoData,
     isLoading: isUserInfoLoading,
-    setPersonalInfoData,
-    setAdditionalInfoData,
+    isPersonalFilledIn: isStep1Answered,
+    isAdditionalFilledIn: isStep3Answered,
+    updateAdditionalData,
+    updatePersonalData,
   } = usePersonalInfo();
 
-  const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
-  const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
-
-  const [step1Answered, setStep1Answered] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const ALL_AREAS_CATEGORY_OPTION: Category = { label: 'All areas', value: '', color: '' };
 
   useEffect(() => {
-    const fetchSkills = async () => {
-      const {
-        data: { skills },
-      } = await getSkills();
-
-      const {
-        data: { skills: userSkills },
-      } = await getUserSkills(user?.email || '');
-
-      const expertSkills = getUserSkillsFromIds(userSkills.expert, skills);
-      const intermediateSkills = getUserSkillsFromIds(userSkills.intermediate, skills);
-      const shallowSkills = getUserSkillsFromIds(userSkills.shallow, skills);
-
-      setSkills({
-        root: skills.filter(({ value }) =>
-          checkIfSkillIsAdded([...expertSkills, ...intermediateSkills, ...shallowSkills], value)
-        ),
-        expert: expertSkills,
-        intermediate: intermediateSkills,
-        shallow: shallowSkills,
-      });
-    };
-
-    const fetchSkillCategories = async () => {
-      const { data } = await getCategories();
-      setCategoryOptions([ALL_AREAS_CATEGORY_OPTION, ...data.categories]);
-    };
-
-    const getAllData = async () => {
-      try {
-        await Promise.all([fetchSkillCategories(), fetchSkills()]);
-        setIsLoading(false);
-      } catch (err) {
-        reportError(err);
-      }
-    };
-
-    if (user) {
-      getAllData();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (!step1Answered) {
-      history.push(ROUTES.matrixPersonal);
+    if (!isSkillsLoading && !isUserInfoLoading) {
+      history.push(
+        !isStep1Answered
+          ? ROUTES.matrixPersonal
+          : !isStep2Answered
+          ? ROUTES.matrixKnowledge
+          : !isStep3Answered
+          ? ROUTES.matrixAdditionalInfo
+          : ROUTES.matrixOverview
+      );
     }
 
     const unlisten = history.listen((location) => {
@@ -112,23 +85,46 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     return () => {
       unlisten();
     };
-  }, []);
+  }, [isSkillsLoading, isUserInfoLoading]);
 
   const savePersonalInfoData: State['savePersonalInfoData'] = (data) => {
-    setPersonalInfoData(data);
-    setStep1Answered(true);
+    updatePersonalData(data);
+    setLocalPersonal(data);
   };
 
   const saveAdditionalInfoData: State['saveAdditionalInfoData'] = (data) => {
-    setAdditionalInfoData(data);
+    updateAdditionalData(data);
+    setLocalAdditional(data);
   };
 
   const saveSkills: State['saveSkills'] = (addedSkills) => {
-    setSkills((skills) => ({ ...skills, ...addedSkills }));
+    updateSkills(addedSkills);
+    setLocalSkills(addedSkills);
   };
 
   const cancelEdit = () => {
     history.push(ROUTES.matrixOverview);
+  };
+
+  const sendForm = async () => {
+    try {
+      await patchUser({
+        userId,
+        skills: {
+          expert: mapSkillsToValues(skills.expert),
+          intermediate: mapSkillsToValues(skills.intermediate),
+          shallow: mapSkillsToValues(skills.shallow),
+        },
+        personalData: personalInfoData,
+        additionalData: additionalInfoData,
+      });
+      removeLocalPersonal();
+      removeLocalSkills();
+      removeLocalAdditional();
+      history.push(ROUTES.matrixFinal);
+    } catch (err) {
+      reportError(err);
+    }
   };
 
   const value = {
@@ -137,16 +133,21 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     skills,
     additionalInfoData,
     isEditMode,
-    isLoading: isUserInfoLoading || isLoading,
+    isLoading: isUserInfoLoading || isSkillsLoading,
     categoryOptions,
     seniorityOptions,
     positionOptions,
+    sendForm,
     setIsEditMode,
     cancelEdit,
     saveSkills,
     saveAdditionalInfoData,
     savePersonalInfoData,
   };
+
+  if (isUserInfoLoading || isSkillsLoading) {
+    return <Loader />;
+  }
 
   return <MatrixContext.Provider value={value}>{children}</MatrixContext.Provider>;
 };
