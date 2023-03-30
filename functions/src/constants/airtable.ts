@@ -13,6 +13,7 @@ export enum USER_FIELDS {
   EMAIL = 'Email',
   SLACK_ID = 'SlackID',
   SENIORITY = 'Seniority',
+  SUBMIT_DATE = 'Submit Date',
   ADDITIONAL_SKILLS = 'Not recorded',
   LIKE_TO_LEARN = 'Willing to learn',
   SKILLS_EXPERT = 'Expert knowledge',

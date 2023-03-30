@@ -5,15 +5,14 @@ import { getUserInfo } from '../../shared/services/api/endpoints/airtable';
 import { reportError } from '../../shared/utils/reportError';
 import { MATRIX_LS_ITEM } from '../../shared/components/matrix/constants/matrix.constants';
 import { AdditionalInfo, PersonalInfo } from '../../shared/components/matrix/types';
-import { usePersonalFormSelects } from './usePersonalFormSelects.hook';
 
 export const usePersonalInfo = () => {
   const { user } = useAuthContext();
-  const { isLoading: isFormSelectsLoading, positionOptions, seniorityOptions } = usePersonalFormSelects();
   const [localPersonal] = useLocalStorage<PersonalInfo>(MATRIX_LS_ITEM.PERSONAL);
   const [localAdditional] = useLocalStorage<AdditionalInfo>(MATRIX_LS_ITEM.ADDITIONAL);
 
   const [userId, setUserId] = useState('');
+  const [submitDate, setSubmitDate] = useState('');
   const [personalInfoData, setPersonalInfoData] = useState<PersonalInfo | null>(null);
   const [additionalInfoData, setAdditionalInfoData] = useState<AdditionalInfo>({
     additionalSkills: '',
@@ -38,7 +37,7 @@ export const usePersonalInfo = () => {
     const fetchUserInfo = async () => {
       try {
         const {
-          data: { id, additionalInfo, personalInfo },
+          data: { id, additionalInfo, personalInfo, submitDate },
         } = await getUserInfo(user?.email || '');
 
         const savePersonalData = () => {
@@ -59,6 +58,7 @@ export const usePersonalInfo = () => {
 
         savePersonalData();
         saveAdditionalData();
+        setSubmitDate(submitDate);
         setUserId(id);
         setIsLoading(false);
       } catch (err) {
@@ -73,11 +73,10 @@ export const usePersonalInfo = () => {
 
   return {
     userId,
+    submitDate,
     personalInfoData,
     additionalInfoData,
-    seniorityOptions,
-    positionOptions,
-    isLoading: isLoading || isFormSelectsLoading,
+    isLoading: isLoading,
     isPersonalFilledIn,
     isAdditionalFilledIn,
     updatePersonalData,

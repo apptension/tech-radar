@@ -9,8 +9,9 @@ import { reportError } from '../../shared/utils/reportError';
 import { mapSkillsToValues } from '../../shared/components/matrix/utils';
 import { patchUser } from '../../shared/services/api/endpoints/airtable';
 import { Loader } from '../../shared/components/loader';
-import { usePersonalInfo } from './usePersonInfo.hook';
+import { usePersonalInfo } from './usePersonalInfo.hook';
 import { useSkills } from './useSkills.hook';
+import { usePersonalFormSelects } from './usePersonalFormSelects.hook';
 
 interface State {
   userId: string;
@@ -41,6 +42,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
   const [, setLocalPersonal, removeLocalPersonal] = useLocalStorage(MATRIX_LS_ITEM.PERSONAL);
   const [, setLocalAdditional, removeLocalAdditional] = useLocalStorage(MATRIX_LS_ITEM.ADDITIONAL);
   const [, setLocalSkills, removeLocalSkills] = useLocalStorage(MATRIX_LS_ITEM.SKILLS);
+  const { isLoading: isFormSelectsLoading, positionOptions, seniorityOptions } = usePersonalFormSelects();
   const {
     categoryOptions,
     skills,
@@ -49,8 +51,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     isLoading: isSkillsLoading,
   } = useSkills();
   const {
-    seniorityOptions,
-    positionOptions,
+    submitDate,
     additionalInfoData,
     userId,
     personalInfoData,
@@ -63,8 +64,13 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
 
   const [isEditMode, setIsEditMode] = useState(false);
 
+  const isLoading = isFormSelectsLoading || isSkillsLoading || isUserInfoLoading;
+
   useEffect(() => {
-    if (!isSkillsLoading && !isUserInfoLoading) {
+    if (submitDate) {
+      return history.push(ROUTES.matrixOverview);
+    }
+    if (!isLoading) {
       history.push(
         !isStep1Answered
           ? ROUTES.matrixPersonal
@@ -85,7 +91,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     return () => {
       unlisten();
     };
-  }, [isSkillsLoading, isUserInfoLoading]);
+  }, [isLoading, submitDate]);
 
   const savePersonalInfoData: State['savePersonalInfoData'] = (data) => {
     updatePersonalData(data);
@@ -133,7 +139,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     skills,
     additionalInfoData,
     isEditMode,
-    isLoading: isUserInfoLoading || isSkillsLoading,
+    isLoading,
     categoryOptions,
     seniorityOptions,
     positionOptions,
@@ -145,8 +151,8 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
     savePersonalInfoData,
   };
 
-  if (isUserInfoLoading || isSkillsLoading) {
-    return <Loader />;
+  if (isLoading) {
+    return <Loader isFullPage />;
   }
 
   return <MatrixContext.Provider value={value}>{children}</MatrixContext.Provider>;
