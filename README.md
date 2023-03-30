@@ -47,7 +47,7 @@ You can also import the data models into your own Contentful space with `content
 **These steps are not required to run Tech radar itself properly**
 
 Repository also comes with backend service in form of Firebase functions. In order to start using it please introduce yourself with the official Firebase Functions documentation:
-![Setting up Firebase Functions](https://firebase.google.com/docs/functions/get-started?hl=pl)
+[Setting up Firebase Functions](https://firebase.google.com/docs/functions/get-started?hl=pl)
 
 Then:
 
@@ -60,7 +60,7 @@ cd functions/
 Install dependencies with npm:
 
 ```Shell
-yarn install
+npm install
 ```
 
 Run functions in emulator environment:
