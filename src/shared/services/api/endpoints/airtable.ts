@@ -3,6 +3,7 @@ import { axiosAirtableApi } from '../axiosInstances';
 
 interface UserInfoResponse {
   id: string;
+  submitDate: string;
   personalInfo: PersonalInfo;
   additionalInfo: AdditionalInfo;
 }

@@ -20,6 +20,7 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
 
         const userInfo = records.map((record: any) => ({
           id: record.id,
+          submitDate: record.get(USER_FIELDS.SUBMIT_DATE) || '',
           personalInfo: {
             email: record.get(USER_FIELDS.EMAIL),
             name: record.get(USER_FIELDS.NAME),
@@ -33,8 +34,8 @@ export const getUserPersonalInfo = functions.https.onRequest(async (req, res) =>
           },
         }));
 
-        const { personalInfo, additionalInfo, skills, id } = userInfo[0];
-        return res.json({ id, personalInfo, skills, additionalInfo });
+        const { personalInfo, additionalInfo, skills, id, submitDate } = userInfo[0];
+        return res.json({ id, personalInfo, skills, additionalInfo, submitDate });
       });
   });
 });
