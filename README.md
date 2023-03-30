@@ -14,13 +14,13 @@ The Tech Radar is a tool to support production teams at Apptension in presenting
 
 The Tech Radar is a list of technologies along with their assessment result presented as 4 rings with the following meanings:
 
-**Adopt** - Technologies we have high confidence in. Technologies with a usage culture in our production environment, low risk and recommended to be widely used.
+**In use** - Technologies we have high confidence in. Technologies with a usage culture in our production environment, low risk and recommended to be widely used.
 
-**Trial** - Technologies that we have seen work with success in project work to solve a real problem; first serious usage experience that confirm benefits and can uncover limitations. Trial technologies are slightly more risky; some engineers in our organization walked this path and will share knowledge and experiences.
+**Proven** - Technologies that work really well to solve real problems in projects. We've worked with them and they've proven to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share knowledge and experiences.
 
-**Assess** - Technologies that are promising and have clear potential value-add for us; technologies worth to invest some research and prototyping efforts in to see if it has impact. Assess technologies have higher risks; they are often brand new and highly unproven in our organisation.
+**Promising** - Technologies that are promising and have clear potential to add value to our work. They're worth to invest some time and effort to research and prototype to see if it has an impact. These technologies have higher risks, they are often brand new and highly unproven in our organisation.
 
-**Hold** - Technologies not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. Hold technologies should not be used for new projects, but usually can be continued for existing projects.
+**Phased out** - Technologies not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. These technologies should not be used for new projects, but usually can be continued for existing projects.
 
 ## Features
 
@@ -41,6 +41,40 @@ Or connect your own preferable CMS or other data source.
 For reference of data models used in the tech radar see types defined in `src/shared/components/radar/radar.types.ts`.
 
 You can also import the data models into your own Contentful space with `contentful-cli` (see export file `contentful-export-2022-04-18.json`).
+
+## Backend
+
+**These steps are not required to run Tech radar itself properly**
+
+Repository also comes with backend service in form of Firebase functions. In order to start using it please introduce yourself with the official Firebase Functions documentation:
+![Setting up Firebase Functions](https://firebase.google.com/docs/functions/get-started?hl=pl)
+
+Then:
+
+Go to the Firebase functions directory:
+
+```Shell
+cd functions/
+```
+
+Install dependencies with npm:
+
+```Shell
+yarn install
+```
+
+Run functions in emulator environment:
+
+```Shell
+npm run serve
+```
+
+In order for Firebase Functions to work properly you will also need to:
+
+- Update Firebase config in `src/shared/services/firebase.ts` with your own application config.
+
+- Environment variables for Airtable API key in `functions/src/services/airtable.ts` and CORS handler in `functions/src/utils/corsHandler.ts` are coming from Firebase config.
+  Please take a look at `.runtimeconfig.example.json` to see the required structure for it and upload them to your Firebase account following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env?hl=pl#environment_configuration)
 
 ## Usage
 

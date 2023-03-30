@@ -1,0 +1,9 @@
+{
+  "airtable": {
+    "key": ""
+  },
+  "config": {
+    "test_webapp_url": "",
+    "test_webapp_url2": ""
+  }
+}
