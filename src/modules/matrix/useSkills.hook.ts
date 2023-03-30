@@ -16,7 +16,7 @@ export const useSkills = () => {
 
   const [skills, setSkills] = useState<Skills>({ root: [], expert: [], intermediate: [], shallow: [] });
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFilledIn, setIsFilledIn] = useState(false);
 
   const initializeSkills = ({ root, expert, intermediate, shallow }: Skills) =>
@@ -59,6 +59,7 @@ export const useSkills = () => {
     };
 
     const getAllData = async () => {
+      setIsLoading(true);
       try {
         await Promise.all([fetchSkillCategories(), fetchSkills()]);
         setIsLoading(false);

@@ -19,10 +19,11 @@ export const usePersonalInfo = () => {
     likeToLearn: '',
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isPersonalFilledIn, setIsPersonalFilledIn] = useState(false);
   const [isAdditionalFilledIn, setIsAdditionalFilledIn] = useState(false);
 
+  console.log('UUU', isLoading);
   const updatePersonalData = (data: PersonalInfo) => {
     setPersonalInfoData(data);
     setIsPersonalFilledIn(true);
@@ -35,6 +36,7 @@ export const usePersonalInfo = () => {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      setIsLoading(true);
       try {
         const {
           data: { id, additionalInfo, personalInfo, submitDate },
