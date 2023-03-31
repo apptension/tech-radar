@@ -46,8 +46,7 @@ You can also import the data models into your own Contentful space with `content
 
 **These steps are not required to run Tech radar itself properly**
 
-Repository also comes with backend service in form of Firebase functions. In order to start using it please introduce yourself with the official Firebase Functions documentation:
-[Setting up Firebase Functions](https://firebase.google.com/docs/functions/get-started?hl=pl)
+Repository also comes with backend service in form of Firebase functions. In order to start using it please introduce yourself with the official Firebase Functions documentation: [Setting up Firebase Functions](https://firebase.google.com/docs/functions/get-started?hl=pl)
 
 Then:
 
@@ -60,7 +59,7 @@ cd functions/
 Install dependencies with npm:
 
 ```Shell
-npm install
+yarn install
 ```
 
 Run functions in emulator environment:
@@ -73,8 +72,10 @@ In order for Firebase Functions to work properly you will also need to:
 
 - Update Firebase config in `src/shared/services/firebase.ts` with your own application config.
 
-- Environment variables for Airtable API key in `functions/src/services/airtable.ts` and CORS handler in `functions/src/utils/corsHandler.ts` are coming from Firebase config.
-  Please take a look at `.runtimeconfig.example.json` to see the required structure for it and upload them to your Firebase account following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env?hl=pl#environment_configuration)
+- Update `.firebasesrc` file with your own project name
+
+- Environment variables for Firebase Functions are coming from Google Secret Manager
+  Please take a look at `.secret.local` to see the required structure for it and upload them to Google Secret Manager for your application following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env#secret-manager)
 
 ## Usage
 
