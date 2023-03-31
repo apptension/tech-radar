@@ -59,7 +59,7 @@ cd functions/
 Install dependencies with npm:
 
 ```Shell
-yarn install
+npm install
 ```
 
 Run functions in emulator environment:
@@ -75,7 +75,7 @@ In order for Firebase Functions to work properly you will also need to:
 - Update `.firebasesrc` file with your own project name
 
 - Environment variables for Firebase Functions are coming from Google Secret Manager
-  Please take a look at `.secret.local` to see the required structure for it and upload them to Google Secret Manager for your application following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env#secret-manager)
+  Please take a look at `.secret.example` to see the required structure for it and upload them to Google Secret Manager for your application following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env#secret-manager)
 
 ## Usage
 
