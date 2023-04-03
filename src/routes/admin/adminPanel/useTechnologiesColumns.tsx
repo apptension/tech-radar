@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { reportError } from '../../../shared/utils/reportError';
-import { patchEntry } from '../../../shared/services/api/endpoints';
+import { patchEntry } from '../../../shared/services/api/endpoints/contentful';
 import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
 import { Button } from '../../../shared/components/button';
 import { FileDropField } from '../../../shared/components/fields/FileDropField';

@@ -16,7 +16,7 @@ import {
   getRadarTechnologies,
   getRadarTechnologiesForTable,
 } from '../../utils/radarUtils';
-import { getLastUpdate } from '../../services/api/endpoints';
+import { getLastUpdate } from '../../services/api/endpoints/contentful';
 
 export const getEntries =
   (content: ContentfulData | undefined) =>

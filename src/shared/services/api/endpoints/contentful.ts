@@ -1,5 +1,5 @@
-import { EditedEntry } from '../../../routes/admin/adminPanel/adminPanel.types';
-import { axiosFunctionsApi } from './axiosInstances';
+import { EditedEntry } from '../../../../routes/admin/adminPanel/adminPanel.types';
+import { axiosContentfulApi } from '../axiosInstances';
 
 export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: EditedEntry, email: string) => {
   let iconId = '';
@@ -9,7 +9,7 @@ export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: Edite
     iconId = data.fileId;
     await postEntryImage(id!, data.fileId, email);
   }
-  return await axiosFunctionsApi.patch(
+  return await axiosContentfulApi.patch(
     '/updateEntry',
     { editedEntry, icon: iconId, entryId: id },
     { params: { email } }
@@ -17,13 +17,13 @@ export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: Edite
 };
 
 export const postEntry = async (entryData: EditedEntry, email: string) => {
-  return await axiosFunctionsApi.post('/createEntry', { entryData }, { params: { email } });
+  return await axiosContentfulApi.post('/createEntry', { entryData }, { params: { email } });
 };
 
 export const postImage = async (file: File, email: string) => {
   const formData = new FormData();
   formData.append('file', file);
-  return await axiosFunctionsApi.post<{ fileId: string }>('/uploadImage', formData, {
+  return await axiosContentfulApi.post<{ fileId: string }>('/uploadImage', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -32,13 +32,13 @@ export const postImage = async (file: File, email: string) => {
 };
 
 export const postEntryImage = async (entryId: string, imageId: string, email: string) => {
-  return await axiosFunctionsApi.post('uploadEntryImage', { entryId, imageId }, { params: { email } });
+  return await axiosContentfulApi.post('uploadEntryImage', { entryId, imageId }, { params: { email } });
 };
 
 export const getLastUpdate = async () => {
-  return await axiosFunctionsApi.get<{ dataUpdatedAt: string }>('/getLastUpdate');
+  return await axiosContentfulApi.get<{ dataUpdatedAt: string }>('/getLastUpdate');
 };
 
 export const getVerifyUser = async (email: string) => {
-  return await axiosFunctionsApi.get('/verifyUser', { params: { email } });
+  return await axiosContentfulApi.get('/verifyUser', { params: { email } });
 };

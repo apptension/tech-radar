@@ -2,7 +2,7 @@ import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { ROUTES } from '../../../routes/app.constants';
-import { getVerifyUser } from '../../services/api/endpoints';
+import { getVerifyUser } from '../../services/api/endpoints/contentful';
 import { auth, googleProvider } from '../../services/firebase';
 import { reportError } from '../../utils/reportError';
 

@@ -30,7 +30,7 @@ const Explore = asyncComponent(() => import('./explore'), 'Explore');
 // @ts-ignore
 const NotFound = asyncComponent(() => import('./notFound'), 'NotFound');
 // @ts-ignore
-const AdminPanel = asyncComponent(() => import('./adminPanel'), 'AdminPanel');
+const AdminPanel = asyncComponent(() => import('./admin/adminPanel'), 'AdminPanel');
 
 export default () => {
   return (

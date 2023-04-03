@@ -5,7 +5,7 @@ import { useContentfulData } from '../../../shared/hooks/useContentfulData/useCo
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../../app.constants';
 import homeMessages from '../../home/home.messages';
-import { postEntry, postImage } from '../../../shared/services/api/endpoints';
+import { postEntry, postImage } from '../../../shared/services/api/endpoints/contentful';
 import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
 import { TOption } from '../../../shared/components/fields/SelectField/SelectField.component';
 import { TextField } from '../../../shared/components/fields/TextField';
