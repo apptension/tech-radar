@@ -1,0 +1,21 @@
+# Compiled JavaScript files
+/lib
+lib/**/*.js
+lib/**/*.js.map
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+
+*.log
+
+# Secret keys
+.runtimeconfig.json
+.env
+.env.local
+.env.dev
+.env.prod
+.env.default
+.secret.local

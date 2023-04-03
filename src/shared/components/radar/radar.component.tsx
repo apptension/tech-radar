@@ -10,7 +10,7 @@ import { setArea, setLevel } from '../../../modules/filters/filters.actions';
 import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
-import { RadarTechnology, RadarQuadrant, RadarRing } from './radar.types';
+import { RadarTechnology, RadarQuadrant, RadarRing, RingLabels } from './radar.types';
 import { RADAR_RADIUS, VERTICAL_RADAR_MARGIN, HORIZONTAL_RADAR_MARGIN } from './radar.constants';
 import {
   hideTooltip,
@@ -50,12 +50,7 @@ export const Radar = ({
   );
   const [areaLabels, setAreaLabels] = useState<Selection<SVGGElement, any, SVGGElement, unknown> | null>(null);
   const [blips, setBlips] = useState<Selection<any, any, SVGGElement, unknown> | null>(null);
-  const [ringLabels, setRingLabels] = useState<Selection<
-    SVGTextElement,
-    { radius: number; description: string; name: string },
-    any,
-    unknown
-  > | null>(null);
+  const [ringLabels, setRingLabels] = useState<RingLabels | null>(null);
   const radarRef = useRef(null);
 
   const dispatch = useDispatch();

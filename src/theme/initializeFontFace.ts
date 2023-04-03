@@ -1,16 +1,23 @@
+// @ts-ignore
+import hellixMediumOtf from './fonts/Hellix-Medium.otf';
+// @ts-ignore
+import hellixSemiBoldOtf from './fonts/Hellix-SemiBold.otf';
+
+import '@fontsource/space-grotesk/500.css';
+
 const fontFace = `
   @font-face{
       font-family: 'Hellix';
       font-style: normal;
-      font-weight: normal;
-      src: url('./fonts/Hellix-Medium.otf') format("opentype");
+      font-weight: 500;
+      src: url(${hellixMediumOtf}) format("opentype");
   }
   
   @font-face{
       font-family: 'Hellix';
       font-style: normal;
-      font-weight: bold;
-      src: url('./fonts/Hellix-SemiBold.otf') format("opentype");
+      font-weight: 600;
+      src: url(${hellixSemiBoldOtf}) format("opentype");
   }
 `;
 

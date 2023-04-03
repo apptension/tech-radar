@@ -31,7 +31,7 @@ import {
   random_between,
   translate,
 } from '../../utils/radarUtils';
-import { RadarQuadrant, RadarRing, RadarTechnology, Rings } from './radar.types';
+import { RadarQuadrant, RadarRing, RadarTechnology, RingLabels, Rings } from './radar.types';
 
 const quadrantsData = [
   { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1, position: -90, quadrant: 0 },
@@ -191,21 +191,51 @@ type RenderRinkLabels = {
   radarRings: RadarRing[];
 };
 
-export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels) => {
-  return ringLabelsContainer
-    .append('g')
-    .attr('id', 'ring-labels')
+export const renderRingLabels = ({ ringLabelsContainer, rings, radarRings }: RenderRinkLabels): RingLabels => {
+  const labels = ringLabelsContainer.append('g').attr('id', 'ring-labels');
+  const getDashedLabelName = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
+
+  labels
     .selectAll('.ring-label')
     .data(rings)
     .enter()
+    .append('g')
+    .attr('class', (d) => `ring-label-container ring-label-container-${getDashedLabelName(d.name)}`)
     .append('text')
-    .classed('ring-label', true)
+    .attr('class', 'ring-label')
     .text((d, i) => radarRings[i]?.name)
     .attr('y', (d) => -d.radius + 21)
     .attr('x', 7)
     .attr('text-anchor', 'left')
     .style('font-family', 'Hellix')
-    .style('font-size', 14);
+    .style('font-size', 14)
+    .selectAll('.ring-label');
+
+  labels.selectAll('.ring-label').each((d, i, nodes) => {
+    const { name } = d as { radius: number; description: string; name: string };
+    //@ts-ignore
+    const bbox = select(nodes[i]).node().getBBox();
+    const centreX = bbox.x + bbox.width;
+    const centreY = bbox.y + bbox.height / 2;
+
+    labels
+      .select(`.ring-label-container-${getDashedLabelName(name)}`)
+      .append('svg')
+      .attr('class', 'ring-label-icon')
+      .attr('width', 16)
+      .attr('height', 16)
+      .attr('y', centreY - 4)
+      .attr('x', centreX + 5)
+      .attr('style', 'z-index: 10')
+      .append('path')
+      .attr(
+        'd',
+        'M5.4165 3.08464H6.58317V4.2513H5.4165V3.08464ZM5.4165 5.41797H6.58317V8.91797H5.4165V5.41797ZM5.99984 0.167969C2.77984 0.167969 0.166504 2.7813 0.166504 6.0013C0.166504 9.2213 2.77984 11.8346 5.99984 11.8346C9.21984 11.8346 11.8332 9.2213 11.8332 6.0013C11.8332 2.7813 9.21984 0.167969 5.99984 0.167969ZM5.99984 10.668C3.42734 10.668 1.33317 8.5738 1.33317 6.0013C1.33317 3.4288 3.42734 1.33464 5.99984 1.33464C8.57234 1.33464 10.6665 3.4288 10.6665 6.0013C10.6665 8.5738 8.57234 10.668 5.99984 10.668Z'
+      )
+      .attr('fill', '#C2C2C2');
+  });
+
+  return labels.selectAll('.ring-label-container');
 };
 
 type RenderTechnologies = {

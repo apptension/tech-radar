@@ -1,8 +1,9 @@
-import React, { useState, UIEvent } from 'react';
+import { useState, UIEvent } from 'react';
 import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { GetInTouch } from '../getInTouch';
 import {
   getBlipDataById,
   hideBubble,
@@ -161,6 +162,7 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
           </ListItem>
         ))}
       </List>
+      <GetInTouch asPopup />
       <ShadowTop visible={!scrollTopReached} />
       <ShadowBottom visible={!scrollBottomReached} />
     </ListWrapper>
