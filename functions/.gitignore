@@ -10,3 +10,12 @@ typings/
 node_modules/
 
 *.log
+
+# Secret keys
+.runtimeconfig.json
+.env
+.env.local
+.env.dev
+.env.prod
+.env.default
+.secret.local

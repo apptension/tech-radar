@@ -23,7 +23,6 @@ export const usePersonalInfo = () => {
   const [isPersonalFilledIn, setIsPersonalFilledIn] = useState(false);
   const [isAdditionalFilledIn, setIsAdditionalFilledIn] = useState(false);
 
-  console.log('UUU', isLoading);
   const updatePersonalData = (data: PersonalInfo) => {
     setPersonalInfoData(data);
     setIsPersonalFilledIn(true);

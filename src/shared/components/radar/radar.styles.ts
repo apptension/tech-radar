@@ -142,7 +142,6 @@ export const SVG = styled.svg`
     fill: ${color.white};
     opacity: 1;
     transition: opacity ${transition} ${tooltipDelay}, fill ${transition} ${tooltipDelay};
-    pointer-events: none;
     &.active:not(.not-hovered) {
       fill: ${color.white};
       transition: opacity ${transition}, fill ${transition};
@@ -153,7 +152,6 @@ export const SVG = styled.svg`
     & > path {
       fill: ${color.white};
     }
-    pointer-events: none;
     opacity: 1;
     transition: opacity ${transition} ${tooltipDelay}, stroke ${transition} ${tooltipDelay};
 

@@ -96,6 +96,7 @@ export const selectStyles: StylesConfig = {
     ...base,
     color: menuIsOpen ? color.scorpion : color.white,
   }),
+
   placeholder: (base, { selectProps: { menuIsOpen } }) => ({
     ...base,
     color: menuIsOpen ? color.scorpion : color.boulder,
@@ -121,6 +122,8 @@ export const selectStyles: StylesConfig = {
     ...base,
     marginTop: 0,
     paddingTop: 0,
+    paddingRight: '8px',
+    paddingBottom: '8px',
     borderRadius: 0,
     border: `1px solid ${color.white}`,
     borderTop: 'none',
@@ -130,7 +133,19 @@ export const selectStyles: StylesConfig = {
   menuList: (base) => ({
     ...base,
     paddingTop: 0,
+
     paddingBottom: '12px',
     background: 'transparent',
+    '&::-webkit-scrollbar': {
+      width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: color.mineShaft,
+      borderRadius: '100px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: color.silver,
+      borderRadius: '100px',
+    },
   }),
 };
