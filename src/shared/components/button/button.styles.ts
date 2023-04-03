@@ -5,10 +5,10 @@ import { ReactComponent as OutIconSVG } from '../../../images/icons/out.svg';
 import { ReactComponent as ArrowIconSVG } from '../../../images/icons/arrow-right.svg';
 import { border, color } from '../../../theme';
 import { ButtonLargeTypography, ButtonRegularTypography } from '../../../theme/typography';
-import { ButtonSize, ButtonTheme } from './button.types';
+import { ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
 const disabledButtonStyle = css`
-  opacity: 0.5;
+  background: ${color.scorpion};
 `;
 
 const buttonSizeRegularStyles = css`
@@ -20,6 +20,23 @@ const buttonSizeLargeStyles = css`
   ${ButtonLargeTypography};
   border-width: 2px;
   padding: 16px 32px;
+  min-height: 60px;
+`;
+
+const buttonVariantPrimaryStyles = css`
+  border: none;
+  background: ${color.white};
+  color: ${color.codGray};
+
+  &:hover {
+    background: none;
+  }
+`;
+
+const buttonVariantSecondaryStyles = css`
+  border: ${border.regularWhite};
+  background: none;
+  color: ${color.white};
 `;
 
 const buttonNoBorderStyles = css`
@@ -42,12 +59,13 @@ export const IconContainerInner = styled.span`
   transition: transform 0.25s ease-in-out;
 `;
 
-export const Icon = styled.span`
+export const Icon = styled.span<{ variant: ButtonVariant }>`
   display: flex;
   align-items: center;
   margin-right: 10px;
 
   path {
+    ${({ variant }) => variant === ButtonVariant.PRIMARY && `stroke: ${color.black}`};
     transition: stroke 0.25s ease-in-out;
   }
 
@@ -70,9 +88,6 @@ interface ContainerProps extends ThemeProps<ButtonTheme> {
 
 export const Container = styled.button<ContainerProps>`
   position: relative;
-  border: ${border.regularWhite};
-  background: none;
-  color: ${color.white};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -80,18 +95,27 @@ export const Container = styled.button<ContainerProps>`
   transition: 0.25s ease-in-out;
   transition-property: background, color;
 
-  ${theme('isDisabled', {
-    true: disabledButtonStyle,
-  })};
-
   ${theme('size', {
     [ButtonSize.REGULAR]: buttonSizeRegularStyles,
     [ButtonSize.LARGE]: buttonSizeLargeStyles,
   })};
 
+  ${theme('variant', {
+    [ButtonVariant.PRIMARY]: buttonVariantPrimaryStyles,
+    [ButtonVariant.SECONDARY]: buttonVariantSecondaryStyles,
+  })}
+
   ${theme('withBorder', {
     false: buttonNoBorderStyles,
   })}
+
+${theme('isDisabled', {
+    true: disabledButtonStyle,
+  })};
+
+  &:disabled {
+    transition: none;
+  }
 
   &::before {
     content: '';
@@ -108,7 +132,14 @@ export const Container = styled.button<ContainerProps>`
     transition: opacity 0.25s ease-in-out;
   }
 
-  &:hover:enabled {
+  &:disabled {
+    &::before {
+      background: ${color.scorpion};
+      transition: none;
+    }
+  }
+
+  &:hover {
     color: ${color.black};
     border-color: transparent;
 

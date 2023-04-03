@@ -7,6 +7,7 @@ import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
 import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { renderWhenTrue } from '../../utils/rendering';
+import { GetInTouch } from '../getInTouch';
 import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import {
   Container,
@@ -114,6 +115,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       <Description>{description}</Description>
       {renderLinks(!!links)}
       {renderBlocks(!!experts.length || !!alternatives.length)}
+      <GetInTouch />
     </Container>
   );
 };

@@ -1,6 +1,5 @@
 import * as functions from 'firebase-functions';
-import { Entry } from 'contentful-management';
-import { managementClient } from '../services/contentful';
+import { Entry, ClientAPI } from 'contentful-management';
 import { EntryFieldsData, EnvironmentConfig, PreparedEntry } from '../types';
 import { DEFAULT_LOCALE } from '../constants';
 
@@ -12,16 +11,16 @@ export const getQueryContentfulConfig = (req: functions.https.Request) => {
   return { space: space as string, environment: environment as string };
 };
 
-export const getEnvironment = (contentfulConfig: EnvironmentConfig) =>
-  managementClient.getSpace(contentfulConfig.space).then((space) => space.getEnvironment(contentfulConfig.environment));
+export const getEnvironment = (client: ClientAPI, contentfulConfig: EnvironmentConfig) =>
+  client.getSpace(contentfulConfig.space).then((space) => space.getEnvironment(contentfulConfig.environment));
 
-export const getOrganization = (space: string) => managementClient.getSpace(space);
+export const getOrganization = (client: ClientAPI, space: string) => client.getSpace(space);
 
-export const checkUser = async (req: functions.https.Request) => {
+export const checkUser = async (client: ClientAPI, req: functions.https.Request) => {
   try {
     const contentfulConfg = getQueryContentfulConfig(req);
     const { email } = req.query;
-    const organistaion = await getOrganization(contentfulConfg.space);
+    const organistaion = await getOrganization(client, contentfulConfg.space);
     const users = await organistaion.getSpaceUsers();
     const isSpaceUser = users.items.find((user) => user.email === email);
 

@@ -42,6 +42,13 @@ export const Title = css`
   }
 `;
 
+export const H2 = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 32px;
+  line-height: 48px;
+`;
+
 export const H1 = styled.h1`
   ${Title};
   font-weight: ${fontWeight.bold};
@@ -50,9 +57,25 @@ export const H1 = styled.h1`
 `;
 
 export const H1small = css`
-  ${H1};
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
   font-size: 20px;
   line-height: 28px;
+  margin: 0;
+`;
+
+export const BoldRegularText = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.bold};
+  font-size: 16px;
+  line-height: 16px;
+`;
+
+export const H1large = css`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.bold};
+  font-size: 48px;
+  line-height: 61px;
 `;
 
 export const Paragraph = styled.p`
@@ -67,6 +90,15 @@ export const Paragraph = styled.p`
   ${mediaQuery.desktop} {
     font-size: 20px;
   }
+`;
+
+export const ParagraphLarge = styled.p`
+  font-family: ${fontFamily.primary};
+  font-weight: ${fontWeight.normal};
+  font-size: 24px;
+  line-height: 31px;
+  margin: 0;
+  padding: 0;
 `;
 
 export const Paragraph2 = styled.p`

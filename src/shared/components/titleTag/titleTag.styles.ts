@@ -1,7 +1,7 @@
 import styled, { css, ThemeProps } from 'styled-components';
 import theme from 'styled-theming';
 
-import { H1, H1small } from '../../../theme/typography';
+import { H1, H1small, TagSmall } from '../../../theme/typography';
 import { Logo as LogoComponent } from '../logo/logo.component';
 import { Link as LinkComponent } from '../link';
 import { VersionTag as VersionTagComponent } from '../versionTag';
@@ -27,8 +27,7 @@ const titleTagSizeLargeStyles = css`
 `;
 
 export const Container = styled.div<ThemeProps<TitleTagTheme>>`
-  display: flex;
-  align-items: center;
+  flex-direction: column;
 `;
 
 export const TitleWithTagWrapper = styled.div`
@@ -40,12 +39,33 @@ export const TitleWithTagWrapper = styled.div`
   })};
 `;
 
+export const TopContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const CompanyText = styled.span`
+  ${TagSmall};
+  color: ${color.silver};
+`;
+
+export const OverallContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 interface VersionTagProps {
   size: TitleTagSize;
 }
 
 export const VersionTag = styled(VersionTagComponent)<VersionTagProps>`
   margin-left: 16px;
+  height: ${({ size }) => (size === TitleTagSize.SMALL ? '26px' : 'auto')};
   padding-top: ${({ size }) => (size === TitleTagSize.LARGE ? '7px' : '6px')};
   padding-right: ${({ size }) => (size === TitleTagSize.LARGE ? '12px' : '10px')};
   background: ${color.gradient};

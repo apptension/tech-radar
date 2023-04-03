@@ -19,7 +19,7 @@ export const Button = ({
   children,
   className,
   disabled = false,
-  variant = ButtonVariant.PRIMARY,
+  variant = ButtonVariant.SECONDARY,
   size = ButtonSize.REGULAR,
   onClick = empty,
   withBorder = true,
@@ -40,8 +40,8 @@ export const Button = ({
   const renderIcon = renderWhenTrue(() => (
     <IconContainer>
       <IconContainerInner>
-        <Icon>{getIcon()}</Icon>
-        <Icon>{getIcon()}</Icon>
+        <Icon variant={variant}>{getIcon()}</Icon>
+        <Icon variant={variant}>{getIcon()}</Icon>
       </IconContainerInner>
     </IconContainer>
   ));
@@ -51,7 +51,7 @@ export const Button = ({
       <Container
         onClick={onClick}
         className={className}
-        disabled={isLoading || disabled}
+        disabled={disabled || isLoading}
         withoutHoverEffects={withoutHoverEffects}
         withMovingArrow={icon === 'arrow'}
         {...other}

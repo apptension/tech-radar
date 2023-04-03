@@ -5,7 +5,7 @@ import { useDebounce } from 'use-debounce';
 import { FormattedMessage } from 'react-intl';
 
 import { Radar } from '../../shared/components/radar';
-import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { useContentfulData, useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
 import { getUpdatedRadarTechnologies, pluckNameFromList } from '../../shared/utils/radarUtils';
 import { RadarTechnology } from '../../shared/components/radar/radar.types';
@@ -27,11 +27,13 @@ import {
   Tooltip,
   TooltipArrow,
   TooltipContent,
+  StyledLastUpdate,
 } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
 
 export const Explore = () => {
+  const lastContentfulUpdate = useLastContentfulUpdate();
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const viewerRef = useRef<HTMLDivElement>(null);
 
@@ -176,13 +178,14 @@ export const Explore = () => {
 
   return (
     <Container>
-      <TitleTag size={TitleTagSize.SMALL} withLogo />
+      <TitleTag size={TitleTagSize.SMALL} withLogo withCompanyText />
       {renderContent()}
       {renderLoading()}
       <Tooltip className="tooltip-container">
         <TooltipContent />
         <TooltipArrow className="tooltip-arrow" />
       </Tooltip>
+      {!!lastContentfulUpdate && <StyledLastUpdate date={lastContentfulUpdate} />}
     </Container>
   );
 };

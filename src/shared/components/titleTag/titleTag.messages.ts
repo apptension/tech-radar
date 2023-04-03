@@ -6,4 +6,8 @@ export default defineMessages({
     id: 'titleTag.title',
     defaultMessage: 'Tech Radar',
   },
+  byCompany: {
+    id: 'titleTag.byCompany',
+    defaultMessage: 'By Apptension',
+  },
 });

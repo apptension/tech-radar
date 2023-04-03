@@ -1,11 +1,13 @@
 import styled, { css } from 'styled-components';
-import { color } from '../../../theme';
+import { color, scrollbar, zIndex } from '../../../theme';
 import { mediaQuery } from '../../../theme/media';
 import { transition } from '../../utils/constants';
 
 export const Container = styled.div`
+  ${scrollbar.customScrollbar};
   background-color: ${color.mineShaft2};
   position: relative;
+  z-index: ${zIndex.header};
   padding: 24px 20px 109px;
   overflow: auto;
   width: 100vw;
@@ -124,7 +126,7 @@ export const BlocksWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 8px;
-  margin-top: 40px;
+  margin: 40px 0;
 `;
 
 const blockStyles = css`

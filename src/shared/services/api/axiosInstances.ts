@@ -15,3 +15,7 @@ axiosFunctionsApi.interceptors.request.use((config) => {
   };
   return config;
 });
+
+export const axiosAirtableApi = axios.create({
+  baseURL: REACT_APP_FIREBASE_FUNCTIONS_API,
+});
