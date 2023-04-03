@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { reportError } from '../../shared/utils/reportError';
-import { patchEntry } from '../../shared/services/api/endpoints';
-import { useAdminPanelContext } from '../../shared/components/adminPanel/adminPanelContext';
-import { Button } from '../../shared/components/button';
-import { FileDropField } from '../../shared/components/fields/FileDropField';
-import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
+import { reportError } from '../../../shared/utils/reportError';
+import { patchEntry } from '../../../shared/services/api/endpoints';
+import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
+import { Button } from '../../../shared/components/button';
+import { FileDropField } from '../../../shared/components/fields/FileDropField';
+import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
 import {
   HEIGHT,
   StyledSelect,
   FileDropContainer,
-} from '../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
+} from '../../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
 import messages from './adminPanel.messages';
 

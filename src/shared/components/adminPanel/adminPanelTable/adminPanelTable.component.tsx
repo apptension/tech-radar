@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
-import { TechnologyTable } from '../../../../routes/adminPanel/adminPanel.types';
+import { TechnologyTable } from '../../../../routes/admin/adminPanel/adminPanel.types';
 import { ROUTES } from '../../../../routes/app.constants';
 import { TableRadarTechnology } from '../../radar/radar.types';
 import { Table } from '../../table';

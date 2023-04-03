@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
-import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
-import { AdminPanelTable } from '../../shared/components/adminPanel/adminPanelTable';
+import { useContentfulData } from '../../../shared/hooks/useContentfulData/useContentfulData';
+import { AdminPanelTable } from '../../../shared/components/adminPanel/adminPanelTable';
 import { useTechnologiesColumns } from './useTechnologiesColumns';
 import messages from './adminPanel.messages';
 

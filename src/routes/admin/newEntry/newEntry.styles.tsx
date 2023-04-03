@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '../../shared/components/button';
-import { color } from '../../theme';
+import { Button } from '../../../shared/components/button';
+import { color } from '../../../theme';
 
 export const CenteredWrapper = styled.div`
   display: flex;

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useIntl } from 'react-intl';
-import { ROUTES } from '../app.constants';
-import { useAdminPanelContext } from '../../shared/components/adminPanel/adminPanelContext';
-import { Button } from '../../shared/components/button';
+import { ROUTES } from '../../app.constants';
+import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
+import { Button } from '../../../shared/components/button';
 import { LoginWrapper } from './login.styles';
 import messages from './login.messages';
 

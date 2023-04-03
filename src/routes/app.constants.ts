@@ -1,6 +1,9 @@
 export const ROUTES = {
   home: '/',
   explore: '/explore',
+  notFound: '/404',
+
+  matrix: '/matrix',
   matrixLogin: '/matrix/login',
   matrixPersonal: '/matrix/personal',
   matrixKnowledge: '/matrix/knowledge',
@@ -8,7 +11,8 @@ export const ROUTES = {
   matrixOverview: '/matrix/overview',
   matrixFinal: '/matrix/ready',
   myProfile: '/my-profile',
-  notFound: '/404',
+
+  admin: '/admin',
   adminLogin: '/admin/login',
   adminPanel: '/admin/panel',
   adminNewEntry: '/admin/new-entry',

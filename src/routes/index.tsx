@@ -12,8 +12,8 @@ import { AuthContextProvider } from '../modules/auth/auth.context';
 import { ScrollToTop } from '../shared/components/scrollToTop';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
-import { Login as AdminLogin } from './login';
-import { NewEntry } from './newEntry';
+import { Login as AdminLogin } from './admin/login';
+import { NewEntry } from './admin/newEntry';
 import { Login } from './matrix/login';
 import { Personal } from './matrix/personal';
 import { Knowledge } from './matrix/knowledge';
@@ -45,27 +45,27 @@ export default () => {
             <Explore />
           </Route>
 
-          <AdminPanelContextProvider>
-            <Route exact path={ROUTES.adminLogin}>
-              <AdminLogin />
-            </Route>
+          <Route path={ROUTES.admin}>
+            <AdminPanelContextProvider>
+              <Route exact path={ROUTES.adminLogin}>
+                <AdminLogin />
+              </Route>
 
-            <AdminRoute exact path={ROUTES.adminPanel}>
-              <AdminPanel />
-            </AdminRoute>
+              <AdminRoute exact path={ROUTES.adminPanel}>
+                <AdminPanel />
+              </AdminRoute>
 
-            <AdminRoute exact path={ROUTES.adminNewEntry}>
-              <NewEntry />
-            </AdminRoute>
-          </AdminPanelContextProvider>
-
-          {/* <-- INJECT ROUTE --> */}
+              <AdminRoute exact path={ROUTES.adminNewEntry}>
+                <NewEntry />
+              </AdminRoute>
+            </AdminPanelContextProvider>
+          </Route>
 
           <AuthContextProvider>
             <AuthRoute exact path={ROUTES.myProfile}>
               <MyProfile />
             </AuthRoute>
-            <Route path={'/matrix'}>
+            <Route path={ROUTES.matrix}>
               <MatrixContextProvider>
                 <ScrollToTop>
                   <Route exact path={ROUTES.matrixLogin}>

@@ -1,4 +1,4 @@
-import { EditedEntry } from '../../../routes/adminPanel/adminPanel.types';
+import { EditedEntry } from '../../../routes/admin/adminPanel/adminPanel.types';
 import { axiosFunctionsApi } from './axiosInstances';
 
 export const patchEntry = async ({ id, icon, iconUpload, ...editedEntry }: EditedEntry, email: string) => {

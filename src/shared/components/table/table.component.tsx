@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTable, usePagination } from 'react-table';
-import { TechnologyTable } from '../../../routes/adminPanel/adminPanel.types';
+import { TechnologyTable } from '../../../routes/admin/adminPanel/adminPanel.types';
 import { TextField } from '../fields/TextField';
 import { TablePagination } from '../pagination';
 import { TableRadarTechnology } from '../radar/radar.types';

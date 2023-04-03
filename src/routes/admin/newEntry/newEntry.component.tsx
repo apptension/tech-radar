@@ -1,16 +1,16 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useState } from 'react';
-import { useContentfulData } from '../../shared/hooks/useContentfulData/useContentfulData';
+import { useContentfulData } from '../../../shared/hooks/useContentfulData/useContentfulData';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
-import { ROUTES } from '../app.constants';
-import homeMessages from '../home/home.messages';
-import { postEntry, postImage } from '../../shared/services/api/endpoints';
-import { useAdminPanelContext } from '../../shared/components/adminPanel/adminPanelContext';
-import { TOption } from '../../shared/components/fields/SelectField/SelectField.component';
-import { TextField } from '../../shared/components/fields/TextField';
-import { FileDropField } from '../../shared/components/fields/FileDropField';
-import { SelectField } from '../../shared/components/fields/SelectField';
+import { ROUTES } from '../../app.constants';
+import homeMessages from '../../home/home.messages';
+import { postEntry, postImage } from '../../../shared/services/api/endpoints';
+import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
+import { TOption } from '../../../shared/components/fields/SelectField/SelectField.component';
+import { TextField } from '../../../shared/components/fields/TextField';
+import { FileDropField } from '../../../shared/components/fields/FileDropField';
+import { SelectField } from '../../../shared/components/fields/SelectField';
 import adminMessages from '../adminPanel/adminPanel.messages';
 import newEntryMessages from './newEntry.messages';
 import {

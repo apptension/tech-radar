@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { RadarQuadrant, RadarRing, RadarTeam } from '../../shared/components/radar/radar.types';
+import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
 import { EditedEntry } from '../adminPanel/adminPanel.types';
 import { NewEntryInputs } from './newEntry.component';
 import messages from './newEntry.messages';

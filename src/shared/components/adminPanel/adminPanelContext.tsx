@@ -1,9 +1,9 @@
 import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { auth, googleProvider } from '../../../routes/adminPanel/auth/firebase';
 import { ROUTES } from '../../../routes/app.constants';
 import { getVerifyUser } from '../../services/api/endpoints';
+import { auth, googleProvider } from '../../services/firebase';
 import { reportError } from '../../utils/reportError';
 
 interface State {
