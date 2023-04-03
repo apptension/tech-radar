@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 
+import { AdminPanelContextProvider } from '../shared/components/adminPanel/adminPanelContext';
+import { AdminRoute } from '../shared/components/routes/adminRoute';
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { asyncComponent } from '../shared/utils/asyncComponent';
 import { AuthRoute } from '../shared/components/routes/authRoute/authRoute.component';
@@ -10,6 +12,8 @@ import { AuthContextProvider } from '../modules/auth/auth.context';
 import { ScrollToTop } from '../shared/components/scrollToTop';
 import { AppComponent as App } from './app.component';
 import { ROUTES } from './app.constants';
+import { Login as AdminLogin } from './admin/login';
+import { NewEntry } from './admin/newEntry';
 import { Login } from './matrix/login';
 import { Personal } from './matrix/personal';
 import { Knowledge } from './matrix/knowledge';
@@ -25,6 +29,8 @@ const Home = asyncComponent(() => import('./home'), 'Home');
 const Explore = asyncComponent(() => import('./explore'), 'Explore');
 // @ts-ignore
 const NotFound = asyncComponent(() => import('./notFound'), 'NotFound');
+// @ts-ignore
+const AdminPanel = asyncComponent(() => import('./admin/adminPanel'), 'AdminPanel');
 
 export default () => {
   return (
@@ -38,13 +44,28 @@ export default () => {
           <Route exact path={ROUTES.explore}>
             <Explore />
           </Route>
-          {/* <-- INJECT ROUTE --> */}
+
+          <Route path={ROUTES.admin}>
+            <AdminPanelContextProvider>
+              <Route exact path={ROUTES.adminLogin}>
+                <AdminLogin />
+              </Route>
+
+              <AdminRoute exact path={ROUTES.adminPanel}>
+                <AdminPanel />
+              </AdminRoute>
+
+              <AdminRoute exact path={ROUTES.adminNewEntry}>
+                <NewEntry />
+              </AdminRoute>
+            </AdminPanelContextProvider>
+          </Route>
 
           <AuthContextProvider>
             <AuthRoute exact path={ROUTES.myProfile}>
               <MyProfile />
             </AuthRoute>
-            <Route path={'/matrix'}>
+            <Route path={ROUTES.matrix}>
               <MatrixContextProvider>
                 <ScrollToTop>
                   <Route exact path={ROUTES.matrixLogin}>

@@ -52,6 +52,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const renderIcon = renderWhenTrue(() => <TechnologyIcon src={icon?.url} alt={icon?.description} />);
+
   const links = [
     { url: github, label: messages.github },
     { url: specification, label: messages.specification },

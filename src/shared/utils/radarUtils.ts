@@ -15,6 +15,7 @@ import {
   RadarRing,
   RadarTeam,
   RadarTechnology,
+  TableRadarTechnology,
   UpdateTechnologiesProps,
 } from '../components/radar/radar.types';
 
@@ -218,6 +219,7 @@ export const getTechnologyQuadrant = (technology: ContentfulTechnology): number 
 };
 
 const getIcon = (item: ContentfulTechnology) => ({
+  id: pathOr('', ['fields', 'icon', 'sys', 'id'], item),
   url: pathOr('', ['fields', 'icon', 'fields', 'file', 'url'], item),
   description: pathOr('', ['fields', 'icon', 'fields', 'description'], item),
   name: pathOr('', ['fields', 'icon', 'fields', 'title'], item),
@@ -259,11 +261,35 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   return radarTechnologies;
 };
 
+export const getRadarTechnologiesForTable = (technologies: ContentfulTechnology[]) => {
+  const radarTechnologies: TableRadarTechnology[] = [];
+
+  forEachObjIndexed<ContentfulTechnology[]>((item) => {
+    return radarTechnologies.push({
+      label: pathOr('', ['fields', 'label'], item),
+      description: pathOr('', ['fields', 'description'], item),
+      specification: pathOr('', ['fields', 'specification'], item),
+      github: pathOr('', ['fields', 'github'], item),
+      projects: pathOr('', ['fields', 'projects'], item),
+      experts: pathOr('', ['fields', 'experts'], item),
+      icon: getIcon(item as ContentfulTechnology),
+      alternatives: getAlternatives(item as ContentfulTechnology),
+      quadrant: pathOr('', ['fields', 'quadrant', 'sys', 'id'], item),
+      ring: pathOr('', ['fields', 'ring', 'sys', 'id'], item),
+      team: pathOr('', ['fields', 'team', 'sys', 'id'], item),
+      inactive: false,
+      id: pathOr('', ['sys', 'id'], item),
+    });
+  }, technologies);
+  return radarTechnologies;
+};
+
 export const getRadarRings = (rings: ContentfulRing[]) => {
   const radarRings: RadarRing[] = [];
   forEachObjIndexed(
     (item) =>
       radarRings.push({
+        id: pathOr('', ['sys', 'id'], item),
         name: pathOr('', ['fields', 'label'], item),
         description: pathOr('', ['fields', 'description'], item),
         position: pathOr(1, ['fields', 'position'], item),
@@ -279,6 +305,7 @@ export const getRadarTeams = (teams: ContentfulTeam[]) => {
   forEachObjIndexed(
     (item) =>
       radarTeams.push({
+        id: pathOr('', ['sys', 'id'], item),
         name: pathOr('', ['fields', 'label'], item),
       }),
     teams
@@ -292,6 +319,7 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
   forEachObjIndexed(
     (item) =>
       radarQuadrants.push({
+        id: pathOr('', ['sys', 'id'], item),
         name: pathOr('', ['fields', 'label'], item),
         description: pathOr('', ['fields', 'description'], item),
         position: getQuadrantPosition(pathOr('top-left', ['fields', 'position'], item)),

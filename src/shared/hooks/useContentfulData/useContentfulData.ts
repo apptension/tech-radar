@@ -1,7 +1,6 @@
 import { useQuery } from 'react-query';
 import { pathOr, pickBy } from 'ramda';
-import axios from 'axios';
-import { client, cmaURL, contentfulConfig } from '../../services/api/contentful';
+import { client } from '../../services/api/contentful';
 import { reportError } from '../../utils/reportError';
 import {
   ContentfulQuadrant,
@@ -10,7 +9,14 @@ import {
   ContentfulData,
   ContentfulTeam,
 } from '../../components/radar/radar.types';
-import { getRadarQuadrants, getRadarRings, getRadarTeams, getRadarTechnologies } from '../../utils/radarUtils';
+import {
+  getRadarQuadrants,
+  getRadarRings,
+  getRadarTeams,
+  getRadarTechnologies,
+  getRadarTechnologiesForTable,
+} from '../../utils/radarUtils';
+import { getLastUpdate } from '../../services/api/endpoints/contentful';
 
 export const getEntries =
   (content: ContentfulData | undefined) =>
@@ -23,33 +29,10 @@ export const getEntries =
   };
 
 export const useLastContentfulUpdate = () => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${contentfulConfig.contentManagementToken}`,
-    },
-  };
-
-  const dateQuery = useQuery(
-    ['lastUpdate'],
-    async () => {
-      try {
-        const {
-          data: {
-            sys: { updatedAt },
-          },
-        } = await axios.get(cmaURL, config);
-
-        return updatedAt;
-      } catch (error) {
-        reportError(error);
-      }
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  return dateQuery.dataUpdatedAt;
+  const { dataUpdatedAt } = useQuery(['lastUpdate'], getLastUpdate, {
+    refetchOnWindowFocus: false,
+  });
+  return dataUpdatedAt;
 };
 
 export const useContentfulData = () => {
@@ -76,6 +59,7 @@ export const useContentfulData = () => {
   const teams = selectData('team') as ContentfulTeam[];
 
   const radarTechnologies = getRadarTechnologies(technologies);
+  const tableRadarTechnologies = getRadarTechnologiesForTable(technologies);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teams);
@@ -86,5 +70,6 @@ export const useContentfulData = () => {
     radarQuadrants,
     radarRings,
     radarTeams,
+    tableRadarTechnologies,
   };
 };
