@@ -10,3 +10,18 @@ export const Container = styled.aside`
   gap: 20px;
   z-index: ${zIndex.overlay};
 `;
+
+export const SocialMediaLink = styled.a.attrs(() => ({
+  target: '_blank',
+  rel: 'noreferrer',
+}))`
+  &:hover svg path {
+    fill: url(#link-hover-gradient);
+  }
+`;
+
+export const SvgGradient = styled.svg`
+  width: 0;
+  height: 0;
+  position: absolute;
+`;
