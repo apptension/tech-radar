@@ -67,6 +67,7 @@ export const MatrixContextProvider = ({ children }: MatrixContextProviderProps) 
   const isLoading = isFormSelectsLoading || isSkillsLoading || isUserInfoLoading;
 
   useEffect(() => {
+    // User has already filled in a form, so we're taking him straight to overview
     if (submitDate) {
       return history.push(ROUTES.matrixOverview);
     }
