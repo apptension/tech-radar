@@ -97,6 +97,7 @@ export const Container = styled.button<ContainerProps>`
   border-radius: 2px;
   transition: 0.25s ease-in-out;
   transition-property: background, color;
+  z-index: 0;
 
   ${theme('size', {
     [ButtonSize.REGULAR]: buttonSizeRegularStyles,
