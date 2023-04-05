@@ -21,4 +21,5 @@ export enum ButtonSize {
 export enum ButtonIcon {
   ARROW = 'arrow',
   OUT = 'out',
+  GET_IN_TOUCH = 'get in touch',
 }

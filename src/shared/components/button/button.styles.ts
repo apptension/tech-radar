@@ -3,6 +3,7 @@ import theme from 'styled-theming';
 
 import { ReactComponent as OutIconSVG } from '../../../images/icons/out.svg';
 import { ReactComponent as ArrowIconSVG } from '../../../images/icons/arrow-right.svg';
+import { ReactComponent as GetInTouchSVG } from '../../../images/icons/get-in-touch.svg';
 import { border, color } from '../../../theme';
 import { ButtonLargeTypography, ButtonRegularTypography } from '../../../theme/typography';
 import { ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
@@ -80,6 +81,8 @@ export const ArrowIcon = styled(ArrowIconSVG)`
   width: 24px;
   height: 14px;
 `;
+
+export const GetInTouchIcon = styled(GetInTouchSVG)``;
 
 interface ContainerProps extends ThemeProps<ButtonTheme> {
   withoutHoverEffects?: boolean;

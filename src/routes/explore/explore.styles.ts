@@ -9,6 +9,7 @@ import { mediaQuery } from '../../theme/media';
 import { tooltipDelay, transition } from '../../shared/utils/constants';
 import { LastUpdateInfo } from '../../shared/components/lastUpdateInfo';
 import { TagSmall } from '../../theme/typography';
+import { Button } from '../../shared/components/button';
 
 export const LOADING_ANIMATION_MS = 500;
 
@@ -43,6 +44,12 @@ export const TitleTag = styled(TitleTagComponent)`
     left: initial;
     right: 39px;
   }
+`;
+
+export const GetInTouchButton = styled(Button)`
+  position: absolute;
+  top: 30px;
+  right: 24px;
 `;
 
 export const SidebarWrapper = styled.div`
