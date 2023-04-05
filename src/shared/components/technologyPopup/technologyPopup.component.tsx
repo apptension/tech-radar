@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { Breakpoint } from '../../../theme/media';
 import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { renderWhenTrue } from '../../utils/rendering';
 import { GetInTouch } from '../getInTouch';
@@ -26,6 +28,7 @@ import {
   BlockLabel,
   BlockTitle,
   BlockExpert,
+  GetInTouchBlock,
 } from './technologyPopup.styles';
 import messages from './technologyPopup.messages';
 
@@ -34,6 +37,7 @@ export interface TechnologyPopupProps {
 }
 
 export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
+  const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const dispatch = useDispatch();
   const technologyId = useSelector(selectTechnologyId);
   const {
@@ -115,7 +119,13 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       <Description>{description}</Description>
       {renderLinks(!!links)}
       {renderBlocks(!!experts.length || !!alternatives.length)}
-      <GetInTouch />
+      {!isDesktop ? (
+        <GetInTouch />
+      ) : (
+        <GetInTouchBlock>
+          <GetInTouch />
+        </GetInTouchBlock>
+      )}
     </Container>
   );
 };

@@ -147,6 +147,13 @@ export const Block = styled.div`
   ${blockStyles};
 `;
 
+export const GetInTouchBlock = styled(Block)`
+  padding: 20px;
+  text-align: left;
+  justify-content: flex-start;
+  color: ${color.white};
+`;
+
 export const BlockButton = styled.button<{ isClickAble: boolean }>`
   margin: 0;
   border: none;
