@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import * as colors from '../../../theme/color';
-import { Tag as TagComponent } from '../tag';
-import { color } from '../../../theme';
+import { color, fontWeight, zIndex } from '../../../theme';
+import { H1small } from '../../../theme/typography';
+import { customScrollbar } from '../../../theme/scrollbar';
 
 export const ListWrapper = styled.div`
   flex: 1;
@@ -10,11 +10,12 @@ export const ListWrapper = styled.div`
   position: relative;
 `;
 
-export const List = styled.ul`
+export const List = styled.div`
+  ${customScrollbar};
   position: absolute;
-  height: calc(100% - 250px);
   width: 100%;
   top: 0;
+  bottom: 0;
   left: 0;
   display: flex;
   flex-direction: column;
@@ -23,43 +24,23 @@ export const List = styled.ul`
   overflow-x: hidden;
   padding: 0;
   margin: 16px 0 0;
+  margin-bottom: 42px;
   list-style: none;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 
-  ::-webkit-scrollbar {
-    display: none;
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${color.mineShaft2};
   }
 `;
 
-export const ListItem = styled.li<{ showTechnology: boolean }>`
-  margin: 6px 0;
-  justify-content: space-between;
-  display: ${({ showTechnology }) => (showTechnology ? 'flex' : 'none')};
-`;
-
-export const ListLabel = styled.div<{ showPointer: boolean }>`
-  color: ${colors.boulder};
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  cursor: ${({ showPointer }) => (showPointer ? 'pointer' : 'default')};
-  flex-grow: 1;
-`;
-
-export const ListItemTags = styled.div<{ visible: boolean }>`
-  display: flex;
-  height: 26px;
-
-  opacity: ${(props) => (props.visible ? 1 : 0)};
-  pointer-events: ${(props) => (props.visible ? 'initial' : 'none')};
-  > :last-child {
-    margin-right: 8px;
-  }
-`;
-
-export const Tag = styled(TagComponent)`
-  margin-left: 8px;
+export const ResultsTextInfo = styled.span`
+  ${H1small};
+  margin: 18px 0 28px 0;
+  font-weight: ${fontWeight.bold};
+  color: ${color.white};
+  z-index: ${zIndex.header};
 `;
 
 export const EmptyResults = styled.div`
@@ -67,7 +48,7 @@ export const EmptyResults = styled.div`
   width: 100%;
   position: relative;
   overflow: hidden;
-  color: ${colors.boulder};
+  color: ${color.boulder};
   font-size: 18px;
   margin-top: 16px;
   height: calc(100% - 16px);
@@ -76,7 +57,7 @@ export const EmptyResults = styled.div`
 const shadowStyles = css`
   position: absolute;
   left: 0;
-  width: 100%;
+  width: calc(100% - 5px);
   height: 10%;
   mix-blend-mode: darken;
   pointer-events: none;
@@ -84,14 +65,14 @@ const shadowStyles = css`
 
 export const ShadowBottom = styled.div<{ visible: boolean }>`
   ${shadowStyles};
-  bottom: calc(0px + 200px);
+  bottom: 42px;
   background: ${color.shadowGradientBottom};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;
 
 export const ShadowTop = styled.div<{ visible: boolean }>`
   ${shadowStyles};
-  top: 15px;
+  top: 35px;
   background: ${color.shadowGradientTop};
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;

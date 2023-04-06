@@ -2,35 +2,15 @@ import { useState, UIEvent } from 'react';
 import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { GetInTouch } from '../getInTouch';
-import {
-  getBlipDataById,
-  hideBubble,
-  highlightBlip,
-  highlightLegend,
-  showBubble,
-  unhighlightBlip,
-  toggleQuadrant,
-} from '../../utils/radarUtils';
-import { color } from '../../../theme';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { RadarRing, RadarTechnology } from '../radar/radar.types';
 import { selectSearch } from '../../../modules/filters/filters.selectors';
-import { TagSize, TagVariant } from '../tag/tag.types';
 import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import { openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
-import {
-  ListWrapper,
-  List,
-  ListItem,
-  EmptyResults,
-  ListLabel,
-  ListItemTags,
-  Tag,
-  ShadowTop,
-  ShadowBottom,
-} from './technologiesList.styles';
+import { ListWrapper, List, EmptyResults, ShadowTop, ShadowBottom, ResultsTextInfo } from './technologiesList.styles';
 import messages from './technologiesList.messages';
+import { TechnologyGroup } from './technologyGroup';
+import { TechnologyListItem } from './technologyListItem';
 
 interface TechnologiesListProps {
   technologies: RadarTechnology[];
@@ -40,61 +20,28 @@ interface TechnologiesListProps {
 }
 
 export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaSelected }: TechnologiesListProps) => {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const intl = useIntl();
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
-  const isTouchDevice = Boolean('ontouchstart' in window || navigator.maxTouchPoints);
   const dispatch = useDispatch();
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
 
-  const handleScroll = (e: UIEvent<HTMLUListElement>) => {
+  const technologiesInUse = sortedTechnologies.filter(({ ring, inactive }) => ring === 0 && inactive === false);
+  const technologiesProven = sortedTechnologies.filter(({ ring, inactive }) => ring === 1 && inactive === false);
+  const technologiesPromising = sortedTechnologies.filter(({ ring, inactive }) => ring === 2 && inactive === false);
+  const technologiesPhasedOut = sortedTechnologies.filter(({ ring, inactive }) => ring === 3 && inactive === false);
+  const sortedTechnologiesAmount = sortedTechnologies.filter(({ inactive }) => inactive === false).length;
+
+  const listItemProps = { handleOpenPopup, hasNoAreaSelected, rings };
+
+  const handleScroll = (e: UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const scrollBottom = scrollHeight - clientHeight;
     setScrollTopReached(scrollTop === 0);
     setScrollBottomReached(scrollTop >= scrollBottom);
-  };
-
-  const getBlipColor = (isTechnologyInactive: boolean, isAllAreasInactive: boolean) => {
-    if (isAllAreasInactive) {
-      return color.mineShaft;
-    }
-
-    return isTechnologyInactive ? color.mineShaft : color.silver;
-  };
-
-  const handleOpenTechnologyPopup = (technology: RadarTechnology) => {
-    hideBubble();
-    handleOpenPopup(technology.id);
-    unhighlightBlip({
-      id: technology.id?.toString() || '',
-      ring: technology.ring,
-      color: getBlipColor(technology.inactive, hasNoAreaSelected),
-    });
-    toggleQuadrant(technology.quadrant, false);
-  };
-
-  const handleShowTags = (technology: RadarTechnology) => {
-    setHoveredItem(technology.id);
-    toggleQuadrant(technology.quadrant, true);
-    highlightBlip({ id: technology.id || '', ring: technology.ring });
-    highlightLegend({ id: technology.id || '' });
-    const blipData = getBlipDataById(technology.id || '');
-    showBubble({ label: technology.label, ring: technology.ring, x: blipData.x, y: blipData.y });
-  };
-
-  const handleHideTags = (technology: RadarTechnology) => {
-    setHoveredItem(null);
-    toggleQuadrant(technology.quadrant, false);
-    unhighlightBlip({
-      id: technology.id?.toString() || '',
-      ring: technology.ring,
-      color: getBlipColor(technology.inactive, hasNoAreaSelected),
-    });
-    highlightLegend({ id: technology.id || '', mode: 'off' });
-    hideBubble();
   };
 
   if (emptyResults.search) {
@@ -116,53 +63,38 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
   return (
     <ListWrapper>
       <List onScroll={handleScroll}>
-        {sortedTechnologies.map((technology) => (
-          <ListItem
-            showTechnology={!technology.inactive}
-            key={`list-item-${technology.id}`}
-            onMouseEnter={() => {
-              if (isTouchDevice) return;
+        {searchText ? (
+          <ResultsTextInfo>
+            <FormattedMessage {...messages.results} />({sortedTechnologiesAmount})
+          </ResultsTextInfo>
+        ) : (
+          <ResultsTextInfo>
+            <FormattedMessage {...messages.allSkills} />
+          </ResultsTextInfo>
+        )}
+        <TechnologyGroup title={intl.formatMessage(messages.inUseTitle)} amount={technologiesInUse.length}>
+          {technologiesInUse.map((technology) => (
+            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
+          ))}
+        </TechnologyGroup>
+        <TechnologyGroup title={intl.formatMessage(messages.provenTitle)} amount={technologiesProven.length}>
+          {technologiesProven.map((technology) => (
+            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
+          ))}
+        </TechnologyGroup>
 
-              handleShowTags(technology);
-            }}
-            onMouseLeave={() => {
-              handleHideTags(technology);
-            }}
-          >
-            <ListLabel
-              id={`list-item-${technology.id}`}
-              showPointer={!!technology.description.length}
-              onTouchStart={() => {
-                if (technology.description) {
-                  handleOpenTechnologyPopup(technology);
-                } else {
-                  handleShowTags(technology);
-                }
-              }}
-              onClick={() => {
-                if (technology.description) {
-                  handleOpenTechnologyPopup(technology);
-                } else {
-                  handleShowTags(technology);
-                }
-              }}
-            >
-              {technology.label}
-            </ListLabel>
-            <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
-              <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
-                {rings[technology.ring].name}
-              </Tag>
-              {!!technology.team && (
-                <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
-                  {technology.team}
-                </Tag>
-              )}
-            </ListItemTags>
-          </ListItem>
-        ))}
+        <TechnologyGroup title={intl.formatMessage(messages.promisingTitle)} amount={technologiesPromising.length}>
+          {technologiesPromising.map((technology) => (
+            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
+          ))}
+        </TechnologyGroup>
+
+        <TechnologyGroup title={intl.formatMessage(messages.phasedOutTitle)} amount={technologiesPhasedOut.length}>
+          {technologiesPhasedOut.map((technology) => (
+            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
+          ))}
+        </TechnologyGroup>
       </List>
-      <GetInTouch asPopup />
       <ShadowTop visible={!scrollTopReached} />
       <ShadowBottom visible={!scrollBottomReached} />
     </ListWrapper>
