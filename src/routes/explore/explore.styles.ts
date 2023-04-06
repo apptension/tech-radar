@@ -17,7 +17,7 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
   ${TagSmall};
   position: absolute;
   bottom: 24px;
-  right: 0;
+  right: 39px;
   letter-spacing: 0.2em;
 `;
 

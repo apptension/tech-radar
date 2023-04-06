@@ -11,6 +11,7 @@ import { ListWrapper, List, EmptyResults, ShadowTop, ShadowBottom, ResultsTextIn
 import messages from './technologiesList.messages';
 import { TechnologyGroup } from './technologyGroup';
 import { TechnologyListItem } from './technologyListItem';
+import { TECHNOLOGY_RING } from './technologyList.types';
 
 interface TechnologiesListProps {
   technologies: RadarTechnology[];
@@ -28,14 +29,29 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+  const sortedActiveTechnologies = sortedTechnologies.filter(({ inactive }) => inactive === false);
 
-  const technologiesInUse = sortedTechnologies.filter(({ ring, inactive }) => ring === 0 && inactive === false);
-  const technologiesProven = sortedTechnologies.filter(({ ring, inactive }) => ring === 1 && inactive === false);
-  const technologiesPromising = sortedTechnologies.filter(({ ring, inactive }) => ring === 2 && inactive === false);
-  const technologiesPhasedOut = sortedTechnologies.filter(({ ring, inactive }) => ring === 3 && inactive === false);
+  const technologiesInUse = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.IN_USE);
+  const technologiesProven = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PROVEN);
+  const technologiesPromising = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PROMISING);
+  const technologiesPhasedOut = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PHASED_OUT);
+
+  const technologiesList = [
+    { title: intl.formatMessage(messages.inUseTitle), technologies: technologiesInUse, ring: TECHNOLOGY_RING.IN_USE },
+    { title: intl.formatMessage(messages.provenTitle), technologies: technologiesProven, ring: TECHNOLOGY_RING.PROVEN },
+    {
+      title: intl.formatMessage(messages.promisingTitle),
+      technologies: technologiesPromising,
+      ring: TECHNOLOGY_RING.PROMISING,
+    },
+    {
+      title: intl.formatMessage(messages.phasedOutTitle),
+      technologies: technologiesPhasedOut,
+      ring: TECHNOLOGY_RING.PHASED_OUT,
+    },
+  ];
+
   const sortedTechnologiesAmount = sortedTechnologies.filter(({ inactive }) => inactive === false).length;
-
-  const listItemProps = { handleOpenPopup, hasNoAreaSelected, rings };
 
   const handleScroll = (e: UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -72,28 +88,20 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
             <FormattedMessage {...messages.allSkills} />
           </ResultsTextInfo>
         )}
-        <TechnologyGroup title={intl.formatMessage(messages.inUseTitle)} amount={technologiesInUse.length}>
-          {technologiesInUse.map((technology) => (
-            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
-          ))}
-        </TechnologyGroup>
-        <TechnologyGroup title={intl.formatMessage(messages.provenTitle)} amount={technologiesProven.length}>
-          {technologiesProven.map((technology) => (
-            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
-          ))}
-        </TechnologyGroup>
 
-        <TechnologyGroup title={intl.formatMessage(messages.promisingTitle)} amount={technologiesPromising.length}>
-          {technologiesPromising.map((technology) => (
-            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
-          ))}
-        </TechnologyGroup>
-
-        <TechnologyGroup title={intl.formatMessage(messages.phasedOutTitle)} amount={technologiesPhasedOut.length}>
-          {technologiesPhasedOut.map((technology) => (
-            <TechnologyListItem {...listItemProps} key={`list-item-${technology.id}`} technology={technology} />
-          ))}
-        </TechnologyGroup>
+        {technologiesList.map(({ ring, technologies, title }) => (
+          <TechnologyGroup key={title} title={title} amount={technologies.length} infoContent={rings[ring].description}>
+            {technologies.map((technology) => (
+              <TechnologyListItem
+                handleOpenPopup={handleOpenPopup}
+                hasNoAreaSelected={hasNoAreaSelected}
+                ringName={rings[technology.ring].name}
+                key={`list-item-${technology.id}`}
+                technology={technology}
+              />
+            ))}
+          </TechnologyGroup>
+        ))}
       </List>
       <ShadowTop visible={!scrollTopReached} />
       <ShadowBottom visible={!scrollBottomReached} />

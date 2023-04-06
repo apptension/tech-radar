@@ -3,10 +3,10 @@ import { ReactComponent as ChevronDownSVG } from '../../../../images/icons/chevr
 import { color, zIndex } from '../../../../theme';
 import { LabelMedium } from '../../../../theme/typography';
 
-export const HeaderButton = styled.button`
+export const HeaderButton = styled.button<{ increasedZindex?: boolean }>`
   ${LabelMedium};
   position: sticky;
-  z-index: ${zIndex.header};
+  z-index: ${({ increasedZindex }) => (increasedZindex ? zIndex.overlay : zIndex.header)};
   top: 0;
   width: 100%;
   border: none;
@@ -38,6 +38,6 @@ export const List = styled.ul`
   }
 `;
 
-export const ChevronIcon = styled(ChevronDownSVG)<{ isRotated: boolean }>`
-  ${({ isRotated }) => isRotated && `transform: rotate(180deg)`}
+export const ChevronIcon = styled(ChevronDownSVG)<{ reversed: boolean }>`
+  ${({ reversed }) => reversed && `transform: rotate(180deg)`}
 `;

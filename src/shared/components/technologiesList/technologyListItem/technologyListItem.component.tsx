@@ -10,20 +10,20 @@ import {
   toggleQuadrant,
   unhighlightBlip,
 } from '../../../utils/radarUtils';
-import { RadarRing, RadarTechnology } from '../../radar/radar.types';
+import { RadarTechnology } from '../../radar/radar.types';
 import { TagSize, TagVariant } from '../../tag/tag.types';
 import { ListItemTags, ListItem, ListLabel, Tag } from './technologyListItem.styles';
 
 interface TechnologyListItemProps {
   technology: RadarTechnology;
-  rings: RadarRing[];
+  ringName: string;
   hasNoAreaSelected: boolean;
   handleOpenPopup: (technologyId: TechnologyId) => void;
 }
 
 export const TechnologyListItem = ({
   technology,
-  rings,
+  ringName,
   hasNoAreaSelected,
   handleOpenPopup,
 }: TechnologyListItemProps) => {
@@ -94,7 +94,7 @@ export const TechnologyListItem = ({
       </ListLabel>
       <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
         <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
-          {rings[technology.ring].name}
+          {ringName}
         </Tag>
         {!!technology.team && (
           <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
