@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../routes/app.constants';
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
 import { Button } from '../../button';
-import { ButtonSize, ButtonVariant } from '../../button/button.types';
+import { ButtonSize, ButtonVariant, ButtonIcon } from '../../button/button.types';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
 import { FormActions } from '../formActions';
 import { FieldContainer, Form } from '../personalInfoForm/personalInfoForm.styles';
-import { ArrowRightIcon, ButtonsContainer } from './myProfileForm.styles';
+import { ButtonsContainer } from './myProfileForm.styles';
 import { useMyProfileForm } from './useMyProfileForm.hook';
 
 export const MyProfileForm = () => {
@@ -105,8 +105,9 @@ export const MyProfileForm = () => {
           type="button"
           disabled={isSubmitting}
           onClick={() => history.push(ROUTES.matrix)}
+          icon={ButtonIcon.ARROW}
         >
-          Go to skills matrix <ArrowRightIcon width={22} />
+          Go to skills matrix
         </Button>
       </ButtonsContainer>
     </Form>
