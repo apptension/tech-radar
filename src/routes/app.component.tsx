@@ -6,6 +6,7 @@ import { FormattedMessage, IntlProvider } from 'react-intl';
 import { DEFAULT_LOCALE, translationMessages } from '../i18n';
 import { GlobalStyle } from '../theme/global';
 import { ResponsiveThemeProvider } from '../shared/components/responsiveThemeProvider';
+import { ToastRenderer } from '../shared/components/toast';
 import { useStartup } from './useStartup';
 
 export interface AppComponentProps {
@@ -31,6 +32,7 @@ export const AppComponent = ({ children }: AppComponentProps) => {
 
           <GlobalStyle />
           <ResponsiveThemeProvider>{React.Children.only(children)}</ResponsiveThemeProvider>
+          <ToastRenderer />
         </Fragment>
       </HelmetProvider>
     </IntlProvider>
