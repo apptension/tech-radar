@@ -17,8 +17,14 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
   ${TagSmall};
   position: absolute;
   bottom: 24px;
-  right: 39px;
+  right: 50%;
+  transform: translateX(50%);
   letter-spacing: 0.2em;
+
+  ${mediaQuery.desktop} {
+    right: 39px;
+    transform: translateX(0);
+  }
 `;
 
 export const Container = styled.div`
