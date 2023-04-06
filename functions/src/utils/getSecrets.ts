@@ -1,0 +1,13 @@
+import { SECRET_KEYS } from '../constants/secretKeys';
+
+export const getSecrets = () => {
+  const {
+    [SECRET_KEYS.AIRTABLE_API_KEY]: AIRTABLE_API_KEY = '',
+    [SECRET_KEYS.AIRTABLE_BASE]: AIRTABLE_BASE = '',
+    [SECRET_KEYS.CONTENTFUL_TOKEN]: CONTENTFUL_TOKEN = '',
+    [SECRET_KEYS.WEBAPP_URL]: WEBAPP_URL = '',
+    [SECRET_KEYS.WEBAPP_DEV_URL]: WEBAPP_DEV_URL = '',
+  } = process.env;
+
+  return { AIRTABLE_API_KEY, AIRTABLE_BASE, CONTENTFUL_TOKEN, WEBAPP_URL, WEBAPP_DEV_URL };
+};
