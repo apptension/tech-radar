@@ -3,6 +3,7 @@ import { color, scrollbar } from '../../../../theme';
 
 interface ContentContainerProps {
   maxHeight: string;
+  isOver?: boolean;
 }
 interface ScrollableContainerProps {
   withoutOverflow: boolean;
@@ -24,9 +25,10 @@ export const Container = styled.div<{ maxWidth?: string }>`
 
 export const ContentContainer = styled.div<ContentContainerProps>`
   border: 1px solid ${color.white};
+  border-color: ${({ isOver }) => (isOver ? color.secondary : color.white)};
   background-color: ${color.codGray};
   padding: 20px;
-
+  transition: border-color 0.3s ease;
   ${({ maxHeight }) =>
     maxHeight &&
     css`
