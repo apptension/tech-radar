@@ -8,6 +8,7 @@ interface ValueBoxProps extends ComponentProps<typeof LabelBar>, HTMLAttributes<
   maxWidth?: string;
   isLoading?: boolean;
   withoutOverflow?: boolean;
+  isOver?: boolean;
 }
 
 export const ValueBox = ({
