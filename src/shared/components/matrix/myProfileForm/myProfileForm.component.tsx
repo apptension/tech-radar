@@ -1,19 +1,23 @@
+import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
+import { useToast } from '../../toast';
 import { FormActions } from '../formActions';
 import { FieldContainer, Form } from '../personalInfoForm/personalInfoForm.styles';
 import { useMyProfileForm } from './useMyProfileForm.hook';
 
 export const MyProfileForm = () => {
+  const toast = useToast();
+
   const {
     form: {
       control,
       register,
       handleSubmit,
-      formState: { errors, isDirty },
+      formState: { errors, isDirty, isSubmitSuccessful, submitCount },
     },
     positionOptions,
     seniorityOptions,
@@ -21,6 +25,14 @@ export const MyProfileForm = () => {
     isSubmitting,
     submit,
   } = useMyProfileForm();
+
+  useEffect(() => {
+    if (errors.name) toast.error(`Error: ${errors.name?.message}`);
+  }, [errors]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) toast.success('Submitted successfully!');
+  }, [isSubmitSuccessful, submitCount]);
 
   if (isLoading) {
     return <Loader isFullPage />;

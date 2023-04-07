@@ -12,6 +12,7 @@ import { TextField } from '../../../shared/components/fields/TextField';
 import { FileDropField } from '../../../shared/components/fields/FileDropField';
 import { SelectField } from '../../../shared/components/fields/SelectField';
 import adminMessages from '../adminPanel/adminPanel.messages';
+import { useToast } from '../../../shared/components/toast';
 import newEntryMessages from './newEntry.messages';
 import {
   getMovedOptions,
@@ -41,11 +42,11 @@ export const NewEntry = () => {
   const { user } = useAdminPanelContext();
   const intl = useIntl();
   const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
+  const toast = useToast();
 
   // Index needed for react-select components to reset to defaultValue
   const [selectIndex, setSelectIndex] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const userEmail = user?.email || '';
 
@@ -58,7 +59,6 @@ export const NewEntry = () => {
   } = useForm<NewEntryInputs>();
   const onSubmit: SubmitHandler<NewEntryInputs> = async (data) => {
     setLoading(true);
-    setIsError(false);
     try {
       const postIcon = async (icon: NewEntryInputs['icon']) => {
         if (icon) {
@@ -70,11 +70,11 @@ export const NewEntry = () => {
       const entry = prepareNewEntry(data, iconId);
 
       await postEntry(entry, userEmail);
-      alert('Entry created!');
+      toast.success('Entry created!');
       reset();
       setSelectIndex((index) => index + 1);
     } catch (err) {
-      setIsError(true);
+      toast.error(intl.formatMessage(newEntryMessages.networkError));
     }
     setLoading(false);
   };
@@ -91,7 +91,6 @@ export const NewEntry = () => {
           <FormattedMessage {...homeMessages.goToAdminPanel} />
         </StyledLink>
         <SecondHeader>{intl.formatMessage(newEntryMessages.title)}</SecondHeader>
-        {isError && <p>{intl.formatMessage(newEntryMessages.networkError)}</p>}
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Label"
