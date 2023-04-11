@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import * as colors from '../../../theme/color';
 import { ReactComponent as SearchIconSVG } from '../../../images/icons/search.svg';
+import { ReactComponent as CloseIconSVG } from '../../../images/icons/close.svg';
 export const Container = styled.div``;
 
 export const InputWrapper = styled.div`
@@ -26,6 +27,16 @@ export const InputComponent = styled.input`
 
 export const SearchIcon = styled(SearchIconSVG)`
   height: 100%;
+`;
+
+export const CloseIcon = styled(CloseIconSVG)`
+  height: 100%;
+`;
+
+export const CloseButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 `;
 
 export const InputUnderline = styled.div`

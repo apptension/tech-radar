@@ -13,6 +13,7 @@ import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
+import { ButtonIcon, ButtonVariant } from '../../shared/components/button/button.types';
 import { renderWhenTrue } from '../../shared/utils/rendering';
 import {
   Container,
@@ -28,12 +29,14 @@ import {
   TooltipArrow,
   TooltipContent,
   StyledLastUpdate,
+  GetInTouchButton,
 } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
 
 export const Explore = () => {
   const lastContentfulUpdate = useLastContentfulUpdate();
+  const { matches: isMobile } = useMediaQuery({ below: Breakpoint.MOBILE });
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const viewerRef = useRef<HTMLDivElement>(null);
 
@@ -179,6 +182,12 @@ export const Explore = () => {
   return (
     <Container>
       <TitleTag size={TitleTagSize.SMALL} withLogo withCompanyText />
+      {isMobile ? (
+        <GetInTouchButton variant={ButtonVariant.PRIMARY} icon={ButtonIcon.GET_IN_TOUCH} />
+      ) : isDesktop ? null : (
+        <GetInTouchButton variant={ButtonVariant.PRIMARY}>Get in touch</GetInTouchButton>
+      )}
+
       {renderContent()}
       {renderLoading()}
       <Tooltip className="tooltip-container">

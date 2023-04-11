@@ -3,7 +3,16 @@ import { ThemeProvider } from 'styled-components';
 import { empty } from 'ramda';
 
 import { renderWhenTrue } from '../../utils/rendering';
-import { Container, Icon, OutIcon, ArrowIcon, IconContainer, IconContainerInner, Loader } from './button.styles';
+import {
+  Container,
+  Icon,
+  OutIcon,
+  ArrowIcon,
+  IconContainer,
+  IconContainerInner,
+  Loader,
+  GetInTouchIcon,
+} from './button.styles';
 import { ButtonIcon, ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -33,6 +42,7 @@ export const Button = ({
   const iconTypes = {
     [ButtonIcon.ARROW]: () => <ArrowIcon />,
     [ButtonIcon.OUT]: () => <OutIcon />,
+    [ButtonIcon.GET_IN_TOUCH]: () => <GetInTouchIcon />,
   };
 
   const getIcon = () => (icon && iconTypes[icon] ? iconTypes[icon]() : null);

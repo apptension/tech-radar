@@ -12,7 +12,7 @@ export const KnowledgeForm = () => {
     skills,
     categoryOptions,
     isSearching,
-    isDisabled,
+    isSubmitDisabled,
     setSkills,
     search,
     selectedCategory,
@@ -43,7 +43,11 @@ export const KnowledgeForm = () => {
 
       <SkillsDnd isLoading={isSearching} skills={skills} setSkills={setSkills} />
 
-      <FormActions handleGoBack={isEditMode ? cancelEdit : goBack} isEditMode={isEditMode} isDisabled={isDisabled} />
+      <FormActions
+        handleGoBack={isEditMode ? cancelEdit : goBack}
+        isEditMode={isEditMode}
+        isDisabled={isSubmitDisabled}
+      />
     </Form>
   );
 };
