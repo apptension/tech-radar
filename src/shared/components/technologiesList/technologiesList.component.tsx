@@ -28,13 +28,15 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
   const dispatch = useDispatch();
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
+  const getTechnologyByRing = (ring: TECHNOLOGY_RING) => sortedActiveTechnologies.filter((tech) => tech.ring === ring);
+
   const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
   const sortedActiveTechnologies = sortedTechnologies.filter(({ inactive }) => inactive === false);
 
-  const technologiesInUse = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.IN_USE);
-  const technologiesProven = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PROVEN);
-  const technologiesPromising = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PROMISING);
-  const technologiesPhasedOut = sortedActiveTechnologies.filter(({ ring }) => ring === TECHNOLOGY_RING.PHASED_OUT);
+  const technologiesInUse = getTechnologyByRing(TECHNOLOGY_RING.IN_USE);
+  const technologiesProven = getTechnologyByRing(TECHNOLOGY_RING.PROVEN);
+  const technologiesPromising = getTechnologyByRing(TECHNOLOGY_RING.PROMISING);
+  const technologiesPhasedOut = getTechnologyByRing(TECHNOLOGY_RING.PHASED_OUT);
 
   const technologiesList = [
     { title: intl.formatMessage(messages.inUseTitle), technologies: technologiesInUse, ring: TECHNOLOGY_RING.IN_USE },

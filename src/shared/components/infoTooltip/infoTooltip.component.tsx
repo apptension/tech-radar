@@ -12,16 +12,12 @@ export const InfoTooltip = ({ children, activator, handleMouseEnter, handleMouse
   const [isActive, setIsActive] = useState(false);
 
   const onMouseEnter: InfoTooltipProps['handleMouseEnter'] = (e) => {
-    if (handleMouseEnter) {
-      handleMouseEnter(e);
-    }
+    if (handleMouseEnter) handleMouseEnter(e);
     setIsActive(true);
   };
 
   const onMouseLeave: InfoTooltipProps['handleMouseLeave'] = (e) => {
-    if (handleMouseLeave) {
-      handleMouseLeave(e);
-    }
+    if (handleMouseLeave) handleMouseLeave(e);
     setIsActive(false);
   };
 
