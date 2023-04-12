@@ -12,6 +12,7 @@ import {
   FileDropContainer,
 } from '../../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
 import { useToast } from '../../../shared/components/toast';
+import { EditableCell } from '../../../shared/components/table/table.component';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
 import messages from './adminPanel.messages';
 
@@ -90,10 +91,28 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
         {
           Header: intl.formatMessage(messages.github),
           accessor: 'github',
+          Cell: ({ value, updateMyData, row, column }) => (
+            <EditableCell
+              value={value}
+              column={column}
+              row={row}
+              updateMyData={updateMyData}
+              placeholder="https://github.com/"
+            />
+          ),
         },
         {
           Header: intl.formatMessage(messages.projects),
-          accessor: 'projects',
+          accessor: 'project',
+          Cell: ({ value, updateMyData, row, column }) => (
+            <EditableCell
+              value={value}
+              column={column}
+              row={row}
+              updateMyData={updateMyData}
+              placeholder="https://example.com/"
+            />
+          ),
         },
         {
           Header: intl.formatMessage(messages.experts),
