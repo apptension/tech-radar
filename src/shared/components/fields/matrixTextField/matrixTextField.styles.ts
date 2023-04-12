@@ -88,6 +88,7 @@ export const LabelWrapper = styled.div`
 export const InfoIcon = styled(InfoSVG)`
   width: 18px;
   height: 18px;
+  color: ${color.silver};
 `;
 
 export const TextError = styled.p`

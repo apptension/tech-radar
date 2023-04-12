@@ -7,6 +7,8 @@ export const disabled = '#DDDDE0';
 export const primary = '#42f272';
 export const secondary = '#2249f9';
 export const error = '#C01212';
+export const brightError = '#F40101';
+export const warning = '#FA8C16';
 
 export const codGray = '#111111';
 export const codGray2 = '#181818';
@@ -21,6 +23,7 @@ export const screaminGreen = '#42F272';
 export const schoolBusYellow = '#FFDE00';
 export const mineShaft2 = '#222222';
 export const dustyGray = '#999999';
+export const brightGray = '#EAEAEA';
 
 export const gradient = `linear-gradient(255deg,${screaminGreen} -56.33%,rgba(66,242,114,0) 124.09%),${schoolBusYellow}`;
 export const shadowGradientBottom = `linear-gradient(-180deg, ${codGrayOpacity} 0, ${codGray} 100%);`;

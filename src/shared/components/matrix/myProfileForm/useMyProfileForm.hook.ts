@@ -8,6 +8,7 @@ import { initializePersonalValues } from '../utils';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
 import { usePersonalFormSelects } from '../../../../modules/matrix/usePersonalFormSelects.hook';
 import { MATRIX_LS_ITEM } from '../constants/matrix.constants';
+import { useToast } from '../../toast';
 
 const defaultValues: PersonalInfo = {
   email: '',
@@ -22,6 +23,7 @@ export const useMyProfileForm = () => {
   const { user } = useAuthContext();
   const [, , removeLocalPersonal] = useLocalStorage<PersonalInfo>(MATRIX_LS_ITEM.PERSONAL);
   const { isLoading: isFormSelectsLoading, positionOptions, seniorityOptions } = usePersonalFormSelects();
+  const toast = useToast();
 
   const [userId, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +40,7 @@ export const useMyProfileForm = () => {
         setIsLoading(false);
       } catch (err) {
         reportError(err);
+        toast.error('Failed to fetch user info');
       }
     };
 
@@ -51,8 +54,10 @@ export const useMyProfileForm = () => {
     try {
       await patchUserProfile({ userId, ...data });
       removeLocalPersonal();
+      toast.success('Submitted successfully!');
     } catch (err) {
       reportError(err);
+      toast.error('Failed to update user data');
     }
     setIsSubmitting(false);
   };

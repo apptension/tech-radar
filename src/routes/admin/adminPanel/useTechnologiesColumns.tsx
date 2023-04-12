@@ -11,6 +11,7 @@ import {
   StyledSelect,
   FileDropContainer,
 } from '../../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
+import { useToast } from '../../../shared/components/toast';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
 import messages from './adminPanel.messages';
 
@@ -23,6 +24,7 @@ interface CreateTechnologiesColumnsProps {
 export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings }: CreateTechnologiesColumnsProps) => {
   const intl = useIntl();
   const { user } = useAdminPanelContext();
+  const toast = useToast();
 
   const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
@@ -30,8 +32,9 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
     setLoadingIds((ids) => [...ids, values.id!]);
     try {
       await patchEntry(values, user?.email || '');
-      alert('Entry updated!');
+      toast.success('Entry updated!');
     } catch (err) {
+      toast.error('There was an error');
       reportError(err);
     }
     setLoadingIds((ids) => ids.filter((id) => id !== values.id));
