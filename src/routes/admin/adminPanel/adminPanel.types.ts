@@ -36,6 +36,6 @@ export type EditedEntry = {
   quadrant: string;
   ring: string;
   specification: string;
-  team: string;
+  teams: string[];
   moved?: number;
 };

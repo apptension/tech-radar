@@ -1,9 +1,5 @@
+import { TableTeam } from '../../../shared/components/radar/radar.types';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
-
-export type Team = {
-  label: string;
-  value: string;
-};
 
 export type NewEntryInputs = {
   label: string;
@@ -16,6 +12,6 @@ export type NewEntryInputs = {
   icon?: File;
   alternatives: AlternativesTableType[];
   experts: string;
-  teams: Team[];
+  teams: TableTeam[];
   moved: string;
 };

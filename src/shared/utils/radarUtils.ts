@@ -236,6 +236,14 @@ const getAlternatives = (item: ContentfulTechnology) => {
   }));
 };
 
+const getTableTeams = (item: ContentfulTechnology) => {
+  const teams = pathOr([], ['fields', 'teams'], item);
+  return teams.map((team) => ({
+    label: pathOr('', ['fields', 'label'], team),
+    value: pathOr('', ['sys', 'id'], team),
+  }));
+};
+
 const getTeams = (item: ContentfulTechnology) => {
   const teams = pathOr([], ['fields', 'teams'], item);
   return teams.map((team) => pathOr('', ['fields', 'label'], team));
@@ -281,7 +289,7 @@ export const getRadarTechnologiesForTable = (technologies: ContentfulTechnology[
       alternatives: getAlternatives(item as ContentfulTechnology),
       quadrant: pathOr('', ['fields', 'quadrant', 'sys', 'id'], item),
       ring: pathOr('', ['fields', 'ring', 'sys', 'id'], item),
-      teams: getTeams(item as ContentfulTechnology),
+      teams: getTableTeams(item as ContentfulTechnology),
       inactive: false,
       id: pathOr('', ['sys', 'id'], item),
     });

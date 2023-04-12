@@ -24,13 +24,18 @@ export type RadarTechnology = {
   experts: string;
 };
 
+export type TableTeam = {
+  label: string;
+  value: string;
+};
+
 export type TableRadarTechnology = {
   label: string;
   quadrant: string;
   ring: string;
   inactive: boolean;
   id: string;
-  teams: string[];
+  teams: TableTeam[];
   description: string;
   specification: string;
   github: string;
