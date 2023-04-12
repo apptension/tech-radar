@@ -17,28 +17,28 @@ import { ListItemTags, ListItem, ListLabel, Tag } from './technologyListItem.sty
 import messages from './technologiesListItem.messages';
 interface TechnologyListItemProps {
   technology: RadarTechnology;
-  ringName: string;
+  amountOfTeams: number;
   hasNoAreaSelected: boolean;
   handleOpenPopup: (technologyId: TechnologyId) => void;
 }
 
-export const getTeamLabel = (teams: string[]) =>
-  teams.length > 4 ? (
-    <FormattedMessage {...messages.allTeams} />
-  ) : teams.length > 1 ? (
-    <FormattedMessage {...messages.multipleTeams} values={{ amount: teams.length }} />
-  ) : (
-    teams[0]
-  );
-
 export const TechnologyListItem = ({
   technology,
-  ringName,
+  amountOfTeams,
   hasNoAreaSelected,
   handleOpenPopup,
 }: TechnologyListItemProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const isTouchDevice = Boolean('ontouchstart' in window || navigator.maxTouchPoints);
+
+  const getTeamLabel = (teams: string[]) =>
+    teams.length === amountOfTeams ? (
+      <FormattedMessage {...messages.allTeams} />
+    ) : teams.length > 1 ? (
+      <FormattedMessage {...messages.multipleTeams} values={{ amount: teams.length }} />
+    ) : (
+      teams[0]
+    );
 
   const getBlipColor = (isTechnologyInactive: boolean, isAllAreasInactive: boolean) => {
     if (isAllAreasInactive) {
@@ -103,9 +103,6 @@ export const TechnologyListItem = ({
         {technology.label}
       </ListLabel>
       <ListItemTags visible={hoveredItem === technology.id} id={`list-item-tags-${technology.id}`}>
-        <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
-          {ringName}
-        </Tag>
         {!!technology.teams.length && (
           <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
             {getTeamLabel(technology.teams)}
