@@ -31,5 +31,5 @@ export const InfoIconContainer = styled.div`
 export const InfoIcon = styled(InfoSVG)`
   width: 26px;
   height: 26px;
-  color: #c2c2c2;
+  color: ${color.silver};
 `;

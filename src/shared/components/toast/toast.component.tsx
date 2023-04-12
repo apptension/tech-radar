@@ -31,11 +31,11 @@ const icons = {
 const colors = {
   [ToastType.INFORMATION]: color.secondary,
   [ToastType.SUCCESS]: color.primary,
-  [ToastType.WARNING]: '#FA8C16',
-  [ToastType.ERROR]: '#F40101',
+  [ToastType.WARNING]: color.warning,
+  [ToastType.ERROR]: color.brightError,
 };
 
-const getByType = (type: string, obj: { [key: string]: any }) => obj[type];
+const getByType = (type: ToastType, obj: { [key in ToastType]: any }) => obj[type];
 
 export const Toast = ({ message, id, type }: ToastProps) => {
   const icon = getByType(type, icons);

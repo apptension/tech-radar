@@ -39,7 +39,7 @@ export const CloseButton = styled.button`
 `;
 
 export const IconContainer = styled.div`
-  color: #fff;
+  color: ${color.white};
 `;
 export const Body = styled.div`
   flex: 1;
@@ -49,11 +49,11 @@ export const Paragraph = styled.p`
   font-size: 16px;
   line-height: 19px;
   margin: 0;
-  color: #eaeaea;
+  color: ${color.brightGray};
 `;
 
 export const Title = styled(Paragraph)`
-  color: #fff;
+  color: ${color.white};
   font-weight: bold;
   margin-bottom: 4px;
 `;
