@@ -43,7 +43,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
   const {
     label = '',
     ringLabel = '',
-    team = '',
+    teams = [],
     icon,
     description = '',
     github = '',
@@ -108,14 +108,16 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       <CloseWrapper onClick={handleClosePopup}>
         <CloseSVG />
       </CloseWrapper>
-      <TagsWrapper>
-        <Tag>{ringLabel}</Tag>
-        <Tag>{team}</Tag>
-      </TagsWrapper>
       <Title>
         {label}
         {renderIcon(!!icon)}
       </Title>
+      <TagsWrapper>
+        <Tag>{ringLabel}</Tag>
+        {teams.map((team) => (
+          <Tag>{team}</Tag>
+        ))}
+      </TagsWrapper>
       <Description>{description}</Description>
       {renderLinks(!!links)}
       {renderBlocks(!!experts.length || !!alternatives.length)}

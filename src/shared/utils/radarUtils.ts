@@ -236,6 +236,11 @@ const getAlternatives = (item: ContentfulTechnology) => {
   }));
 };
 
+const getTeams = (item: ContentfulTechnology) => {
+  const teams = pathOr([], ['fields', 'teams'], item);
+  return teams.map((team) => pathOr('', ['fields', 'label'], team));
+};
+
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
@@ -253,7 +258,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
       quadrant,
       ring: pathOr(1, ['fields', 'ring', 'fields', 'position'], item) - 1,
       ringLabel: pathOr('', ['fields', 'ring', 'fields', 'label'], item),
-      team: pathOr('', ['fields', 'team', 'fields', 'label'], item),
+      teams: getTeams(item as ContentfulTechnology),
       inactive: false,
       id: pathOr('', ['sys', 'id'], item),
     });
@@ -276,7 +281,7 @@ export const getRadarTechnologiesForTable = (technologies: ContentfulTechnology[
       alternatives: getAlternatives(item as ContentfulTechnology),
       quadrant: pathOr('', ['fields', 'quadrant', 'sys', 'id'], item),
       ring: pathOr('', ['fields', 'ring', 'sys', 'id'], item),
-      team: pathOr('', ['fields', 'team', 'sys', 'id'], item),
+      teams: getTeams(item as ContentfulTechnology),
       inactive: false,
       id: pathOr('', ['sys', 'id'], item),
     });
@@ -300,7 +305,7 @@ export const getRadarRings = (rings: ContentfulRing[]) => {
   return sortBy(prop('position'), radarRings);
 };
 
-export const getRadarTeams = (teams: ContentfulTeam[]) => {
+export const getRadarTeams = (teams: ContentfulTeam[] | undefined) => {
   const radarTeams: RadarTeam[] = [];
   forEachObjIndexed(
     (item) =>
@@ -346,7 +351,7 @@ export const getActiveTechnologiesIds = ({
   if (searchText)
     filtered = filtered.filter((technology) => technology.label.toLowerCase().includes(searchText.toLowerCase()));
 
-  if (teamValue) filtered = filtered.filter((technology) => technology.team === teamValue);
+  if (teamValue) filtered = filtered.filter((technology) => technology.teams.find((team) => team === teamValue));
 
   if (levelValue) filtered = filtered.filter((technology) => rings[technology.ring].name === levelValue);
 

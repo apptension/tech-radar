@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { TechnologyId } from '../../../../modules/technologyPopup/technologyPopup.types';
 import { color } from '../../../../theme';
 import {
@@ -13,13 +14,22 @@ import {
 import { RadarTechnology } from '../../radar/radar.types';
 import { TagSize, TagVariant } from '../../tag/tag.types';
 import { ListItemTags, ListItem, ListLabel, Tag } from './technologyListItem.styles';
-
+import messages from './technologiesListItem.messages';
 interface TechnologyListItemProps {
   technology: RadarTechnology;
   ringName: string;
   hasNoAreaSelected: boolean;
   handleOpenPopup: (technologyId: TechnologyId) => void;
 }
+
+export const getTeamLabel = (teams: string[]) =>
+  teams.length > 4 ? (
+    <FormattedMessage {...messages.allTeams} />
+  ) : teams.length > 1 ? (
+    <FormattedMessage {...messages.multipleTeams} values={{ amount: teams.length }} />
+  ) : (
+    teams[0]
+  );
 
 export const TechnologyListItem = ({
   technology,
@@ -96,9 +106,9 @@ export const TechnologyListItem = ({
         <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
           {ringName}
         </Tag>
-        {!!technology.team && (
+        {!!technology.teams.length && (
           <Tag size={TagSize.SMALL} variant={TagVariant.DARK}>
-            {technology.team}
+            {getTeamLabel(technology.teams)}
           </Tag>
         )}
       </ListItemTags>

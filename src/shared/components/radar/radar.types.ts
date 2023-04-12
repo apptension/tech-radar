@@ -8,7 +8,7 @@ export type RadarTechnology = {
   ringLabel: string;
   inactive: boolean;
   id: string;
-  team: string;
+  teams: string[];
   color?: string;
   description: string;
   specification: string;
@@ -30,7 +30,7 @@ export type TableRadarTechnology = {
   ring: string;
   inactive: boolean;
   id: string;
-  team: string;
+  teams: string[];
   description: string;
   specification: string;
   github: string;
