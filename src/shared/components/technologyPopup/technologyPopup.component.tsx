@@ -115,7 +115,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       <TagsWrapper>
         <Tag>{ringLabel}</Tag>
         {teams.map((team) => (
-          <Tag>{team}</Tag>
+          <Tag key={team}>{team}</Tag>
         ))}
       </TagsWrapper>
       <Description>{description}</Description>
