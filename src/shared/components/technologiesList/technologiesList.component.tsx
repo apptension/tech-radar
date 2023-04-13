@@ -3,7 +3,7 @@ import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { RadarRing, RadarTechnology } from '../radar/radar.types';
+import { RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
 import { selectSearch } from '../../../modules/filters/filters.selectors';
 import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
 import { openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
@@ -17,10 +17,17 @@ interface TechnologiesListProps {
   technologies: RadarTechnology[];
   emptyResults: { search: boolean; filters: boolean };
   rings: RadarRing[];
+  teams: RadarTeam[];
   hasNoAreaSelected: boolean;
 }
 
-export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaSelected }: TechnologiesListProps) => {
+export const TechnologiesList = ({
+  technologies,
+  emptyResults,
+  teams,
+  rings,
+  hasNoAreaSelected,
+}: TechnologiesListProps) => {
   const intl = useIntl();
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
@@ -95,9 +102,9 @@ export const TechnologiesList = ({ technologies, emptyResults, rings, hasNoAreaS
           <TechnologyGroup key={title} title={title} amount={technologies.length} infoContent={rings[ring].description}>
             {technologies.map((technology) => (
               <TechnologyListItem
+                amountOfTeams={teams.length}
                 handleOpenPopup={handleOpenPopup}
                 hasNoAreaSelected={hasNoAreaSelected}
-                ringName={rings[technology.ring].name}
                 key={`list-item-${technology.id}`}
                 technology={technology}
               />

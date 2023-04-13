@@ -51,8 +51,9 @@ export const convertEntryFields = (entry: EntryFieldsData): PreparedEntry => {
     switch (key) {
       case 'quadrant':
       case 'ring':
-      case 'team':
         return { [key]: prepareReference(entry[key]) };
+      case 'teams':
+        return { [key]: entry.teams.map((team) => prepareReference(team)) };
       case 'icon':
         return { [key]: prepareIcon(entry[key]?.id || '') };
       default:

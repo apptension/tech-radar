@@ -6,6 +6,7 @@ import { useAdminPanelContext } from '../../../shared/components/adminPanel/admi
 import { Button } from '../../../shared/components/button';
 import { FileDropField } from '../../../shared/components/fields/FileDropField';
 import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
+import { SelectField } from '../../../shared/components/fields/SelectField';
 import {
   HEIGHT,
   StyledSelect,
@@ -139,27 +140,31 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
         },
         {
           Header: intl.formatMessage(messages.team),
-          accessor: 'team',
+          accessor: 'teams',
           Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
-            <StyledSelect value={value} onChange={({ target }) => updateMyData(parseInt(id), Header, target.value)}>
-              {radarTeams?.map(({ id, name }: RadarTeam) => (
-                <option key={name} value={id}>
-                  {name}
-                </option>
-              ))}
-            </StyledSelect>
+            <SelectField
+              label=""
+              styles={{ container: (base) => ({ ...base, minWidth: 350 }) }}
+              isMulti
+              options={radarTeams.map(({ id, name }) => ({ label: name, value: id }))}
+              onChange={(newValue) => updateMyData(parseInt(id), Header, newValue)}
+              value={value}
+            />
           ),
         },
         {
           Header: intl.formatMessage(messages.save),
           accessor: 'save',
-          Cell: ({ row: { values } }) => {
-            return (
-              <Button isLoading={loadingIds.includes(values.id)} onClick={() => handleEdit(values)}>
-                {intl.formatMessage(messages.save)}
-              </Button>
-            );
-          },
+          Cell: ({ row: { values } }) => (
+            <Button
+              isLoading={loadingIds.includes(values.id)}
+              onClick={() =>
+                handleEdit({ ...values, teams: values.teams.map(({ value }: { value: string }) => value) })
+              }
+            >
+              {intl.formatMessage(messages.save)}
+            </Button>
+          ),
         },
       ],
     },

@@ -2,7 +2,6 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useState } from 'react';
 import { useContentfulData } from '../../../shared/hooks/useContentfulData/useContentfulData';
-import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 import { ROUTES } from '../../app.constants';
 import homeMessages from '../../home/home.messages';
 import { postEntry, postImage } from '../../../shared/services/api/endpoints/contentful';
@@ -22,21 +21,7 @@ import {
   prepareNewEntry,
 } from './newEntry.utils';
 import { CenteredWrapper, SecondHeader, StyledForm, StyledLink, SubmitButton } from './newEntry.styles';
-
-export type NewEntryInputs = {
-  label: string;
-  quadrant: string;
-  ring: string;
-  description: string;
-  specification: string;
-  github: string;
-  projects: string;
-  icon?: File;
-  alternatives: AlternativesTableType[];
-  experts: string;
-  team: string;
-  moved: string;
-};
+import { NewEntryInputs } from './newEntry.types';
 
 export const NewEntry = () => {
   const { user } = useAdminPanelContext();
@@ -57,6 +42,7 @@ export const NewEntry = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<NewEntryInputs>();
+
   const onSubmit: SubmitHandler<NewEntryInputs> = async (data) => {
     setLoading(true);
     try {
@@ -229,7 +215,7 @@ export const NewEntry = () => {
 
           <Controller
             control={control}
-            name="team"
+            name="teams"
             rules={{
               required: {
                 value: true,
@@ -241,15 +227,14 @@ export const NewEntry = () => {
             }}
             render={({ field }) => (
               <SelectField
+                isMulti
                 options={teamsOptions}
                 label={intl.formatMessage(adminMessages.team)}
                 key={selectIndex}
-                error={errors.team?.message}
+                error={errors.teams?.message}
                 {...field}
-                onChange={(newValue, meta) => {
-                  field.onChange((newValue as TOption).value, meta);
-                }}
-                value={teamsOptions.find(({ value }) => value === field.value)}
+                onChange={(newValue) => field.onChange(newValue)}
+                value={field.value}
               />
             )}
           />

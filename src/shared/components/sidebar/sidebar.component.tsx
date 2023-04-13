@@ -84,6 +84,7 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
         technologies={technologies}
         emptyResults={emptyResults}
         rings={rings}
+        teams={teams}
         hasNoAreaSelected={hasNoAreaSelected}
       />
       {isDesktop && <GetInTouch asPopup />}

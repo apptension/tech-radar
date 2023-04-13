@@ -8,7 +8,7 @@ export type RadarTechnology = {
   ringLabel: string;
   inactive: boolean;
   id: string;
-  team: string;
+  teams: string[];
   color?: string;
   description: string;
   specification: string;
@@ -24,13 +24,18 @@ export type RadarTechnology = {
   experts: string;
 };
 
+export type TableTeam = {
+  label: string;
+  value: string;
+};
+
 export type TableRadarTechnology = {
   label: string;
   quadrant: string;
   ring: string;
   inactive: boolean;
   id: string;
-  team: string;
+  teams: TableTeam[];
   description: string;
   specification: string;
   github: string;

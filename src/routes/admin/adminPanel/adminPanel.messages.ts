@@ -23,7 +23,7 @@ export default defineMessages({
   },
   team: {
     id: 'adminPanel.teamLabel',
-    defaultMessage: 'team',
+    defaultMessage: 'teams',
   },
   github: {
     id: 'adminPanel.githubLabel',
