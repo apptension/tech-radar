@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { color } from '../../../../theme';
+import { mediaQuery } from '../../../../theme/media';
 import { Tag as TagComponent } from '../../tag';
 
 export const ListItem = styled.li<{ showTechnology: boolean }>`
-  margin: 6px 0;
+  padding: 4px 0;
   justify-content: space-between;
   display: ${({ showTechnology }) => (showTechnology ? 'flex' : 'none')};
 `;
@@ -15,6 +16,9 @@ export const ListLabel = styled.div<{ showPointer: boolean }>`
   align-items: center;
   cursor: ${({ showPointer }) => (showPointer ? 'pointer' : 'default')};
   flex-grow: 1;
+  ${mediaQuery.tablet} {
+    font-size: 16px;
+  }
 `;
 
 export const ListItemTags = styled.div<{ visible: boolean }>`

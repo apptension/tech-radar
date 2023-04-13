@@ -37,7 +37,7 @@ export const List = styled.div`
 
 export const ResultsTextInfo = styled.span`
   ${H1small};
-  margin: 18px 0 28px 0;
+  margin: 18px 0 40px 0;
   font-weight: ${fontWeight.bold};
   color: ${color.white};
   z-index: ${zIndex.header};
