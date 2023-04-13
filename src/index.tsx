@@ -16,8 +16,6 @@ import './theme/global';
 import TagManager from 'react-gtm-module';
 import configureStore from './config/store';
 import browserHistory from './shared/utils/history';
-import UnsupportedBrowserDetection from './shared/utils/unsupported/unsupportedBrowserDetection';
-import { setUnsupportedClasses } from './shared/utils/unsupported/support';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -65,12 +63,6 @@ const render = (): void => {
 };
 
 const initApp = async (): Promise<void> => {
-  const detection = new UnsupportedBrowserDetection();
-  if (!detection.isSupported()) {
-    setUnsupportedClasses();
-    return;
-  }
-
   // Chunked polyfill for browsers without Intl support
   if (!window.Intl) {
     new Promise((resolve) => {
