@@ -7,7 +7,10 @@ import { getSecrets } from '../utils/getSecrets';
 const getSlackUsersIds = async () => {
   const { SLACK_TOKEN } = getSecrets();
   const slack = getSlackClient(SLACK_TOKEN);
+
   const usersList = await slack.users.list();
+
+  if (usersList.error) console.error('Failed to fetch slack users data');
   if (!usersList.members) return [];
 
   const filteredList = usersList.members.filter((member) => {

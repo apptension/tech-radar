@@ -13,7 +13,7 @@ export const MESSAGE_FULL = [
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `You can do it <https://radar.apptension.com/matrix/knowledge|here>`,
+      text: `You can do it <https://radar.apptension.com/matrix|here>`,
     },
   },
 ];
