@@ -11,6 +11,7 @@ interface EditableCellProps {
   row: { index: number };
   column: { id: string };
   updateMyData: (index: number, id: string, value: string | number | boolean) => void;
+  placeholder?: string;
 }
 
 interface TableProps {
@@ -19,21 +20,27 @@ interface TableProps {
   updateMyData: (rowIndex: number, columnId: string, value: string | number | boolean) => void;
 }
 
-export function Table({ columns, data, updateMyData }: TableProps) {
-  const EditableCell = ({ value: initialValue, row: { index }, column: { id }, updateMyData }: EditableCellProps) => {
-    const [value, setValue] = useState(initialValue);
+export const EditableCell = ({
+  value: initialValue,
+  row: { index },
+  column: { id },
+  updateMyData,
+  placeholder = '',
+}: EditableCellProps) => {
+  const [value, setValue] = useState(initialValue);
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value);
-    };
-
-    const onBlur = () => {
-      updateMyData(index, id, value);
-    };
-
-    return <TextField label="" value={value} onChange={onChange} onBlur={onBlur} />;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   };
 
+  const onBlur = () => {
+    updateMyData(index, id, value);
+  };
+
+  return <TextField label="" placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} />;
+};
+
+export function Table({ columns, data, updateMyData }: TableProps) {
   const defaultColumn = {
     Cell: EditableCell,
   };
