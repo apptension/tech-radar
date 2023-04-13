@@ -17,8 +17,7 @@ export const HeaderButton = styled.button<{ increasedZindex?: boolean }>`
   align-items: center;
   cursor: pointer;
   padding: 0;
-  margin-bottom: 12px;
-  margin-top: 12px;
+  margin-bottom: 24px;
 `;
 
 export const HeadContainer = styled.div`
