@@ -20,8 +20,11 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
   right: 50%;
   transform: translateX(50%);
   letter-spacing: 0.2em;
+  width: 100%;
+  text-align: center;
 
   ${mediaQuery.desktop} {
+    width: auto;
     right: 39px;
     transform: translateX(0);
   }
@@ -33,6 +36,7 @@ export const Container = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
+  position: relative;
   overflow: hidden;
 `;
 
