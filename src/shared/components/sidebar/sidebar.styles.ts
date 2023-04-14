@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { zIndex } from '../../../theme';
 
 import * as colors from '../../../theme/color';
 import { mediaQuery } from '../../../theme/media';
@@ -44,6 +45,7 @@ export const Toolbar = styled(ToolbarComponent)`
   order: 3;
   margin-top: 12px;
   margin-bottom: 50px;
+  z-index: ${zIndex.overlay};
 
   ${mediaQuery.desktop} {
     margin-top: 0;
