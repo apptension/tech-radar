@@ -1,15 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { useDebouncedCallback } from 'use-debounce';
-
+import { GetInTouch } from '../getInTouch';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../../modules/filters/filters.selectors';
 import { setArea, setLevel, setSearch, setTeam } from '../../../modules/filters/filters.actions';
 import { renderWhenTrue, renderWhenTrueOtherwise } from '../../utils/rendering';
 import { RadarQuadrant, RadarRing, RadarTeam, RadarTechnology } from '../radar/radar.types';
 import { TagSize } from '../tag/tag.types';
 import messages from '../input/input.messages';
-import { INPUT_DEBOUNCE_TIME } from '../input/input.constants';
 import { Input } from '../input';
 import { TechnologiesList } from '../technologiesList';
 import { pluckNameFromList } from '../../utils/radarUtils';
@@ -38,9 +36,6 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
   const searchText = useSelector(selectSearch);
   const hasNoAreaSelected = !areaValue;
 
-  const debouncedOnTextChange = useDebouncedCallback((text: string) => {
-    dispatch(setSearch(text));
-  }, INPUT_DEBOUNCE_TIME);
   const removeArea = () => dispatch(setArea(null));
   const removeLevel = () => dispatch(setLevel(null));
   const removeTeam = () => dispatch(setTeam(null));
@@ -77,7 +72,7 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
       <Input
         withSearchIcon
         placeholder={intl.formatMessage(messages.placeholder)}
-        onChange={debouncedOnTextChange}
+        onChange={(text) => dispatch(setSearch(text))}
         defaultValue={searchText || ''}
       />
       <FiltersContainer>
@@ -89,8 +84,10 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
         technologies={technologies}
         emptyResults={emptyResults}
         rings={rings}
+        teams={teams}
         hasNoAreaSelected={hasNoAreaSelected}
       />
+      {isDesktop && <GetInTouch asPopup />}
       {renderToolbar(!isDesktop)}
     </>
   );

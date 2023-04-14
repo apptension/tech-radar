@@ -1,13 +1,14 @@
 import { IntlShape } from 'react-intl';
 import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
 import { EditedEntry } from '../adminPanel/adminPanel.types';
-import { NewEntryInputs } from './newEntry.component';
 import messages from './newEntry.messages';
+import { NewEntryInputs } from './newEntry.types';
 
 const getIcon = (id: string, name: string) => ({ id, name, description: '', url: '' });
 
 export const prepareNewEntry = (data: NewEntryInputs, iconId?: string): Omit<EditedEntry, 'id'> => ({
   ...data,
+  teams: data.teams.map(({ value }) => value),
   icon: iconId && data.icon ? getIcon(iconId, data.icon.name) : undefined,
   moved: +data.moved,
 });

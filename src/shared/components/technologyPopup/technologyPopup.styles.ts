@@ -40,11 +40,13 @@ export const Title = styled.h3`
   font-weight: 600;
   display: flex;
   align-items: center;
-  margin: 26px 0 0;
+  margin: 0 0 32px 0;
 `;
 
 export const TagsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 
 export const Tag = styled.div`
@@ -54,6 +56,7 @@ export const Tag = styled.div`
   margin-right: 8px;
   font-size: 12px;
   line-height: 12px;
+  text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.2em;
   color: ${color.boulder};
@@ -68,7 +71,7 @@ export const Description = styled.p`
   font-size: 16px;
   line-height: 20px;
   color: ${color.silver};
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   padding-right: 28px;
 `;
 
@@ -145,6 +148,13 @@ const blockStyles = css`
 
 export const Block = styled.div`
   ${blockStyles};
+`;
+
+export const GetInTouchBlock = styled(Block)`
+  padding: 20px;
+  text-align: left;
+  justify-content: flex-start;
+  color: ${color.white};
 `;
 
 export const BlockButton = styled.button<{ isClickAble: boolean }>`

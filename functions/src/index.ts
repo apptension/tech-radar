@@ -17,3 +17,4 @@ export {
   updateUser,
   updateUserProfile,
 } from './routes/airtable';
+export { sendQuarterlyReminder } from './cron-jobs/slack';

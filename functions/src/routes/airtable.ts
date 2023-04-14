@@ -4,19 +4,19 @@ import { getAirtable } from '../services/airtable';
 import { filterSkillsBySearch, filterSkilsByCategoryId, filterUserByEmailFormula } from '../utils/airtable/formulas';
 import { corsHandler } from '../utils/corsHandler';
 import { getIsoDateWithoutTime } from '../utils/time';
-import { SECRET_KEYS } from '../constants/secretKeys';
+import { AIRTABLE_SECRET_KEYS, URL_SECRET_KEYS } from '../constants/secretKeys';
+import { getSecrets } from '../utils/getSecrets';
 
 // * TYPES FOR AIRTABLE OBJECTS ARE SET TO ANY AS AIRTABLE LACKS TYPE DECLARATIONS FOR THEM
 const { BASE, BASE_VIEWS, CATEGORY_FIELDS, SENIORITY_FIELDS, SKILL_FIELDS, USER_FIELDS } = AIRTABLE_FIELDS;
 
 export const getUserPersonalInfo = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       const { email } = req.query;
       airtable(BASE.USERS)
@@ -63,13 +63,12 @@ export const getUserPersonalInfo = functions
   });
 
 export const getUserSkills = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       const { email } = req.query;
       airtable(BASE.USERS)
@@ -96,14 +95,12 @@ export const getUserSkills = functions
   });
 
 export const getSeniorities = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    console.log(process.env.WEBAPP_URL);
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       airtable(BASE.SENIORITIES)
         .select({ view: BASE_VIEWS.GRID_VIEW })
@@ -124,13 +121,12 @@ export const getSeniorities = functions
   });
 
 export const getPositions = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       airtable(BASE.POSITIONS)
         .select({ view: BASE_VIEWS.GRID_VIEW })
@@ -151,13 +147,12 @@ export const getPositions = functions
   });
 
 export const getCategories = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       airtable(BASE.CATEGORIES)
         .select({ view: BASE_VIEWS.GRID, fields: [CATEGORY_FIELDS.NAME, CATEGORY_FIELDS.COLOR] })
@@ -179,14 +174,12 @@ export const getCategories = functions
   });
 
 export const getSkills = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    console.log(process.env.WEBAPP_URL);
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       const { category, search } = req.query;
       const allSkills: any[] = [];
@@ -223,13 +216,12 @@ export const getSkills = functions
   });
 
 export const updateUser = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       const { userId, skills, additionalData, personalData } = req.body;
       const { position, slackId, email, name, seniority } = personalData;
@@ -267,13 +259,12 @@ export const updateUser = functions
   });
 
 export const updateUserProfile = functions
-  .runWith({ secrets: [SECRET_KEYS.AIRTABLE_API_KEY, SECRET_KEYS.AIRTABLE_BASE, SECRET_KEYS.WEBAPP_URL] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...URL_SECRET_KEYS] })
   .https.onRequest(async (req, res) => {
-    corsHandler(process.env.WEBAPP_URL || '')(req, res, async () => {
-      const airtable = getAirtable(
-        process.env[SECRET_KEYS.AIRTABLE_API_KEY] || '',
-        process.env[SECRET_KEYS.AIRTABLE_BASE] || ''
-      );
+    const { AIRTABLE_API_KEY, AIRTABLE_BASE, WEBAPP_URL, WEBAPP_DEV_URL } = getSecrets();
+
+    corsHandler([WEBAPP_URL, WEBAPP_DEV_URL])(req, res, async () => {
+      const airtable = getAirtable(AIRTABLE_API_KEY, AIRTABLE_BASE);
 
       const { userId, position, slackId, email, name, seniority } = req.body;
 

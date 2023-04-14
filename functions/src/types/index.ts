@@ -33,7 +33,7 @@ export interface EntryFieldsData extends EntryBasicFields {
   id?: string;
   quadrant: string;
   ring: string;
-  team: string;
+  teams: string[];
 }
 
 export interface PreparedEntry extends EntryBasicFields {
@@ -41,5 +41,5 @@ export interface PreparedEntry extends EntryBasicFields {
   icon?: PreparedSysField;
   quadrant: PreparedSysField;
   ring: PreparedSysField;
-  team: PreparedSysField;
+  teams: PreparedSysField;
 }

@@ -34,7 +34,7 @@ export const useKnowledgeForm = () => {
     return isEditMode && _.isEqual(assignedSkills, assignedSavedSkills);
   };
 
-  const isDisabled = checkIfIsDisabled();
+  const isSubmitDisabled = checkIfIsDisabled();
 
   useEffect(() => {
     setSkills(savedSkills);
@@ -99,7 +99,7 @@ export const useKnowledgeForm = () => {
     selectedCategory,
     isSearching,
     isEditMode,
-    isDisabled,
+    isSubmitDisabled,
     cancelEdit,
     submit,
     handleCategoryChange,

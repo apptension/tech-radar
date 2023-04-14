@@ -11,4 +11,28 @@ export default defineMessages({
     defaultMessage:
       'Ooops, looks like we don’t have any technologies that match ALL of your filters. Please try a different combination.',
   },
+  results: {
+    id: 'technologiesList.results',
+    defaultMessage: 'Results',
+  },
+  allSkills: {
+    id: 'technologiesList.allSkills',
+    defaultMessage: 'All Skills',
+  },
+  inUseTitle: {
+    id: 'technologiesList.inUseTitle',
+    defaultMessage: 'In use',
+  },
+  provenTitle: {
+    id: 'technologiesList.provenTitle',
+    defaultMessage: 'Proven',
+  },
+  promisingTitle: {
+    id: 'technologiesList.promisingTitle',
+    defaultMessage: 'Promising',
+  },
+  phasedOutTitle: {
+    id: 'technologiesList.phasedOutTitle',
+    defaultMessage: 'Phased Out',
+  },
 });

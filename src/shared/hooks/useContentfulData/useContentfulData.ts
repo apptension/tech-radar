@@ -36,33 +36,42 @@ export const useLastContentfulUpdate = () => {
 };
 
 export const useContentfulData = () => {
+  const { data: teamsData } = useQuery(
+    ['teams'],
+    async () => {
+      try {
+        const { items } = await client.getEntries({ content_type: 'team' });
+        return items as ContentfulTeam[];
+      } catch (error) {
+        reportError(error);
+      }
+    },
+    { refetchOnWindowFocus: false }
+  );
+
   const contentfulQuery = useQuery(
     ['explore'],
     async (): Promise<ContentfulData | undefined> => {
       try {
         const { items } = await client.getEntries({ limit: 1000 });
-
         return items as ContentfulData;
       } catch (error) {
         reportError(error);
       }
     },
-    {
-      refetchOnWindowFocus: false,
-    }
+    { refetchOnWindowFocus: false }
   );
 
   const selectData = getEntries(contentfulQuery.data);
   const technologies = selectData('entry') as ContentfulTechnology[];
   const quadrants = selectData('quadrant') as ContentfulQuadrant[];
   const rings = selectData('ring') as ContentfulRing[];
-  const teams = selectData('team') as ContentfulTeam[];
 
   const radarTechnologies = getRadarTechnologies(technologies);
   const tableRadarTechnologies = getRadarTechnologiesForTable(technologies);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
-  const radarTeams = getRadarTeams(teams);
+  const radarTeams = getRadarTeams(teamsData);
 
   return {
     contentfulQuery,
