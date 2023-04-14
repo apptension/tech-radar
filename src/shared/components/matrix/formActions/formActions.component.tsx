@@ -1,6 +1,8 @@
+import { useIntl } from 'react-intl';
 import { Button } from '../../button';
 import { ButtonSize, ButtonVariant } from '../../button/button.types';
 import { ActionsContainer, NextButton } from './formActions.styles';
+import formActionsMessages from './formActions.messages';
 
 interface WithoutBackButtonProps {
   withoutBackButton: true;
@@ -23,15 +25,18 @@ type FormActionsProps = (WithBackButtonProps | WithoutBackButtonProps) & CommonP
 export const FormActions = ({
   isEditMode = false,
   isLoading = false,
-  nextLabel = 'Next',
+  nextLabel,
   isDisabled = false,
   ...props
 }: FormActionsProps) => {
+  const intl = useIntl();
+  const nextStr = nextLabel ? nextLabel : intl.formatMessage(formActionsMessages.next);
+
   return (
     <ActionsContainer>
       {!props.withoutBackButton && (
         <Button type="button" onClick={props.handleGoBack} size={ButtonSize.LARGE}>
-          {isEditMode ? 'Cancel' : 'Back'}
+          {isEditMode ? intl.formatMessage(formActionsMessages.cancel) : intl.formatMessage(formActionsMessages.back)}
         </Button>
       )}
       <NextButton
@@ -41,7 +46,7 @@ export const FormActions = ({
         variant={ButtonVariant.PRIMARY}
         disabled={isDisabled}
       >
-        {isEditMode ? 'Save' : nextLabel}
+        {isEditMode ? intl.formatMessage(formActionsMessages.save) : nextStr}
       </NextButton>
     </ActionsContainer>
   );

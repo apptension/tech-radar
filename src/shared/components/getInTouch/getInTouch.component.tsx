@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { ReactComponent as PhoneSVG } from '../../../images/icons/phone.svg';
 import { ReactComponent as EnvelopeSVG } from '../../../images/icons/envelope.svg';
 import { Link } from '../link';
@@ -11,6 +12,7 @@ import {
   StyledLink,
   Text,
 } from './getInTouch.styles';
+import getInTouchMessages from './getInTouch.messages';
 
 interface GetInTouchProps {
   asPopup?: boolean;
@@ -19,11 +21,13 @@ interface GetInTouchProps {
 const GET_IN_TOUCH_URL = 'https://www.apptension.com/get-in-touch';
 
 export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
+  const intl = useIntl();
+
   if (asPopup) {
     return (
       <Container>
         <FlexContainer>
-          <Text>Interested in working with Apptension?</Text>
+          <Text>{intl.formatMessage(getInTouchMessages.interestedWorkingWith)}</Text>
           <ContactsContainer>
             <ContactOption>
               <EnvelopeSVG />
@@ -37,7 +41,7 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
           </ContactsContainer>
 
           <StyledLink to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY}>
-            Get in touch
+            {intl.formatMessage(getInTouchMessages.getInTouch)}
           </StyledLink>
         </FlexContainer>
       </Container>
@@ -46,9 +50,9 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
 
   return (
     <FlexContainer>
-      <Text>Interested in working with Apptension?</Text>
+      <Text>{intl.formatMessage(getInTouchMessages.interestedWorkingWith)}</Text>
       <Link to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY}>
-        Get in touch
+        {intl.formatMessage(getInTouchMessages.getInTouch)}
       </Link>
     </FlexContainer>
   );

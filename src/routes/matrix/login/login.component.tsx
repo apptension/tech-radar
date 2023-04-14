@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { ButtonIcon, ButtonSize } from '../../../shared/components/button/button.types';
 import { MatrixHeader } from '../../../shared/components/matrix/matrixHeader';
 import teamPhoto from '../../../images/apptension-team.png';
@@ -14,25 +15,24 @@ import {
   InfoSpacer,
 } from './login.styles';
 import { useLogin } from './useLogin.hook';
+import loginMessages from './login.messages';
 
 export const Login = () => {
   const { signInWithGoogle } = useLogin();
+  const intl = useIntl();
 
   return (
     <main>
       <MatrixHeader />
       <MainContainer>
         <ContentContainer>
-          <Title>Share your expertise with us!</Title>
-          <InfoText>
-            In Apptension we want to create a great workplace where people can try out their knowledge in interesting
-            projects, learn something new and be open to share this experience with others.
-          </InfoText>
+          <Title>{intl.formatMessage(loginMessages.shareExpertise)}</Title>
+          <InfoText>{intl.formatMessage(loginMessages.wantToCreate)}</InfoText>
           <InfoSpacer />
-          <InfoText>You can help us a lot by filling out this form!</InfoText>
+          <InfoText>{intl.formatMessage(loginMessages.youCanHelp)}</InfoText>
 
           <LoginButton size={ButtonSize.LARGE} icon={ButtonIcon.ARROW} onClick={signInWithGoogle}>
-            Log in to start
+            {intl.formatMessage(loginMessages.toStart)}
           </LoginButton>
         </ContentContainer>
         <PhotoContainer>

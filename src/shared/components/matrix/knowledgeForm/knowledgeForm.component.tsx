@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { MatrixSelectField } from '../../fields/matrixSelectField';
 import { OptionWithColor } from '../../fields/matrixSelectField/OptionWithColor';
 import { SingleValueWithColor } from '../../fields/matrixSelectField/SingleValueWithColor';
@@ -6,6 +7,7 @@ import { FormActions } from '../formActions';
 import { FieldsRow, FieldContainer, Form } from './knowledgeForm.styles';
 import { SkillsDnd } from './skillsDnD/skillsDnD.component';
 import { useKnowledgeForm } from './useKnowledgeForm.hook';
+import knowledgeFormMessages from './knowledgeForm.messages';
 
 export const KnowledgeForm = () => {
   const {
@@ -24,6 +26,8 @@ export const KnowledgeForm = () => {
     handleSearchChange,
   } = useKnowledgeForm();
 
+  const intl = useIntl();
+
   return (
     <Form onSubmit={submit}>
       <FieldsRow>
@@ -37,7 +41,13 @@ export const KnowledgeForm = () => {
           />
         </FieldContainer>
         <FieldContainer>
-          <MatrixTextField label="" icon="search" placeholder="Search" value={search} onChange={handleSearchChange} />
+          <MatrixTextField
+            label=""
+            icon="search"
+            placeholder={intl.formatMessage(knowledgeFormMessages.search)}
+            value={search}
+            onChange={handleSearchChange}
+          />
         </FieldContainer>
       </FieldsRow>
 

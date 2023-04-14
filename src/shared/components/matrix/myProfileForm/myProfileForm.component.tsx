@@ -1,4 +1,5 @@
 import { Controller } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../routes/app.constants';
 import { VALIDATION_MESSAGES } from '../../../utils/validationMessages';
@@ -9,11 +10,13 @@ import { MatrixTextField } from '../../fields/matrixTextField';
 import { Loader } from '../../loader';
 import { FormActions } from '../formActions';
 import { FieldContainer, Form } from '../personalInfoForm/personalInfoForm.styles';
+import myProfileFormMessages from './myProfileForm.messages';
 import { ButtonsContainer } from './myProfileForm.styles';
 import { useMyProfileForm } from './useMyProfileForm.hook';
 
 export const MyProfileForm = () => {
   const history = useHistory();
+  const intl = useIntl();
 
   const {
     form: {
@@ -37,7 +40,7 @@ export const MyProfileForm = () => {
     <Form onSubmit={handleSubmit(submit)}>
       <FieldContainer>
         <MatrixTextField
-          label="Your name and surname"
+          label={intl.formatMessage(myProfileFormMessages.nameAndSurnameLabel)}
           error={errors.name?.message}
           {...register('name', { required: VALIDATION_MESSAGES.required })}
           isRequired
@@ -45,7 +48,7 @@ export const MyProfileForm = () => {
       </FieldContainer>
       <FieldContainer>
         <MatrixTextField
-          label="Email"
+          label={intl.formatMessage(myProfileFormMessages.emailLabel)}
           error={errors.email?.message}
           {...register('email', { required: VALIDATION_MESSAGES.required })}
           isDisabled
@@ -53,10 +56,10 @@ export const MyProfileForm = () => {
       </FieldContainer>
       <FieldContainer>
         <MatrixTextField
-          label="Slack Member ID"
+          label={intl.formatMessage(myProfileFormMessages.slackId)}
           error={errors.slackId?.message}
           {...register('slackId')}
-          infoContent='To find your Slack Member ID, please, go to the Profile details in Slack, use "more" icon and select "Copy member ID".'
+          infoContent={intl.formatMessage(myProfileFormMessages.slackIdInfo)}
         />
       </FieldContainer>
       <FieldContainer>
@@ -67,8 +70,8 @@ export const MyProfileForm = () => {
           render={({ field: { onChange, value, ref } }) => (
             <MatrixSelectField
               inputRef={ref}
-              placeholder="Select your position"
-              label="Position"
+              placeholder={intl.formatMessage(myProfileFormMessages.positionPlaceholder)}
+              label={intl.formatMessage(myProfileFormMessages.positionLabel)}
               isRequired
               options={positionOptions}
               error={errors.position?.message}
@@ -86,8 +89,8 @@ export const MyProfileForm = () => {
           render={({ field: { onChange, value, ref } }) => (
             <MatrixSelectField
               inputRef={ref}
-              placeholder="Select your seniority level"
-              label="Seniority level"
+              placeholder={intl.formatMessage(myProfileFormMessages.seniorityPlaceholder)}
+              label={intl.formatMessage(myProfileFormMessages.seniorityLabel)}
               isRequired
               options={seniorityOptions}
               error={errors.seniority?.message}
@@ -98,7 +101,12 @@ export const MyProfileForm = () => {
         />
       </FieldContainer>
       <ButtonsContainer>
-        <FormActions withoutBackButton nextLabel="Save" isDisabled={!isDirty} isLoading={isSubmitting} />
+        <FormActions
+          withoutBackButton
+          nextLabel={intl.formatMessage(myProfileFormMessages.saveLabel)}
+          isDisabled={!isDirty}
+          isLoading={isSubmitting}
+        />
         <Button
           size={ButtonSize.LARGE}
           variant={ButtonVariant.PRIMARY}
@@ -107,7 +115,7 @@ export const MyProfileForm = () => {
           onClick={() => history.push(ROUTES.matrix)}
           icon={ButtonIcon.ARROW}
         >
-          Go to skills matrix
+          {intl.formatMessage(myProfileFormMessages.goToMatrix)}
         </Button>
       </ButtonsContainer>
     </Form>
