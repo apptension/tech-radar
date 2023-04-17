@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { ReactComponent as ChevronDownSVG } from '../../../../images/icons/chevron-down.svg';
 import { useAuthContext } from '../../../../modules/auth/auth.context';
 import { useOutsideClick } from '../../../hooks/useOutsideClick/useOutsideClick.hook';
@@ -8,6 +9,7 @@ import { SettingsTooltip } from './settingsTooltip';
 export const AvatarWithSettings = () => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const avatarRef = useRef(null);
+  const intl = useIntl();
 
   const { user } = useAuthContext();
   useOutsideClick(avatarRef, () => setIsTooltipOpen(false));
@@ -19,7 +21,7 @@ export const AvatarWithSettings = () => {
   return (
     <AvatarContainer ref={avatarRef}>
       <SettingsButton onClick={() => setIsTooltipOpen((isOpen) => !isOpen)}>
-        <Avatar src={user?.avatar} alt="user avatar" />
+        <Avatar src={user?.avatar} alt={intl.formatMessage({ id: 'avatar.user', defaultMessage: 'user avatar' })} />
         <ChevronDownSVG />
       </SettingsButton>
 
