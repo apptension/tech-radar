@@ -1,4 +1,4 @@
-import { useState, UIEvent, useEffect } from 'react';
+import { useState, UIEvent, useEffect, useMemo } from 'react';
 import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +41,7 @@ export const TechnologiesList = ({
 
   const getTechnologyByRing = (ring: TECHNOLOGY_RING) => sortedActiveTechnologies.filter((tech) => tech.ring === ring);
 
-  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+  const sortedTechnologies = useMemo(() => sortBy(compose(toLower, prop('label')), technologies), [technologies]);
   const sortedActiveTechnologies = sortedTechnologies.filter(({ inactive }) => inactive === false);
 
   const technologiesInUse = getTechnologyByRing(TECHNOLOGY_RING.IN_USE);
@@ -92,7 +92,7 @@ export const TechnologiesList = ({
       return searchForNotEmptyGroups();
     }
     setOpenTechnologies([]);
-  }, [searchText]);
+  }, [searchText, sortedTechnologies]);
 
   if (emptyResults.search) {
     return (
