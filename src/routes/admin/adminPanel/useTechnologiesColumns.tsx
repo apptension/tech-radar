@@ -36,7 +36,7 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
       await patchEntry(values, user?.email || '');
       toast.success('Entry updated!');
     } catch (err) {
-      toast.error('There was an error');
+      toast.error('Entry failed to update');
       reportError(err);
     }
     setLoadingIds((ids) => ids.filter((id) => id !== values.id));
