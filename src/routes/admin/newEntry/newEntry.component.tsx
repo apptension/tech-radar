@@ -18,6 +18,7 @@ import {
   getQuadrantOptions,
   getRingsOptions,
   getTeamsOptions,
+  getProjectOptions,
   prepareNewEntry,
 } from './newEntry.utils';
 import { CenteredWrapper, SecondHeader, StyledForm, StyledLink, SubmitButton } from './newEntry.styles';
@@ -26,7 +27,7 @@ import { NewEntryInputs } from './newEntry.types';
 export const NewEntry = () => {
   const { user } = useAdminPanelContext();
   const intl = useIntl();
-  const { radarQuadrants, radarRings, radarTeams } = useContentfulData();
+  const { radarQuadrants, radarRings, radarTeams, radarProjects } = useContentfulData();
   const toast = useToast();
 
   // Index needed for react-select components to reset to defaultValue
@@ -68,6 +69,7 @@ export const NewEntry = () => {
   const quadrantsOptions = getQuadrantOptions(radarQuadrants);
   const ringsOptions = getRingsOptions(radarRings);
   const teamsOptions = getTeamsOptions(radarTeams);
+  const projectOptions = getProjectOptions(radarProjects);
   const movedOptions = getMovedOptions(intl);
 
   return (
@@ -232,6 +234,32 @@ export const NewEntry = () => {
                 label={intl.formatMessage(adminMessages.team)}
                 key={selectIndex}
                 error={errors.teams?.message}
+                {...field}
+                onChange={(newValue) => field.onChange(newValue)}
+                value={field.value}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="projects"
+            rules={{
+              required: {
+                value: true,
+                message: intl.formatMessage({
+                  defaultMessage: 'This field is required',
+                  id: 'NewEntry / Form / Field required',
+                }),
+              },
+            }}
+            render={({ field }) => (
+              <SelectField
+                isMulti
+                options={projectOptions}
+                label={intl.formatMessage(adminMessages.projects)}
+                key={selectIndex}
+                error={errors.projects?.message}
                 {...field}
                 onChange={(newValue) => field.onChange(newValue)}
                 value={field.value}

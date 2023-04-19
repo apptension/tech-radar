@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
+import { RadarProject, RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
 import { EditedEntry } from '../adminPanel/adminPanel.types';
 import messages from './newEntry.messages';
 import { NewEntryInputs } from './newEntry.types';
@@ -21,6 +21,9 @@ export const getRingsOptions = (radarRings: RadarRing[]) =>
   radarRings.map(({ name, id }) => ({ label: name, value: id }));
 
 export const getTeamsOptions = (radarTeams: RadarTeam[]) =>
+  radarTeams.map(({ name, id }) => ({ label: name, value: id }));
+
+export const getProjectOptions = (radarTeams: RadarProject[]) =>
   radarTeams.map(({ name, id }) => ({ label: name, value: id }));
 
 export const getMovedOptions = (intl: IntlShape) => [
