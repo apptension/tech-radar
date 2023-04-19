@@ -9,6 +9,7 @@ const getIcon = (id: string, name: string) => ({ id, name, description: '', url:
 export const prepareNewEntry = (data: NewEntryInputs, iconId?: string): Omit<EditedEntry, 'id'> => ({
   ...data,
   teams: data.teams.map(({ value }) => value),
+  projects: data.projects.map(({ value }) => value),
   icon: iconId && data.icon ? getIcon(iconId, data.icon.name) : undefined,
   moved: +data.moved,
 });

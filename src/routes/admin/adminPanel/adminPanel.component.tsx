@@ -6,11 +6,12 @@ import messages from './adminPanel.messages';
 
 export const AdminPanel = () => {
   const intl = useIntl();
-  const { radarTeams, radarQuadrants, radarRings, tableRadarTechnologies } = useContentfulData();
+  const { radarTeams, radarQuadrants, radarRings, tableRadarTechnologies, radarProjects } = useContentfulData();
   const technologiesColumns = useTechnologiesColumns({
     radarTeams,
     radarQuadrants,
     radarRings,
+    radarProjects,
   });
 
   if (tableRadarTechnologies.length === 0) return <p>{intl.formatMessage(messages.dataNotFound)}</p>;

@@ -23,7 +23,7 @@ interface EntryBasicFields {
   experts: string;
   github: string;
   label: string;
-  projects: string;
+  projects: string[];
   specification: string;
   moved?: number;
 }
