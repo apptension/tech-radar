@@ -13,7 +13,12 @@ export type RadarTechnology = {
   description: string;
   specification: string;
   github: string;
-  projects: string;
+  projects: {
+    name: string;
+    description: string;
+    url: string;
+    image: ContentfulImageSource;
+  }[];
   icon: { id: string; url: string; description: string; name: string };
   alternatives: {
     label: string;
@@ -24,7 +29,7 @@ export type RadarTechnology = {
   experts: string;
 };
 
-export type TableTeam = {
+export type TableSelect = {
   label: string;
   value: string;
 };
@@ -35,11 +40,11 @@ export type TableRadarTechnology = {
   ring: string;
   inactive: boolean;
   id: string;
-  teams: TableTeam[];
+  teams: TableSelect[];
   description: string;
   specification: string;
   github: string;
-  projects: string;
+  projects: TableSelect[];
   icon: { id: string; url: string; description: string; name: string };
   alternatives: {
     label: string;
@@ -53,6 +58,7 @@ export type TableRadarTechnology = {
 export type RadarRing = { id: string; name: string; position: number; description: string };
 export type RadarQuadrant = { id: string; name: string; position: number; description: string };
 export type RadarTeam = { id: string; name: string };
+export type RadarProject = { id: string; name: string; description: string; url: string; image: ContentfulImageSource };
 
 export enum QuadrantPositions {
   bottomRight,
@@ -69,6 +75,10 @@ export enum RingPositions {
 }
 
 export type ContentfulRing = { fields: { label: string; position: RingPositions } };
+
+export type ContentfulProject = {
+  fields: { id: string; name: string; description: string; url: string; image: ContentfulImageSource };
+};
 
 export type ContentfulTeam = { fields: { label: string } };
 
@@ -88,7 +98,7 @@ export type ContentfulTechnologyFields = {
   description: string;
   specification: string;
   github: string;
-  projects: string;
+  projects: string[];
   icon: ContentfulIcon;
   alternatives: ContentfulAlternative[];
   experts: string;
@@ -100,6 +110,12 @@ export type ContentfulTechnology = {
 };
 
 export type ContentfulData = ContentfulTechnology[] | ContentfulRing[] | ContentfulQuadrant[];
+
+export type ContentfulImageSource =
+  | string
+  | { url: string }
+  | { file: { url: string } }
+  | { fields: { file: { url: string } } };
 
 export interface BlipInterface {
   id: string;

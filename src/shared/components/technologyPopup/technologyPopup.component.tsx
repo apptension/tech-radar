@@ -48,7 +48,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     description = '',
     github = '',
     specification = '',
-    projects = '',
+    // projects = [], //TODO Bring back when working on FE part of this task
     alternatives = [],
     experts = '',
   } = technologies.find(({ id }) => id === technologyId) || {};
@@ -60,7 +60,6 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
   const links = [
     { url: github, label: messages.github },
     { url: specification, label: messages.specification },
-    { url: projects, label: messages.projects },
   ].filter(({ url }) => !!url.length);
 
   const renderLinks = renderWhenTrue(() => (

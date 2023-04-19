@@ -35,7 +35,7 @@ export default defineMessages({
   },
   projects: {
     id: 'adminPanel.projectsLabel',
-    defaultMessage: 'project',
+    defaultMessage: 'projects',
   },
   experts: {
     id: 'adminPanel.expertsLabel',
