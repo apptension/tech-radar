@@ -8,6 +8,9 @@ export const Container = styled.div`
   max-width: 350px;
   z-index: ${zIndex.header};
   background-color: ${color.codGray};
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
 `;
 
 export const FlexContainer = styled.div`
@@ -18,6 +21,7 @@ export const FlexContainer = styled.div`
 
 export const LinkContainer = styled.div`
   width: 100%;
+  margin-top: auto;
 `;
 
 export const ContactOption = styled.div`

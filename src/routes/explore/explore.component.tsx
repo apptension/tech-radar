@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { Radar } from '../../shared/components/radar';
 import { useContentfulData, useLastContentfulUpdate } from '../../shared/hooks/useContentfulData/useContentfulData';
 import { TitleTagSize } from '../../shared/components/titleTag/titleTag.types';
-import { getUpdatedRadarTechnologies, pluckNameFromList } from '../../shared/utils/radarUtils';
+import { getUpdatedRadarTechnologies } from '../../shared/utils/radarUtils';
 import { RadarTechnology } from '../../shared/components/radar/radar.types';
 import { Sidebar } from '../../shared/components/sidebar';
 import { selectArea, selectLevel, selectSearch, selectTeam } from '../../modules/filters/filters.selectors';
@@ -20,7 +20,6 @@ import {
   TitleTag,
   Viewer,
   SidebarWrapper,
-  Toolbar,
   Loading,
   Loader,
   LOADING_ANIMATION_MS,
@@ -135,17 +134,6 @@ export const Explore = () => {
     />
   ));
 
-  const renderViewerControls = renderWhenTrue(() => (
-    <>
-      <Toolbar
-        quadrants={radarQuadrants}
-        areaOptions={pluckNameFromList(radarQuadrants)}
-        levelOptions={pluckNameFromList(radarRings)}
-        teamOptions={pluckNameFromList(radarTeams)}
-      />
-    </>
-  ));
-
   const renderError = () => (
     <Error shouldDisplay={displayError}>
       <FormattedMessage {...messages.error} />
@@ -168,7 +156,6 @@ export const Explore = () => {
         </SidebarWrapper>
         <Viewer ref={viewerRef}>
           {renderRadar(isDesktop && isFetched && !!filteredTechnologies.length && !!viewerRef.current)}
-          {isSuccess && renderViewerControls(isDesktop)}
         </Viewer>
       </>
     );

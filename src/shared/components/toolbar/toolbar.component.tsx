@@ -1,16 +1,15 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { renderWhenTrue } from '../../utils/rendering';
-import { selectArea, selectLevel, selectTeam } from '../../../modules/filters/filters.selectors';
-import { setArea, setLevel, setTeam } from '../../../modules/filters/filters.actions';
+import { selectArea, selectTeam } from '../../../modules/filters/filters.selectors';
+import { setArea, setTeam } from '../../../modules/filters/filters.actions';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { toggleQuadrant } from '../../utils/radarUtils';
 import { RadarQuadrant } from '../radar/radar.types';
-import { Container, AreaDropdown, LevelDropdown, TeamDropdown } from './toolbar.styles';
+import { Container, AreaDropdown, TeamDropdown } from './toolbar.styles';
 import messages from './toolbar.messages';
 
 export interface ToolbarProps {
@@ -21,17 +20,10 @@ export interface ToolbarProps {
   className?: string;
 }
 
-export const Toolbar = ({
-  className,
-  quadrants = [],
-  areaOptions = [],
-  levelOptions = [],
-  teamOptions = [],
-}: ToolbarProps) => {
+export const Toolbar = ({ className, quadrants = [], areaOptions = [], teamOptions = [] }: ToolbarProps) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const areaValue = useSelector(selectArea);
-  const levelValue = useSelector(selectLevel);
   const teamValue = useSelector(selectTeam);
 
   const handleUncheckQuadrants = () => {
@@ -42,12 +34,6 @@ export const Toolbar = ({
     handleUncheckQuadrants();
     dispatch(closeTechnologyPopup());
     dispatch(setArea(option));
-  };
-
-  const handleLevelSelect = (option: FilterType) => {
-    handleUncheckQuadrants();
-    dispatch(closeTechnologyPopup());
-    dispatch(setLevel(option));
   };
 
   const handleTeamSelect = (option: FilterType) => {
@@ -65,15 +51,6 @@ export const Toolbar = ({
     />
   ));
 
-  const renderLevelDropdown = renderWhenTrue(() => (
-    <LevelDropdown
-      value={levelValue}
-      onSelect={handleLevelSelect}
-      options={levelOptions}
-      label={intl.formatMessage(messages.levelLabel)}
-    />
-  ));
-
   const renderTeamDropdown = renderWhenTrue(() => (
     <TeamDropdown
       value={teamValue}
@@ -86,8 +63,7 @@ export const Toolbar = ({
   return (
     <Container className={className}>
       {renderAreaDropdown(!isEmpty(areaOptions))}
-      {renderLevelDropdown(!isEmpty(teamOptions))}
-      {renderTeamDropdown(!isEmpty(levelOptions))}
+      {renderTeamDropdown(!isEmpty(teamOptions))}
     </Container>
   );
 };

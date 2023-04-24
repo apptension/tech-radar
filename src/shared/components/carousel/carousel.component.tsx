@@ -3,7 +3,6 @@ import { ReactComponent as ArrowRight } from '../../../images/icons/arrow-right.
 import {
   Header,
   ArrowButton,
-  Box,
   BoxContainer,
   Frame,
   Wrapper,
@@ -13,6 +12,7 @@ import {
   Title,
   Description,
   ArrowLeft,
+  CardLink,
 } from './carousel.styles';
 
 interface CarouselItem {
@@ -39,13 +39,13 @@ export const Carousel = ({ items, title }: CarouselProps) => {
 
   const carouselItems = items.map((item) => {
     return (
-      <Box key={item.url}>
+      <CardLink key={item.url} href={item.url} rel="noopener noreferrer" target="_blank">
         <ThumbnailContainer>
           <Thumbnail src={item.imageSrc} alt={`${item.header} thumbnail`} />
         </ThumbnailContainer>
         <Title>{item.header}</Title>
         <Description>{item.description}</Description>
-      </Box>
+      </CardLink>
     );
   });
 

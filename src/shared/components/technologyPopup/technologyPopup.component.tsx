@@ -7,9 +7,12 @@ import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
 import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { ReactComponent as InfoSVG } from '../../../images/icons/info-circle.svg';
 import { renderWhenTrue } from '../../utils/rendering';
 import { GetInTouch } from '../getInTouch';
 import { Carousel } from '../carousel';
+import { InfoTooltip } from '../infoTooltip';
+import { InfoTooltipSizes } from '../infoTooltip/infoTooltip.component';
 import {
   Container,
   CloseWrapper,
@@ -75,6 +78,9 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
       <BlockExpert>
         {experts} <FormattedMessage {...messages.specialists} />
       </BlockExpert>
+      <InfoTooltip activator={<InfoSVG />} size={InfoTooltipSizes.BIG}>
+        <FormattedMessage {...messages.expertsAmount} />
+      </InfoTooltip>
     </Block>
   ));
 
@@ -120,16 +126,19 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
         {renderDescription(!!description.length)}
         {renderExperts(!!experts.length)}
         {renderProjects(!!projects.length)}
-        <GetInTouchContainer>
-          {!isDesktop ? (
-            <GetInTouch />
-          ) : (
+      </Body>
+      <GetInTouchContainer>
+        {!isDesktop ? (
+          <GetInTouch />
+        ) : (
+          <>
             <GetInTouchBlock>
               <GetInTouch />
             </GetInTouchBlock>
-          )}
-        </GetInTouchContainer>
-      </Body>
+            <GetInTouch asPopup />
+          </>
+        )}
+      </GetInTouchContainer>
     </Container>
   );
 };

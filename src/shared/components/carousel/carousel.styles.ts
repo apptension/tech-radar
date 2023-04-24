@@ -18,7 +18,7 @@ export const Frame = styled.div`
   overflow: hidden;
 `;
 
-export const Box = styled.div`
+export const CardLink = styled.a`
   box-sizing: border-box;
   width: 100%;
   flex-shrink: 0;
@@ -26,6 +26,10 @@ export const Box = styled.div`
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${color.white};
 `;
 
 export const BoxContainer = styled.div`

@@ -34,4 +34,9 @@ export default defineMessages({
     id: 'technologyPopup.readLess',
     defaultMessage: 'Read less',
   },
+  expertsAmount: {
+    id: 'technologyPopup.expertsAmount',
+    defaultMessage:
+      'Amount of people in our company who are knowledgeable about this technology, with skills on a medium or higher level.',
+  },
 });

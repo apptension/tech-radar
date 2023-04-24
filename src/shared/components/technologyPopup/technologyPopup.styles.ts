@@ -5,6 +5,8 @@ import { transition } from '../../utils/constants';
 import { ReactComponent as ChevronDownIcon } from '../../../images/icons/chevron-down.svg';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   ${scrollbar.customScrollbar};
   background-color: ${color.mineShaft2};
   position: relative;
@@ -35,6 +37,7 @@ export const Body = styled.div`
   margin-right: -20px;
   padding-right: 20px;
   max-height: calc(100% - 78px);
+  height: fit-content;
   ${mediaQuery.desktop} {
     max-height: 100%;
   }
@@ -129,7 +132,11 @@ const blockStyles = css`
 export const Block = styled.div`
   display: flex;
   ${blockStyles};
+  justify-content: space-between;
+  flex-direction: row;
   width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
 `;
 
 export const GetInTouchBlock = styled(Block)`
@@ -142,6 +149,7 @@ export const GetInTouchBlock = styled(Block)`
 `;
 
 export const GetInTouchContainer = styled(BlockWrapper)`
+  margin-top: auto;
   margin-bottom: 0;
 `;
 
@@ -152,5 +160,5 @@ export const BlockExpert = styled.h2`
   color: ${color.white};
   width: 100%;
   margin: 0;
-  padding: 0 6px;
+  padding-right: 0;
 `;
