@@ -32,7 +32,7 @@ export type EditedEntry = {
   iconUpload?: File;
   id?: string;
   label: string;
-  projects: string;
+  projects: string[];
   quadrant: string;
   ring: string;
   specification: string;

@@ -5,7 +5,7 @@ import { patchEntry } from '../../../shared/services/api/endpoints/contentful';
 import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
 import { Button } from '../../../shared/components/button';
 import { FileDropField } from '../../../shared/components/fields/FileDropField';
-import { RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
+import { RadarProject, RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
 import { SelectField } from '../../../shared/components/fields/SelectField';
 import {
   HEIGHT,
@@ -21,9 +21,15 @@ interface CreateTechnologiesColumnsProps {
   radarTeams: RadarTeam[];
   radarQuadrants: RadarQuadrant[];
   radarRings: RadarRing[];
+  radarProjects: RadarProject[];
 }
 
-export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings }: CreateTechnologiesColumnsProps) => {
+export const useTechnologiesColumns = ({
+  radarTeams,
+  radarQuadrants,
+  radarRings,
+  radarProjects,
+}: CreateTechnologiesColumnsProps) => {
   const intl = useIntl();
   const { user } = useAdminPanelContext();
   const toast = useToast();
@@ -36,7 +42,7 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
       await patchEntry(values, user?.email || '');
       toast.success('Entry updated!');
     } catch (err) {
-      toast.error('There was an error');
+      toast.error('Entry failed to update');
       reportError(err);
     }
     setLoadingIds((ids) => ids.filter((id) => id !== values.id));
@@ -104,14 +110,15 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
         },
         {
           Header: intl.formatMessage(messages.projects),
-          accessor: 'project',
-          Cell: ({ value, updateMyData, row, column }) => (
-            <EditableCell
+          accessor: 'projects',
+          Cell: ({ value, updateMyData, row: { id }, column: { Header } }) => (
+            <SelectField
+              label=""
+              styles={{ container: (base) => ({ ...base, minWidth: 350 }) }}
+              isMulti
+              options={radarProjects.map(({ id, name }) => ({ label: name, value: id }))}
+              onChange={(newValue) => updateMyData(parseInt(id), Header, newValue)}
               value={value}
-              column={column}
-              row={row}
-              updateMyData={updateMyData}
-              placeholder="https://example.com/"
             />
           ),
         },
@@ -159,7 +166,11 @@ export const useTechnologiesColumns = ({ radarTeams, radarQuadrants, radarRings 
             <Button
               isLoading={loadingIds.includes(values.id)}
               onClick={() =>
-                handleEdit({ ...values, teams: values.teams.map(({ value }: { value: string }) => value) })
+                handleEdit({
+                  ...values,
+                  teams: values.teams.map(({ value }: { value: string }) => value),
+                  projects: values.projects.map(({ value }: { value: string }) => value),
+                })
               }
             >
               {intl.formatMessage(messages.save)}

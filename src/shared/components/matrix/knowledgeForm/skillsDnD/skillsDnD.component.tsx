@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { Dispatch, SetStateAction } from 'react';
 import { Draggable, Droppable } from '../../../dnd';
@@ -5,6 +6,7 @@ import { Skills } from '../../knowledgeForm/useKnowledgeForm.hook';
 import { SkillTag } from '../../skillTag';
 import { ValueBox } from '../../valueBox';
 import { DnDInfoContent } from '../../dndInfoContent/dndInfoContent.component';
+import knowledgeFormMessages from '../knowledgeForm.messages';
 import { BoxesContainer } from './skillsDnD.styles';
 import { useSkillsDnd } from './useSkillsDnd.hook';
 
@@ -26,6 +28,7 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
     skills,
     setSkills,
   });
+  const intl = useIntl();
 
   const renderSkills = (type: keyof Skills) =>
     skills[type]
@@ -44,7 +47,7 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
     <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} sensors={sensors}>
       <Droppable id={DND_CONTAINER_ID.ROOT}>
         <ValueBox
-          label="Skills to choose from"
+          label={intl.formatMessage(knowledgeFormMessages.skillsToChoose)}
           isLoading={isLoading}
           maxContentHeight="250px"
           infoContent={<DnDInfoContent type="root" />}
@@ -60,19 +63,31 @@ export const SkillsDnd = ({ skills, setSkills, isLoading }: SkillsDndProps) => {
 
       <BoxesContainer>
         <Droppable id={DND_CONTAINER_ID.EXPERT}>
-          <ValueBox label="Expert" isLoading={isLoading} infoContent={<DnDInfoContent type="expert" />}>
+          <ValueBox
+            label={intl.formatMessage(knowledgeFormMessages.expertLabel)}
+            isLoading={isLoading}
+            infoContent={<DnDInfoContent type="expert" />}
+          >
             {renderSkills('expert')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.INTERMEDIATE}>
-          <ValueBox label="Intermediate" isLoading={isLoading} infoContent={<DnDInfoContent type="intermediate" />}>
+          <ValueBox
+            label={intl.formatMessage(knowledgeFormMessages.intermediateLabel)}
+            isLoading={isLoading}
+            infoContent={<DnDInfoContent type="intermediate" />}
+          >
             {renderSkills('intermediate')}
           </ValueBox>
         </Droppable>
 
         <Droppable id={DND_CONTAINER_ID.SHALLOW}>
-          <ValueBox label="Shallow" isLoading={isLoading} infoContent={<DnDInfoContent type="shallow" />}>
+          <ValueBox
+            label={intl.formatMessage(knowledgeFormMessages.shallowLabel)}
+            isLoading={isLoading}
+            infoContent={<DnDInfoContent type="shallow" />}
+          >
             {renderSkills('shallow')}
           </ValueBox>
         </Droppable>

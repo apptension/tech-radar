@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { useIntl } from 'react-intl';
 import { StyledSpan, PaginationWrapper, StyledInput, StyledFirstWord } from './tablePagination.styles';
 
 interface TablePaginationProps {
@@ -26,6 +27,8 @@ export const TablePagination = ({
   pageSize,
   setPageSize,
 }: TablePaginationProps) => {
+  const intl = useIntl();
+
   const handleGoToPage = (e: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -74,7 +77,7 @@ export const TablePagination = ({
       <select value={pageSize} onChange={handlePageSize}>
         {[10, 20, 30, 40, 50].map((pageSize) => (
           <option key={pageSize} value={pageSize}>
-            Show {pageSize}
+            {intl.formatMessage({ id: 'tablePagination.show', defaultMessage: 'Show' })} {pageSize}
           </option>
         ))}
       </select>

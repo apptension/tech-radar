@@ -1,4 +1,4 @@
-import { TableTeam } from '../../../shared/components/radar/radar.types';
+import { TableSelect } from '../../../shared/components/radar/radar.types';
 import { AlternativesTableType } from '../adminPanel/adminPanel.types';
 
 export type NewEntryInputs = {
@@ -8,10 +8,10 @@ export type NewEntryInputs = {
   description: string;
   specification: string;
   github: string;
-  projects: string;
+  projects: TableSelect[];
   icon?: File;
   alternatives: AlternativesTableType[];
   experts: string;
-  teams: TableTeam[];
+  teams: TableSelect[];
   moved: string;
 };

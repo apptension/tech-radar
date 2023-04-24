@@ -1,4 +1,4 @@
-import { useState, UIEvent } from 'react';
+import { useState, UIEvent, useEffect, useMemo } from 'react';
 import { sortBy, prop, toLower, compose, isEmpty } from 'ramda';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,8 @@ interface TechnologiesListProps {
   hasNoAreaSelected: boolean;
 }
 
+const DEFULAT_OPENED_TECHNOLOGY_GROUP = [TECHNOLOGY_RING.IN_USE];
+
 export const TechnologiesList = ({
   technologies,
   emptyResults,
@@ -32,12 +34,14 @@ export const TechnologiesList = ({
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
+  const [openTechnologies, setOpenTechnologies] = useState<TECHNOLOGY_RING[]>(DEFULAT_OPENED_TECHNOLOGY_GROUP);
+
   const dispatch = useDispatch();
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const getTechnologyByRing = (ring: TECHNOLOGY_RING) => sortedActiveTechnologies.filter((tech) => tech.ring === ring);
 
-  const sortedTechnologies = sortBy(compose(toLower, prop('label')), technologies);
+  const sortedTechnologies = useMemo(() => sortBy(compose(toLower, prop('label')), technologies), [technologies]);
   const sortedActiveTechnologies = sortedTechnologies.filter(({ inactive }) => inactive === false);
 
   const technologiesInUse = getTechnologyByRing(TECHNOLOGY_RING.IN_USE);
@@ -69,6 +73,27 @@ export const TechnologiesList = ({
     setScrollBottomReached(scrollTop >= scrollBottom);
   };
 
+  const handleOpenList = (ring: TECHNOLOGY_RING) => {
+    if (openTechnologies.includes(ring)) {
+      return setOpenTechnologies((list) => list.filter((item) => item !== ring));
+    }
+    setOpenTechnologies((list) => [...list, ring]);
+  };
+
+  const searchForNotEmptyGroups = () => {
+    const notEmptyGroups = technologiesList.filter(({ technologies }) => technologies.length > 0);
+
+    setOpenTechnologies(notEmptyGroups.map(({ ring }) => ring));
+  };
+
+  useEffect(() => {
+    if (!searchText) return setOpenTechnologies(DEFULAT_OPENED_TECHNOLOGY_GROUP);
+    if (searchText?.length >= 1) {
+      return searchForNotEmptyGroups();
+    }
+    setOpenTechnologies([]);
+  }, [searchText, sortedTechnologies]);
+
   if (emptyResults.search) {
     return (
       <EmptyResults>
@@ -99,7 +124,14 @@ export const TechnologiesList = ({
         )}
 
         {technologiesList.map(({ ring, technologies, title }) => (
-          <TechnologyGroup key={title} title={title} amount={technologies.length} infoContent={rings[ring].description}>
+          <TechnologyGroup
+            key={title}
+            title={title}
+            amount={technologies.length}
+            infoContent={rings[ring].description}
+            isOpen={openTechnologies.includes(ring)}
+            setIsOpen={() => handleOpenList(ring)}
+          >
             {technologies.map((technology) => (
               <TechnologyListItem
                 amountOfTeams={teams.length}

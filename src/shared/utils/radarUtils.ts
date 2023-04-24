@@ -5,12 +5,14 @@ import { RADAR_SEED, RADAR_SEED_MULTIPLIER } from '../components/radar/radar.con
 import {
   BlipInterface,
   BubbleInterface,
+  ContentfulProject,
   ContentfulQuadrant,
   ContentfulRing,
   ContentfulTeam,
   ContentfulTechnology,
   MinMaxFunction,
   Point,
+  RadarProject,
   RadarQuadrant,
   RadarRing,
   RadarTeam,
@@ -249,6 +251,24 @@ const getTeams = (item: ContentfulTechnology) => {
   return teams.map((team) => pathOr('', ['fields', 'label'], team));
 };
 
+const getTableProjects = (item: ContentfulTechnology) => {
+  const projects = pathOr([], ['fields', 'projects'], item);
+  return projects.map((project) => ({
+    label: pathOr('', ['fields', 'name'], project),
+    value: pathOr('', ['sys', 'id'], project),
+  }));
+};
+
+const getProjects = (item: ContentfulTechnology) => {
+  const projects = pathOr([], ['fields', 'projects'], item);
+  return projects.map((project) => ({
+    name: pathOr('', ['fields', 'name'], project),
+    description: pathOr('', ['fields', 'description'], project),
+    url: pathOr('', ['fields', 'url'], project),
+    image: pathOr('', ['fields', 'image'], project),
+  }));
+};
+
 export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
   const radarTechnologies: RadarTechnology[] = [];
 
@@ -259,7 +279,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
       description: pathOr('', ['fields', 'description'], item),
       specification: pathOr('', ['fields', 'specification'], item),
       github: pathOr('', ['fields', 'github'], item),
-      projects: pathOr('', ['fields', 'projects'], item),
+      projects: getProjects(item as ContentfulTechnology),
       experts: pathOr('', ['fields', 'experts'], item),
       icon: getIcon(item as ContentfulTechnology),
       alternatives: getAlternatives(item as ContentfulTechnology),
@@ -283,7 +303,7 @@ export const getRadarTechnologiesForTable = (technologies: ContentfulTechnology[
       description: pathOr('', ['fields', 'description'], item),
       specification: pathOr('', ['fields', 'specification'], item),
       github: pathOr('', ['fields', 'github'], item),
-      projects: pathOr('', ['fields', 'projects'], item),
+      projects: getTableProjects(item as ContentfulTechnology),
       experts: pathOr('', ['fields', 'experts'], item),
       icon: getIcon(item as ContentfulTechnology),
       alternatives: getAlternatives(item as ContentfulTechnology),
@@ -340,6 +360,22 @@ export const getRadarQuadrants = (quadrants: ContentfulQuadrant[]) => {
     quadrants
   );
   return sortBy(prop('position'), radarQuadrants);
+};
+
+export const getRadarProjects = (projects: ContentfulProject[] | undefined) => {
+  const radarProjects: RadarProject[] = [];
+  forEachObjIndexed(
+    (item) =>
+      radarProjects.push({
+        id: pathOr('', ['sys', 'id'], item),
+        name: pathOr('', ['fields', 'name'], item),
+        description: pathOr('', ['fields', 'description'], item),
+        url: pathOr('', ['fields', 'url'], item),
+        image: pathOr('', ['fields', 'image'], item),
+      }),
+    projects
+  );
+  return radarProjects;
 };
 
 export const pluckNameFromList = (list: RadarRing[] | RadarQuadrant[] | RadarTeam[]) => pluck('name', list);

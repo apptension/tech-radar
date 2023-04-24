@@ -8,6 +8,7 @@ import {
   ContentfulTechnology,
   ContentfulData,
   ContentfulTeam,
+  ContentfulProject,
 } from '../../components/radar/radar.types';
 import {
   getRadarQuadrants,
@@ -15,6 +16,7 @@ import {
   getRadarTeams,
   getRadarTechnologies,
   getRadarTechnologiesForTable,
+  getRadarProjects,
 } from '../../utils/radarUtils';
 import { getLastUpdate } from '../../services/api/endpoints/contentful';
 
@@ -66,12 +68,14 @@ export const useContentfulData = () => {
   const technologies = selectData('entry') as ContentfulTechnology[];
   const quadrants = selectData('quadrant') as ContentfulQuadrant[];
   const rings = selectData('ring') as ContentfulRing[];
+  const projects = selectData('project') as ContentfulProject[];
 
   const radarTechnologies = getRadarTechnologies(technologies);
   const tableRadarTechnologies = getRadarTechnologiesForTable(technologies);
   const radarQuadrants = getRadarQuadrants(quadrants);
   const radarRings = getRadarRings(rings);
   const radarTeams = getRadarTeams(teamsData);
+  const radarProjects = getRadarProjects(projects);
 
   return {
     contentfulQuery,
@@ -79,6 +83,7 @@ export const useContentfulData = () => {
     radarQuadrants,
     radarRings,
     radarTeams,
+    radarProjects,
     tableRadarTechnologies,
   };
 };

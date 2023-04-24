@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { InfoText, Title, TitleContainer } from './titleHeader.styles';
 
 interface HeaderProps {
   title: string;
-  content: string;
+  content: ReactNode;
 }
 
 export const TitleHeader = ({ title, content }: HeaderProps) => {
