@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'explore.error',
     defaultMessage: 'Sorry, we’ve encountered an error while fetching the data. Please refresh the page and try again!',
   },
+  getInTouch: {
+    id: 'explore.getInTouch',
+    defaultMessage: 'Get in touch',
+  },
 });

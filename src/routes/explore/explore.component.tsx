@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isEmpty } from 'ramda';
 import { useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
@@ -185,7 +185,9 @@ export const Explore = () => {
       {isMobile ? (
         <GetInTouchButton variant={ButtonVariant.PRIMARY} icon={ButtonIcon.GET_IN_TOUCH} />
       ) : isDesktop ? null : (
-        <GetInTouchButton variant={ButtonVariant.PRIMARY}>Get in touch</GetInTouchButton>
+        <GetInTouchButton variant={ButtonVariant.PRIMARY} icon={ButtonIcon.GET_IN_TOUCH}>
+          <FormattedMessage {...messages.getInTouch} />
+        </GetInTouchButton>
       )}
 
       {renderContent()}

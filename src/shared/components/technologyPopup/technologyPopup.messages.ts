@@ -18,8 +18,20 @@ export default defineMessages({
     id: 'technologyPopup.alternatives',
     defaultMessage: 'Alternatives',
   },
-  experts: {
-    id: 'technologyPopup.experts',
-    defaultMessage: 'Experts',
+  specialists: {
+    id: 'technologyPopup.specialists',
+    defaultMessage: 'specialists available',
+  },
+  ourProjects: {
+    id: 'technologyPopup.ourProjects',
+    defaultMessage: 'Our projects',
+  },
+  readMore: {
+    id: 'technologyPopup.readMore',
+    defaultMessage: 'Read more',
+  },
+  readLess: {
+    id: 'technologyPopup.readLess',
+    defaultMessage: 'Read less',
   },
 });

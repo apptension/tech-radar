@@ -1,16 +1,15 @@
-import React from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
 import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
-import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { renderWhenTrue } from '../../utils/rendering';
 import { GetInTouch } from '../getInTouch';
-import { TechnologyId } from '../../../modules/technologyPopup/technologyPopup.types';
+import { Carousel } from '../carousel';
 import {
   Container,
   CloseWrapper,
@@ -19,24 +18,33 @@ import {
   Tag,
   TechnologyIcon,
   Description,
-  LinksWrapper,
-  Link,
-  BlocksWrapper,
   Block,
-  BlockButton,
-  BlockIcon,
-  BlockLabel,
-  BlockTitle,
   BlockExpert,
   GetInTouchBlock,
+  ReadMoreButton,
+  IconContainer,
+  ChevronIcon,
+  BlockWrapper,
+  Head,
+  Body,
+  GetInTouchContainer,
 } from './technologyPopup.styles';
 import messages from './technologyPopup.messages';
+
+const MAX_DESCRIPTION_LENGTH = 100;
+
+const truncate = (words: string) => {
+  if (words.length <= MAX_DESCRIPTION_LENGTH) return words;
+  return `${words.slice(0, MAX_DESCRIPTION_LENGTH)} …`;
+};
 
 export interface TechnologyPopupProps {
   technologies: RadarTechnology[];
 }
 
 export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const intl = useIntl();
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const dispatch = useDispatch();
   const technologyId = useSelector(selectTechnologyId);
@@ -46,87 +54,82 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     teams = [],
     icon,
     description = '',
-    github = '',
-    specification = '',
-    // projects = [], //TODO Bring back when working on FE part of this task
-    alternatives = [],
+    projects = [],
     experts = '',
   } = technologies.find(({ id }) => id === technologyId) || {};
   const handleClosePopup = () => dispatch(closeTechnologyPopup());
-  const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
 
   const renderIcon = renderWhenTrue(() => <TechnologyIcon src={icon?.url} alt={icon?.description} />);
 
-  const links = [
-    { url: github, label: messages.github },
-    { url: specification, label: messages.specification },
-  ].filter(({ url }) => !!url.length);
-
-  const renderLinks = renderWhenTrue(() => (
-    <LinksWrapper>
-      {links.map(({ url, label }, index) => (
-        <Link href={url} target="_blank" key={index}>
-          <span>
-            <FormattedMessage {...label} />
-          </span>
-        </Link>
-      ))}
-    </LinksWrapper>
-  ));
-
-  const renderAlternativeBlocks = renderWhenTrue(() =>
-    alternatives.map(({ id, icon, label, description }, index) => (
-      <BlockButton onClick={() => handleOpenPopup(id)} isClickAble={!!description} key={index}>
-        <BlockTitle>
-          <FormattedMessage {...messages.alternatives} />
-        </BlockTitle>
-        {icon.url && <BlockIcon src={icon.url} alt={icon.description} />}
-        <BlockLabel>{label}</BlockLabel>
-      </BlockButton>
-    ))
-  );
+  const projectsCarouselList = projects.map((project) => {
+    return {
+      header: project.name,
+      description: project.description,
+      imageSrc: `https:${project.image}`,
+      url: project.url,
+    };
+  });
 
   const renderExpertsBlock = renderWhenTrue(() => (
     <Block>
-      <BlockTitle>
-        <FormattedMessage {...messages.experts} />
-      </BlockTitle>
-      <BlockExpert>{experts}</BlockExpert>
+      <BlockExpert>
+        {experts} <FormattedMessage {...messages.specialists} />
+      </BlockExpert>
     </Block>
   ));
 
-  const renderBlocks = renderWhenTrue(() => (
-    <BlocksWrapper>
-      {renderAlternativeBlocks(!!alternatives.length)}
-      {renderExpertsBlock(!!experts)}
-    </BlocksWrapper>
+  const renderDescription = renderWhenTrue(() => (
+    <BlockWrapper>
+      <Description>{showFullDescription ? description : truncate(description)}</Description>
+      {description.length > MAX_DESCRIPTION_LENGTH && (
+        <ReadMoreButton onClick={() => setShowFullDescription((show) => !show)}>
+          {intl.formatMessage(showFullDescription ? messages.readLess : messages.readMore)}{' '}
+          <IconContainer isDown={!showFullDescription}>
+            <ChevronIcon />
+          </IconContainer>
+        </ReadMoreButton>
+      )}
+    </BlockWrapper>
+  ));
+
+  const renderExperts = renderWhenTrue(() => <BlockWrapper>{renderExpertsBlock(!!experts)}</BlockWrapper>);
+  const renderProjects = renderWhenTrue(() => (
+    <BlockWrapper>
+      <Carousel items={projectsCarouselList} title={intl.formatMessage(messages.ourProjects)} />
+    </BlockWrapper>
   ));
 
   return (
     <Container>
-      <CloseWrapper onClick={handleClosePopup}>
-        <CloseSVG />
-      </CloseWrapper>
-      <Title>
-        {label}
-        {renderIcon(!!icon)}
-      </Title>
-      <TagsWrapper>
-        <Tag>{ringLabel}</Tag>
-        {teams.map((team) => (
-          <Tag key={team}>{team}</Tag>
-        ))}
-      </TagsWrapper>
-      <Description>{description}</Description>
-      {renderLinks(!!links)}
-      {renderBlocks(!!experts.length || !!alternatives.length)}
-      {!isDesktop ? (
-        <GetInTouch />
-      ) : (
-        <GetInTouchBlock>
-          <GetInTouch />
-        </GetInTouchBlock>
-      )}
+      <Head>
+        <CloseWrapper onClick={handleClosePopup}>
+          <CloseSVG />
+        </CloseWrapper>
+        <Title>
+          {label}
+          {renderIcon(!!icon)}
+        </Title>
+      </Head>
+      <Body>
+        <TagsWrapper>
+          <Tag>{ringLabel}</Tag>
+          {teams.map((team) => (
+            <Tag key={team}>{team}</Tag>
+          ))}
+        </TagsWrapper>
+        {renderDescription(!!description.length)}
+        {renderExperts(!!experts.length)}
+        {renderProjects(!!projects.length)}
+        <GetInTouchContainer>
+          {!isDesktop ? (
+            <GetInTouch />
+          ) : (
+            <GetInTouchBlock>
+              <GetInTouch />
+            </GetInTouchBlock>
+          )}
+        </GetInTouchContainer>
+      </Body>
     </Container>
   );
 };

@@ -1,16 +1,15 @@
 import { useIntl } from 'react-intl';
 import { ReactComponent as PhoneSVG } from '../../../images/icons/phone.svg';
 import { ReactComponent as EnvelopeSVG } from '../../../images/icons/envelope.svg';
-import { Link } from '../link';
-import { ButtonVariant } from '../button/button.types';
+import { ButtonIcon, ButtonVariant } from '../button/button.types';
 import {
   ContactOption,
   ContactsContainer,
   ContactText,
   Container,
   FlexContainer,
+  LinkContainer,
   StyledLink,
-  Text,
 } from './getInTouch.styles';
 import getInTouchMessages from './getInTouch.messages';
 
@@ -27,7 +26,6 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
     return (
       <Container>
         <FlexContainer>
-          <Text>{intl.formatMessage(getInTouchMessages.interestedWorkingWith)}</Text>
           <ContactsContainer>
             <ContactOption>
               <EnvelopeSVG />
@@ -40,7 +38,7 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
             </ContactOption>
           </ContactsContainer>
 
-          <StyledLink to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY}>
+          <StyledLink to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY} icon={ButtonIcon.GET_IN_TOUCH}>
             {intl.formatMessage(getInTouchMessages.getInTouch)}
           </StyledLink>
         </FlexContainer>
@@ -49,11 +47,10 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
   }
 
   return (
-    <FlexContainer>
-      <Text>{intl.formatMessage(getInTouchMessages.interestedWorkingWith)}</Text>
-      <Link to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY}>
+    <LinkContainer>
+      <StyledLink to={GET_IN_TOUCH_URL} variant={ButtonVariant.PRIMARY} icon={ButtonIcon.GET_IN_TOUCH}>
         {intl.formatMessage(getInTouchMessages.getInTouch)}
-      </Link>
-    </FlexContainer>
+      </StyledLink>
+    </LinkContainer>
   );
 };
