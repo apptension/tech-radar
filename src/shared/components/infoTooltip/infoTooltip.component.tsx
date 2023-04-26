@@ -1,14 +1,25 @@
 import { MouseEvent, ReactNode, useState } from 'react';
 import { ChildrenContainer, TooltipContainer } from './infoTooltip.styles';
 
+export enum InfoTooltipSizes {
+  SMALL = 'small',
+  BIG = 'big',
+}
 interface InfoTooltipProps {
   children: ReactNode;
   activator: ReactNode;
+  size?: InfoTooltipSizes;
   handleMouseEnter?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void;
   handleMouseLeave?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void;
 }
 
-export const InfoTooltip = ({ children, activator, handleMouseEnter, handleMouseLeave }: InfoTooltipProps) => {
+export const InfoTooltip = ({
+  children,
+  activator,
+  handleMouseEnter,
+  handleMouseLeave,
+  size = InfoTooltipSizes.SMALL,
+}: InfoTooltipProps) => {
   const [isActive, setIsActive] = useState(false);
 
   const onMouseEnter: InfoTooltipProps['handleMouseEnter'] = (e) => {
@@ -24,7 +35,7 @@ export const InfoTooltip = ({ children, activator, handleMouseEnter, handleMouse
   return (
     <ChildrenContainer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {activator}
-      {isActive && <TooltipContainer>{children}</TooltipContainer>}
+      {isActive && <TooltipContainer isSmall={size === InfoTooltipSizes.SMALL}>{children}</TooltipContainer>}
     </ChildrenContainer>
   );
 };

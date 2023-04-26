@@ -80,6 +80,7 @@ export const OutIcon = styled(OutIconSVG)``;
 export const ArrowIcon = styled(ArrowIconSVG)`
   width: 24px;
   height: 14px;
+  color: ${color.white};
 `;
 
 export const GetInTouchIcon = styled(GetInTouchSVG)``;
@@ -124,8 +125,8 @@ ${theme('isDisabled', {
   &::before {
     content: '';
     display: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'none' : 'block')};
-    width: calc(100% + 2px);
-    height: calc(100% + 2px);
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: -1px;
     left: -1px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { color, zIndex } from '../../../theme';
-import { BoldRegularText, H1small } from '../../../theme/typography';
+import { BoldRegularText } from '../../../theme/typography';
 import { Link } from '../link';
 
 export const Container = styled.div`
@@ -8,8 +8,9 @@ export const Container = styled.div`
   max-width: 350px;
   z-index: ${zIndex.header};
   background-color: ${color.codGray};
-  border: 1px solid ${color.white};
-  padding: 40px 30px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
 `;
 
 export const FlexContainer = styled.div`
@@ -18,8 +19,9 @@ export const FlexContainer = styled.div`
   flex-direction: column;
 `;
 
-export const Text = styled.p`
-  ${H1small};
+export const LinkContainer = styled.div`
+  width: 100%;
+  margin-top: auto;
 `;
 
 export const ContactOption = styled.div`

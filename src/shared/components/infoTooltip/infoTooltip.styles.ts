@@ -6,7 +6,7 @@ export const ChildrenContainer = styled.div`
   display: flex;
 `;
 
-export const TooltipContainer = styled.div`
+export const TooltipContainer = styled.div<{ isSmall: boolean }>`
   ${CaptionMedium};
   position: absolute;
   background-color: ${color.mineShaft2};
@@ -15,6 +15,8 @@ export const TooltipContainer = styled.div`
   z-index: ${zIndex.overlay};
   margin-top: 28px;
   max-width: 515px;
+  min-width: ${({ isSmall }) => (isSmall ? 'unset' : '300px')};
   white-space: pre-wrap;
   text-align: left;
+  z-index: 300;
 `;

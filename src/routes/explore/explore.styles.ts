@@ -2,9 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { color, zIndex } from '../../theme';
 import { TitleTag as TitleTagComponent } from '../../shared/components/titleTag';
-import { Toolbar as ToolbarComponent } from '../../shared/components/toolbar';
 import { Loader as LoaderComponent } from '../../shared/components/loader';
-import { SIDEBAR_WIDTH } from '../../shared/components/radar/radar.constants';
 import { mediaQuery } from '../../theme/media';
 import { tooltipDelay, transition } from '../../shared/utils/constants';
 import { LastUpdateInfo } from '../../shared/components/lastUpdateInfo';
@@ -27,6 +25,8 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
     width: auto;
     right: 39px;
     transform: translateX(0);
+    top: 90px;
+    right: 39px;
   }
 `;
 
@@ -81,15 +81,6 @@ export const Viewer = styled.div`
   ${mediaQuery.desktop} {
     display: flex;
   }
-`;
-
-export const Toolbar = styled(ToolbarComponent)`
-  position: absolute;
-  left: calc(50% + ${SIDEBAR_WIDTH / 2}px);
-  transform: translateX(-50%);
-  bottom: 24px;
-  z-index: 12;
-  max-width: calc(100% - ${SIDEBAR_WIDTH}px);
 `;
 
 export const Loader = styled(LoaderComponent)`

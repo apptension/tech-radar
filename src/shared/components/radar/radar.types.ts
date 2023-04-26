@@ -17,7 +17,7 @@ export type RadarTechnology = {
     name: string;
     description: string;
     url: string;
-    image: ContentfulImageSource;
+    image: string;
   }[];
   icon: { id: string; url: string; description: string; name: string };
   alternatives: {

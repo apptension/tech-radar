@@ -18,8 +18,25 @@ export default defineMessages({
     id: 'technologyPopup.alternatives',
     defaultMessage: 'Alternatives',
   },
-  experts: {
-    id: 'technologyPopup.experts',
-    defaultMessage: 'Experts',
+  specialists: {
+    id: 'technologyPopup.specialists',
+    defaultMessage: 'specialists available',
+  },
+  ourProjects: {
+    id: 'technologyPopup.ourProjects',
+    defaultMessage: 'Our projects',
+  },
+  readMore: {
+    id: 'technologyPopup.readMore',
+    defaultMessage: 'Read more',
+  },
+  readLess: {
+    id: 'technologyPopup.readLess',
+    defaultMessage: 'Read less',
+  },
+  expertsAmount: {
+    id: 'technologyPopup.expertsAmount',
+    defaultMessage:
+      'Amount of people in our company who are knowledgeable about this technology, with skills on a medium or higher level.',
   },
 });
