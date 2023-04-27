@@ -37,6 +37,6 @@ export default defineMessages({
   expertsAmount: {
     id: 'technologyPopup.expertsAmount',
     defaultMessage:
-      'Amount of people in our company who are knowledgeable about this technology, with skills on a medium or higher level.',
+      'Amount of people in Apptension who are knowledgeable about this technology, with skills on a medium or higher level.',
   },
 });
