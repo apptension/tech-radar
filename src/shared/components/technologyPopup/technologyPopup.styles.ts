@@ -2,19 +2,22 @@ import styled, { css } from 'styled-components';
 import { color, scrollbar, zIndex } from '../../../theme';
 import { mediaQuery } from '../../../theme/media';
 import { transition } from '../../utils/constants';
+import { ReactComponent as ChevronDownIcon } from '../../../images/icons/chevron-down.svg';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   ${scrollbar.customScrollbar};
   background-color: ${color.mineShaft2};
   position: relative;
   z-index: ${zIndex.header};
-  padding: 24px 20px 109px;
-  overflow: auto;
-  width: 100vw;
-  height: calc(100vh - 120px);
-  border-radius: 24px 24px 0 0;
+  padding: 20px;
+  width: calc(100vw - 20px);
+  height: calc(100vh - 140px);
+  border-radius: 8px;
   margin: 0 auto;
-
+  margin-bottom: 20px;
+  max-height: 100%;
   ${mediaQuery.tablet} {
     width: 50vw;
   }
@@ -24,6 +27,19 @@ export const Container = styled.div`
     width: 100%;
     height: auto;
     border-radius: 8px;
+    margin-bottom: 0px;
+  }
+`;
+
+export const Head = styled.div``;
+export const Body = styled.div`
+  overflow-y: auto;
+  margin-right: -20px;
+  padding-right: 20px;
+  max-height: calc(100% - 78px);
+  height: fit-content;
+  ${mediaQuery.desktop} {
+    max-height: 100%;
   }
 `;
 
@@ -43,10 +59,15 @@ export const Title = styled.h3`
   margin: 0 0 32px 0;
 `;
 
-export const TagsWrapper = styled.div`
+export const BlockWrapper = styled.div`
+  margin: 32px 0;
+`;
+
+export const TagsWrapper = styled(BlockWrapper)`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 0;
 `;
 
 export const Tag = styled.div`
@@ -71,65 +92,27 @@ export const Description = styled.p`
   font-size: 16px;
   line-height: 20px;
   color: ${color.silver};
-  margin: 16px 0 0;
   padding-right: 28px;
+  margin-bottom: 24px;
+  margin-top: 0;
 `;
 
-export const Link = styled.a`
+export const ReadMoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   color: ${color.white};
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
-  text-decoration: none;
-  padding-left: 12px;
-
-  & > span {
-    opacity: 1;
-    padding-bottom: 1px;
-    border-bottom: 1px solid transparent;
-    transition: border ${transition}, opacity ${transition};
-  }
-
-  &:hover {
-    span {
-      border-bottom: 1px solid ${color.white};
-    }
-  }
-
-  &:first-child {
-    padding-left: 0;
-  }
-
-  &:not(:last-child):after {
-    transition: opacity ${transition};
-    content: '|';
-    padding-left: 12px;
-  }
 `;
 
-export const LinksWrapper = styled.div`
-  display: inline-flex;
-  margin-top: 40px;
+export const ChevronIcon = styled(ChevronDownIcon)``;
 
-  &:hover {
-    ${Link} span {
-      opacity: 0.5;
-    }
-    ${Link}:after {
-      opacity: 0.5;
-    }
-  }
-
-  ${Link}:hover span {
-    opacity: 1;
-  }
-`;
-
-export const BlocksWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 8px;
-  margin: 40px 0;
+export const IconContainer = styled.span<{ isDown: boolean }>`
+  display: flex;
+  transform: rotate(${({ isDown }) => (isDown ? 0 : 180)}deg);
+  margin-left: 8px;
+  transition: transform 0.2s ease;
 `;
 
 const blockStyles = css`
@@ -147,55 +130,37 @@ const blockStyles = css`
 `;
 
 export const Block = styled.div`
+  display: flex;
   ${blockStyles};
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding: 16px 10px;
 `;
 
 export const GetInTouchBlock = styled(Block)`
-  padding: 20px;
   text-align: left;
   justify-content: flex-start;
   color: ${color.white};
-`;
-
-export const BlockButton = styled.button<{ isClickAble: boolean }>`
-  margin: 0;
+  padding: 0;
+  background-color: transparent;
   border: none;
-  cursor: ${({ isClickAble }) => (isClickAble ? 'pointer' : 'none')};
-  pointer-events: ${({ isClickAble }) => (isClickAble ? 'auto' : 'none')};
-  ${blockStyles};
-
-  &:hover {
-    background-color: ${({ isClickAble }) => (isClickAble ? `${color.codGray2}` : `${color.mineShaft}`)};
-  }
 `;
 
-export const BlockTitle = styled.h4`
-  margin: 0 0 14px;
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: 400;
-`;
-
-export const BlockIcon = styled.img`
-  max-width: 45px;
-  max-height: 40px;
-  margin: 14px 0 13px;
-`;
-
-export const BlockLabel = styled.p`
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin: 12px 0 0;
+export const GetInTouchContainer = styled(BlockWrapper)`
+  margin-top: auto;
+  margin-bottom: 0;
 `;
 
 export const BlockExpert = styled.h2`
-  margin: 14px 0 33px 0;
-  font-size: 46px;
-  line-height: 46px;
-  letter-spacing: 3.3px;
+  font-size: 20px;
+  line-height: 29px;
   font-weight: 500;
   color: ${color.white};
+  width: auto;
+  margin: 0;
+  padding-right: 0;
+  margin-right: 10px;
 `;

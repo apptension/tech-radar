@@ -80,8 +80,7 @@ export const TechnologyListItem = ({
     hideBubble();
   };
 
-  const handleLabelClick = () =>
-    technology.description ? handleOpenTechnologyPopup(technology) : handleShowTags(technology);
+  const handleLabelClick = () => handleOpenTechnologyPopup(technology);
 
   return (
     <ListItem
@@ -96,7 +95,7 @@ export const TechnologyListItem = ({
     >
       <ListLabel
         id={`list-item-${technology.id}`}
-        showPointer={!!technology.description.length}
+        showPointer
         onTouchStart={handleLabelClick}
         onClick={handleLabelClick}
       >

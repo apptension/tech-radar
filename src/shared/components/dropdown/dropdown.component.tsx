@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ThemeProvider } from 'styled-components';
 import { FilterType } from '../../../modules/filters/filters.types';
 import { renderWhenTrue } from '../../utils/rendering';
 import { TagSize } from '../tag/tag.types';
+import { useOutsideClick } from '../../hooks/useOutsideClick/useOutsideClick.hook';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
 import {
@@ -39,6 +40,8 @@ interface DropdownProps {
 export const Dropdown = ({ label, options, value, onSelect, className }: DropdownProps) => {
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  useOutsideClick(dropdownRef, () => setOpen(false));
 
   const optionsAmount = options.length;
   const optionsHeight =
@@ -88,6 +91,7 @@ export const Dropdown = ({ label, options, value, onSelect, className }: Dropdow
   return (
     <ThemeProvider theme={theme}>
       <Container
+        ref={dropdownRef}
         className={`${className} ${open ? 'open-dropdown' : ''}`}
         onMouseLeave={delayedCloseDropdown}
         onClick={handleToggleButtonClick}

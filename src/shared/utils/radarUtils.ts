@@ -265,7 +265,7 @@ const getProjects = (item: ContentfulTechnology) => {
     name: pathOr('', ['fields', 'name'], project),
     description: pathOr('', ['fields', 'description'], project),
     url: pathOr('', ['fields', 'url'], project),
-    image: pathOr('', ['fields', 'image'], project),
+    image: pathOr('', ['fields', 'image', 'fields', 'file', 'url'], project),
   }));
 };
 

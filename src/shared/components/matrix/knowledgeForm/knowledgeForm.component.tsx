@@ -47,6 +47,7 @@ export const KnowledgeForm = () => {
             placeholder={intl.formatMessage(knowledgeFormMessages.search)}
             value={search}
             onChange={handleSearchChange}
+            onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
           />
         </FieldContainer>
       </FieldsRow>

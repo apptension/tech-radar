@@ -14,7 +14,7 @@ export const LIST_TOP_PADDING = 24;
 export const LIST_BOTTOM_PADDING = 32;
 
 export const Container = styled.div`
-  height: 58px;
+  height: 46px;
   padding: 0 12px;
   display: flex;
   justify-content: space-between;
@@ -27,7 +27,7 @@ export const Container = styled.div`
   cursor: pointer;
 
   ${mediaQuery.desktop} {
-    padding: 0 24px;
+    padding: 12px 16px;
   }
 
   &:hover {
@@ -69,7 +69,7 @@ export const ChevronIconMobile = styled.span`
   }
 
   ${theme('open', {
-    true: chevronMobileOpenStyle,
+    false: chevronMobileOpenStyle,
   })};
 `;
 
@@ -79,7 +79,7 @@ export const ChevronIcon = styled(ChevronIconSVG)`
   width: 100%;
 
   ${theme('open', {
-    true: chevronOpenStyle,
+    false: chevronOpenStyle,
   })};
 `;
 
@@ -87,19 +87,19 @@ export const ToggleButtonContainer = styled.div`
   flex: 0 0 20px;
 
   ${mediaQuery.desktop} {
-    flex: 0 0 48px;
+    flex: 0;
   }
 `;
 
 export const ToggleButton = styled.button.attrs({ type: 'button' })`
-  width: 32px;
-  height: 32px;
+  width: 20px;
   display: flex;
   align-items: center;
   border: none;
   background: none;
   cursor: pointer;
   margin-left: 16px;
+  padding-right: 0;
 
   &:focus {
     outline: none;
