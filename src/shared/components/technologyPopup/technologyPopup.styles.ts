@@ -52,7 +52,7 @@ export const CloseWrapper = styled.div`
 
 export const Title = styled.h3`
   font-size: 26px;
-  line-height: 18px;
+  line-height: 34px;
   font-weight: 600;
   display: flex;
   align-items: center;

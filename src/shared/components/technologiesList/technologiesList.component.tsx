@@ -21,8 +21,6 @@ interface TechnologiesListProps {
   hasNoAreaSelected: boolean;
 }
 
-const DEFULAT_OPENED_TECHNOLOGY_GROUP = [TECHNOLOGY_RING.IN_USE];
-
 export const TechnologiesList = ({
   technologies,
   emptyResults,
@@ -34,7 +32,7 @@ export const TechnologiesList = ({
   const searchText = useSelector(selectSearch);
   const [scrollTopReached, setScrollTopReached] = useState(true);
   const [scrollBottomReached, setScrollBottomReached] = useState(false);
-  const [openTechnologies, setOpenTechnologies] = useState<TECHNOLOGY_RING[]>(DEFULAT_OPENED_TECHNOLOGY_GROUP);
+  const [openTechnologies, setOpenTechnologies] = useState<TECHNOLOGY_RING[]>([]);
 
   const dispatch = useDispatch();
   const handleOpenPopup = (technologyId: TechnologyId) => dispatch(openTechnologyPopup(technologyId));
@@ -87,7 +85,7 @@ export const TechnologiesList = ({
   };
 
   useEffect(() => {
-    if (!searchText) return setOpenTechnologies(DEFULAT_OPENED_TECHNOLOGY_GROUP);
+    if (!searchText) return setOpenTechnologies([]);
     if (searchText?.length >= 1) {
       return searchForNotEmptyGroups();
     }
