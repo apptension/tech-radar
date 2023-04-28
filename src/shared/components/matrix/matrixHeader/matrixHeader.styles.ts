@@ -12,6 +12,7 @@ export const Header = styled.header`
 
 export const Photo = styled.img`
   max-width: 100%;
+  width: 179px;
 `;
 
 export const AvatarContainer = styled.div`
