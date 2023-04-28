@@ -53,6 +53,11 @@ export const useTechnologiesColumns = ({
       Header: 'Admin Panel',
       columns: [
         {
+          Header: intl.formatMessage(messages.id),
+          accessor: 'id',
+          Cell: ({ value }) => <p>{value}</p>,
+        },
+        {
           Header: intl.formatMessage(messages.label),
           accessor: 'label',
         },
