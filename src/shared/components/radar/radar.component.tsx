@@ -107,9 +107,7 @@ export const Radar = ({
         hideBubble();
       })
       .on('click', (event: MouseEvent, d) => {
-        if (d.description) {
-          handleOpenPopup(d.id);
-        }
+        handleOpenPopup(d.id);
 
         if (activeQuadrant !== undefined && d.inactive) {
           handleAreaSelect(quadrants[d.quadrant].name);

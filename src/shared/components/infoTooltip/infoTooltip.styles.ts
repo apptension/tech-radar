@@ -19,4 +19,5 @@ export const TooltipContainer = styled.div<{ isSmall: boolean }>`
   white-space: pre-wrap;
   text-align: left;
   z-index: 300;
+  line-height: 1.2;
 `;

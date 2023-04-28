@@ -132,11 +132,12 @@ const blockStyles = css`
 export const Block = styled.div`
   display: flex;
   ${blockStyles};
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: row;
   width: 100%;
   padding-right: 10px;
   padding-left: 10px;
+  padding: 16px 10px;
 `;
 
 export const GetInTouchBlock = styled(Block)`
@@ -154,11 +155,12 @@ export const GetInTouchContainer = styled(BlockWrapper)`
 `;
 
 export const BlockExpert = styled.h2`
-  font-size: 24px;
+  font-size: 20px;
   line-height: 29px;
   font-weight: 500;
   color: ${color.white};
-  width: 100%;
+  width: auto;
   margin: 0;
   padding-right: 0;
+  margin-right: 10px;
 `;
