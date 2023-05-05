@@ -45,8 +45,8 @@ export const Body = styled.div`
 
 export const CloseWrapper = styled.div`
   position: absolute;
-  top: 31px;
-  right: 31px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
 `;
 
@@ -57,6 +57,7 @@ export const Title = styled.h3`
   display: flex;
   align-items: center;
   margin: 0 0 32px 0;
+  min-height: 46px;
 `;
 
 export const BlockWrapper = styled.div`
