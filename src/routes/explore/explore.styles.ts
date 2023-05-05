@@ -60,6 +60,7 @@ export const GetInTouchButton = styled(Button)`
   position: absolute;
   top: 30px;
   right: 24px;
+  z-index: ${zIndex.overlay};
 `;
 
 export const SidebarWrapper = styled.div`

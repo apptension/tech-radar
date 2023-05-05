@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tag } from '../tag';
 
 import { version } from '../../../../package.json';
