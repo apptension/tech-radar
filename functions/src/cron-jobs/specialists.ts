@@ -78,7 +78,7 @@ const getContentfulData = async (): Promise<Entry[]> => {
 
 export const updateSpecialistsAmount = functions
   .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...CONTENTFUL_SECRET_KEYS, ...URL_SECRET_KEYS], timeoutSeconds: 540 })
-  .pubsub.schedule('0 9 1,15 * *') // runs at 1st and 15th day of every month 9:00
+  .pubsub.schedule('0 9 1,15 * *') //  runs at 1st and 15th day of every month 9:00
   .timeZone(DEFAULT_TIMEZONE)
   .onRun(async () => {
     const allSkills = await getAirtableData();
