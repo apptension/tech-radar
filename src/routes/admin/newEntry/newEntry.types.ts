@@ -11,7 +11,7 @@ export type NewEntryInputs = {
   projects: TableSelect[];
   icon?: File;
   alternatives: AlternativesTableType[];
-  experts: string;
+  experts: number;
   teams: TableSelect[];
   moved: string;
 };

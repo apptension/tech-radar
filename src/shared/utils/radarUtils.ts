@@ -280,7 +280,7 @@ export const getRadarTechnologies = (technologies: ContentfulTechnology[]) => {
       specification: pathOr('', ['fields', 'specification'], item),
       github: pathOr('', ['fields', 'github'], item),
       projects: getProjects(item as ContentfulTechnology),
-      experts: pathOr('', ['fields', 'experts'], item),
+      experts: pathOr(0, ['fields', 'experts'], item),
       icon: getIcon(item as ContentfulTechnology),
       alternatives: getAlternatives(item as ContentfulTechnology),
       quadrant,

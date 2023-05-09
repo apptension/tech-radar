@@ -123,10 +123,6 @@ export const useTechnologiesColumns = ({
           ),
         },
         {
-          Header: intl.formatMessage(messages.experts),
-          accessor: 'experts',
-        },
-        {
           Header: intl.formatMessage(messages.icon),
           accessor: 'icon',
           Cell: ({ value: { url } }) => <img src={url} alt="brak zdjęcia" height={HEIGHT} />,

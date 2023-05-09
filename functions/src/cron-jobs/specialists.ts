@@ -77,7 +77,7 @@ const getContentfulData = async (): Promise<Entry[]> => {
 };
 
 export const updateSpecialistsAmount = functions
-  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...CONTENTFUL_SECRET_KEYS, ...URL_SECRET_KEYS] })
+  .runWith({ secrets: [...AIRTABLE_SECRET_KEYS, ...CONTENTFUL_SECRET_KEYS, ...URL_SECRET_KEYS], timeoutSeconds: 540 })
   .pubsub.schedule('0 9 1,15 * *') // runs at 1st and 15th day of every month 9:00
   .timeZone(DEFAULT_TIMEZONE)
   .onRun(async () => {
@@ -93,19 +93,19 @@ export const updateSpecialistsAmount = functions
         entry,
       };
     });
-    entries.forEach((technology, i) => {
-      setTimeout(() => {
-        const { label, currentAmount, newAmount, entry } = technology;
-        if (!newAmount || currentAmount === newAmount) return;
-        try {
-          functions.logger.info(`Changing ${label} experts field from ${currentAmount} to ${newAmount}`);
-          entry.fields.experts = { 'en-US': newAmount.toString() };
-          entry.update().then((entry) => entry.publish());
-        } catch (err) {
-          functions.logger.error(`Failed to update ${label} experts field: ${err}`);
-        }
-      }, i * 300);
-    });
+
+    for (const technology of entries) {
+      const { label, currentAmount, newAmount, entry } = technology;
+      if (!newAmount || currentAmount === newAmount) continue;
+      try {
+        functions.logger.info(`Changing ${label} experts field from ${currentAmount} to ${newAmount}`);
+        entry.fields.experts = { 'en-US': newAmount };
+        const updatedEntry = await entry.update();
+        await updatedEntry.publish();
+      } catch (err) {
+        functions.logger.error(`Failed to update ${label} experts field: ${err}`);
+      }
+    }
 
     return null;
   });
