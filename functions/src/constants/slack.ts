@@ -1,5 +1,4 @@
 export const FORBIDDEN_MEMBERS = ['USLACKBOT', 'U02J0AKFD']; // Slack bot and Apptension user
-export const TIMEZONE = 'Europe/Warsaw';
 export const MESSAGE_SHORT = 'Quarterly skills matrix update';
 export const MESSAGE_FULL = [
   {
