@@ -44,6 +44,7 @@ export function Table({ columns, data, updateMyData }: TableProps) {
   const defaultColumn = {
     Cell: EditableCell,
   };
+  const initialState = { hiddenColumns: ['id'] };
 
   const {
     getTableProps,
@@ -62,6 +63,7 @@ export function Table({ columns, data, updateMyData }: TableProps) {
     state: { pageIndex, pageSize },
   } = useTable(
     {
+      initialState,
       columns,
       data,
       defaultColumn,
