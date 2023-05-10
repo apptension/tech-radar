@@ -34,6 +34,8 @@ export enum PROD_SKILL_FIELDS {
   NAME = 'Name',
   COLOR = 'Color (from Categories)',
   CATEGORY_ID = 'RecordID (from Categories)',
+  INTERMEDIATE = 'Intermediate',
+  EXPERT = 'Expert',
 }
 
 export enum PROD_BASE_VIEWS {

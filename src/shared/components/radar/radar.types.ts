@@ -26,7 +26,7 @@ export type RadarTechnology = {
     id: string;
     description: string;
   }[];
-  experts: string;
+  experts: number;
 };
 
 export type TableSelect = {
@@ -101,7 +101,7 @@ export type ContentfulTechnologyFields = {
   projects: string[];
   icon: ContentfulIcon;
   alternatives: ContentfulAlternative[];
-  experts: string;
+  experts: number;
 };
 
 export type ContentfulTechnology = {

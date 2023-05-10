@@ -14,13 +14,13 @@ The Tech Radar is a tool to support production teams at Apptension in presenting
 
 The Tech Radar is a list of technologies along with their assessment result presented as 4 rings with the following meanings:
 
-**In use** - Technologies we have high confidence in. Technologies with a usage culture in our production environment, low risk and recommended to be widely used.
+**In use** - Technologies and products we have high confidence in. Technologies with a usage culture in our production environment, low risk and recommended to be widely used.
 
-**Proven** - Technologies that work really well to solve real problems in projects. We've worked with them and they've proven to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share knowledge and experiences.
+**Proven** - Technologies and products that work really well to solve real problems in projects. We've worked with them and they've proven to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share knowledge and experiences.
 
-**Promising** - Technologies that are promising and have clear potential to add value to our work. They're worth to invest some time and effort to research and prototype to see if it has an impact. These technologies have higher risks, they are often brand new and highly unproven in our organisation.
+**Promising** - Technologies and products that are promising and have clear potential to add value to our work. They're worth to invest some time and effort to research and prototype to see if it has an impact. These technologies have higher risks, they are often brand new and highly unproven in our organisation.
 
-**Phased out** - Technologies not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. These technologies should not be used for new projects, but usually can be continued for existing projects.
+**Phased out** - Technologies and products not recommended to be used for new projects. Technologies that we think are not (yet) worth to (further) invest in. These technologies should not be used for new projects, but usually can be continued for existing projects.
 
 ## Features
 

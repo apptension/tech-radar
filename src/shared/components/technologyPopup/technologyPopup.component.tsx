@@ -124,7 +124,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
           ))}
         </TagsWrapper>
         {renderDescription(!!description.length)}
-        {renderExperts(!!experts.length)}
+        {renderExperts(experts > 0)}
         {renderProjects(!!projects.length)}
       </Body>
       <GetInTouchContainer>

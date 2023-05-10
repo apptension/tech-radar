@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
+import { DEFAULT_TIMEZONE } from '../constants';
 import { SLACK_SECRET_KEYS } from '../constants/secretKeys';
-import { FORBIDDEN_MEMBERS, MESSAGE_SHORT, MESSAGE_FULL, TIMEZONE } from '../constants/slack';
+import { FORBIDDEN_MEMBERS, MESSAGE_SHORT, MESSAGE_FULL } from '../constants/slack';
 import { getSlackClient } from '../services/slack';
 import { getSecrets } from '../utils/getSecrets';
 
@@ -44,17 +45,17 @@ const sendMessageToUsers = async () => {
         text: MESSAGE_SHORT,
         blocks: MESSAGE_FULL,
       });
-      console.log(`Message sent successfully to user ${id}`);
+      functions.logger.info(`Message sent successfully to user ${id}`);
     } catch (error) {
-      console.error(`Error sending message to user ${id}: ${error}`);
+      functions.logger.error(`Error sending message to user ${id}: ${error}`);
     }
   }
 };
 
 export const sendQuarterlyReminder = functions
   .runWith({ secrets: [...SLACK_SECRET_KEYS] })
-  .pubsub.schedule('0 9 1 */3 *') // runs at 1st day of every third month of the year at 9:00
-  .timeZone(TIMEZONE)
+  .pubsub.schedule('0 9 1 */3 *') // runs at 1st day of every fourth month of the year at 9:00
+  .timeZone(DEFAULT_TIMEZONE)
   .onRun(async () => {
     await sendMessageToUsers();
     return null;

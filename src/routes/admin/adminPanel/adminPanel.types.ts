@@ -26,7 +26,7 @@ export type AlternativesTableType = {
 export type EditedEntry = {
   alternatives: AlternativesTableType[];
   description: string;
-  experts: string;
+  experts: number;
   github: string;
   icon?: IconType;
   iconUpload?: File;

@@ -20,7 +20,7 @@ interface PreparedSysField {
 
 interface EntryBasicFields {
   description: string;
-  experts: string;
+  experts: number;
   github: string;
   label: string;
   projects: string[];

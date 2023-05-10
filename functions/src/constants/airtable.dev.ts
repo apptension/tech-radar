@@ -34,6 +34,8 @@ export enum DEV_SKILL_FIELDS {
   NAME = 'Name',
   COLOR = 'Color (from Categories copy)',
   CATEGORY_ID = 'RecordID (from Categories copy)',
+  INTERMEDIATE = 'Intermediate',
+  EXPERT = 'Expert',
 }
 
 export enum DEV_BASE_VIEWS {
