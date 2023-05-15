@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import Joyride, { CallBackProps, STATUS, LIFECYCLE } from 'react-joyride';
 import { useDispatch } from 'react-redux';
-import { setArea, setLevel } from '../../../modules/filters/filters.actions';
+import { setArea, setLevel, setTeam } from '../../../modules/filters/filters.actions';
 import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { Button } from '../button';
 import { ButtonSize } from '../button/button.types';
@@ -24,6 +24,7 @@ export const GuidedTour = () => {
     if (lifecycle === LIFECYCLE.INIT) {
       dispatch(setArea(null));
       dispatch(setLevel(null));
+      dispatch(setTeam(null));
       dispatch(closeTechnologyPopup());
     }
   };
