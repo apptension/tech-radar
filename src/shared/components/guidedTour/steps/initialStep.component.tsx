@@ -1,8 +1,8 @@
 import { useIntl } from 'react-intl';
-import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
-import { Tag } from '../../components/tag/tag.component';
-import { TagsWrapper } from '../../components/tag/tag.styles';
-import messages from '../../guidedTour.messages';
+import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
+import { Tag } from '../components/tag/tag.component';
+import { TagsWrapper } from '../components/tag/tag.styles';
+import messages from '../guidedTour.messages';
 
 export const InitialStep = () => {
   const intl = useIntl();

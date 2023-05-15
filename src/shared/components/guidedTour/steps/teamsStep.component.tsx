@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { setTeam } from '../../../../../modules/filters/filters.actions';
-import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
-import { Tag } from '../../components/tag/tag.component';
-import { TagsWrapper } from '../../components/tag/tag.styles';
-import { highlightBlips, unHighlightBlips } from '../utils';
-import messages from '../../guidedTour.messages';
+import { setTeam } from '../../../../modules/filters/filters.actions';
+import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
+import { Tag } from '../components/tag/tag.component';
+import { TagsWrapper } from '../components/tag/tag.styles';
+import messages from '../guidedTour.messages';
+import { highlightBlips, unHighlightBlips } from './utils';
 
 export const TeamsStep = () => {
   const [activeTeam, setActiveTeam] = useState('');

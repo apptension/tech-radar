@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
-import { setArea } from '../../../../../modules/filters/filters.actions';
-import {
-  closeTechnologyPopup,
-  openTechnologyPopup,
-} from '../../../../../modules/technologyPopup/technologyPopup.actions';
-import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
-import messages from '../../guidedTour.messages';
+import { setArea } from '../../../../modules/filters/filters.actions';
+import { closeTechnologyPopup, openTechnologyPopup } from '../../../../modules/technologyPopup/technologyPopup.actions';
+import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
+import messages from '../guidedTour.messages';
 
 export const TechnologyPopupStep = () => {
   const intl = useIntl();

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Tag } from '../../components/tag/tag.component';
-import { TagsWrapper } from '../../components/tag/tag.styles';
-import { setArea, setLevel } from '../../../../../modules/filters/filters.actions';
-import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
-import { QuadrantPositions } from '../../../radar/radar.types';
-import { highlightBlips, unHighlightBlips } from '../utils';
+import { Tag } from '../components/tag/tag.component';
+import { TagsWrapper } from '../components/tag/tag.styles';
+import { setArea, setLevel } from '../../../../modules/filters/filters.actions';
+import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
+import { QuadrantPositions } from '../../radar/radar.types';
+import { highlightBlips, unHighlightBlips } from './utils';
 
 export const AreasStep = () => {
   const [activeTag, setActiveTag] = useState('');

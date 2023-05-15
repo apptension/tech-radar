@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLevel } from '../../../../../modules/filters/filters.actions';
-import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
-import { Tag } from '../../components/tag/tag.component';
-import { TagsWrapper } from '../../components/tag/tag.styles';
-import { highlightBlips, unHighlightBlips } from '../utils';
+import { setLevel } from '../../../../modules/filters/filters.actions';
+import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
+import { Tag } from '../components/tag/tag.component';
+import { TagsWrapper } from '../components/tag/tag.styles';
+import { highlightBlips, unHighlightBlips } from './utils';
 
 export const SkillsStep = () => {
   const [activeRing, setActiveRing] = useState('');
