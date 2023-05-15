@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { TooltipRenderProps } from 'react-joyride';
 import { Button } from '../../../button';
 import { ButtonVariant } from '../../../button/button.types';
@@ -10,6 +11,7 @@ import {
   TooltipFooter,
   TooltipTitle,
 } from './tooltip.styles';
+import messages from './tooltip.messages';
 
 export const Tooltip = ({
   continuous,
@@ -23,6 +25,7 @@ export const Tooltip = ({
 }: TooltipRenderProps) => {
   const isFirst = index === 0;
   const isLast = index === size - 1;
+  const intl = useIntl();
 
   return (
     <TooltipContainer {...tooltipProps}>
@@ -36,18 +39,18 @@ export const Tooltip = ({
           {isFirst ? (
             <>
               <Button {...skipProps} withoutHoverEffects withBorder={false}>
-                Skip
+                {intl.formatMessage(messages.skip)}
               </Button>
               <Button variant={ButtonVariant.PRIMARY} {...primaryProps}>
-                Get started
+                {intl.formatMessage(messages.getStarted)}
               </Button>
             </>
           ) : (
             <>
-              <Button {...backProps}>Back</Button>
+              <Button {...backProps}>{intl.formatMessage(messages.back)}</Button>
               {continuous && (
                 <Button variant={ButtonVariant.PRIMARY} {...primaryProps}>
-                  {isLast ? 'Finish' : 'Next'}
+                  {intl.formatMessage(isLast ? messages.finish : messages.next)}
                 </Button>
               )}
             </>

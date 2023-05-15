@@ -1,12 +1,7 @@
+import { FormattedMessage } from 'react-intl';
 import { Placement, Step } from 'react-joyride';
 import { AreasStep, InitialStep, SkillsStep, TeamsStep, TechnologyPopupStep } from './steps/';
-
-export interface StepsList {
-  INITIAL: 'initial';
-  AREAS: 'areas';
-  SKILLS: 'skills';
-  TECHNOLOGY: 'technology';
-}
+import messages from './guidedTour.messages';
 
 const styles = {
   spotlight: {
@@ -19,7 +14,7 @@ const styles = {
 
 const initialStep: Step = {
   target: '#app',
-  title: `🎉 You're using Tech Radar`,
+  title: <FormattedMessage {...messages.initialStepTitle} />,
   placement: 'center' as Placement,
   spotlightPadding: 0,
   disableBeacon: true,
@@ -29,7 +24,7 @@ const initialStep: Step = {
 
 const skillsStep: Step = {
   target: '#quadrants',
-  title: 'Check out our Skills',
+  title: <FormattedMessage {...messages.skillsStepTitle} />,
   placement: 'right' as Placement,
   spotlightPadding: 0,
   disableBeacon: true,
@@ -39,7 +34,7 @@ const skillsStep: Step = {
 
 const areasStep: Step = {
   target: '#quadrants',
-  title: 'Check out Areas of our Technologies',
+  title: <FormattedMessage {...messages.areasStepTitle} />,
   placement: 'right' as Placement,
   spotlightPadding: 0,
   disableBeacon: true,
@@ -49,7 +44,7 @@ const areasStep: Step = {
 
 const teamsStep: Step = {
   target: '#quadrants',
-  title: 'Check out our Teams',
+  title: <FormattedMessage {...messages.teamsStepTitle} />,
   placement: 'right' as Placement,
   spotlightPadding: 0,
   disableBeacon: true,
@@ -59,7 +54,7 @@ const teamsStep: Step = {
 
 const technologyPopupStep: Step = {
   target: '.sidebar',
-  title: 'Check out our Technologies',
+  title: <FormattedMessage {...messages.technologyPopupStepTitle} />,
   placement: 'auto' as Placement,
   spotlightPadding: 0,
   disableBeacon: true,

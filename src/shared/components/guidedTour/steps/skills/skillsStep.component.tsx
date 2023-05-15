@@ -6,12 +6,12 @@ import { Tag } from '../../components/tag/tag.component';
 import { TagsWrapper } from '../../components/tag/tag.styles';
 import { highlightBlips, unHighlightBlips } from '../utils';
 
-const skills = ['In use', 'Proven', 'Promising', 'Phased out'];
-
 export const SkillsStep = () => {
   const [activeRing, setActiveRing] = useState('');
   const dispatch = useDispatch();
-  const { radarTechnologies } = useContentfulData();
+  const { radarTechnologies, radarRings } = useContentfulData();
+
+  const currentSkill = radarRings.find((ring) => ring.name === activeRing);
 
   const handleTagClick = (value: string) => {
     if (activeRing === value) return;
@@ -25,7 +25,7 @@ export const SkillsStep = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      handleTagClick(skills[0]);
+      handleTagClick(radarRings[0]?.name);
     }, 0);
     return () => {
       unHighlightBlips(radarTechnologies);
@@ -38,14 +38,11 @@ export const SkillsStep = () => {
   return (
     <div>
       <TagsWrapper>
-        {skills.map((skill) => (
-          <Tag key={skill} activeTag={activeRing} value={skill} onClick={handleTagClick} />
+        {radarRings.map((skill) => (
+          <Tag key={skill.id} activeTag={activeRing} value={skill.name} onClick={handleTagClick} />
         ))}
       </TagsWrapper>
-      <p>
-        Here we show the technologies we have a lot of confidence in at Apptension. Technologies with a usage culture in
-        our production environment, low risk and recommended to be widely used.{' '}
-      </p>
+      <p>{currentSkill?.description}</p>
     </div>
   );
 };

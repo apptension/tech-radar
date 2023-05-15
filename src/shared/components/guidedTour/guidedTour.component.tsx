@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import Joyride, { CallBackProps, STATUS, LIFECYCLE } from 'react-joyride';
 import { useDispatch } from 'react-redux';
 import { setArea, setLevel } from '../../../modules/filters/filters.actions';
@@ -7,10 +8,12 @@ import { Button } from '../button';
 import { ButtonSize } from '../button/button.types';
 import { Tooltip } from './components/';
 import { stepsList } from './guidedTour.list';
+import messages from './guidedTour.messages';
 
 export const GuidedTour = () => {
   const [run, setRun] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status, lifecycle } = data;
@@ -40,7 +43,7 @@ export const GuidedTour = () => {
   return (
     <>
       <Button size={ButtonSize.REGULAR} onClick={handleClickStart}>
-        How it works
+        {intl.formatMessage(messages.howItWorks)}
       </Button>
 
       <Joyride

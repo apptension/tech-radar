@@ -7,19 +7,13 @@ import { useContentfulData } from '../../../../hooks/useContentfulData/useConten
 import { QuadrantPositions } from '../../../radar/radar.types';
 import { highlightBlips, unHighlightBlips } from '../utils';
 
-const quadrants = [
-  { name: 'Packages & Libraries', position: QuadrantPositions.topRight },
-  { name: 'Products & Tools', position: QuadrantPositions.bottomRight },
-  { name: 'Infrastructure', position: QuadrantPositions.bottomLeft },
-  { name: 'Languages & Frameworks', position: QuadrantPositions.topLeft },
-];
-
-const defaultQuadrant = quadrants[0];
-
 export const AreasStep = () => {
   const [activeTag, setActiveTag] = useState('');
-  const { radarTechnologies } = useContentfulData();
+  const { radarTechnologies, radarQuadrants } = useContentfulData();
   const dispatch = useDispatch();
+
+  const defaultQuadrant = radarQuadrants[0];
+  const currentQuadrant = radarQuadrants.find((quadrant) => quadrant.name === activeTag);
 
   const handleQuadrantClick = (value: string, position: QuadrantPositions) => {
     if (activeTag === value) return;
@@ -46,7 +40,7 @@ export const AreasStep = () => {
   return (
     <div>
       <TagsWrapper>
-        {quadrants.map((quadrant) => (
+        {radarQuadrants.map((quadrant) => (
           <Tag
             key={quadrant.position}
             activeTag={activeTag}
@@ -55,11 +49,7 @@ export const AreasStep = () => {
           />
         ))}
       </TagsWrapper>
-      <p>
-        The radar will let you explore all of the technologies, methods, and tools used here at Apptension and learn
-        more about them. You will also get to see the technologies we have on our radar (pun intended) and, hopefully,
-        get inspired.
-      </p>
+      <p>{currentQuadrant?.description}</p>
     </div>
   );
 };

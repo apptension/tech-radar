@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useIntl } from 'react-intl';
 import { setArea } from '../../../../../modules/filters/filters.actions';
 import {
   closeTechnologyPopup,
   openTechnologyPopup,
 } from '../../../../../modules/technologyPopup/technologyPopup.actions';
 import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
+import messages from '../../guidedTour.messages';
 
 export const TechnologyPopupStep = () => {
+  const intl = useIntl();
   const dispatch = useDispatch();
   const { radarTechnologies, radarQuadrants } = useContentfulData();
 
@@ -28,11 +31,5 @@ export const TechnologyPopupStep = () => {
     };
   }, []);
 
-  return (
-    <p>
-      Technologies that work really well to solve real problems in projects. We've worked with them and they've proven
-      to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share
-      knowledge and experiences.
-    </p>
-  );
+  return <p>{intl.formatMessage(messages.technologyPopupStepDescription)}</p>;
 };

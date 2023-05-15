@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useIntl } from 'react-intl';
 import { setTeam } from '../../../../../modules/filters/filters.actions';
 import { useContentfulData } from '../../../../hooks/useContentfulData/useContentfulData';
 import { Tag } from '../../components/tag/tag.component';
 import { TagsWrapper } from '../../components/tag/tag.styles';
 import { highlightBlips, unHighlightBlips } from '../utils';
-
-const teams = ['Frontend', 'Backend + DevOps', 'PM', 'QA', 'Design'];
+import messages from '../../guidedTour.messages';
 
 export const TeamsStep = () => {
   const [activeTeam, setActiveTeam] = useState('');
+  const intl = useIntl();
   const dispatch = useDispatch();
-  const { radarTechnologies } = useContentfulData();
+  const { radarTechnologies, radarTeams } = useContentfulData();
 
   const handleTagClick = (value: string) => {
     if (activeTeam === value) return;
@@ -25,7 +26,7 @@ export const TeamsStep = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      handleTagClick(teams[0]);
+      handleTagClick(radarTeams[0]?.name);
     }, 0);
     return () => {
       unHighlightBlips(radarTechnologies);
@@ -38,16 +39,11 @@ export const TeamsStep = () => {
   return (
     <div>
       <TagsWrapper>
-        {teams.map((skill) => (
-          <Tag key={skill} activeTag={activeTeam} value={skill} onClick={handleTagClick} />
+        {radarTeams.map((team) => (
+          <Tag key={team?.id} activeTag={activeTeam} value={team?.name} onClick={handleTagClick} />
         ))}
       </TagsWrapper>
-      <p>
-        Technologies that work really well to solve real problems in projects. We've worked with them and they've proven
-        to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will
-        share knowledge and experiences. Specification | Github We believe that it is a Promising technology 70% of our
-        Frontend team has experience working with this technology 6 projects were done by Apptension using Angular
-      </p>
+      <p>{intl.formatMessage(messages.teamsStepDescription)}</p>
     </div>
   );
 };
