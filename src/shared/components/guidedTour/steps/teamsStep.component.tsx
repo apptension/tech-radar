@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { setTeam } from '../../../../modules/filters/filters.actions';
 import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
 import { Tag } from '../components/tag/tag.component';
 import { TagsWrapper } from '../components/tag/tag.styles';
+import { useStepDispatch } from '../useStepDispatch.hook';
 import { highlightBlips, unHighlightBlips } from './utils';
 
 export const TeamsStep = () => {
   const [activeTeam, setActiveTeam] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useStepDispatch();
   const { radarTechnologies, radarTeams } = useContentfulData();
 
   const currentTeam = radarTeams.find((team) => team.name === activeTeam);
@@ -24,14 +24,10 @@ export const TeamsStep = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      handleTagClick(radarTeams[0]?.name);
-    }, 0);
+    handleTagClick(radarTeams[0]?.name);
     return () => {
       unHighlightBlips(radarTechnologies);
-      setTimeout(() => {
-        dispatch(setTeam(null));
-      }, 0);
+      dispatch(setTeam(null));
     };
   }, []);
 

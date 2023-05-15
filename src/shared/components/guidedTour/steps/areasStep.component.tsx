@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Tag } from '../components/tag/tag.component';
 import { TagsWrapper } from '../components/tag/tag.styles';
 import { setArea, setLevel } from '../../../../modules/filters/filters.actions';
 import { useContentfulData } from '../../../hooks/useContentfulData/useContentfulData';
 import { QuadrantPositions } from '../../radar/radar.types';
+import { useStepDispatch } from '../useStepDispatch.hook';
 import { highlightBlips, unHighlightBlips } from './utils';
 
 export const AreasStep = () => {
   const [activeTag, setActiveTag] = useState('');
   const { radarTechnologies, radarQuadrants } = useContentfulData();
-  const dispatch = useDispatch();
+  const dispatch = useStepDispatch();
 
   const defaultQuadrant = radarQuadrants[0];
   const currentQuadrant = radarQuadrants.find((quadrant) => quadrant.name === activeTag);
@@ -25,15 +25,11 @@ export const AreasStep = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      handleQuadrantClick(defaultQuadrant.name, defaultQuadrant.position);
-    }, 0);
+    handleQuadrantClick(defaultQuadrant.name, defaultQuadrant.position);
     return () => {
       unHighlightBlips(radarTechnologies);
-      setTimeout(() => {
-        dispatch(setLevel(null));
-        dispatch(setArea(null));
-      }, 0);
+      dispatch(setLevel(null));
+      dispatch(setArea(null));
     };
   }, []);
 
