@@ -9,7 +9,7 @@ export const TagsWrapper = styled.div`
   margin-bottom: 32px;
 `;
 
-export const StyledTag = styled.div<{ isActive: boolean }>`
+export const StyledTag = styled.div<{ isActive: boolean; isStatic: boolean }>`
   background-color: ${({ isActive }) => (isActive ? color.white : color.codGray)};
   border-radius: 28px;
   border: 3px solid;
@@ -21,7 +21,8 @@ export const StyledTag = styled.div<{ isActive: boolean }>`
   font-weight: 600;
   letter-spacing: 0.2em;
   color: ${color.boulder};
-  cursor: pointer;
+  cursor: ${({ isStatic }) => !isStatic && 'pointer'};
+  user-select: ${({ isStatic }) => isStatic && 'none'};
   > span {
     color: ${({ isActive }) => (isActive ? color.black : color.boulder)};
   }

@@ -13,7 +13,7 @@ export const InitialStep = () => {
       <p>{intl.formatMessage(messages.initialStepDescription)}</p>
       <TagsWrapper>
         {radarQuadrants.map((quadrant) => (
-          <Tag key={quadrant.id} value={quadrant.name} />
+          <Tag isStatic key={quadrant.id} value={quadrant.name} />
         ))}
       </TagsWrapper>
     </div>
