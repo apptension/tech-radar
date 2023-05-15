@@ -121,6 +121,7 @@ export interface BlipInterface {
   id: string;
   ring: number;
   color: string;
+  scale?: boolean;
 }
 
 export interface BubbleInterface {

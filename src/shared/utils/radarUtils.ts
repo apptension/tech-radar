@@ -107,11 +107,13 @@ export const changeHighlight = ({
   opacity,
   hide,
   fill = 'url(#mainGradient)',
+  scale = true,
 }: {
   id: string;
   shape: string;
   opacity: number;
   fill?: string;
+  scale?: boolean;
   hide?: boolean;
 }) => {
   const blip = d3.select(`#blip-${id}`);
@@ -120,22 +122,22 @@ export const changeHighlight = ({
   outerBlip.style('opacity', hide ? '' : opacity);
   const fullBlip = blip.selectAll(shape);
   fullBlip.style('fill', hide ? '' : fill);
-  blipInner.style('transform', hide ? '' : 'scale(1.5)');
+  blipInner.style('transform', hide ? '' : `scale(${scale ? 1.5 : 1})`);
 };
 
-export const highlightBlip = ({ id, ring }: Omit<BlipInterface, 'color'>) => {
+export const highlightBlip = ({ id, ring, scale = true }: Omit<BlipInterface, 'color'>) => {
   switch (ring) {
     case 0:
-      changeHighlight({ id, shape: 'circle', opacity: 0.3 });
+      changeHighlight({ id, shape: 'circle', opacity: 0.3, scale });
       break;
     case 1:
-      changeHighlight({ id, shape: 'rect', opacity: 0.3, fill: 'url(#diamondMainGradient)' });
+      changeHighlight({ id, shape: 'rect', opacity: 0.3, scale, fill: 'url(#diamondMainGradient)' });
       break;
     case 2:
-      changeHighlight({ id, shape: 'rect', opacity: 0.3 });
+      changeHighlight({ id, shape: 'rect', opacity: 0.3, scale });
       break;
     default:
-      changeHighlight({ id, shape: 'path', opacity: 0.3 });
+      changeHighlight({ id, shape: 'path', opacity: 0.3, scale });
   }
 };
 

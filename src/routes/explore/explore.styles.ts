@@ -20,6 +20,7 @@ export const StyledLastUpdate = styled(LastUpdateInfo)`
   letter-spacing: 0.2em;
   width: 100%;
   text-align: center;
+  height: fit-content;
 
   ${mediaQuery.desktop} {
     width: auto;
@@ -170,4 +171,10 @@ export const TooltipContent = styled.p`
   line-height: 15px;
   color: ${color.silver};
   margin: 0;
+`;
+
+export const TourContainer = styled.div`
+  position: absolute;
+  top: 130px;
+  right: 39px;
 `;
