@@ -27,11 +27,6 @@ export default defineMessages({
     id: 'guidedTour.teamsStepTitle',
     defaultMessage: 'Check out our Teams',
   },
-  teamsStepDescription: {
-    id: 'guidedTour.teamsStepDescription',
-    defaultMessage:
-      "Technologies that work really well to solve real problems in projects. We've worked with them and they've proven to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share knowledge and experiences.",
-  },
   technologyPopupStepTitle: {
     id: 'guidedTour.technologyPopupStepTitle',
     defaultMessage: 'Check out our Technologies',

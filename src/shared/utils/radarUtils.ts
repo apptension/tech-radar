@@ -342,6 +342,7 @@ export const getRadarTeams = (teams: ContentfulTeam[] | undefined) => {
       radarTeams.push({
         id: pathOr('', ['sys', 'id'], item),
         name: pathOr('', ['fields', 'label'], item),
+        description: pathOr('', ['fields', 'description'], item),
       }),
     teams
   );
