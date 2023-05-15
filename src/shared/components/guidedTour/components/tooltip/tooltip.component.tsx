@@ -41,7 +41,7 @@ export const Tooltip = ({
               <Button {...skipProps} withoutHoverEffects withBorder={false}>
                 {intl.formatMessage(messages.skip)}
               </Button>
-              <Button variant={ButtonVariant.PRIMARY} {...primaryProps}>
+              <Button variant={ButtonVariant.PRIMARY} {...primaryProps} withoutHoverEffects>
                 {intl.formatMessage(messages.getStarted)}
               </Button>
             </>
