@@ -15,6 +15,7 @@ import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
 import { ButtonIcon, ButtonVariant } from '../../shared/components/button/button.types';
 import { renderWhenTrue } from '../../shared/utils/rendering';
+import { GuidedTour } from '../../shared/components/guidedTour';
 import {
   Container,
   TitleTag,
@@ -29,6 +30,7 @@ import {
   TooltipContent,
   StyledLastUpdate,
   GetInTouchButton,
+  TourContainer,
 } from './explore.styles';
 import { EMPTY_RESULTS_DEBOUNCE_TIME } from './explore.constants';
 import messages from './explore.messages';
@@ -184,6 +186,9 @@ export const Explore = () => {
         <TooltipArrow className="tooltip-arrow" />
       </Tooltip>
       {!!lastContentfulUpdate && <StyledLastUpdate date={lastContentfulUpdate} />}
+      <TourContainer>
+        {isDesktop && isFetched && !!filteredTechnologies.length && !!viewerRef.current && <GuidedTour />}
+      </TourContainer>
     </Container>
   );
 };

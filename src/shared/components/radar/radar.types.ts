@@ -57,7 +57,7 @@ export type TableRadarTechnology = {
 
 export type RadarRing = { id: string; name: string; position: number; description: string };
 export type RadarQuadrant = { id: string; name: string; position: number; description: string };
-export type RadarTeam = { id: string; name: string };
+export type RadarTeam = { id: string; name: string; description: string };
 export type RadarProject = { id: string; name: string; description: string; url: string; image: ContentfulImageSource };
 
 export enum QuadrantPositions {
@@ -121,6 +121,7 @@ export interface BlipInterface {
   id: string;
   ring: number;
   color: string;
+  scale?: boolean;
 }
 
 export interface BubbleInterface {
