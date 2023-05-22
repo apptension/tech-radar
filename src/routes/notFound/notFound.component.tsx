@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -9,7 +8,9 @@ import { ButtonIcon, ButtonSize } from '../../shared/components/button/button.ty
 import { Link } from '../../shared/components/link';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 import { Breakpoint } from '../../theme/media';
+import messages from './notFound.messages';
 import {
+  Title,
   Container,
   Content,
   Description,
@@ -17,9 +18,7 @@ import {
   Header,
   LogoWrapper,
   TextContent,
-} from '../home/home.styles';
-import messages from './notFound.messages';
-import { Title } from './notFound.styles';
+} from './notFound.styles';
 
 export const NotFound = () => {
   const intl = useIntl();
