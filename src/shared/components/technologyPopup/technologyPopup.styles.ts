@@ -135,6 +135,7 @@ export const GetInTouchBlock = styled(Block)`
 export const GetInTouchContainer = styled(BlockWrapper)`
   margin-top: auto;
   margin-bottom: 0;
+  padding-top: 10px;
 `;
 
 export const BlockExpert = styled.h2`
