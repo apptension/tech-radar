@@ -98,24 +98,6 @@ export const Description = styled.p`
   margin-top: 0;
 `;
 
-export const ReadMoreButton = styled.button`
-  display: flex;
-  align-items: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: ${color.white};
-`;
-
-export const ChevronIcon = styled(ChevronDownIcon)``;
-
-export const IconContainer = styled.span<{ isDown: boolean }>`
-  display: flex;
-  transform: rotate(${({ isDown }) => (isDown ? 0 : 180)}deg);
-  margin-left: 8px;
-  transition: transform 0.2s ease;
-`;
-
 const blockStyles = css`
   background-color: ${color.mineShaft};
   border: 2px solid ${color.mineShaft};

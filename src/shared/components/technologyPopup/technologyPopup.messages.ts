@@ -26,10 +26,6 @@ export default defineMessages({
     id: 'technologyPopup.ourProjects',
     defaultMessage: 'Our projects',
   },
-  readMore: {
-    id: 'technologyPopup.readMore',
-    defaultMessage: 'Read more',
-  },
   readLess: {
     id: 'technologyPopup.readLess',
     defaultMessage: 'Read less',

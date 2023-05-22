@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
@@ -24,9 +23,6 @@ import {
   Block,
   BlockExpert,
   GetInTouchBlock,
-  ReadMoreButton,
-  IconContainer,
-  ChevronIcon,
   BlockWrapper,
   Head,
   Body,
@@ -34,19 +30,11 @@ import {
 } from './technologyPopup.styles';
 import messages from './technologyPopup.messages';
 
-const MAX_DESCRIPTION_LENGTH = 100;
-
-const truncate = (words: string) => {
-  if (words.length <= MAX_DESCRIPTION_LENGTH) return words;
-  return `${words.slice(0, MAX_DESCRIPTION_LENGTH)} …`;
-};
-
 export interface TechnologyPopupProps {
   technologies: RadarTechnology[];
 }
 
 export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
-  const [showFullDescription, setShowFullDescription] = useState(false);
   const intl = useIntl();
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const dispatch = useDispatch();
@@ -86,15 +74,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
 
   const renderDescription = renderWhenTrue(() => (
     <BlockWrapper>
-      <Description>{showFullDescription ? description : truncate(description)}</Description>
-      {description.length > MAX_DESCRIPTION_LENGTH && (
-        <ReadMoreButton onClick={() => setShowFullDescription((show) => !show)}>
-          {intl.formatMessage(showFullDescription ? messages.readLess : messages.readMore)}{' '}
-          <IconContainer isDown={!showFullDescription}>
-            <ChevronIcon />
-          </IconContainer>
-        </ReadMoreButton>
-      )}
+      <Description>{description}</Description>
     </BlockWrapper>
   ));
 
