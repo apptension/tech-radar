@@ -99,24 +99,9 @@ export const NewEntry = () => {
             {...register('description')}
           />
           <TextField
-            label={intl.formatMessage(adminMessages.specification)}
-            error={errors.specification?.message}
-            {...register('specification')}
-          />
-          <TextField
-            label={intl.formatMessage(adminMessages.github)}
-            error={errors.github?.message}
-            {...register('github')}
-          />
-          <TextField
             label={intl.formatMessage(adminMessages.projects)}
             error={errors.projects?.message}
             {...register('projects')}
-          />
-          <TextField
-            label={intl.formatMessage(adminMessages.experts)}
-            error={errors.experts?.message}
-            {...register('experts')}
           />
 
           <Controller

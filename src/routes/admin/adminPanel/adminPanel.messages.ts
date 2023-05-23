@@ -25,21 +25,9 @@ export default defineMessages({
     id: 'adminPanel.teamLabel',
     defaultMessage: 'teams',
   },
-  github: {
-    id: 'adminPanel.githubLabel',
-    defaultMessage: 'github',
-  },
-  specification: {
-    id: 'adminPanel.specificationLabel',
-    defaultMessage: 'specification',
-  },
   projects: {
     id: 'adminPanel.projectsLabel',
     defaultMessage: 'projects',
-  },
-  experts: {
-    id: 'adminPanel.expertsLabel',
-    defaultMessage: 'experts',
   },
   icon: {
     id: 'adminPanel.iconLabel',
