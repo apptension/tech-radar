@@ -165,3 +165,51 @@ export const BlockExpert = styled.h2`
   padding-right: 0;
   margin-right: 10px;
 `;
+
+export const AlternativesWrapper = styled(Block)`
+  display: flex;
+  flex-direction: column;
+  color: ${color.dustyGray};
+`;
+
+export const AlternativesHeader = styled.h3`
+  font-size: 20px;
+  line-height: 19px;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: 0.9px;
+`;
+
+export const AlternativesList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
+  width: 100%;
+  padding-left: 0;
+  list-style: none;
+`;
+
+export const AlternativeItemIcon = styled.img`
+  width: 45px;
+`;
+
+export const AlternativeItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 80px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: ${color.mineShaft2};
+  }
+`;
+
+export const AlternativeItemLabel = styled.p`
+  margin: 0;
+  user-select: none;
+`;

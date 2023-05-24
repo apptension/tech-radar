@@ -6,13 +6,14 @@ import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
-import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { ReactComponent as InfoSVG } from '../../../images/icons/info-circle.svg';
 import { renderWhenTrue } from '../../utils/rendering';
 import { GetInTouch } from '../getInTouch';
 import { Carousel } from '../carousel';
 import { InfoTooltip } from '../infoTooltip';
 import { InfoTooltipSizes } from '../infoTooltip/infoTooltip.component';
+import { TECHNOLOGY_RING } from '../technologiesList/technologyList.types';
 import {
   Container,
   CloseWrapper,
@@ -31,6 +32,12 @@ import {
   Head,
   Body,
   GetInTouchContainer,
+  AlternativesWrapper,
+  AlternativesList,
+  AlternativeItem,
+  AlternativesHeader,
+  AlternativeItemIcon,
+  AlternativeItemLabel,
 } from './technologyPopup.styles';
 import messages from './technologyPopup.messages';
 
@@ -53,12 +60,14 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
   const technologyId = useSelector(selectTechnologyId);
   const {
     label = '',
+    ring = 0,
     ringLabel = '',
     teams = [],
     icon,
     description = '',
     projects = [],
     experts = '',
+    alternatives = [],
   } = technologies.find(({ id }) => id === technologyId) || {};
   const handleClosePopup = () => dispatch(closeTechnologyPopup());
 
@@ -105,6 +114,24 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
     </BlockWrapper>
   ));
 
+  const renderAlternatives = renderWhenTrue(() => (
+    <BlockWrapper>
+      <AlternativesWrapper>
+        <AlternativesHeader>
+          <FormattedMessage {...messages.alternatives} />
+        </AlternativesHeader>
+        <AlternativesList>
+          {alternatives.map((tech) => (
+            <AlternativeItem key={tech.id} onClick={() => dispatch(openTechnologyPopup(tech.id))}>
+              <AlternativeItemIcon src={`https:${tech.icon.url}`} />
+              <AlternativeItemLabel>{tech.label.toUpperCase()}</AlternativeItemLabel>
+            </AlternativeItem>
+          ))}
+        </AlternativesList>
+      </AlternativesWrapper>
+    </BlockWrapper>
+  ));
+
   return (
     <Container>
       <Head>
@@ -125,7 +152,8 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
         </TagsWrapper>
         {renderDescription(!!description.length)}
         {renderExperts(experts > 0)}
-        {renderProjects(!!projects.length)}
+        {renderProjects(!!projects.length && ring !== TECHNOLOGY_RING.PHASED_OUT)}
+        {renderAlternatives(!!alternatives.length && ring === TECHNOLOGY_RING.PHASED_OUT)}
       </Body>
       <GetInTouchContainer>
         {!isDesktop ? (
