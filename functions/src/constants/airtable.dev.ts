@@ -36,6 +36,7 @@ export enum DEV_SKILL_FIELDS {
   CATEGORY_ID = 'RecordID (from Categories copy)',
   INTERMEDIATE = 'Intermediate',
   EXPERT = 'Expert',
+  ADDITIONAL_SKILLS = 'Additional skills',
 }
 
 export enum DEV_BASE_VIEWS {
