@@ -14,7 +14,7 @@ export enum DEV_USER_FIELDS {
   SLACK_ID = 'SlackID',
   SENIORITY = 'Seniority',
   SUBMIT_DATE = 'Submit Date',
-  ADDITIONAL_SKILLS = 'Not recorded',
+  ADDITIONAL_SKILLS = 'Additional skills',
   LIKE_TO_LEARN = 'Willing to learn',
   SKILLS_EXPERT = 'Expert knowledge',
   SKILLS_INTERMEDIATE = 'Intermediate knowledge',
