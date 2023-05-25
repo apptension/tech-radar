@@ -55,14 +55,6 @@ export const MyProfileForm = () => {
         />
       </FieldContainer>
       <FieldContainer>
-        <MatrixTextField
-          label={intl.formatMessage(myProfileFormMessages.slackId)}
-          error={errors.slackId?.message}
-          {...register('slackId')}
-          infoContent={intl.formatMessage(myProfileFormMessages.slackIdInfo)}
-        />
-      </FieldContainer>
-      <FieldContainer>
         <Controller
           control={control}
           name="position"

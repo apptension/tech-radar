@@ -9,15 +9,6 @@ export default defineMessages({
     id: 'myProfileForm.emailLabel',
     defaultMessage: 'Email',
   },
-  slackId: {
-    id: 'myProfileForm.slackMemberId',
-    defaultMessage: 'Slack Member ID',
-  },
-  slackIdInfo: {
-    id: 'myProfileForm.slackIdInfo',
-    defaultMessage:
-      'To find your Slack Member ID, please, go to the Profile details in Slack, use "more" icon and select "Copy member ID".',
-  },
   positionLabel: {
     id: 'myProfileForm.positionLabel',
     defaultMessage: 'Position',
