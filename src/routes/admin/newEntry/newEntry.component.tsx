@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useState } from 'react';
 import { useContentfulData } from '../../../shared/hooks/useContentfulData/useContentfulData';
 import { ROUTES } from '../../app.constants';
-import homeMessages from '../../home/home.messages';
 import { postEntry, postImage } from '../../../shared/services/api/endpoints/contentful';
 import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
 import { TOption } from '../../../shared/components/fields/SelectField/SelectField.component';
@@ -76,7 +75,7 @@ export const NewEntry = () => {
     <div>
       <CenteredWrapper>
         <StyledLink to={ROUTES.adminPanel}>
-          <FormattedMessage {...homeMessages.goToAdminPanel} />
+          <FormattedMessage {...newEntryMessages.goToAdminPanel} />
         </StyledLink>
         <SecondHeader>{intl.formatMessage(newEntryMessages.title)}</SecondHeader>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>

@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'newEntry.movedArrowDownValue',
     defaultMessage: 'Arrow Down',
   },
+  goToAdminPanel: {
+    id: 'newEntry.goToAdminPanel',
+    defaultMessage: 'Go to AdminPanel',
+  },
 });

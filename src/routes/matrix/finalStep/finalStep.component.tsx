@@ -21,7 +21,7 @@ export const FinalStep = () => {
           <Link to={ROUTES.matrixPersonal} size={ButtonSize.LARGE}>
             {intl.formatMessage(finalStepMessages.backToMatrix)}
           </Link>
-          <Link to={ROUTES.explore} size={ButtonSize.LARGE} variant={ButtonVariant.PRIMARY} icon={ButtonIcon.ARROW}>
+          <Link to={ROUTES.home} size={ButtonSize.LARGE} variant={ButtonVariant.PRIMARY} icon={ButtonIcon.ARROW}>
             {intl.formatMessage(finalStepMessages.checkRadar)}
           </Link>
         </ActionsContainer>
