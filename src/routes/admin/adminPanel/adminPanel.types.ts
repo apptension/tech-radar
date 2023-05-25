@@ -1,7 +1,11 @@
+import { ReactNode } from 'react';
+
 export type TechnologyColumn = {
   Header: string;
   accessor: string;
   Cell?: ((row: any) => JSX.Element) | undefined;
+  Filter?: ReactNode;
+  disableFilters?: boolean;
 };
 
 export type TechnologyTable = {

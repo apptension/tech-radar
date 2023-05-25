@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { HeaderGroup } from 'react-table';
 import { reportError } from '../../../shared/utils/reportError';
 import { patchEntry } from '../../../shared/services/api/endpoints/contentful';
 import { useAdminPanelContext } from '../../../shared/components/adminPanel/adminPanelContext';
 import { Button } from '../../../shared/components/button';
 import { FileDropField } from '../../../shared/components/fields/FileDropField';
-import { RadarProject, RadarQuadrant, RadarRing, RadarTeam } from '../../../shared/components/radar/radar.types';
+import {
+  RadarProject,
+  RadarQuadrant,
+  RadarRing,
+  RadarTeam,
+  TableRadarTechnology,
+} from '../../../shared/components/radar/radar.types';
 import { SelectField } from '../../../shared/components/fields/SelectField';
 import {
   HEIGHT,
@@ -13,7 +20,7 @@ import {
   FileDropContainer,
 } from '../../../shared/components/adminPanel/adminPanelTable/adminPanelTable.styles';
 import { useToast } from '../../../shared/components/toast';
-import { EditableCell } from '../../../shared/components/table/table.component';
+import { TextField } from '../../../shared/components/fields/TextField';
 import { EditedEntry, TechnologyTable } from './adminPanel.types';
 import messages from './adminPanel.messages';
 
@@ -23,6 +30,13 @@ interface CreateTechnologiesColumnsProps {
   radarRings: RadarRing[];
   radarProjects: RadarProject[];
 }
+
+const ColumnFilter = ({ column }: { column: HeaderGroup<TableRadarTechnology> }) => {
+  const { filterValue, setFilter } = column;
+  return (
+    <TextField label="" placeholder="search" value={filterValue || ''} onChange={(e) => setFilter(e.target.value)} />
+  );
+};
 
 export const useTechnologiesColumns = ({
   radarTeams,
@@ -56,10 +70,12 @@ export const useTechnologiesColumns = ({
           Header: intl.formatMessage(messages.id),
           accessor: 'id',
           Cell: ({ value }) => <p>{value}</p>,
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.label),
           accessor: 'label',
+          Filter: ColumnFilter,
         },
         {
           Header: intl.formatMessage(messages.quadrant),
@@ -73,6 +89,7 @@ export const useTechnologiesColumns = ({
               ))}
             </StyledSelect>
           ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.ring),
@@ -86,27 +103,12 @@ export const useTechnologiesColumns = ({
               ))}
             </StyledSelect>
           ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.description),
           accessor: 'description',
-        },
-        {
-          Header: intl.formatMessage(messages.specification),
-          accessor: 'specification',
-        },
-        {
-          Header: intl.formatMessage(messages.github),
-          accessor: 'github',
-          Cell: ({ value, updateMyData, row, column }) => (
-            <EditableCell
-              value={value}
-              column={column}
-              row={row}
-              updateMyData={updateMyData}
-              placeholder="https://github.com/"
-            />
-          ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.projects),
@@ -121,11 +123,13 @@ export const useTechnologiesColumns = ({
               value={value}
             />
           ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.icon),
           accessor: 'icon',
           Cell: ({ value: { url } }) => <img src={url} alt="brak zdjęcia" height={HEIGHT} />,
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.iconUpload),
@@ -140,6 +144,7 @@ export const useTechnologiesColumns = ({
               />
             </FileDropContainer>
           ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.team),
@@ -154,6 +159,7 @@ export const useTechnologiesColumns = ({
               value={value}
             />
           ),
+          disableFilters: true,
         },
         {
           Header: intl.formatMessage(messages.save),
@@ -172,6 +178,7 @@ export const useTechnologiesColumns = ({
               {intl.formatMessage(messages.save)}
             </Button>
           ),
+          disableFilters: true,
         },
       ],
     },
