@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
+import './shared/services/sentry';
 // Needed for redux-saga es6 generator support
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';

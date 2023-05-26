@@ -6,6 +6,8 @@ export const RadarContainer = styled.div`
   right: 0;
   bottom: 0;
   z-index: -5;
+  width: 1000px;
+  max-width: 100%;
 `;
 
 export const Radar = styled(RadarSVG)`

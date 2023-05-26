@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { selectTechnologyId } from '../../../modules/technologyPopup/technologyPopup.selectors';
@@ -6,13 +5,14 @@ import { RadarTechnology } from '../radar/radar.types';
 import { ReactComponent as CloseSVG } from '../../../images/icons/close.svg';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Breakpoint } from '../../../theme/media';
-import { closeTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
+import { closeTechnologyPopup, openTechnologyPopup } from '../../../modules/technologyPopup/technologyPopup.actions';
 import { ReactComponent as InfoSVG } from '../../../images/icons/info-circle.svg';
 import { renderWhenTrue } from '../../utils/rendering';
 import { GetInTouch } from '../getInTouch';
 import { Carousel } from '../carousel';
 import { InfoTooltip } from '../infoTooltip';
 import { InfoTooltipSizes } from '../infoTooltip/infoTooltip.component';
+import { TECHNOLOGY_RING } from '../technologiesList/technologyList.types';
 import {
   Container,
   CloseWrapper,
@@ -24,41 +24,38 @@ import {
   Block,
   BlockExpert,
   GetInTouchBlock,
-  ReadMoreButton,
-  IconContainer,
-  ChevronIcon,
   BlockWrapper,
   Head,
   Body,
   GetInTouchContainer,
+  AlternativesWrapper,
+  AlternativesList,
+  AlternativeItem,
+  AlternativesHeader,
+  AlternativeItemIcon,
+  AlternativeItemLabel,
 } from './technologyPopup.styles';
 import messages from './technologyPopup.messages';
-
-const MAX_DESCRIPTION_LENGTH = 100;
-
-const truncate = (words: string) => {
-  if (words.length <= MAX_DESCRIPTION_LENGTH) return words;
-  return `${words.slice(0, MAX_DESCRIPTION_LENGTH)} …`;
-};
 
 export interface TechnologyPopupProps {
   technologies: RadarTechnology[];
 }
 
 export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
-  const [showFullDescription, setShowFullDescription] = useState(false);
   const intl = useIntl();
   const { matches: isDesktop } = useMediaQuery({ above: Breakpoint.DESKTOP });
   const dispatch = useDispatch();
   const technologyId = useSelector(selectTechnologyId);
   const {
     label = '',
+    ring = 0,
     ringLabel = '',
     teams = [],
     icon,
     description = '',
     projects = [],
     experts = '',
+    alternatives = [],
   } = technologies.find(({ id }) => id === technologyId) || {};
   const handleClosePopup = () => dispatch(closeTechnologyPopup());
 
@@ -86,15 +83,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
 
   const renderDescription = renderWhenTrue(() => (
     <BlockWrapper>
-      <Description>{showFullDescription ? description : truncate(description)}</Description>
-      {description.length > MAX_DESCRIPTION_LENGTH && (
-        <ReadMoreButton onClick={() => setShowFullDescription((show) => !show)}>
-          {intl.formatMessage(showFullDescription ? messages.readLess : messages.readMore)}{' '}
-          <IconContainer isDown={!showFullDescription}>
-            <ChevronIcon />
-          </IconContainer>
-        </ReadMoreButton>
-      )}
+      <Description>{description}</Description>
     </BlockWrapper>
   ));
 
@@ -102,6 +91,24 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
   const renderProjects = renderWhenTrue(() => (
     <BlockWrapper>
       <Carousel items={projectsCarouselList} title={intl.formatMessage(messages.ourProjects)} />
+    </BlockWrapper>
+  ));
+
+  const renderAlternatives = renderWhenTrue(() => (
+    <BlockWrapper>
+      <AlternativesWrapper>
+        <AlternativesHeader>
+          <FormattedMessage {...messages.alternatives} />
+        </AlternativesHeader>
+        <AlternativesList>
+          {alternatives.map((tech) => (
+            <AlternativeItem key={tech.id} onClick={() => dispatch(openTechnologyPopup(tech.id))}>
+              <AlternativeItemIcon src={`https:${tech.icon.url}`} />
+              <AlternativeItemLabel>{tech.label.toUpperCase()}</AlternativeItemLabel>
+            </AlternativeItem>
+          ))}
+        </AlternativesList>
+      </AlternativesWrapper>
     </BlockWrapper>
   ));
 
@@ -124,8 +131,9 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
           ))}
         </TagsWrapper>
         {renderDescription(!!description.length)}
-        {renderExperts(experts > 0)}
-        {renderProjects(!!projects.length)}
+        {renderExperts(experts > 0 && ring !== TECHNOLOGY_RING.PHASED_OUT)}
+        {renderProjects(!!projects.length && ring !== TECHNOLOGY_RING.PHASED_OUT)}
+        {renderAlternatives(!!alternatives.length && ring === TECHNOLOGY_RING.PHASED_OUT)}
       </Body>
       <GetInTouchContainer>
         {!isDesktop ? (

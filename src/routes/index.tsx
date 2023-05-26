@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 
@@ -24,9 +23,7 @@ import { MyProfile } from './matrix/myProfile/myProfile.component';
 //<-- IMPORT ROUTE -->
 
 // @ts-ignore
-const Home = asyncComponent(() => import('./home'), 'Home');
-// @ts-ignore
-const Explore = asyncComponent(() => import('./explore'), 'Explore');
+const Home = asyncComponent(() => import('./explore'), 'Explore');
 // @ts-ignore
 const NotFound = asyncComponent(() => import('./notFound'), 'NotFound');
 // @ts-ignore
@@ -39,10 +36,6 @@ export default () => {
         <Switch>
           <Route exact path={ROUTES.home}>
             <Home />
-          </Route>
-
-          <Route exact path={ROUTES.explore}>
-            <Explore />
           </Route>
 
           <Route path={ROUTES.admin}>

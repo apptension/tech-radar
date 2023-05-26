@@ -98,24 +98,6 @@ export const Description = styled.p`
   margin-top: 0;
 `;
 
-export const ReadMoreButton = styled.button`
-  display: flex;
-  align-items: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: ${color.white};
-`;
-
-export const ChevronIcon = styled(ChevronDownIcon)``;
-
-export const IconContainer = styled.span<{ isDown: boolean }>`
-  display: flex;
-  transform: rotate(${({ isDown }) => (isDown ? 0 : 180)}deg);
-  margin-left: 8px;
-  transition: transform 0.2s ease;
-`;
-
 const blockStyles = css`
   background-color: ${color.mineShaft};
   border: 2px solid ${color.mineShaft};
@@ -153,6 +135,7 @@ export const GetInTouchBlock = styled(Block)`
 export const GetInTouchContainer = styled(BlockWrapper)`
   margin-top: auto;
   margin-bottom: 0;
+  padding-top: 10px;
 `;
 
 export const BlockExpert = styled.h2`
@@ -164,4 +147,52 @@ export const BlockExpert = styled.h2`
   margin: 0;
   padding-right: 0;
   margin-right: 10px;
+`;
+
+export const AlternativesWrapper = styled(Block)`
+  display: flex;
+  flex-direction: column;
+  color: ${color.dustyGray};
+`;
+
+export const AlternativesHeader = styled.h3`
+  font-size: 20px;
+  line-height: 19px;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: 0.9px;
+`;
+
+export const AlternativesList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
+  width: 100%;
+  padding-left: 0;
+  list-style: none;
+`;
+
+export const AlternativeItemIcon = styled.img`
+  width: 45px;
+`;
+
+export const AlternativeItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 80px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: ${color.mineShaft2};
+  }
+`;
+
+export const AlternativeItemLabel = styled.p`
+  margin: 0;
+  user-select: none;
 `;

@@ -36,6 +36,7 @@ export enum PROD_SKILL_FIELDS {
   CATEGORY_ID = 'RecordID (from Categories)',
   INTERMEDIATE = 'Intermediate',
   EXPERT = 'Expert',
+  ADDITIONAL_SKILLS = 'Additional skills',
 }
 
 export enum PROD_BASE_VIEWS {

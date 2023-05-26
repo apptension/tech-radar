@@ -125,8 +125,8 @@ ${theme('isDisabled', {
   &::before {
     content: '';
     display: ${({ withoutHoverEffects }) => (withoutHoverEffects ? 'none' : 'block')};
-    width: 100%;
-    height: 100%;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
     position: absolute;
     top: -1px;
     left: -1px;

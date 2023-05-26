@@ -63,5 +63,9 @@ export const Sidebar = ({ technologies, emptyResults, rings, teams, quadrants }:
 
   const renderContent = renderWhenTrueOtherwise(renderTechnologyPopup, renderFilteringList);
 
-  return <Container noPadding={technologyPopupOpen}>{renderContent(technologyPopupOpen)}</Container>;
+  return (
+    <Container className="sidebar" noPadding={technologyPopupOpen}>
+      {renderContent(technologyPopupOpen)}
+    </Container>
+  );
 };

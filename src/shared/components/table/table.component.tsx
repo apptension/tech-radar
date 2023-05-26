@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useFilters } from 'react-table';
 import { TechnologyTable } from '../../../routes/admin/adminPanel/adminPanel.types';
 import { TextField } from '../fields/TextField';
 import { TablePagination } from '../pagination';
@@ -69,7 +69,9 @@ export function Table({ columns, data, updateMyData }: TableProps) {
       defaultColumn,
       updateMyData,
       autoResetPage: false,
+      defaultCanFilter: false,
     },
+    useFilters,
     usePagination
   );
 
@@ -80,7 +82,10 @@ export function Table({ columns, data, updateMyData }: TableProps) {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps()}>
+                  {column.render('Header')}
+                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                </th>
               ))}
             </tr>
           ))}

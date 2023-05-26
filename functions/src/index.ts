@@ -17,4 +17,4 @@ export {
   updateUser,
   updateUserProfile,
 } from './routes/airtable';
-export { sendQuarterlyReminder, updateSpecialistsAmount } from './cron-jobs';
+export { sendQuarterlyReminder, updateSpecialistsAmount, sendSuggestedSkills } from './cron-jobs';

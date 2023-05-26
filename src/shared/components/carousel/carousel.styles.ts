@@ -46,11 +46,11 @@ export const Header = styled.div`
 export const ArrowButton = styled.button`
   background: transparent;
   border: none;
-  color: ${({ disabled }) => (disabled ? color.scorpion : color.white)};
+  color: ${({ disabled }) => (disabled ? 'transparent' : color.white)};
   width: 22px;
   padding: 0;
   user-select: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'initial' : 'pointer')};
   transition: color 0.2s ease;
 `;
 
