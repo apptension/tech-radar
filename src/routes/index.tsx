@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 
 import { AdminPanelContextProvider } from '../shared/components/adminPanel/adminPanelContext';
@@ -36,6 +36,10 @@ export default () => {
         <Switch>
           <Route exact path={ROUTES.home}>
             <Home />
+          </Route>
+
+          <Route exact path={ROUTES.explore}>
+            <Redirect to={ROUTES.home} />
           </Route>
 
           <Route path={ROUTES.admin}>
