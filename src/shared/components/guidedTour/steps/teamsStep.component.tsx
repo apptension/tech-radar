@@ -32,7 +32,7 @@ export const TeamsStep = () => {
   }, []);
 
   return (
-    <div style={{ width: 538 }}>
+    <div>
       <TagsWrapper>
         {radarTeams.map((team) => (
           <Tag key={team?.id} activeTag={activeTeam} value={team?.name} onClick={handleTagClick} />

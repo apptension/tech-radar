@@ -9,12 +9,14 @@ export const TooltipTitle = styled.h3`
   line-height: 31px;
   margin-top: 0;
   margin-bottom: 32px;
+  max-width: 100%;
 `;
-export const TooltipContainer = styled.div`
+export const TooltipContainer = styled.div<{ isSmall: boolean }>`
   background-color: ${color.mineShaft2};
   padding: 32px;
   border-radius: 8px;
   position: relative;
+  width: ${({ isSmall }) => (isSmall ? '470px' : '602px')};
 `;
 export const TooltipBody = styled.div``;
 export const TooltipContent = styled.div`
