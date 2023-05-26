@@ -32,7 +32,7 @@ export const SkillsStep = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: 422 }}>
       <TagsWrapper>
         {radarRings.map((skill) => (
           <Tag key={skill.id} activeTag={activeRing} value={skill.name} onClick={handleTagClick} />

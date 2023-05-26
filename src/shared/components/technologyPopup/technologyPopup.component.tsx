@@ -131,7 +131,7 @@ export const TechnologyPopup = ({ technologies }: TechnologyPopupProps) => {
           ))}
         </TagsWrapper>
         {renderDescription(!!description.length)}
-        {renderExperts(experts > 0)}
+        {renderExperts(experts > 0 && ring !== TECHNOLOGY_RING.PHASED_OUT)}
         {renderProjects(!!projects.length && ring !== TECHNOLOGY_RING.PHASED_OUT)}
         {renderAlternatives(!!alternatives.length && ring === TECHNOLOGY_RING.PHASED_OUT)}
       </Body>
