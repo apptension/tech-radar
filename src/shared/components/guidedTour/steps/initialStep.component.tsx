@@ -9,7 +9,7 @@ export const InitialStep = () => {
   const { radarQuadrants } = useContentfulData();
 
   return (
-    <div>
+    <div style={{ width: 538 }}>
       <p>{intl.formatMessage(messages.initialStepDescription)}</p>
       <TagsWrapper>
         {radarQuadrants.map((quadrant) => (

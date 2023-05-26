@@ -14,7 +14,7 @@ export const StyledTag = styled.div<{ isActive: boolean; isStatic: boolean }>`
   border-radius: 28px;
   border: 3px solid;
   border-color: ${({ isActive }) => !isActive && 'transparent'};
-  padding: 6px 12px 8px;
+  padding: 6px 8px;
   font-size: 12px;
   line-height: 12px;
   text-transform: uppercase;

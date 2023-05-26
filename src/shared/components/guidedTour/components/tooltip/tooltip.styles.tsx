@@ -13,7 +13,6 @@ export const TooltipTitle = styled.h3`
 export const TooltipContainer = styled.div`
   background-color: ${color.mineShaft2};
   padding: 32px;
-  width: 600px;
   border-radius: 8px;
   position: relative;
 `;
