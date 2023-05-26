@@ -34,7 +34,7 @@ export const AreasStep = () => {
   }, []);
 
   return (
-    <div style={{ width: 538 }}>
+    <div>
       <TagsWrapper>
         {radarQuadrants.map((quadrant) => (
           <Tag

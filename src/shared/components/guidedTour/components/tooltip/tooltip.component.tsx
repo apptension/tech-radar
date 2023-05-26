@@ -26,10 +26,9 @@ export const Tooltip = ({
   const isFirst = index === 0;
   const isLast = index === size - 1;
   const intl = useIntl();
-  const smallSteps = [1, 4];
 
   return (
-    <TooltipContainer {...tooltipProps} isSmall={smallSteps.includes(index)}>
+    <TooltipContainer {...tooltipProps} isSmall={index !== 0}>
       {step.title && <TooltipTitle>{step.title}</TooltipTitle>}
       <TooltipContent>{step.content}</TooltipContent>
       <TooltipFooter>
