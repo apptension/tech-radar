@@ -17,23 +17,23 @@ export default defineMessages({
   },
   skillsStepTitle: {
     id: 'guidedTour.skillsStepTitle',
-    defaultMessage: 'Check out our Skills',
+    defaultMessage: 'We divide our tech stack into 4 rings. Please click labels below to find out what they are.',
   },
   areasStepTitle: {
     id: 'guidedTour.areasStepTitle',
-    defaultMessage: 'Check out Areas of our Technologies',
+    defaultMessage: 'Choose one of the areas to navigate through categories of technologies and products:',
   },
   teamsStepTitle: {
     id: 'guidedTour.teamsStepTitle',
-    defaultMessage: 'Check out our Teams',
+    defaultMessage: 'Navigate through our teams:',
   },
   technologyPopupStepTitle: {
     id: 'guidedTour.technologyPopupStepTitle',
-    defaultMessage: 'Check out our Technologies',
+    defaultMessage: 'Find out more',
   },
   technologyPopupStepDescription: {
     id: 'guidedTour.technologyPopupStepDescription',
     defaultMessage:
-      "Technologies that work really well to solve real problems in projects. We've worked with them and they've proven to be effective. These technologies are slightly more risky. Some of our engineers walked this path and will share knowledge and experiences.",
+      'Click on a point on Tech Radar to find out more about a certain technology or product, see projects we worked on, and find out how many specialists we have on board that know it.',
   },
 });

@@ -24,9 +24,5 @@ export const TechnologyPopupStep = () => {
     };
   }, []);
 
-  return (
-    <div style={{ width: 422 }}>
-      <p>{intl.formatMessage(messages.technologyPopupStepDescription)}</p>
-    </div>
-  );
+  return <p>{intl.formatMessage(messages.technologyPopupStepDescription)}</p>;
 };
