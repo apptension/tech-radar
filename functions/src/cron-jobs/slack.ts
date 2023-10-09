@@ -1,7 +1,13 @@
 import * as functions from 'firebase-functions';
 import { DEFAULT_TIMEZONE } from '../constants';
 import { SLACK_SECRET_KEYS } from '../constants/secretKeys';
-import { FORBIDDEN_MEMBERS, MESSAGE_SHORT, MESSAGE_FULL } from '../constants/slack';
+import {
+  FORBIDDEN_MEMBERS,
+  BOT_CHANNEL_MESSAGE_SHORT,
+  BOT_CHANNEL_MESSAGE_FULL,
+  REMINDER_CHANNEL_MESSAGE_SHORT,
+  REMINDER_CHANNEL_MESSAGE_FULL,
+} from '../constants/slack';
 import { getSlackClient } from '../services/slack';
 import { getSecrets } from '../utils/getSecrets';
 
@@ -42,13 +48,28 @@ const sendMessageToUsers = async () => {
       });
       await slack.chat.postMessage({
         channel: id,
-        text: MESSAGE_SHORT,
-        blocks: MESSAGE_FULL,
+        text: BOT_CHANNEL_MESSAGE_SHORT,
+        blocks: BOT_CHANNEL_MESSAGE_FULL,
       });
       functions.logger.info(`Message sent successfully to user ${id}`);
     } catch (error) {
       functions.logger.error(`Error sending message to user ${id}: ${error}`);
     }
+  }
+};
+
+const sendMessageToChannel = async () => {
+  const { SLACK_TOKEN, SLACK_REMINDER_CHANNEL_ID } = getSecrets();
+  const slack = getSlackClient(SLACK_TOKEN);
+  try {
+    await slack.chat.postMessage({
+      channel: SLACK_REMINDER_CHANNEL_ID,
+      text: REMINDER_CHANNEL_MESSAGE_SHORT,
+      blocks: REMINDER_CHANNEL_MESSAGE_FULL,
+    });
+    functions.logger.info(`Message sent successfully to channel ${SLACK_REMINDER_CHANNEL_ID}`);
+  } catch (error) {
+    functions.logger.error(`Error sending message to channel ${SLACK_REMINDER_CHANNEL_ID}: ${error}`);
   }
 };
 
@@ -58,5 +79,14 @@ export const sendQuarterlyReminder = functions
   .timeZone(DEFAULT_TIMEZONE)
   .onRun(async () => {
     await sendMessageToUsers();
+    return null;
+  });
+
+export const sendFinalReminder = functions
+  .runWith({ secrets: [...SLACK_SECRET_KEYS] })
+  .pubsub.schedule('0 9 8 */3 *') // runs at 8th day of every fourth month of the year at 9:00
+  .timeZone(DEFAULT_TIMEZONE)
+  .onRun(async () => {
+    await sendMessageToChannel();
     return null;
   });
