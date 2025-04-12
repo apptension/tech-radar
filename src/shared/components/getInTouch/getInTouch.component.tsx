@@ -34,7 +34,7 @@ export const GetInTouch = ({ asPopup = false }: GetInTouchProps) => {
 
             <ContactOption>
               <PhoneSVG />
-              <ContactText href="tel:+48793925552">+48 793 925 552</ContactText>
+              <ContactText href="tel:+48793925552">+48 533 352 052</ContactText>
             </ContactOption>
           </ContactsContainer>
 
