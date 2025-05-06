@@ -29,6 +29,11 @@ The Tech Radar is a list of technologies along with their assessment result pres
 - Filtering by adoption levels and teams who use specific technologies/tools
 - Details view with logo, description, alternatives and links
 - Mobile support
+- Skills Matrix for filling skills by users
+
+## Skills Matrix
+
+Skills Matrix is located on `/matrix` route. It consists of four steps in which users fill in their personal data and complete information about their skill level.
 
 ## Data source
 
@@ -40,7 +45,13 @@ Or connect your own preferable CMS or other data source.
 
 For reference of data models used in the tech radar see types defined in `src/shared/components/radar/radar.types.ts`.
 
-You can also import the data models into your own Contentful space with `contentful-cli` (see export file `contentful-export-2022-04-18.json`).
+You can also import the data models into your own Contentful space with `contentful-cli` (see export file `contentful-export-2023-05-31.json`).
+
+Skills Matrix is using AirTable to store and update users data.
+
+To connect your AirTable table see `functions/.secret.example` file for required keys.
+
+To structure your table see `functions/src/constants/airable.prod.ts` and `functions/src/constants/airtable.dev.ts`.
 
 ## Backend
 
@@ -76,6 +87,12 @@ In order for Firebase Functions to work properly you will also need to:
 
 - Environment variables for Firebase Functions are coming from Google Secret Manager
   Please take a look at `.secret.example` to see the required structure for it and upload them to Google Secret Manager for your application following these instructions: [Setting Firebase config](https://firebase.google.com/docs/functions/config-env#secret-manager)
+
+## Admin Panel
+
+Admin panel is very basic and it allows to update and add `entries` directly, instead of using contentful.
+It is located on `/admin/panel` route.
+Authorization is done by google account, which have admin role in contentful.
 
 ## Usage
 
